@@ -118,12 +118,8 @@ export default async function HomePage() {
             className="ml-[5vw] w-[40vw] font-semibold leading-none"
             style={{ marginTop: '-7%' }}
           >
-            <div className="text-[4.5vw] tracking-[0.71vw]">
-              {hero?.headline1 ?? 'Unlock your'}
-            </div>
-            <div className="text-[5.8vw] tracking-[0.71vw]">
-              {hero?.headline2 ?? 'creativity'}
-            </div>
+            <div className="text-[4.5vw] tracking-[0.71vw]">{hero?.headline1 ?? 'Unlock your'}</div>
+            <div className="text-[5.8vw] tracking-[0.71vw]">{hero?.headline2 ?? 'creativity'}</div>
             <div className="text-[1.65vw] tracking-[0.71vw] opacity-75 mt-[1vw] leading-snug">
               {hero?.subline ?? 'with our unique music production tool'}
             </div>
@@ -209,7 +205,7 @@ export default async function HomePage() {
             loop
             playsInline
             poster="/images/home/mxgrid-intro.png"
-            className="w-full max-w-[90%] mt-4 mx-auto block"
+            className="w-full max-w-full mt-4 mx-auto block"
           >
             <source src="/images/home/mxgrid-intro.mp4" type="video/mp4" />
           </video>
@@ -236,9 +232,9 @@ export default async function HomePage() {
 
       {/* Pricing */}
       <section id="pricing" className="bg-[#e3e3e1] text-[#464946] text-center py-10 px-4">
-        <h3 className="text-4xl font-semibold mb-6">Pricing</h3>
+        <h3 className="text-5xl font-semibold mb-6">Pricing</h3>
         <div className="overflow-x-auto">
-          <table className="border-separate border-spacing-0 w-full max-w-4xl mx-auto">
+          <table className="border-separate border-spacing-0 w-full max-w-5xl mx-auto">
             <thead>
               <tr>
                 <th className="bg-transparent w-[44%] p-4" />
