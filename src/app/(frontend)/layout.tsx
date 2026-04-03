@@ -1,19 +1,22 @@
 import React from 'react'
 import '../globals.css'
-import './styles.css'
+import Header from '@/components/frontend/Header'
+import Footer from '@/components/frontend/Footer'
 
 export const metadata = {
-  description: 'A blank template using Payload in a Next.js app.',
-  title: 'Payload Blank Template',
+  description: 'MXbeats — cutting-edge music looping software',
+  title: 'MXbeats',
 }
 
-export default async function RootLayout(props: { children: React.ReactNode }) {
+export default async function FrontendLayout(props: { children: React.ReactNode }) {
   const { children } = props
 
   return (
     <html lang="en">
-      <body>
-        <main>{children}</main>
+      <body className="bg-black text-white min-h-screen flex flex-col">
+        <Header />
+        <main className="flex-1 pt-16">{children}</main>
+        <Footer />
       </body>
     </html>
   )
