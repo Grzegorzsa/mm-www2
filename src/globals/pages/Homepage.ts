@@ -11,69 +11,103 @@ export const Homepage: GlobalConfig = {
   },
   fields: [
     {
-      name: 'hero',
-      type: 'group',
+      type: 'collapsible',
       label: 'Hero Section',
+      admin: {
+        initCollapsed: true,
+      },
       fields: [
         {
-          name: 'heroImage',
-          label: 'Hero Image',
-          type: 'upload',
-          relationTo: 'media',
-          required: false,
-        },
-        {
-          name: 'headline1',
-          type: 'text',
-          defaultValue: 'Unlock your',
-          label: 'Headline line 1',
-          admin: {
-            width: '33.3%',
-          },
-        },
-        {
-          name: 'headline2',
-          type: 'text',
-          defaultValue: 'creativity',
-          label: 'Headline line 2',
-          admin: {
-            width: '33.3%',
-          },
-        },
-        {
-          name: 'subline',
-          type: 'text',
-          defaultValue: 'with our unique music production tool',
-          label: 'Subline',
-          admin: {
-            width: '33.3%',
-          },
+          name: 'hero',
+          type: 'group',
+          label: false,
+          fields: [
+            {
+              name: 'heroImage',
+              label: 'Hero Image',
+              type: 'upload',
+              relationTo: 'media',
+              required: false,
+            },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'headline1',
+                  type: 'text',
+                  defaultValue: 'Unlock your',
+                  label: 'Headline line 1',
+                  admin: {
+                    width: '33.3%',
+                  },
+                },
+                {
+                  name: 'headline2',
+                  type: 'text',
+                  defaultValue: 'creativity',
+                  label: 'Headline line 2',
+                  admin: {
+                    width: '33.3%',
+                  },
+                },
+                {
+                  name: 'subline',
+                  type: 'text',
+                  defaultValue: 'with our unique music production tool',
+                  label: 'Subline',
+                  admin: {
+                    width: '33.3%',
+                  },
+                },
+              ],
+            },
+          ],
         },
       ],
     },
     {
-      name: 'intro',
-      type: 'group',
+      type: 'collapsible',
       label: 'Intro Section',
+      admin: {
+        initCollapsed: true,
+      },
       fields: [
         {
-          name: 'text',
-          type: 'textarea',
-          defaultValue:
-            'MXbeats is a cutting-edge music looping software that empowers musicians, producers, and performers to create, arrange, and perform their music with ease and precision.',
-          label: 'Intro text',
-        },
-        {
-          name: 'ctaLabel',
-          type: 'text',
-          defaultValue: 'GET IT NOW',
-          label: 'CTA Button label',
-        },
-        {
-          name: 'ctaUrl',
-          type: 'text',
-          defaultValue: '#pricing',
-          label: 'CTA Button URL',
+          name: 'intro',
+          type: 'group',
+          label: 'Intro Section',
+          fields: [
+            {
+              name: 'text',
+              type: 'textarea',
+              defaultValue:
+                'MXbeats is a cutting-edge music looping software that empowers musicians, producers, and performers to create, arrange, and perform their music with ease and precision.',
+              label: 'Intro text',
+            },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'ctaLabel',
+                  type: 'text',
+                  defaultValue: 'GET IT NOW',
+                  label: 'CTA Button label',
+                  admin: {
+                    width: '50%',
+                  },
+                },
+                {
+                  name: 'ctaUrl',
+                  type: 'text',
+                  defaultValue: '#pricing',
+                  label: 'CTA Button URL',
+                  admin: {
+                    width: '50%',
+                  },
+                },
+              ],
+            },
+          ],
         },
       ],
     },
