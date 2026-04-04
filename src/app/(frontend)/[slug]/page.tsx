@@ -3,6 +3,7 @@ import config from '@/payload.config'
 import { notFound } from 'next/navigation'
 import { RichText } from '@payloadcms/richtext-lexical/react'
 import type { Metadata } from 'next'
+import { buildMetadata } from '@/lib/seo'
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -19,10 +20,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     })
     const page = result.docs[0]
     if (!page) return {}
-    return {
+    return buildMetadata(page.meta, {
       title: `${page.title} — MXbeats`,
       description: page.metaDescription ?? undefined,
-    }
+    })
   } catch {
     return {}
   }

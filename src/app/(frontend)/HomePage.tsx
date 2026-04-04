@@ -88,7 +88,6 @@ export default async function HomePage() {
   const hero = homepageData?.hero
   const intro = homepageData?.intro
   const timeline = homepageData?.timeline
-  // console.log(homepageData)
 
   return (
     <>
