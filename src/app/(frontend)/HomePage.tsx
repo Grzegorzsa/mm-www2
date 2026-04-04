@@ -75,6 +75,26 @@ function FeatureBlock({
   )
 }
 
+function IntroSection(homepageData: any) {
+  const intro = homepageData?.intro
+  return (
+    <section className="bg-black text-[#b8b5b2] text-center py-8 px-8">
+      <p className="text-xl lg:text-2xl max-w-3xl mx-auto leading-relaxed">
+        {intro?.text ??
+          'MXbeats is a cutting-edge music looping software that empowers musicians, producers, and performers to create, arrange, and perform their music with ease and precision.'}
+      </p>
+      <div className="mt-6">
+        <Link
+          href={intro?.ctaUrl ?? '/downloads'}
+          className="inline-block border border-white text-white px-8 py-3 text-sm tracking-[4px] uppercase hover:bg-white hover:text-black transition-colors font-medium"
+        >
+          {intro?.ctaLabel ?? 'GET IT NOW'}
+        </Link>
+      </div>
+    </section>
+  )
+}
+
 function HeroSection(homepageData: any) {
   const hero = homepageData?.hero
   const heroImage = homepageData?.hero?.heroImage
@@ -123,28 +143,13 @@ export default async function HomePage() {
     // fallback to hardcoded defaults
   }
   // console.log('Homepage data:', homepageData)
-  const intro = homepageData?.intro
   const timeline = homepageData?.timeline
 
   return (
     <>
       <HeroSection {...homepageData} />
 
-      {/* Intro */}
-      <section className="bg-black text-[#b8b5b2] text-center py-8 px-8">
-        <p className="text-xl lg:text-2xl max-w-3xl mx-auto leading-relaxed">
-          {intro?.text ??
-            'MXbeats is a cutting-edge music looping software that empowers musicians, producers, and performers to create, arrange, and perform their music with ease and precision.'}
-        </p>
-        <div className="mt-6">
-          <Link
-            href={intro?.ctaUrl ?? '/downloads'}
-            className="inline-block border border-white text-white px-8 py-3 text-sm tracking-[4px] uppercase hover:bg-white hover:text-black transition-colors font-medium"
-          >
-            {intro?.ctaLabel ?? 'GET IT NOW'}
-          </Link>
-        </div>
-      </section>
+      <IntroSection {...homepageData} />
 
       {/* Feature 1 — full width with right-side overlay */}
       <section
