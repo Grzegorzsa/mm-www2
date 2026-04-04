@@ -11,11 +11,6 @@ const dmSans = DM_Sans({
   display: 'swap',
 })
 
-export const metadata = {
-  description: 'MXbeats — cutting-edge music looping software',
-  title: 'MXbeats',
-}
-
 export default async function FrontendLayout(props: { children: React.ReactNode }) {
   const { children } = props
 

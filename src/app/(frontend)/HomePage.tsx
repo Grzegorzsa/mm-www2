@@ -1,13 +1,9 @@
+// Clear cache: Remove-Item -Recurse -Force .next
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import Link from 'next/link'
 import { Check, X } from 'lucide-react'
-
-export const metadata = {
-  title: 'MXbeats — Music Looping Software',
-  description:
-    'MXbeats is a cutting-edge music looping software that empowers musicians, producers, and performers.',
-}
+import { Metadata } from 'next'
 
 const pricingRows: Array<{
   feature: string
@@ -92,6 +88,7 @@ export default async function HomePage() {
   const hero = homepageData?.hero
   const intro = homepageData?.intro
   const timeline = homepageData?.timeline
+  // console.log(homepageData)
 
   return (
     <>

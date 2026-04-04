@@ -4,6 +4,7 @@ import path from 'path'
 import { buildConfig } from 'payload'
 import { fileURLToPath } from 'url'
 import sharp from 'sharp'
+import { seoPlugin } from '@payloadcms/plugin-seo'
 
 import { Users } from './collections/Users'
 import { Media } from './collections/Media'
@@ -34,5 +35,18 @@ export default buildConfig({
     },
   }),
   sharp,
-  plugins: [],
+  plugins: [
+    seoPlugin({
+      collections: ['pages'],
+      globals: ['homepage'],
+      uploadsCollection: 'media',
+      generateTitle: ({ doc }) => `MXbeats — ${doc.title}`,
+      generateDescription: ({ doc }) => doc.excerpt,
+      tabbedUI: true,
+      generateURL: ({ doc }) => {
+        if (doc.slug === 'home' || !doc.slug) return 'https://mxbeats.com/'
+        return `https://mxbeats.com/${doc.slug}`
+      },
+    }),
+  ],
 })

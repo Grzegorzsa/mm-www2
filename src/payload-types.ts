@@ -199,6 +199,14 @@ export interface Page {
    * SEO meta description
    */
   metaDescription?: string | null;
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -345,6 +353,13 @@ export interface PagesSelect<T extends boolean = true> {
   slug?: T;
   content?: T;
   metaDescription?: T;
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -446,6 +461,14 @@ export interface Homepage {
         }[]
       | null;
   };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -502,6 +525,13 @@ export interface HomepageSelect<T extends boolean = true> {
                   };
               id?: T;
             };
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
       };
   updatedAt?: T;
   createdAt?: T;
