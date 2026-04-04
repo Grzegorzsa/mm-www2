@@ -421,6 +421,7 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 export interface Homepage {
   id: number;
   hero?: {
+    heroImage?: (number | null) | Media;
     headline1?: string | null;
     headline2?: string | null;
     subline?: string | null;
@@ -480,6 +481,7 @@ export interface HomepageSelect<T extends boolean = true> {
   hero?:
     | T
     | {
+        heroImage?: T;
         headline1?: T;
         headline2?: T;
         subline?: T;

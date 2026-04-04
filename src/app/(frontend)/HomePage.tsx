@@ -3,7 +3,6 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import Link from 'next/link'
 import { Check, X } from 'lucide-react'
-import { Metadata } from 'next'
 
 const pricingRows: Array<{
   feature: string
@@ -84,11 +83,13 @@ export default async function HomePage() {
   } catch {
     // fallback to hardcoded defaults
   }
-
+  // console.log('Homepage data:', homepageData)
   const hero = homepageData?.hero
   const intro = homepageData?.intro
   const timeline = homepageData?.timeline
-
+  const backgroundImage = homepageData?.hero?.heroImage
+    ? homepageData.hero.heroImage.url
+    : '/images/home/slide-1.jpg'
   return (
     <>
       {/* Hero */}
@@ -96,7 +97,7 @@ export default async function HomePage() {
         className="relative w-full"
         style={{
           paddingBottom: '47%',
-          backgroundImage: "url('/images/home/slide-1.jpg')",
+          backgroundImage: `url('${backgroundImage}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           minHeight: 300,

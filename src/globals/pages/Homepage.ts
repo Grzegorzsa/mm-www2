@@ -16,22 +16,38 @@ export const Homepage: GlobalConfig = {
       label: 'Hero Section',
       fields: [
         {
+          name: 'heroImage',
+          label: 'Hero Image',
+          type: 'upload',
+          relationTo: 'media',
+          required: false,
+        },
+        {
           name: 'headline1',
           type: 'text',
           defaultValue: 'Unlock your',
           label: 'Headline line 1',
+          admin: {
+            width: '33.3%',
+          },
         },
         {
           name: 'headline2',
           type: 'text',
           defaultValue: 'creativity',
           label: 'Headline line 2',
+          admin: {
+            width: '33.3%',
+          },
         },
         {
           name: 'subline',
           type: 'text',
           defaultValue: 'with our unique music production tool',
           label: 'Subline',
+          admin: {
+            width: '33.3%',
+          },
         },
       ],
     },
