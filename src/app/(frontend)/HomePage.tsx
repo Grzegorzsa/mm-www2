@@ -75,6 +75,45 @@ function FeatureBlock({
   )
 }
 
+function HeroSection(homepageData: any) {
+  const hero = homepageData?.hero
+  const heroImage = homepageData?.hero?.heroImage
+    ? homepageData.hero.heroImage.url
+    : '/images/home/slide-1.jpg'
+  const headline1 = hero?.headline1 ?? 'Unlock your'
+  const headline2 = hero?.headline2 ?? 'creativity'
+  const subline = hero?.subline ?? 'with our unique music production tool'
+  return (
+    <section
+      className="relative w-full"
+      style={{
+        paddingBottom: '47%',
+        backgroundImage: `url('${heroImage}')`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        minHeight: 300,
+      }}
+    >
+      <div
+        className="absolute inset-0 w-1/2"
+        style={{
+          background: 'linear-gradient(90deg, rgba(3,10,38,1) 0%, rgba(0,0,0,0) 100%)',
+          opacity: 0.75,
+        }}
+      />
+      <div className="absolute inset-0 flex items-center">
+        <div className="ml-[5vw] w-[40vw] font-semibold leading-none" style={{ marginTop: '-7%' }}>
+          <div className="text-[4.5vw] tracking-[0.71vw]">{headline1}</div>
+          <div className="text-[5.8vw] tracking-[0.71vw]">{headline2}</div>
+          <div className="text-[1.65vw] tracking-[0.71vw] opacity-75 mt-[1vw] leading-snug">
+            {subline}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 export default async function HomePage() {
   let homepageData: any = null
   try {
@@ -84,45 +123,12 @@ export default async function HomePage() {
     // fallback to hardcoded defaults
   }
   // console.log('Homepage data:', homepageData)
-  const hero = homepageData?.hero
   const intro = homepageData?.intro
   const timeline = homepageData?.timeline
-  const backgroundImage = homepageData?.hero?.heroImage
-    ? homepageData.hero.heroImage.url
-    : '/images/home/slide-1.jpg'
+
   return (
     <>
-      {/* Hero */}
-      <section
-        className="relative w-full"
-        style={{
-          paddingBottom: '47%',
-          backgroundImage: `url('${backgroundImage}')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          minHeight: 300,
-        }}
-      >
-        <div
-          className="absolute inset-0 w-1/2"
-          style={{
-            background: 'linear-gradient(90deg, rgba(3,10,38,1) 0%, rgba(0,0,0,0) 100%)',
-            opacity: 0.75,
-          }}
-        />
-        <div className="absolute inset-0 flex items-center">
-          <div
-            className="ml-[5vw] w-[40vw] font-semibold leading-none"
-            style={{ marginTop: '-7%' }}
-          >
-            <div className="text-[4.5vw] tracking-[0.71vw]">{hero?.headline1 ?? 'Unlock your'}</div>
-            <div className="text-[5.8vw] tracking-[0.71vw]">{hero?.headline2 ?? 'creativity'}</div>
-            <div className="text-[1.65vw] tracking-[0.71vw] opacity-75 mt-[1vw] leading-snug">
-              {hero?.subline ?? 'with our unique music production tool'}
-            </div>
-          </div>
-        </div>
-      </section>
+      <HeroSection {...homepageData} />
 
       {/* Intro */}
       <section className="bg-black text-[#b8b5b2] text-center py-8 px-8">
