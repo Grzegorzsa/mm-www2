@@ -112,104 +112,148 @@ export const Homepage: GlobalConfig = {
       ],
     },
     {
-      name: 'features',
-      type: 'array',
-      label: 'Feature Sections',
+      type: 'collapsible',
+      label: 'Features Section',
+      admin: {
+        initCollapsed: true,
+      },
       fields: [
         {
-          name: 'heading',
-          type: 'text',
-          required: true,
-        },
-        {
-          name: 'description',
-          type: 'textarea',
-          required: true,
-        },
-        {
-          name: 'image',
-          type: 'text',
-          label: 'Image filename (in /images/home/)',
-          required: true,
-        },
-      ],
-    },
-    {
-      name: 'timeline',
-      type: 'group',
-      label: 'Timeline Section',
-      fields: [
-        {
-          name: 'heading',
-          type: 'text',
-          defaultValue: 'Timeline Editor',
-          label: 'Heading',
-        },
-        {
-          name: 'subheading',
-          type: 'text',
-          defaultValue: 'for Complete Song Creation',
-          label: 'Subheading',
-        },
-        {
-          name: 'description',
-          type: 'textarea',
-          defaultValue:
-            'Compose entire songs with built-in timeline editor. Arrange loops and samples creating cohesive musical pieces.',
-          label: 'Description',
-        },
-      ],
-    },
-    {
-      name: 'pricing',
-      type: 'group',
-      label: 'Pricing Section',
-      fields: [
-        {
-          name: 'heading',
-          type: 'text',
-          defaultValue: 'Get MXbeats',
-          label: 'Heading',
-        },
-        {
-          name: 'plans',
+          name: 'features',
           type: 'array',
-          label: 'Plans',
+          label: 'Feature Sections',
           fields: [
             {
-              name: 'name',
+              name: 'heading',
               type: 'text',
               required: true,
             },
             {
-              name: 'price',
-              type: 'number',
+              name: 'description',
+              type: 'textarea',
               required: true,
             },
             {
-              name: 'isHighlighted',
-              type: 'checkbox',
-              defaultValue: false,
+              name: 'image',
+              label: 'Feature Image',
+              type: 'upload',
+              relationTo: 'media',
+              required: false,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'collapsible',
+      label: 'Timeline Section',
+      admin: {
+        initCollapsed: true,
+      },
+      fields: [
+        {
+          name: 'timeline',
+          type: 'group',
+          label: 'Timeline Section',
+          fields: [
+            {
+              name: 'heading',
+              type: 'text',
+              defaultValue: 'Timeline Editor',
+              label: 'Heading',
             },
             {
-              name: 'features',
-              type: 'array',
-              label: 'Features',
+              name: 'subheading',
+              type: 'text',
+              defaultValue: 'for Complete Song Creation',
+              label: 'Subheading',
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+              defaultValue:
+                'Compose entire songs with built-in timeline editor. Arrange loops and samples creating cohesive musical pieces.',
+              label: 'Description',
+            },
+            {
+              name: 'image',
+              label: 'Timeline Video/Image',
+              type: 'upload',
+              relationTo: 'media',
+              required: false,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'collapsible',
+      label: 'Pricing Section',
+      admin: {
+        initCollapsed: true,
+      },
+      fields: [
+        {
+          name: 'pricing',
+          type: 'array',
+          label: 'Pricing Sections',
+          fields: [
+            {
+              type: 'row',
               fields: [
                 {
-                  name: 'text',
                   type: 'text',
+                  name: 'feature',
+                  label: 'Feature',
                   required: true,
+                  admin: { width: '33.3%' },
                 },
                 {
-                  name: 'included',
-                  type: 'checkbox',
-                  defaultValue: true,
+                  type: 'text',
+                  name: 'essentials',
+                  label: 'Essentials',
+                  required: true,
+                  admin: { width: '33.3%' },
+                },
+                {
+                  type: 'text',
+                  name: 'loops',
+                  label: 'Loops',
+                  required: true,
+                  admin: { width: '33.3%' },
                 },
               ],
             },
           ],
         },
+      ],
+    },
+    {
+      type: 'collapsible',
+      label: 'Try Demo Section',
+      admin: {
+        initCollapsed: true,
+      },
+      fields: [
+        {
+          type: 'text',
+          name: 'demoHeading',
+          label: 'Heading',
+          required: true,
+        },
+        {
+          type: 'textarea',
+          name: 'demoDescription',
+          label: 'Description',
+          required: true,
+        },
+        {
+          type: 'text',
+          name: 'demoUrl',
+          label: 'Demo URL',
+          required: true,
+        },
+        { type: 'text', name: 'demoBtnLabel', label: 'CTA Button Label', required: true },
       ],
     },
   ],

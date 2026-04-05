@@ -142,7 +142,7 @@ export default async function HomePage() {
   } catch {
     // fallback to hardcoded defaults
   }
-  // console.log('Homepage data:', homepageData)
+  console.log('Homepage data:', homepageData)
   const timeline = homepageData?.timeline
 
   return (

@@ -435,7 +435,7 @@ export interface Homepage {
     | {
         heading: string;
         description: string;
-        image: string;
+        image?: (number | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -443,25 +443,20 @@ export interface Homepage {
     heading?: string | null;
     subheading?: string | null;
     description?: string | null;
+    image?: (number | null) | Media;
   };
-  pricing?: {
-    heading?: string | null;
-    plans?:
-      | {
-          name: string;
-          price: number;
-          isHighlighted?: boolean | null;
-          features?:
-            | {
-                text: string;
-                included?: boolean | null;
-                id?: string | null;
-              }[]
-            | null;
-          id?: string | null;
-        }[]
-      | null;
-  };
+  pricing?:
+    | {
+        feature: string;
+        essentials: string;
+        loops: string;
+        id?: string | null;
+      }[]
+    | null;
+  demoHeading: string;
+  demoDescription: string;
+  demoUrl: string;
+  demoBtnLabel: string;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -507,27 +502,20 @@ export interface HomepageSelect<T extends boolean = true> {
         heading?: T;
         subheading?: T;
         description?: T;
+        image?: T;
       };
   pricing?:
     | T
     | {
-        heading?: T;
-        plans?:
-          | T
-          | {
-              name?: T;
-              price?: T;
-              isHighlighted?: T;
-              features?:
-                | T
-                | {
-                    text?: T;
-                    included?: T;
-                    id?: T;
-                  };
-              id?: T;
-            };
+        feature?: T;
+        essentials?: T;
+        loops?: T;
+        id?: T;
       };
+  demoHeading?: T;
+  demoDescription?: T;
+  demoUrl?: T;
+  demoBtnLabel?: T;
   meta?:
     | T
     | {
