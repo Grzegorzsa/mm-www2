@@ -5,32 +5,6 @@ import Link from 'next/link'
 import { Check, X } from 'lucide-react'
 import fallbackContent from '@/globals/pages/homepage.json'
 
-const pricingRows: Array<{
-  feature: string
-  essentials: boolean | string | React.ReactNode
-  loops: boolean | string | React.ReactNode
-}> = [
-  {
-    feature: 'Price',
-    essentials: 'Free',
-    loops: (
-      <>
-        <del>$79</del> <small className="text-sm">— Free (Beta)</small>
-      </>
-    ),
-  },
-  { feature: 'Timeline Editor', essentials: true, loops: true },
-  { feature: 'MIDI Controller Support', essentials: true, loops: true },
-  { feature: 'Play Loops and Samples', essentials: true, loops: true },
-  { feature: 'Slots for Loops and Samples', essentials: '512', loops: '512' },
-  { feature: 'Max Number of Outputs', essentials: '2', loops: '32' },
-  { feature: 'Standalone App', essentials: true, loops: true },
-  { feature: 'DAW Plugin', essentials: false, loops: true },
-  { feature: 'Render Audio', essentials: false, loops: true },
-  { feature: 'DSP', essentials: false, loops: true },
-  { feature: 'License Type', essentials: 'Personal use only', loops: 'Commercial (Beta)' },
-]
-
 import React from 'react'
 
 function BoolCell({ value }: { value: boolean }) {
@@ -39,6 +13,12 @@ function BoolCell({ value }: { value: boolean }) {
   ) : (
     <X className="mx-auto text-gray-400" size={22} />
   )
+}
+
+function PricingCell({ value }: { value: string }) {
+  if (value === 'true') return <BoolCell value={true} />
+  if (value === 'false') return <BoolCell value={false} />
+  return <>{value}</>
 }
 
 function FeatureBlock({
@@ -97,7 +77,7 @@ function IntroSection(homepageData: any) {
 }
 
 function HeroSection(homepageData: any) {
-  const hero = homepageData?.hero ? fallbackContent.hero : fallbackContent.hero
+  const hero = homepageData?.hero ?? fallbackContent.hero
   const heroImage = homepageData?.hero?.heroImage
     ? homepageData.hero.heroImage.url
     : fallbackContent.hero.heroImage.url
@@ -143,8 +123,21 @@ export default async function HomePage() {
   } catch {
     // fallback to hardcoded defaults
   }
-  // console.log(JSON.stringify(homepageData, null, 2))
-  const timeline = homepageData?.timeline
+  const features = homepageData?.features ?? fallbackContent.features
+  const timeline = homepageData?.timeline ?? fallbackContent.timeline
+  const pricing = homepageData?.pricing ?? fallbackContent.pricing
+  const demo = homepageData?.demo ?? fallbackContent.demo
+
+  const getImageUrl = (image: any, fallbackUrl: string) =>
+    typeof image === 'object' && image?.url ? image.url : fallbackUrl
+
+  const feature0 = features?.[0] ?? fallbackContent.features[0]
+  const feature1 = features?.[1] ?? fallbackContent.features[1]
+  const feature2 = features?.[2] ?? fallbackContent.features[2]
+  const feature3 = features?.[3] ?? fallbackContent.features[3]
+  const feature4 = features?.[4] ?? fallbackContent.features[4]
+
+  const timelineVideoUrl = getImageUrl(timeline?.image, fallbackContent.timeline.image.url)
 
   return (
     <>
@@ -157,7 +150,7 @@ export default async function HomePage() {
         className="relative"
         style={{
           paddingBottom: '38%',
-          backgroundImage: "url('/images/home/home-features-1.jpg')",
+          backgroundImage: `url('${getImageUrl(feature0?.image, fallbackContent.features[0].image.url)}')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           minHeight: 200,
@@ -166,11 +159,10 @@ export default async function HomePage() {
         <div className="absolute inset-y-0 right-0 w-1/2 bg-black/60 flex items-center justify-center">
           <div className="mx-[13%]">
             <h3 className="text-[2vw] tracking-[0.7vw] leading-tight mt-0 font-semibold">
-              Live Performance at Your Fingertips
+              {feature0?.heading ?? fallbackContent.features[0].heading}
             </h3>
             <p className="text-[1.2vw] tracking-[0.2vw] font-semibold mt-2">
-              Play live using your mouse, computer keyboard, or MIDI controller. Express yourself in
-              real-time performance.
+              {feature0?.description ?? fallbackContent.features[0].description}
             </p>
           </div>
         </div>
@@ -179,14 +171,14 @@ export default async function HomePage() {
       {/* Features grid row 1 */}
       <div className="flex flex-col sm:flex-row">
         <FeatureBlock
-          image="/images/home/home-features-2.jpg"
-          heading="Ample Space for Creativity"
-          description="With over 500 slots, organize your loops and samples without limitations. Let your imagination run wild."
+          image={getImageUrl(feature1?.image, fallbackContent.features[1].image.url)}
+          heading={feature1?.heading ?? fallbackContent.features[1].heading}
+          description={feature1?.description ?? fallbackContent.features[1].description}
         />
         <FeatureBlock
-          image="/images/home/home-features-3.jpg"
-          heading="Automated Sample Import"
-          description="Streamline your workflow by automating the import process for media files. The software assigns tempo, color, icon, and instrument group to each sample."
+          image={getImageUrl(feature2?.image, fallbackContent.features[2].image.url)}
+          heading={feature2?.heading ?? fallbackContent.features[2].heading}
+          description={feature2?.description ?? fallbackContent.features[2].description}
           textColor="#000"
         />
       </div>
@@ -202,10 +194,10 @@ export default async function HomePage() {
       >
         <div className="max-w-5xl mx-auto">
           <h3 className="text-[2vw] tracking-[0.7vw] leading-none mt-2 font-semibold">
-            {timeline?.heading ?? 'Timeline Editor'}
+            {timeline?.heading ?? fallbackContent.timeline.heading}
             <br />
             <span className="text-[1.5vw]">
-              {timeline?.subheading ?? 'for Complete Song Creation'}
+              {timeline?.subheading ?? fallbackContent.timeline.subheading}
             </span>
           </h3>
           <video
@@ -216,11 +208,10 @@ export default async function HomePage() {
             poster="/images/home/mxgrid-intro.png"
             className="w-full max-w-full mt-4 mx-auto block"
           >
-            <source src="/images/home/mxgrid-intro.mp4" type="video/mp4" />
+            <source src={timelineVideoUrl} type="video/mp4" />
           </video>
           <p className="text-[1.2vw] tracking-[0.2vw] font-semibold mt-4">
-            {timeline?.description ??
-              'Compose entire songs with built-in timeline editor. Arrange loops and samples creating cohesive musical pieces.'}
+            {timeline?.description ?? fallbackContent.timeline.description}
           </p>
         </div>
       </section>
@@ -228,14 +219,14 @@ export default async function HomePage() {
       {/* Features grid row 2 */}
       <div className="flex flex-col sm:flex-row">
         <FeatureBlock
-          image="/images/home/home-features-5.jpg"
-          heading="Plugin with 32 Outputs"
-          description="Explore a world of effects and creative possibilities. With 32 outputs, you can route audio to various channels, apply effects, and achieve professional-grade soundscapes."
+          image={getImageUrl(feature3?.image, fallbackContent.features[3].image.url)}
+          heading={feature3?.heading ?? fallbackContent.features[3].heading}
+          description={feature3?.description ?? fallbackContent.features[3].description}
         />
         <FeatureBlock
-          image="/images/home/home-features-6.jpg"
-          heading="Launchpad X and MIDI Device Support"
-          description="MXbeats is Launchpad X-ready, providing native support for this popular MIDI controller and other compatible devices."
+          image={getImageUrl(feature4?.image, fallbackContent.features[4].image.url)}
+          heading={feature4?.heading ?? fallbackContent.features[4].heading}
+          description={feature4?.description ?? fallbackContent.features[4].description}
         />
       </div>
 
@@ -256,20 +247,16 @@ export default async function HomePage() {
               </tr>
             </thead>
             <tbody>
-              {pricingRows.map((row, i) => (
-                <tr key={i}>
+              {pricing.map((row: any, i: number) => (
+                <tr key={row.id ?? i}>
                   <th className="bg-[#fafafa] border border-white text-left px-6 py-2 text-lg font-medium">
                     {row.feature}
                   </th>
                   <td className="bg-white border border-white text-center px-6 py-2 text-lg">
-                    {typeof row.essentials === 'boolean' ? (
-                      <BoolCell value={row.essentials} />
-                    ) : (
-                      row.essentials
-                    )}
+                    <PricingCell value={row.essentials} />
                   </td>
                   <td className="bg-white border border-white text-center px-6 py-2 text-lg">
-                    {typeof row.loops === 'boolean' ? <BoolCell value={row.loops} /> : row.loops}
+                    <PricingCell value={row.loops} />
                   </td>
                 </tr>
               ))}
@@ -301,17 +288,14 @@ export default async function HomePage() {
       <section className="bg-[#b3b2b2] text-[#3c3c3c] text-center py-10 px-4">
         <div className="max-w-3xl mx-auto">
           <h3 className="text-2xl font-semibold mb-3">
-            Unlock the Full Potential: Try Our Free Demo!
+            {demo?.demoHeading ?? fallbackContent.demo.demoHeading}
           </h3>
-          <p className="mb-5">
-            No Strings Attached: Try our demo for free, as long as you like, with no obligations.
-            You won&apos;t be asked for credit card details or any commitment.
-          </p>
+          <p className="mb-5">{demo?.demoDescription ?? fallbackContent.demo.demoDescription}</p>
           <Link
-            href="/downloads"
+            href={demo?.demoUrl ?? fallbackContent.demo.demoUrl}
             className="inline-block bg-black text-white px-8 py-3 text-sm tracking-[4px] uppercase hover:bg-gray-800 transition-colors font-medium"
           >
-            DOWNLOAD DEMO
+            {(demo?.demoBtnLabel ?? fallbackContent.demo.demoBtnLabel).toUpperCase()}
           </Link>
         </div>
       </section>
