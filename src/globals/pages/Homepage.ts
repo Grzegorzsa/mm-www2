@@ -236,24 +236,31 @@ export const Homepage: GlobalConfig = {
       },
       fields: [
         {
-          type: 'text',
-          name: 'demoHeading',
-          label: 'Heading',
-          required: true,
+          name: 'demo',
+          type: 'group',
+          label: 'Demo Section',
+          fields: [
+            {
+              type: 'text',
+              name: 'demoHeading',
+              label: 'Heading',
+              required: true,
+            },
+            {
+              type: 'textarea',
+              name: 'demoDescription',
+              label: 'Description',
+              required: true,
+            },
+            {
+              type: 'text',
+              name: 'demoUrl',
+              label: 'Demo URL',
+              required: true,
+            },
+            { type: 'text', name: 'demoBtnLabel', label: 'CTA Button Label', required: true },
+          ],
         },
-        {
-          type: 'textarea',
-          name: 'demoDescription',
-          label: 'Description',
-          required: true,
-        },
-        {
-          type: 'text',
-          name: 'demoUrl',
-          label: 'Demo URL',
-          required: true,
-        },
-        { type: 'text', name: 'demoBtnLabel', label: 'CTA Button Label', required: true },
       ],
     },
   ],

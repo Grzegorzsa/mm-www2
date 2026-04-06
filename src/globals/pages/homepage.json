@@ -1,0 +1,274 @@
+{
+  "id": 4,
+
+  "hero": {
+    "heroImage": {
+      "id": 2,
+      "alt": "MX Beats Slide",
+      "updatedAt": "2026-04-04T18:39:05.477Z",
+      "createdAt": "2026-04-04T18:39:05.477Z",
+      "url": "/api/media/file/mx_beats_side01.jpg",
+      "thumbnailURL": null,
+      "filename": "mx_beats_side01.jpg",
+      "mimeType": "image/jpeg",
+      "filesize": 216647,
+      "width": 1800,
+      "height": 846,
+      "focalX": 50,
+      "focalY": 50
+    },
+    "headline1": "Unlock your",
+    "headline2": "creativity",
+    "subline": "with our unique music production tool"
+  },
+
+  "intro": {
+    "text": "MXbeats is a cutting-edge music looping software that empowers musicians, producers, and performers to create, arrange, and perform their music with ease and precision.",
+    "ctaLabel": "GET IT NOW",
+    "ctaUrl": "#pricing"
+  },
+
+  "features": [
+    {
+      "id": "69d3d20b69db2f3b4d63aaf5",
+      "heading": "Live Performance at Your Fingertips",
+      "description": "Play live using your mouse, computer keyboard, or MIDI controller. Express yourself in real-time performance.",
+
+      "image": {
+        "id": 4,
+        "alt": "MX Beats Feature 1",
+        "updatedAt": "2026-04-05T18:42:12.381Z",
+        "createdAt": "2026-04-05T18:42:12.380Z",
+        "url": "/api/media/file/home-features-1.jpg",
+        "thumbnailURL": null,
+        "filename": "home-features-1.jpg",
+        "mimeType": "image/jpeg",
+        "filesize": 127213,
+        "width": 1800,
+        "height": 690,
+        "focalX": 50,
+        "focalY": 50
+      }
+    },
+
+    {
+      "id": "69d3d36269db2f3b4d63aaf7",
+      "heading": "Ample Space for Creativity",
+      "description": "With over 500 slots, organize your loops and samples without limitations. Let your imagination run wild.",
+
+      "image": {
+        "id": 5,
+        "alt": "MX Beats Feature 2",
+        "updatedAt": "2026-04-05T18:43:44.087Z",
+        "createdAt": "2026-04-05T18:43:44.087Z",
+        "url": "/api/media/file/home-features-2.jpg",
+        "thumbnailURL": null,
+        "filename": "home-features-2.jpg",
+        "mimeType": "image/jpeg",
+        "filesize": 56755,
+        "width": 900,
+        "height": 690,
+        "focalX": 50,
+        "focalY": 50
+      }
+    },
+
+    {
+      "id": "69d3d37c69db2f3b4d63aaf9",
+      "heading": "Automated Sample Import",
+      "description": "Streamline your workflow by automating the import process for media files. The software assigns tempo, color, icon, and instrument group to each sample.",
+
+      "image": {
+        "id": 6,
+        "alt": "MX Beats Feature 3",
+        "updatedAt": "2026-04-05T18:45:03.826Z",
+        "createdAt": "2026-04-05T18:45:03.826Z",
+        "url": "/api/media/file/home-features-3.jpg",
+        "thumbnailURL": null,
+        "filename": "home-features-3.jpg",
+        "mimeType": "image/jpeg",
+        "filesize": 25661,
+        "width": 902,
+        "height": 690,
+        "focalX": 50,
+        "focalY": 50
+      }
+    },
+
+    {
+      "id": "69d3d39169db2f3b4d63aafb",
+      "heading": "Plugin with 32 Outputs",
+      "description": "Explore a world of effects and creative possibilities. With 32 outputs, you can route audio to various channels, apply effects, and achieve professional-grade soundscapes.",
+
+      "image": {
+        "id": 8,
+        "alt": "MX Beats Feature 4",
+        "updatedAt": "2026-04-05T18:55:37.455Z",
+        "createdAt": "2026-04-05T18:55:37.455Z",
+        "url": "/api/media/file/home-features-4.jpg",
+        "thumbnailURL": null,
+        "filename": "home-features-4.jpg",
+        "mimeType": "image/jpeg",
+        "filesize": 58751,
+        "width": 900,
+        "height": 690,
+        "focalX": 50,
+        "focalY": 50
+      }
+    },
+
+    {
+      "id": "69d3d3a569db2f3b4d63aafd",
+      "heading": "Launchpad X and MIDI Device Support",
+      "description": "MXbeats is Launchpad X-ready, providing native support for this popular MIDI controller and other compatible devices.",
+
+      "image": {
+        "id": 9,
+        "alt": "MX Beats Feature 5",
+        "updatedAt": "2026-04-05T18:56:17.551Z",
+        "createdAt": "2026-04-05T18:56:17.551Z",
+        "url": "/api/media/file/home-features-5.jpg",
+        "thumbnailURL": null,
+        "filename": "home-features-5.jpg",
+        "mimeType": "image/jpeg",
+        "filesize": 31026,
+        "width": 900,
+        "height": 690,
+        "focalX": 50,
+        "focalY": 50
+      }
+    }
+  ],
+
+  "timeline": {
+    "heading": "Timeline Editor",
+    "subheading": "for Complete Song Creation",
+    "description": "Compose entire songs with built-in timeline editor. Arrange loops and samples creating cohesive musical pieces.",
+
+    "image": {
+      "id": 10,
+      "alt": "MX Grid intro",
+      "updatedAt": "2026-04-05T19:07:36.928Z",
+      "createdAt": "2026-04-05T19:07:36.927Z",
+      "url": "/api/media/file/mxgrid-intro.mp4",
+      "thumbnailURL": null,
+      "filename": "mxgrid-intro.mp4",
+      "mimeType": "video/mp4",
+      "filesize": 3983714,
+      "width": null,
+      "height": null,
+      "focalX": null,
+      "focalY": null
+    }
+  },
+
+  "pricing": [
+    {
+      "id": "69d3d52c4de660d61b6f1f62",
+      "feature": "Price",
+      "essentials": "Free",
+      "loops": "$79"
+    },
+
+    {
+      "id": "69d3d53c4de660d61b6f1f64",
+      "feature": "Timeline Editor",
+      "essentials": "true",
+      "loops": "true"
+    },
+
+    {
+      "id": "69d3d54a4de660d61b6f1f66",
+      "feature": "MIDI Controller Support",
+      "essentials": "true",
+      "loops": "true"
+    },
+
+    {
+      "id": "69d3d5574de660d61b6f1f68",
+      "feature": "Play Loops and Samples",
+      "essentials": "true",
+      "loops": "true"
+    },
+
+    {
+      "id": "69d3d5634de660d61b6f1f6a",
+      "feature": "Slots for Loops and Samples",
+      "essentials": "512",
+      "loops": "512"
+    },
+
+    {
+      "id": "69d3d56f4de660d61b6f1f6c",
+      "feature": "Max Number of Outputs",
+      "essentials": "2",
+      "loops": "32"
+    },
+
+    {
+      "id": "69d3d5794de660d61b6f1f6e",
+      "feature": "Standalone App",
+      "essentials": "true",
+      "loops": "true"
+    },
+
+    {
+      "id": "69d3d5844de660d61b6f1f70",
+      "feature": "DAW Plugin",
+      "essentials": "false",
+      "loops": "true"
+    },
+
+    {
+      "id": "69d3d5944de660d61b6f1f72",
+      "feature": "Render Audio",
+      "essentials": "false",
+      "loops": "true"
+    },
+
+    {
+      "id": "69d3d5a24de660d61b6f1f74",
+      "feature": "DSP",
+      "essentials": "false",
+      "loops": "true"
+    },
+
+    {
+      "id": "69d3d5af4de660d61b6f1f76",
+      "feature": "License Type",
+      "essentials": "Personal use only",
+      "loops": "Commercial"
+    }
+  ],
+
+  "demo": {
+    "demoHeading": "Unlock the Full Potential: Try Our Free Demo!",
+    "demoDescription": "No Strings Attached: Try our demo for free, as long as you like, with no obligations. You won't be asked for credit card details or any commitment.",
+    "demoUrl": "/downloads",
+    "demoBtnLabel": "Download Demo"
+  },
+
+  "meta": {
+    "title": "MXbeats — Music Production and Arrangement Software",
+    "description": "MXbeats is an evolving music production platform for performance, arrangement, and sound design.",
+
+    "image": {
+      "id": 2,
+      "alt": "MX Beats Slide",
+      "updatedAt": "2026-04-04T18:39:05.477Z",
+      "createdAt": "2026-04-04T18:39:05.477Z",
+      "url": "/api/media/file/mx_beats_side01.jpg",
+      "thumbnailURL": null,
+      "filename": "mx_beats_side01.jpg",
+      "mimeType": "image/jpeg",
+      "filesize": 216647,
+      "width": 1800,
+      "height": 846,
+      "focalX": 50,
+      "focalY": 50
+    }
+  },
+  "updatedAt": "2026-04-06T15:48:17.235Z",
+  "createdAt": "2026-04-05T21:42:47.304Z",
+  "globalType": "homepage"
+}

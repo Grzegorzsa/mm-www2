@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import Link from 'next/link'
 import { Check, X } from 'lucide-react'
+import fallbackContent from '@/globals/pages/homepage.json'
 
 const pricingRows: Array<{
   feature: string
@@ -96,10 +97,10 @@ function IntroSection(homepageData: any) {
 }
 
 function HeroSection(homepageData: any) {
-  const hero = homepageData?.hero
+  const hero = homepageData?.hero ? fallbackContent.hero : fallbackContent.hero
   const heroImage = homepageData?.hero?.heroImage
     ? homepageData.hero.heroImage.url
-    : '/images/home/slide-1.jpg'
+    : fallbackContent.hero.heroImage.url
   const headline1 = hero?.headline1 ?? 'Unlock your'
   const headline2 = hero?.headline2 ?? 'creativity'
   const subline = hero?.subline ?? 'with our unique music production tool'
@@ -142,7 +143,7 @@ export default async function HomePage() {
   } catch {
     // fallback to hardcoded defaults
   }
-  console.log('Homepage data:', homepageData)
+  // console.log(JSON.stringify(homepageData, null, 2))
   const timeline = homepageData?.timeline
 
   return (

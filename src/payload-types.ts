@@ -453,10 +453,12 @@ export interface Homepage {
         id?: string | null;
       }[]
     | null;
-  demoHeading: string;
-  demoDescription: string;
-  demoUrl: string;
-  demoBtnLabel: string;
+  demo: {
+    demoHeading: string;
+    demoDescription: string;
+    demoUrl: string;
+    demoBtnLabel: string;
+  };
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -512,10 +514,14 @@ export interface HomepageSelect<T extends boolean = true> {
         loops?: T;
         id?: T;
       };
-  demoHeading?: T;
-  demoDescription?: T;
-  demoUrl?: T;
-  demoBtnLabel?: T;
+  demo?:
+    | T
+    | {
+        demoHeading?: T;
+        demoDescription?: T;
+        demoUrl?: T;
+        demoBtnLabel?: T;
+      };
   meta?:
     | T
     | {
