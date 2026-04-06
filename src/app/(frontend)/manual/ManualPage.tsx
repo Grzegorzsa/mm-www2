@@ -47,8 +47,8 @@ export default function ManualPage() {
     <div className="bg-[#eaeaea] min-h-screen pb-8">
       <div className="max-w-[1400px] mx-auto flex gap-5 px-2 md:px-4">
         {/* ── Sidebar Table of Contents ── */}
-        <aside className="hidden lg:block w-60 flex-shrink-0 sticky top-20 self-start max-h-[calc(100vh-84px)] overflow-y-auto rounded-xl shadow-md border border-black/8 bg-[#fafafa] text-[#444] p-4 mt-5">
-          <h2 className="text-center tracking-[0.15em] text-2xl text-[#1a8a9e] border-b-2 border-gray-200 pb-2 mb-3">
+        <aside className="hidden lg:block w-60 flex-shrink-0 sticky top-16 self-start h-[calc(100vh-64px)] overflow-y-auto rounded-xl shadow-md border border-black/8 bg-[#fafafa] text-[#444] p-4 mt-5">
+          <h2 className="text-center tracking-[0.3em] text-3xl text-[#1a8a9e] border-b-2 border-gray-200 pb-2 mb-3">
             Manual
           </h2>
           <ul className="space-y-1 text-sm">
@@ -135,7 +135,7 @@ export default function ManualPage() {
         </aside>
 
         {/* ── Main Content ── */}
-        <div className="flex-1 min-w-0 mt-5 lg:ml-64">
+        <div className="flex-1 min-w-0 mt-5">
           {/* Mobile ToC */}
           <div className="lg:hidden bg-[#fafafa] text-[#444] rounded-xl shadow-md border border-black/8 p-4 mb-4">
             <details>
