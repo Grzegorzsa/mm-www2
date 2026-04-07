@@ -33,7 +33,7 @@ const termsContent = {
       heading('6. License Consolidation Policy', 3),
       ul([
         'The standard purchase is for a single-user license.',
-        'In the event that a user purchases multiple licenses for the same product, the features of these licenses will be consolidated into a single master license associated with the user\'s account.',
+        "In the event that a user purchases multiple licenses for the same product, the features of these licenses will be consolidated into a single master license associated with the user's account.",
       ]),
       heading('7. Limitations of Liability', 3),
       ul([
@@ -41,7 +41,9 @@ const termsContent = {
         'The Licensor is not responsible for any issues arising from third-party resellers or unauthorized distributors.',
       ]),
       heading('8. Contact Information', 3),
-      paragraph('Questions regarding these Terms and Conditions should be sent to us via mxbeats.com/contact.'),
+      paragraph(
+        'Questions regarding these Terms and Conditions should be sent to us via mxbeats.com/contact.',
+      ),
     ],
     direction: 'ltr',
     format: '',
@@ -56,13 +58,17 @@ const privacyContent = {
     children: [
       heading('Privacy Policy', 1),
       heading('1. Information Collected', 3),
-      paragraph('When you interact with our website or use our software, we collect the following information:'),
+      paragraph(
+        'When you interact with our website or use our software, we collect the following information:',
+      ),
       ol([
         'Account Data: We collect your email address to provide access to the user panel, validate software licenses, and communicate essential updates or account information.',
         'Device and License Data: We collect information regarding your operating system and computer username to manage your active installations and ensure proper license validation.',
         'Transaction Data: When you make a purchase, we collect data about the products purchased and the transaction amount.',
       ]),
-      paragraph('Payment Security: We do not store your credit card or payment method details on our servers. All payments are processed securely by our third-party payment providers.'),
+      paragraph(
+        'Payment Security: We do not store your credit card or payment method details on our servers. All payments are processed securely by our third-party payment providers.',
+      ),
       heading('2. Use of Collected Information', 3),
       ol([
         'Service Delivery: To manage user accounts, provide access to personalized features, and validate software activations.',
@@ -71,7 +77,9 @@ const privacyContent = {
         'Sales Transactions: To process orders, fulfill purchases, and comply with tax and legal obligations.',
       ]),
       heading('3. Data Security', 3),
-      paragraph('We take data security seriously. We implement appropriate technical and organizational measures—such as encryption and secure access controls—to protect your data from unauthorized access, loss, or misuse.'),
+      paragraph(
+        'We take data security seriously. We implement appropriate technical and organizational measures—such as encryption and secure access controls—to protect your data from unauthorized access, loss, or misuse.',
+      ),
       heading('4. User Rights', 3),
       ol([
         'Access: Request access to the personal data we hold about you.',
@@ -80,11 +88,17 @@ const privacyContent = {
         'Object: Object to or restrict the processing of your data.',
       ]),
       heading('5. Cookies and Tracking', 3),
-      paragraph('Our website uses cookies to enable core functionality (such as keeping you logged in) and to analyze website traffic. You can adjust your browser settings to manage cookies.'),
+      paragraph(
+        'Our website uses cookies to enable core functionality (such as keeping you logged in) and to analyze website traffic. You can adjust your browser settings to manage cookies.',
+      ),
       heading('6. Data Retention', 3),
-      paragraph('We retain your information for as long as your account is active or as needed to provide you with software updates and support.'),
+      paragraph(
+        'We retain your information for as long as your account is active or as needed to provide you with software updates and support.',
+      ),
       heading('7. Contact Information', 3),
-      paragraph('If you have any questions or concerns about our privacy policy, please contact us at mxbeats.com/contact.'),
+      paragraph(
+        'If you have any questions or concerns about our privacy policy, please contact us at mxbeats.com/contact.',
+      ),
     ],
     direction: 'ltr',
     format: '',
@@ -99,9 +113,13 @@ const refundContent = {
     children: [
       heading('Refund Policy', 1),
       heading('Trial Versions', 3),
-      paragraph('We offer trial/demo versions of our products to allow customers to experience them before making a purchase. We strongly recommend installing these trial/demo versions to ensure compatibility with your system.'),
+      paragraph(
+        'We offer trial/demo versions of our products to allow customers to experience them before making a purchase. We strongly recommend installing these trial/demo versions to ensure compatibility with your system.',
+      ),
       heading('Refund Eligibility', 3),
-      paragraph('We approve refunds for purchases made within the last 30 days under the following circumstances:'),
+      paragraph(
+        'We approve refunds for purchases made within the last 30 days under the following circumstances:',
+      ),
       ol([
         'Unsolvable Technical Issues: If you encounter an unsolvable technical issue caused by a bug or other product-related problem that renders the product unusable (e.g., frequent crashes), you are eligible for a refund.',
         'System Requirements Met: Refunds are granted only when all system requirements described on the product page were met at the time of purchase.',
@@ -115,9 +133,13 @@ const refundContent = {
         'Termination for Cause: Your license has been terminated due to a violation of the EULA.',
       ]),
       heading('Third-Party Purchases (Resellers)', 3),
-      paragraph('If you purchased the Software through an authorized third-party reseller, any refund requests must be processed through that reseller. The Licensor is not responsible for issuing refunds for payments made to third parties.'),
+      paragraph(
+        'If you purchased the Software through an authorized third-party reseller, any refund requests must be processed through that reseller. The Licensor is not responsible for issuing refunds for payments made to third parties.',
+      ),
       heading('Contact Information', 3),
-      paragraph('To request a refund, please contact us via our contact form with your order details and a description of the technical issue.'),
+      paragraph(
+        'To request a refund, please contact us via our contact form with your order details and a description of the technical issue.',
+      ),
     ],
     direction: 'ltr',
     format: '',
@@ -196,20 +218,64 @@ const pages = [
   {
     title: 'Terms and Conditions',
     slug: 'terms-and-conditions',
+    pageType: 'policy',
     content: termsContent,
-    metaDescription: 'Read the Terms and Conditions for using MXbeats software and website.',
+    meta: {
+      description: 'Read the Terms and Conditions for using MXbeats software and website.',
+    },
   },
   {
     title: 'Privacy Policy',
     slug: 'privacy-policy',
+    pageType: 'policy',
     content: privacyContent,
-    metaDescription: 'Read the MXbeats Privacy Policy to understand how we collect and use your data.',
+    meta: {
+      description:
+        'Read the MXbeats Privacy Policy to understand how we collect and use your data.',
+    },
   },
   {
     title: 'Refund Policy',
     slug: 'refund-policy',
+    pageType: 'policy',
     content: refundContent,
-    metaDescription: 'Read the MXbeats Refund Policy to understand our refund eligibility and process.',
+    meta: {
+      description:
+        'Read the MXbeats Refund Policy to understand our refund eligibility and process.',
+    },
+  },
+  {
+    title: 'Contact Us',
+    slug: 'contact',
+    pageType: 'contact',
+    content: {
+      root: {
+        type: 'root',
+        children: [
+          {
+            type: 'paragraph',
+            children: [
+              {
+                type: 'text',
+                text: 'Get in touch with the MXbeats team. We appreciate your feedback and inquiries.',
+                version: 1,
+              },
+            ],
+            direction: 'ltr',
+            format: '',
+            indent: 0,
+            version: 1,
+          },
+        ],
+        direction: 'ltr',
+        format: '',
+        indent: 0,
+        version: 1,
+      },
+    },
+    meta: {
+      description: 'Get in touch with the MXbeats team',
+    },
   },
 ]
 

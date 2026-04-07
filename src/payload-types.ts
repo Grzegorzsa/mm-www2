@@ -182,6 +182,10 @@ export interface Page {
    * URL slug (e.g. terms-and-conditions)
    */
   slug: string;
+  /**
+   * Page layout type
+   */
+  pageType?: ('policy' | 'contact' | 'generic') | null;
   content: {
     root: {
       type: string;
@@ -197,10 +201,6 @@ export interface Page {
     };
     [k: string]: unknown;
   };
-  /**
-   * SEO meta description
-   */
-  metaDescription?: string | null;
   meta?: {
     title?: string | null;
     description?: string | null;
@@ -353,8 +353,8 @@ export interface MediaSelect<T extends boolean = true> {
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
+  pageType?: T;
   content?: T;
-  metaDescription?: T;
   meta?:
     | T
     | {
