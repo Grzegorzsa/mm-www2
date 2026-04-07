@@ -1,10 +1,16 @@
-﻿@reference "tailwindcss";
+@reference "tailwindcss";
 
 /* ══════════════════════════ Manual Page ══════════════════════════ */
 
 .manual {
+  --color-accent: #1a8a9e;
+  --color-text: #444;
+  --color-bg: #eaeaea;
+  --color-bg-card: #fafafa;
+  --color-bg-icon: #d9d9da;
+
   @apply min-h-screen pb-8;
-  background: #eaeaea;
+  background: var(--color-bg);
 
   /* Layout container */
   & > .container {
@@ -24,8 +30,8 @@
     top: 4rem;
     height: calc(100vh - 4rem);
     border: 1px solid rgb(0 0 0 / 0.08);
-    background: #fafafa;
-    color: #444;
+    background: var(--color-bg-card);
+    color: var(--color-text);
 
     @media (width >= 1024px) {
       display: block;
@@ -34,7 +40,7 @@
     & h2 {
       @apply text-center text-3xl border-b-2 border-gray-200 pb-2 mb-3;
       letter-spacing: 0.3em;
-      color: #1a8a9e;
+      color: var(--color-accent);
     }
 
     & > ul {
@@ -57,7 +63,7 @@
       @apply transition-colors;
 
       &:hover {
-        color: #1a8a9e;
+        color: var(--color-accent);
       }
     }
   }
@@ -71,8 +77,8 @@
   & .mobile-toc {
     @apply rounded-xl shadow-md p-4 mb-4;
     border: 1px solid rgb(0 0 0 / 0.08);
-    background: #fafafa;
-    color: #444;
+    background: var(--color-bg-card);
+    color: var(--color-text);
 
     @media (width >= 1024px) {
       display: none;
@@ -80,7 +86,7 @@
 
     & summary {
       @apply font-bold cursor-pointer;
-      color: #1a8a9e;
+      color: var(--color-accent);
     }
 
     & ul {
@@ -96,7 +102,7 @@
     }
 
     & a:hover {
-      color: #1a8a9e;
+      color: var(--color-accent);
     }
   }
 
@@ -104,7 +110,7 @@
   & section {
     @apply rounded-xl shadow-md leading-relaxed mb-4 p-4;
     background: white;
-    color: #444;
+    color: var(--color-text);
     border: 1px solid rgb(0 0 0 / 0.06);
 
     @media (width >= 768px) {
@@ -113,12 +119,12 @@
 
     & h3 {
       @apply text-2xl font-bold border-b-2 border-gray-200 pb-2 mb-4;
-      color: #1a8a9e;
+      color: var(--color-accent);
     }
 
     & h4 {
       @apply font-bold;
-      color: #1a8a9e;
+      color: var(--color-accent);
       margin-top: 1.25rem;
       margin-bottom: 0.5rem;
 
@@ -136,7 +142,7 @@
     }
 
     & a {
-      color: #1a8a9e;
+      color: var(--color-accent);
 
       &:hover {
         @apply underline;
@@ -234,7 +240,7 @@
     height: 2rem;
     padding: 2px;
     margin-right: 0.75rem;
-    background: #d9d9da;
+    background: var(--color-bg-icon);
   }
 
   & .toolbar-widget {
@@ -243,6 +249,6 @@
     padding: 2px;
     margin-right: 0.75rem;
     margin-bottom: 0.5rem;
-    background: #d9d9da;
+    background: var(--color-bg-icon);
   }
 }
