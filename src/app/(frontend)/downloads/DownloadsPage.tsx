@@ -18,7 +18,7 @@ const downloads = [
 
 export default function DownloadsPage() {
   return (
-    <div className="bg-[#f3f3f3] min-h-[calc(100vh-320px)] pb-8">
+    <div className="bg-[#f3f3f3] min-h-[calc(100vh-320px)] flex items-center justify-center py-8">
       <div className="max-w-4xl mx-auto bg-white px-6 pt-6 pb-8 mt-0 mb-4 text-[#444]">
         <h1 className="text-3xl font-bold tracking-widest mb-6">Downloads</h1>
 

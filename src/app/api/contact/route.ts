@@ -60,16 +60,16 @@ export async function POST(req: NextRequest) {
 
   // Send email notification if SMTP is configured
   const smtpHost = process.env.SMTP_HOST
-  const smtpUser = process.env.SMTP_USER
-  const smtpPass = process.env.SMTP_PASS
+  const smtpUser = process.env.SMTP_USERNAME
+  const smtpPass = process.env.SMTP_PASSWORD
   const contactTo = process.env.CONTACT_EMAIL
 
   if (smtpHost && smtpUser && smtpPass && contactTo) {
     try {
       const transporter = nodemailer.createTransport({
         host: smtpHost,
-        port: Number(process.env.SMTP_PORT ?? 587),
-        secure: process.env.SMTP_SECURE === 'true',
+        port: Number(process.env.SMTP_PORT ?? 465),
+        secure: true,
         auth: { user: smtpUser, pass: smtpPass },
       })
 
