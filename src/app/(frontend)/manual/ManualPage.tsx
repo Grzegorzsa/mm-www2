@@ -1,4 +1,4 @@
-import Image from 'next/image'
+﻿import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import './manual.css'
@@ -15,209 +15,133 @@ const IMG = (src: string) => `/images/manual/${src}`
 function Ico({ src, alt }: { src: string; alt: string }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={IMG(src)}
-      alt={alt}
-      className="inline-block h-8 align-middle rounded border border-gray-300 bg-[#d9d9da] p-[2px] mr-3"
-    />
+    <img src={IMG(src)} alt={alt} className="ico" />
   )
 }
 
 function ToolbarWidget({ src, alt }: { src: string; alt: string }) {
   return (
     // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={IMG(src)}
-      alt={alt}
-      className="inline-block h-12 align-middle rounded border border-gray-300 bg-[#d9d9da] p-[2px] mr-3 mb-2"
-    />
+    <img src={IMG(src)} alt={alt} className="toolbar-widget" />
   )
 }
 
 /* ── Shared section card ── */
 function Section({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="bg-white text-[#444] rounded-xl shadow-md border border-black/6 leading-relaxed mb-4 p-4 md:p-6">
-      {children}
-    </div>
-  )
+  return <section>{children}</section>
 }
 
 export default function ManualPage() {
   return (
-    <div className="bg-[#eaeaea] min-h-screen pb-8 manual">
-      <div className="max-w-[1400px] mx-auto flex gap-5 px-2 md:px-4">
+    <div className="manual">
+      <div className="container">
         {/* ── Sidebar Table of Contents ── */}
-        <aside className="hidden lg:block w-60 flex-shrink-0 sticky top-16 self-start h-[calc(100vh-64px)] overflow-y-auto rounded-xl shadow-md border border-black/8 bg-[#fafafa] text-[#444] p-4 mt-5">
-          <h2 className="text-center tracking-[0.3em] text-3xl text-[#1a8a9e] border-b-2 border-gray-200 pb-2 mb-3">
-            Manual
-          </h2>
-          <ul className="space-y-1 text-sm">
-            <li className="font-bold">
-              <a href="#intro" className="hover:text-[#1a8a9e] transition-colors">
-                Introduction
-              </a>
+        <aside>
+          <h2>Manual</h2>
+          <ul>
+            <li>
+              <a href="#intro">Introduction</a>
             </li>
-            <li className="font-bold">
-              <a href="#main-panel" className="hover:text-[#1a8a9e] transition-colors">
-                Main Panel
-              </a>
-              <ul className="pl-3 mt-1 space-y-1 font-normal">
+            <li>
+              <a href="#main-panel">Main Panel</a>
+              <ul>
                 <li>
-                  <a href="#main-menu" className="hover:text-[#1a8a9e] transition-colors">
-                    Main Menu
-                  </a>
+                  <a href="#main-menu">Main Menu</a>
                 </li>
                 <li>
-                  <a href="#toolbar" className="hover:text-[#1a8a9e] transition-colors">
-                    Toolbar
-                  </a>
+                  <a href="#toolbar">Toolbar</a>
                 </li>
                 <li>
-                  <a href="#media-grid" className="hover:text-[#1a8a9e] transition-colors">
-                    Media Grid
-                  </a>
+                  <a href="#media-grid">Media Grid</a>
                 </li>
                 <li>
-                  <a href="#stop-group" className="hover:text-[#1a8a9e] transition-colors">
-                    Stop Group Buttons
-                  </a>
+                  <a href="#stop-group">Stop Group Buttons</a>
                 </li>
                 <li>
-                  <a href="#page-buttons" className="hover:text-[#1a8a9e] transition-colors">
-                    Page Buttons
-                  </a>
+                  <a href="#page-buttons">Page Buttons</a>
                 </li>
               </ul>
             </li>
-            <li className="font-bold">
-              <a href="#edit-box" className="hover:text-[#1a8a9e] transition-colors">
-                Box Editor
-              </a>
-              <ul className="pl-3 mt-1 space-y-1 font-normal">
+            <li>
+              <a href="#edit-box">Box Editor</a>
+              <ul>
                 <li>
-                  <a href="#edit-samples" className="hover:text-[#1a8a9e] transition-colors">
-                    Edit Samples
-                  </a>
+                  <a href="#edit-samples">Edit Samples</a>
                 </li>
                 <li>
-                  <a href="#edit-loops" className="hover:text-[#1a8a9e] transition-colors">
-                    Edit Loops
-                  </a>
+                  <a href="#edit-loops">Edit Loops</a>
                 </li>
                 <li>
-                  <a href="#dsp-effects" className="hover:text-[#1a8a9e] transition-colors">
-                    DSP Effects
-                  </a>
+                  <a href="#dsp-effects">DSP Effects</a>
                 </li>
               </ul>
             </li>
-            <li className="font-bold">
-              <a href="#edit-page" className="hover:text-[#1a8a9e] transition-colors">
-                Page Editor
-              </a>
+            <li>
+              <a href="#edit-page">Page Editor</a>
             </li>
-            <li className="font-bold">
-              <a href="#edit-timeline" className="hover:text-[#1a8a9e] transition-colors">
-                Timeline Editor
-              </a>
+            <li>
+              <a href="#edit-timeline">Timeline Editor</a>
             </li>
-            <li className="font-bold">
-              <a href="#settings" className="hover:text-[#1a8a9e] transition-colors">
-                Project Settings
-              </a>
+            <li>
+              <a href="#settings">Project Settings</a>
             </li>
-            <li className="font-bold">
-              <a href="#product-registration" className="hover:text-[#1a8a9e] transition-colors">
-                Registration
-              </a>
+            <li>
+              <a href="#product-registration">Registration</a>
             </li>
           </ul>
         </aside>
 
         {/* ── Main Content ── */}
-        <div className="flex-1 min-w-0 mt-5">
+        <div className="content">
           {/* Mobile ToC */}
-          <div className="lg:hidden bg-[#fafafa] text-[#444] rounded-xl shadow-md border border-black/8 p-4 mb-4">
+          <div className="mobile-toc">
             <details>
-              <summary className="font-bold text-[#1a8a9e] cursor-pointer">
-                Table of Contents
-              </summary>
-              <ul className="mt-2 space-y-1 text-sm pl-2">
+              <summary>Table of Contents</summary>
+              <ul>
                 <li>
-                  <a href="#intro" className="hover:text-[#1a8a9e]">
-                    Introduction
-                  </a>
+                  <a href="#intro">Introduction</a>
                 </li>
                 <li>
-                  <a href="#main-panel" className="hover:text-[#1a8a9e]">
-                    Main Panel
-                  </a>
+                  <a href="#main-panel">Main Panel</a>
                 </li>
-                <li className="pl-3">
-                  <a href="#main-menu" className="hover:text-[#1a8a9e]">
-                    Main Menu
-                  </a>
+                <li className="sub">
+                  <a href="#main-menu">Main Menu</a>
                 </li>
-                <li className="pl-3">
-                  <a href="#toolbar" className="hover:text-[#1a8a9e]">
-                    Toolbar
-                  </a>
+                <li className="sub">
+                  <a href="#toolbar">Toolbar</a>
                 </li>
-                <li className="pl-3">
-                  <a href="#media-grid" className="hover:text-[#1a8a9e]">
-                    Media Grid
-                  </a>
+                <li className="sub">
+                  <a href="#media-grid">Media Grid</a>
                 </li>
-                <li className="pl-3">
-                  <a href="#stop-group" className="hover:text-[#1a8a9e]">
-                    Stop Group Buttons
-                  </a>
+                <li className="sub">
+                  <a href="#stop-group">Stop Group Buttons</a>
                 </li>
-                <li className="pl-3">
-                  <a href="#page-buttons" className="hover:text-[#1a8a9e]">
-                    Page Buttons
-                  </a>
+                <li className="sub">
+                  <a href="#page-buttons">Page Buttons</a>
                 </li>
                 <li>
-                  <a href="#edit-box" className="hover:text-[#1a8a9e]">
-                    Box Editor
-                  </a>
+                  <a href="#edit-box">Box Editor</a>
                 </li>
-                <li className="pl-3">
-                  <a href="#edit-samples" className="hover:text-[#1a8a9e]">
-                    Edit Samples
-                  </a>
+                <li className="sub">
+                  <a href="#edit-samples">Edit Samples</a>
                 </li>
-                <li className="pl-3">
-                  <a href="#edit-loops" className="hover:text-[#1a8a9e]">
-                    Edit Loops
-                  </a>
+                <li className="sub">
+                  <a href="#edit-loops">Edit Loops</a>
                 </li>
-                <li className="pl-3">
-                  <a href="#dsp-effects" className="hover:text-[#1a8a9e]">
-                    DSP Effects
-                  </a>
+                <li className="sub">
+                  <a href="#dsp-effects">DSP Effects</a>
                 </li>
                 <li>
-                  <a href="#edit-page" className="hover:text-[#1a8a9e]">
-                    Page Editor
-                  </a>
+                  <a href="#edit-page">Page Editor</a>
                 </li>
                 <li>
-                  <a href="#edit-timeline" className="hover:text-[#1a8a9e]">
-                    Timeline Editor
-                  </a>
+                  <a href="#edit-timeline">Timeline Editor</a>
                 </li>
                 <li>
-                  <a href="#settings" className="hover:text-[#1a8a9e]">
-                    Project Settings
-                  </a>
+                  <a href="#settings">Project Settings</a>
                 </li>
                 <li>
-                  <a href="#product-registration" className="hover:text-[#1a8a9e]">
-                    Registration
-                  </a>
+                  <a href="#product-registration">Registration</a>
                 </li>
               </ul>
             </details>
@@ -225,33 +149,21 @@ export default function ManualPage() {
 
           {/* ── Introduction ── */}
           <Section>
-            <h3
-              id="intro"
-              className="text-[#1a8a9e] text-2xl font-bold border-b-2 border-gray-200 pb-2 mb-4"
-            >
-              Introduction
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h3 id="intro">Introduction</h3>
+            <div className="two-col">
               <div>
-                <video
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  poster={IMG('intro.png')}
-                  className="w-full rounded-lg border border-gray-200 cursor-pointer"
-                >
+                <video autoPlay muted loop playsInline poster={IMG('intro.png')}>
                   <source src={IMG('intro.mp4')} type="video/mp4" />
                 </video>
               </div>
               <div>
-                <p className="mb-3">
+                <p>
                   <strong>MX GRID</strong> by MXbeats is a versatile music production tool designed
                   for both live performers and studio musicians. Available as a standalone
                   application and DAW plugin (VST/AU), it provides 32 outputs for flexible routing
                   and 512 slots for loops, one-shots, and audio clips.
                 </p>
-                <p className="mb-3">
+                <p>
                   MX GRID supports two playback modes: <strong>Session</strong> for real-time
                   triggering of clips using a mouse or MIDI controller (e.g., Launchpad), and{' '}
                   <strong>Arranger</strong> for composing complete songs on a timeline. Seamless
@@ -269,47 +181,28 @@ export default function ManualPage() {
 
           {/* ── Main Panel ── */}
           <Section>
-            <h3
-              id="main-panel"
-              className="text-[#1a8a9e] text-2xl font-bold border-b-2 border-gray-200 pb-2 mb-4"
-            >
-              Main Panel
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h3 id="main-panel">Main Panel</h3>
+            <div className="two-col">
               <div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={IMG('main-panel.png')}
-                  alt="MX GRID main panel"
-                  className="w-full rounded-lg border border-gray-200 cursor-pointer"
-                />
+                <img src={IMG('main-panel.png')} alt="MX GRID main panel" />
               </div>
               <div>
-                <ol className="list-decimal pl-5 space-y-1 font-semibold">
+                <ol className="ref-list">
                   <li>
-                    <a href="#main-menu" className="text-[#1a8a9e] hover:underline">
-                      Main Menu
-                    </a>
+                    <a href="#main-menu">Main Menu</a>
                   </li>
                   <li>
-                    <a href="#toolbar" className="text-[#1a8a9e] hover:underline">
-                      Toolbar
-                    </a>
+                    <a href="#toolbar">Toolbar</a>
                   </li>
                   <li>
-                    <a href="#stop-group" className="text-[#1a8a9e] hover:underline">
-                      Stop Group Buttons
-                    </a>
+                    <a href="#stop-group">Stop Group Buttons</a>
                   </li>
                   <li>
-                    <a href="#media-grid" className="text-[#1a8a9e] hover:underline">
-                      Media Grid
-                    </a>
+                    <a href="#media-grid">Media Grid</a>
                   </li>
                   <li>
-                    <a href="#page-buttons" className="text-[#1a8a9e] hover:underline">
-                      Page Buttons
-                    </a>
+                    <a href="#page-buttons">Page Buttons</a>
                   </li>
                 </ol>
               </div>
@@ -318,15 +211,10 @@ export default function ManualPage() {
 
           {/* ── Main Menu ── */}
           <Section>
-            <h3
-              id="main-menu"
-              className="text-[#1a8a9e] text-2xl font-bold border-b-2 border-gray-200 pb-2 mb-4"
-            >
-              Main Menu
-            </h3>
+            <h3 id="main-menu">Main Menu</h3>
 
-            <h4 className="text-[#1a8a9e] font-bold mt-4 mb-2">File</h4>
-            <ul className="space-y-1">
+            <h4>File</h4>
+            <ul>
               <li>
                 <strong>New Project</strong> — reset to default state.
               </li>
@@ -348,18 +236,15 @@ export default function ManualPage() {
               </li>
             </ul>
 
-            <h4 className="text-[#1a8a9e] font-bold mt-5 mb-2">Edit</h4>
-            <ul className="space-y-1">
+            <h4>Edit</h4>
+            <ul>
               <li>
                 <strong>Audio Settings</strong> — configure audio device type (ASIO, Windows Audio,
                 etc.), sound card, output channels, sample rate, and MIDI input/output devices.
               </li>
               <li>
                 <strong>Project Settings</strong> —{' '}
-                <a href="#settings" className="text-[#1a8a9e] hover:underline">
-                  project-specific settings dialog
-                </a>
-                .
+                <a href="#settings">project-specific settings dialog</a>.
               </li>
               <li>
                 <strong>Turn off All Sounds</strong> — immediately silences all playing clips.
@@ -370,28 +255,18 @@ export default function ManualPage() {
               </li>
             </ul>
 
-            <h4 className="text-[#1a8a9e] font-bold mt-5 mb-2">View</h4>
-            <ul className="space-y-1">
+            <h4>View</h4>
+            <ul>
               <li>
-                <strong>Box Editor</strong> —{' '}
-                <a href="#edit-box" className="text-[#1a8a9e] hover:underline">
-                  open the editor panel
-                </a>
-                .
+                <strong>Box Editor</strong> — <a href="#edit-box">open the editor panel</a>.
               </li>
               <li>
                 <strong>Page Editor</strong> —{' '}
-                <a href="#edit-page" className="text-[#1a8a9e] hover:underline">
-                  rearrange boxes and batch operations
-                </a>
-                .
+                <a href="#edit-page">rearrange boxes and batch operations</a>.
               </li>
               <li>
                 <strong>Timeline Editor</strong> —{' '}
-                <a href="#edit-timeline" className="text-[#1a8a9e] hover:underline">
-                  open the Arranger to compose songs
-                </a>
-                .
+                <a href="#edit-timeline">open the Arranger to compose songs</a>.
               </li>
               <li>
                 <strong>Zoom In / Zoom Out</strong> — adjust the application size for different
@@ -402,8 +277,8 @@ export default function ManualPage() {
               </li>
             </ul>
 
-            <h4 className="text-[#1a8a9e] font-bold mt-5 mb-2">Help</h4>
-            <ul className="space-y-1">
+            <h4>Help</h4>
+            <ul>
               <li>
                 <strong>Online Help</strong> — open the online manual on the product website.
               </li>
@@ -412,10 +287,7 @@ export default function ManualPage() {
               </li>
               <li>
                 <strong>Register Product</strong> —{' '}
-                <a href="#product-registration" className="text-[#1a8a9e] hover:underline">
-                  registration and license management
-                </a>
-                .
+                <a href="#product-registration">registration and license management</a>.
               </li>
               <li>
                 <strong>About</strong> — display the installed version and current license
@@ -426,59 +298,54 @@ export default function ManualPage() {
 
           {/* ── Toolbar ── */}
           <Section>
-            <h3
-              id="toolbar"
-              className="text-[#1a8a9e] text-2xl font-bold border-b-2 border-gray-200 pb-2 mb-4"
-            >
-              Toolbar
-            </h3>
-            <p className="mb-2">
+            <h3 id="toolbar">Toolbar</h3>
+            <p>
               <Ico src="open-project-icon.png" alt="open project" />
               <strong>Open Project</strong> — Open a project file
             </p>
-            <p className="mb-2">
+            <p>
               <Ico src="save-project-icon.png" alt="save project" />
               <strong>Save Project</strong> — Save the current project file
             </p>
-            <p className="mb-2">
+            <p>
               <a href="#edit-box">
                 <Ico src="edit-box-icon.png" alt="edit box" />
               </a>
               <strong>Box Editor</strong> — Edit individual clip parameters
             </p>
-            <p className="mb-2">
+            <p>
               <a href="#edit-page">
                 <Ico src="edit-page-icon.png" alt="edit page" />
               </a>
               <strong>Page Editor</strong> — Rearrange clips and batch operations
             </p>
-            <p className="mb-2">
+            <p>
               <a href="#edit-timeline">
                 <Ico src="edit-timeline-icon.png" alt="show arranger" />
               </a>
               <strong>Show Arranger</strong> — Switch to arrangement mode
             </p>
-            <p className="mb-2">
+            <p>
               <Ico src="mute-all-sounds-icon.png" alt="mute all sounds" />
               <strong>All Sounds Off</strong> — Panic button — mute all playing clips
             </p>
-            <p className="mb-4">
+            <p>
               <Ico src="refresh-device-icon.png" alt="refresh device" />
               <strong>Refresh MIDI Device</strong> — Update the state of your MIDI grid controller
             </p>
 
-            <h4 className="text-[#1a8a9e] font-bold mt-4 mb-2">Transport Control</h4>
+            <h4>Transport Control</h4>
             <ToolbarWidget src="transport-control-main.png" alt="transport control" />
-            <p className="mb-3">
+            <p>
               Starts or stops playback in Session or Arranger mode. During playback, an arc-shaped
               progress bar around the Stop button shows the current position within the bar. A label
               next to the button displays the current mode: <strong>&ldquo;Session&rdquo;</strong>{' '}
               or <strong>&ldquo;Arrangement&rdquo;</strong>.
             </p>
 
-            <h4 className="text-[#1a8a9e] font-bold mt-4 mb-2">Tempo Widget</h4>
+            <h4>Tempo Widget</h4>
             <ToolbarWidget src="tempo-widget.png" alt="tempo widget" />
-            <p className="mb-2">
+            <p>
               Sets the current project tempo (BPM). Tap the metronome icon repeatedly to set tempo,
               or click the tempo value to type it manually. Use the <strong>+/−</strong> buttons to
               adjust by 1 BPM.
@@ -491,45 +358,30 @@ export default function ManualPage() {
 
           {/* ── Media Grid ── */}
           <Section>
-            <h3
-              id="media-grid"
-              className="text-[#1a8a9e] text-2xl font-bold border-b-2 border-gray-200 pb-2 mb-4"
-            >
-              Media Grid
-            </h3>
-            <p className="mb-3">
+            <h3 id="media-grid">Media Grid</h3>
+            <p>
               The <strong>Media Grid</strong> is the central area of the application — a virtual
               controller consisting of 64 square buttons (8×8) spread across 8 pages, providing a
               total of <strong>512 slots</strong> for loops or samples.
             </p>
 
-            <h4 className="text-[#1a8a9e] font-bold mt-4 mb-2">Samples</h4>
+            <h4>Samples</h4>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={IMG('sample-boxes.png')}
-              alt="sample boxes"
-              style={{ width: 200 }}
-              className="rounded-lg border border-gray-200 cursor-pointer mb-2"
-            />
-            <p className="mb-3">
+            <img src={IMG('sample-boxes.png')} alt="sample boxes" style={{ width: 200 }} />
+            <p>
               <strong>Samples</strong> (one-shots) can be triggered at any point. They support
               variable velocity and can be routed to 32 outputs for VST effects processing. A gray
               progress bar at the top of the box shows playback progress.
             </p>
 
-            <h4 className="text-[#1a8a9e] font-bold mt-4 mb-2">Loops</h4>
+            <h4>Loops</h4>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={IMG('loop-boxes.png')}
-              alt="loop boxes"
-              style={{ width: 200 }}
-              className="rounded-lg border border-gray-200 cursor-pointer mb-2"
-            />
-            <p className="mb-3">
+            <img src={IMG('loop-boxes.png')} alt="loop boxes" style={{ width: 200 }} />
+            <p>
               <strong>Loops</strong> are synchronized with the song. When triggered, a loop waits
               for the next bar boundary before starting playback.
             </p>
-            <ul className="space-y-1 mb-3">
+            <ul>
               <li>
                 A <strong>flashing box</strong> indicates the loop is waiting for the next bar.
               </li>
@@ -546,21 +398,21 @@ export default function ManualPage() {
               </li>
             </ul>
 
-            <h4 className="text-[#1a8a9e] font-bold mt-4 mb-2">Stopping Individual Clips</h4>
-            <p className="mb-3">
+            <h4>Stopping Individual Clips</h4>
+            <p>
               During playback of any clip (loop or sample), hovering over the box reveals a{' '}
               <strong>Stop button</strong> in the top-left corner. Clicking it immediately stops
               playback of that individual clip — no need to use the Stop Group buttons or the All
               Sounds Off (panic) button.
             </p>
 
-            <h4 className="text-[#1a8a9e] font-bold mt-4 mb-2">Loading Clips</h4>
+            <h4>Loading Clips</h4>
             <p>
               <strong>Drag and drop</strong> audio files (WAV, AIF, AIFF, MP3, OGG) or entire
               folders from your file explorer onto the grid. The application automatically detects
               clip type and assigns tempo, color, icon, instrument group, and name. You can also
               load clips via the{' '}
-              <a href="#edit-box" className="text-[#1a8a9e] hover:underline">
+              <a href="#edit-box">
                 <strong>Box Editor</strong>
               </a>
               .
@@ -569,18 +421,13 @@ export default function ManualPage() {
 
           {/* ── Stop Group Buttons ── */}
           <Section>
-            <h3
-              id="stop-group"
-              className="text-[#1a8a9e] text-2xl font-bold border-b-2 border-gray-200 pb-2 mb-4"
-            >
-              Stop Group Buttons
-            </h3>
-            <p className="mb-3">
+            <h3 id="stop-group">Stop Group Buttons</h3>
+            <p>
               The top row above the grid contains <strong>8 Stop Group</strong> buttons — one for
               each instrument group. MX GRID organizes sounds into instrument groups (e.g.,
               percussion, bass-line).
             </p>
-            <ul className="space-y-1">
+            <ul>
               <li>Only one loop from a given group can play at a time.</li>
               <li>
                 When a group is playing, its Stop button lights up <strong>red</strong>.
@@ -594,12 +441,7 @@ export default function ManualPage() {
 
           {/* ── Page Buttons ── */}
           <Section>
-            <h3
-              id="page-buttons"
-              className="text-[#1a8a9e] text-2xl font-bold border-b-2 border-gray-200 pb-2 mb-4"
-            >
-              Page Buttons
-            </h3>
+            <h3 id="page-buttons">Page Buttons</h3>
             <p>
               The column of <strong>8 page buttons</strong> on the right side of the grid lets you
               switch between pages. Each page provides 64 slots, giving a total of{' '}
@@ -610,50 +452,32 @@ export default function ManualPage() {
 
           {/* ── Box Editor ── */}
           <Section>
-            <h3
-              id="edit-box"
-              className="text-[#1a8a9e] text-2xl font-bold border-b-2 border-gray-200 pb-2 mb-4"
-            >
-              Box Editor
-            </h3>
-            <p className="mb-3">
+            <h3 id="edit-box">Box Editor</h3>
+            <p>
               <Ico src="edit-box-icon.png" alt="edit box" />
               The <strong>Box Editor</strong> opens a right-side panel for editing individual clip
               parameters. Activate it from the{' '}
-              <a href="#toolbar" className="text-[#1a8a9e] hover:underline">
+              <a href="#toolbar">
                 <strong>toolbar</strong>
               </a>{' '}
               or the menu (View → Box Editor), then click any box on the grid to edit it. Clicking
               an empty slot lets you create a new sample or loop.
             </p>
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster={IMG('box-edit.png')}
-              className="w-full rounded-lg border border-gray-200 cursor-pointer mb-4"
-            >
+            <video autoPlay muted loop playsInline poster={IMG('box-edit.png')}>
               <source src={IMG('box-edit.mp4')} type="video/mp4" />
             </video>
 
-            <h4 id="edit-samples" className="text-[#1a8a9e] font-bold mt-4 mb-3">
-              Edit Samples
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h4 id="edit-samples">Edit Samples</h4>
+            <div className="two-col">
               <div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={IMG('edit-sample-panel.png')}
-                  alt="edit sample panel"
-                  className="w-full rounded-lg border border-gray-200 cursor-pointer"
-                />
+                <img src={IMG('edit-sample-panel.png')} alt="edit sample panel" />
               </div>
               <div>
-                <ol className="list-decimal pl-5 space-y-2">
+                <ol>
                   <li>
                     Toolbar:
-                    <ul className="list-none pl-3 mt-1 space-y-1 font-normal">
+                    <ul>
                       <li>
                         <strong>Load file(s)</strong> — load one or more audio files. Additional
                         files fill consecutive empty slots.
@@ -714,24 +538,18 @@ export default function ManualPage() {
               </div>
             </div>
 
-            <h4 id="edit-loops" className="text-[#1a8a9e] font-bold mt-6 mb-3">
-              Edit Loops
-            </h4>
-            <p className="mb-3">
+            <h4 id="edit-loops">Edit Loops</h4>
+            <p>
               The Loop Editor shares most features with the Sample Editor. Only the differences are
               covered below.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="two-col">
               <div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={IMG('edit-loop-panel.png')}
-                  alt="edit loop panel"
-                  className="w-full rounded-lg border border-gray-200 cursor-pointer"
-                />
+                <img src={IMG('edit-loop-panel.png')} alt="edit loop panel" />
               </div>
               <div>
-                <ol className="list-decimal pl-5 space-y-2">
+                <ol>
                   <li>
                     Group Number: Assign the loop to one of <strong>8 instrument groups</strong>.
                     When another loop from the same group starts, the previous one stops
@@ -751,7 +569,7 @@ export default function ManualPage() {
                     <strong>Disabled</strong>: playback stops after one cycle.
                   </li>
                 </ol>
-                <p className="mt-3">
+                <p>
                   <strong>Note:</strong> &ldquo;Convert to Loop&rdquo; is replaced by{' '}
                   <strong>Convert to Sample</strong> in the toolbar. When previewing a loop during
                   song playback, it synchronizes with the song rather than playing from the
@@ -760,14 +578,14 @@ export default function ManualPage() {
               </div>
             </div>
 
-            <h4 id="dsp-effects" className="text-[#1a8a9e] font-bold mt-6 mb-3">
-              DSP Effects <span className="text-sm font-normal">(Pro)</span>
+            <h4 id="dsp-effects">
+              DSP Effects <span>(Pro)</span>
             </h4>
-            <p className="mb-3">
+            <p>
               Both sample and loop editors include a <strong>DSP Effects</strong> section at the
               bottom with five knobs:
             </p>
-            <ol className="list-decimal pl-5 space-y-1 mb-3">
+            <ol>
               <li>
                 <strong>Lo Pass</strong> — low-pass filter
               </li>
@@ -785,7 +603,7 @@ export default function ManualPage() {
                 <strong>Fine Tune</strong> — fine pitch adjustment (works with the Pitch knob)
               </li>
             </ol>
-            <p className="mb-2">
+            <p>
               Each of the first four knobs has an enable/disable toggle. Fine Tune activates
               automatically with Pitch. A small frequency spectrum display shows the filtered
               result. Combining Lo Pass and Hi Pass creates band-pass or band-reject filtering.
@@ -798,52 +616,40 @@ export default function ManualPage() {
 
           {/* ── Page Editor ── */}
           <Section>
-            <h3
-              id="edit-page"
-              className="text-[#1a8a9e] text-2xl font-bold border-b-2 border-gray-200 pb-2 mb-4"
-            >
-              Page Editor
-            </h3>
-            <p className="mb-3">
+            <h3 id="edit-page">Page Editor</h3>
+            <p>
               The <strong>Page Editor</strong> lets you organize your grid and perform batch
               operations on multiple boxes.
             </p>
-            <p className="mb-3">
+            <p>
               Use <strong>left-click</strong> to select and drag individual boxes. Use{' '}
               <strong>right-click</strong> to select multiple boxes, then drag them together.
             </p>
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster={IMG('page-edit.png')}
-              className="w-full rounded-lg border border-gray-200 cursor-pointer mb-4"
-            >
+            <video autoPlay muted loop playsInline poster={IMG('page-edit.png')}>
               <source src={IMG('page-edit.mp4')} type="video/mp4" />
             </video>
 
-            <h4 className="text-[#1a8a9e] font-bold mt-4 mb-2">Edit</h4>
-            <p className="mb-2">
+            <h4>Edit</h4>
+            <p>
               <strong>Edit</strong> — modify parameters of selected boxes: icon, color, output,
               volume, pan, group number, duration, original tempo, loop mode, choke samples, enable
               velocity, stop on note off. Available options depend on the clip type.
             </p>
-            <p className="mb-3">
+            <p>
               <strong>Copy / Paste / Cut / Delete</strong> — standard clipboard operations.
             </p>
-            <h4 className="text-[#1a8a9e] font-bold mt-4 mb-2">Convert</h4>
-            <p className="mb-2">
+            <h4>Convert</h4>
+            <p>
               <strong>Sample</strong> — convert selected loops to samples.
             </p>
-            <p className="mb-2">
+            <p>
               <strong>Loop</strong> — convert selected samples to loops.
             </p>
-            <p className="mb-3">
+            <p>
               <strong>Tempo</strong> — convert selected loops to the project tempo.{' '}
               <strong>(Pro)</strong>
             </p>
-            <h4 className="text-[#1a8a9e] font-bold mt-4 mb-2">Actions</h4>
+            <h4>Actions</h4>
             <p>
               <strong>Deselect</strong> — deselect all boxes.
             </p>
@@ -854,151 +660,94 @@ export default function ManualPage() {
 
           {/* ── Timeline Editor ── */}
           <Section>
-            <h3
-              id="edit-timeline"
-              className="text-[#1a8a9e] text-2xl font-bold border-b-2 border-gray-200 pb-2 mb-4"
-            >
-              Arranger (Timeline Editor)
-            </h3>
-            <p className="mb-3">
+            <h3 id="edit-timeline">Arranger (Timeline Editor)</h3>
+            <p>
               <Ico src="edit-timeline-icon.png" alt="show arranger" />
               The Arranger lets you compose a song by dragging and dropping clips onto a timeline
               grid.
             </p>
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster={IMG('timeline-edit.png')}
-              className="w-full rounded-lg border border-gray-200 cursor-pointer mb-4"
-            >
+            <video autoPlay muted loop playsInline poster={IMG('timeline-edit.png')}>
               <source src={IMG('timeline-edit.mp4')} type="video/mp4" />
             </video>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div className="two-col">
               <div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={IMG('timeline-panel.png')}
-                  alt="Timeline panel"
-                  className="w-full rounded-lg border border-gray-200 cursor-pointer"
-                />
+                <img src={IMG('timeline-panel.png')} alt="Timeline panel" />
               </div>
               <div>
-                <ol className="list-decimal pl-5 space-y-1 font-semibold">
+                <ol className="ref-list">
                   <li>
-                    <a
-                      href="#timeline-play-controllers"
-                      className="text-[#1a8a9e] hover:underline font-normal"
-                    >
-                      Transport Controls
-                    </a>
+                    <a href="#timeline-play-controllers">Transport Controls</a>
                   </li>
                   <li>
-                    <a
-                      href="#edit-timeline-buttons"
-                      className="text-[#1a8a9e] hover:underline font-normal"
-                    >
-                      Edit Buttons
-                    </a>
+                    <a href="#edit-timeline-buttons">Edit Buttons</a>
                   </li>
                   <li>
-                    <a
-                      href="#timeline-duration"
-                      className="text-[#1a8a9e] hover:underline font-normal"
-                    >
-                      Song Length
-                    </a>
+                    <a href="#timeline-duration">Song Length</a>
                   </li>
                   <li>
-                    <a
-                      href="#timeline-solo-mute"
-                      className="text-[#1a8a9e] hover:underline font-normal"
-                    >
-                      Solo / Mute
-                    </a>
+                    <a href="#timeline-solo-mute">Solo / Mute</a>
                   </li>
                   <li>
-                    <a
-                      href="#timeline-bar-no"
-                      className="text-[#1a8a9e] hover:underline font-normal"
-                    >
-                      TIME Column
-                    </a>
+                    <a href="#timeline-bar-no">TIME Column</a>
                   </li>
                   <li>
-                    <a href="#loop-tracks" className="text-[#1a8a9e] hover:underline font-normal">
-                      Loop Tracks
-                    </a>
+                    <a href="#loop-tracks">Loop Tracks</a>
                   </li>
                   <li>
-                    <a href="#sample-tracks" className="text-[#1a8a9e] hover:underline font-normal">
-                      Sample Tracks
-                    </a>
+                    <a href="#sample-tracks">Sample Tracks</a>
                   </li>
                   <li>
-                    <a href="#timeline-grid" className="text-[#1a8a9e] hover:underline font-normal">
-                      Timeline Grid
-                    </a>
+                    <a href="#timeline-grid">Timeline Grid</a>
                   </li>
                 </ol>
               </div>
             </div>
 
-            <h4 id="timeline-play-controllers" className="text-[#1a8a9e] font-bold mt-4 mb-2">
-              1) Transport Controls
-            </h4>
+            <h4 id="timeline-play-controllers">1) Transport Controls</h4>
             <ToolbarWidget src="transport-controls.png" alt="transport controls" />
-            <p className="mb-2">
+            <p>
               <strong>Play / Pause / Stop</strong> — <strong>Play</strong> starts the arrangement;
               during playback the button changes to <strong>Pause</strong>. A separate{' '}
               <strong>Stop</strong> button stops playback and resets the playhead.
             </p>
-            <p className="mb-2">
+            <p>
               Next to the transport buttons, a <strong>position display</strong> shows the current
               playback position in musical bars.
             </p>
-            <p className="mb-3">
+            <p>
               The <strong>Toggle Looping</strong> button enables continuous playback — when active,
               the song automatically restarts from the beginning after reaching the end.
             </p>
 
-            <h4 id="edit-timeline-buttons" className="text-[#1a8a9e] font-bold mt-4 mb-2">
-              2) Edit Buttons
-            </h4>
-            <p className="mb-2">
+            <h4 id="edit-timeline-buttons">2) Edit Buttons</h4>
+            <p>
               <Ico src="drag-buttons-icon.png" alt="drag button" />
               <strong>Drag and Drop</strong> — enabled by default. Drag clips from the Media Grid
               onto the timeline. Dragging a clip back to the grid removes it from the timeline. The
               target track is highlighted while dragging.
             </p>
-            <p className="mb-3">
+            <p>
               Additional buttons: <strong>Copy</strong>, <strong>Paste</strong>,{' '}
               <strong>Cut</strong>, <strong>Delete</strong>, <strong>Undo</strong>, and{' '}
               <strong>Redo</strong>.
             </p>
 
-            <h4 id="timeline-duration" className="text-[#1a8a9e] font-bold mt-4 mb-2">
-              3) Song Length
-            </h4>
-            <p className="mb-3">
+            <h4 id="timeline-duration">3) Song Length</h4>
+            <p>
               Sets the total song length in musical bars (minimum 16). Use the text field or +/−
               buttons. If reducing the length would cut existing content, an <strong>Apply</strong>{' '}
               button appears with a confirmation dialog.
             </p>
 
-            <h4 id="timeline-solo-mute" className="text-[#1a8a9e] font-bold mt-4 mb-2">
-              4) Solo / Mute
-            </h4>
-            <p className="mb-3">
+            <h4 id="timeline-solo-mute">4) Solo / Mute</h4>
+            <p>
               Each track has <strong>S</strong> (solo) and <strong>M</strong> (mute) buttons below
               the track number for selective listening.
             </p>
 
-            <h4 id="timeline-bar-no" className="text-[#1a8a9e] font-bold mt-4 mb-2">
-              5) TIME Column
-            </h4>
-            <ul className="space-y-1 mb-3">
+            <h4 id="timeline-bar-no">5) TIME Column</h4>
+            <ul>
               <li>
                 <strong>Click center</strong> — place the playhead at that bar.
               </li>
@@ -1011,29 +760,22 @@ export default function ManualPage() {
               <li>Inactive parts of the song are grayed out.</li>
             </ul>
 
-            <h4 id="loop-tracks" className="text-[#1a8a9e] font-bold mt-4 mb-2">
-              6) Loop Tracks
-            </h4>
-            <ul className="space-y-1 mb-3">
+            <h4 id="loop-tracks">6) Loop Tracks</h4>
+            <ul>
               <li>
                 <strong>8 tracks</strong> reserved for loops (one per instrument group).
               </li>
               <li>
-                In{' '}
-                <a href="#settings" className="text-[#1a8a9e] hover:underline">
-                  Strict Mode
-                </a>
-                , loops can only be placed on the track matching their group number.
+                In <a href="#settings">Strict Mode</a>, loops can only be placed on the track
+                matching their group number.
               </li>
               <li>
                 Adjust loop start and length by dragging the top or bottom edge of the loop cell.
               </li>
             </ul>
 
-            <h4 id="sample-tracks" className="text-[#1a8a9e] font-bold mt-4 mb-2">
-              7) Sample Tracks
-            </h4>
-            <ul className="space-y-1 mb-3">
+            <h4 id="sample-tracks">7) Sample Tracks</h4>
+            <ul>
               <li>
                 <strong>4 tracks</strong> reserved for samples.
               </li>
@@ -1042,16 +784,14 @@ export default function ManualPage() {
                 <strong>Right-click</strong> a sample for additional options:
               </li>
             </ul>
-            <p className="mb-3">
+            <p>
               <ToolbarWidget src="timeline-sample-edit.png" alt="sample edit" />
               <strong>Velocity</strong> — set the sample&apos;s playback volume.{' '}
               <strong>Time Shift</strong> — set the exact trigger time within the bar.
             </p>
 
-            <h4 id="timeline-grid" className="text-[#1a8a9e] font-bold mt-4 mb-2">
-              8) Timeline Grid
-            </h4>
-            <ul className="space-y-1">
+            <h4 id="timeline-grid">8) Timeline Grid</h4>
+            <ul>
               <li>
                 Consists of <strong>13 columns</strong>: 1 TIME column + 8 loop tracks + 4 sample
                 tracks.
@@ -1063,23 +803,14 @@ export default function ManualPage() {
 
           {/* ── Project Settings ── */}
           <Section>
-            <h3
-              id="settings"
-              className="text-[#1a8a9e] text-2xl font-bold border-b-2 border-gray-200 pb-2 mb-4"
-            >
-              Project Settings
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h3 id="settings">Project Settings</h3>
+            <div className="two-col">
               <div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={IMG('settings-window.png')}
-                  alt="Project Settings"
-                  className="w-full rounded-lg border border-gray-200 cursor-pointer"
-                />
+                <img src={IMG('settings-window.png')} alt="Project Settings" />
               </div>
               <div>
-                <ul className="space-y-2">
+                <ul>
                   <li>
                     <strong>Controller</strong> — select a MIDI controller (None, Launchpad X).
                   </li>
@@ -1105,10 +836,8 @@ export default function ManualPage() {
                   </li>
                   <li>
                     <strong>Strict Mode</strong> — enforces that loops are placed on the{' '}
-                    <a href="#loop-tracks" className="text-[#1a8a9e] hover:underline">
-                      timeline track
-                    </a>{' '}
-                    matching their instrument group number.
+                    <a href="#loop-tracks">timeline track</a> matching their instrument group
+                    number.
                   </li>
                   <li>
                     <strong>Clear Cache</strong> — clears cached DSP-processed audio files. The
@@ -1121,26 +850,17 @@ export default function ManualPage() {
 
           {/* ── Product Registration ── */}
           <Section>
-            <h3
-              id="product-registration"
-              className="text-[#1a8a9e] text-2xl font-bold border-b-2 border-gray-200 pb-2 mb-4"
-            >
-              Product Registration
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <h3 id="product-registration">Product Registration</h3>
+            <div className="two-col">
               <div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={IMG('register-product.png')}
-                  alt="Registration and License Management"
-                  className="w-full rounded-lg border border-gray-200 cursor-pointer"
-                />
+                <img src={IMG('register-product.png')} alt="Registration and License Management" />
               </div>
               <div>
-                <ul className="space-y-3">
+                <ul>
                   <li>
-                    <h4 className="text-[#1a8a9e] font-semibold mb-1">Register the Product</h4>
-                    <ul className="space-y-1 pl-3">
+                    <h4>Register the Product</h4>
+                    <ul>
                       <li>
                         Go to <strong>Help → Register Product</strong> and enter the email and
                         password used when registering on the product website.
@@ -1152,8 +872,8 @@ export default function ManualPage() {
                     </ul>
                   </li>
                   <li>
-                    <h4 className="text-[#1a8a9e] font-semibold mb-1">Refresh License</h4>
-                    <ul className="space-y-1 pl-3">
+                    <h4>Refresh License</h4>
+                    <ul>
                       <li>
                         After upgrading your license tier (e.g., from Essentials to Loops Pro),
                         click <strong>Refresh License</strong> to update.
@@ -1162,8 +882,8 @@ export default function ManualPage() {
                     </ul>
                   </li>
                   <li>
-                    <h4 className="text-[#1a8a9e] font-semibold mb-1">Deactivate License</h4>
-                    <ul className="space-y-1 pl-3">
+                    <h4>Deactivate License</h4>
+                    <ul>
                       <li>
                         Click <strong>Deactivate License</strong> to unregister this machine and
                         free up an activation slot.
