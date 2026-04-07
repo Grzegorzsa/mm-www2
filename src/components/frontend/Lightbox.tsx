@@ -1,36 +1,67 @@
 'use client'
-import React, { useState, useCallback, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
-export function Lightbox({ children }: { children: React.ReactNode }) {
-  const [open, setOpen] = useState(false)
+/**
+ * Global lightbox overlay using event delegation.
+ * Automatically opens for any <img> or <video> with CSS `cursor: pointer`.
+ * Place once in the layout — no per-element wrappers needed.
+ */
+export function Lightbox() {
+  const [media, setMedia] = useState<{ src: string; type: 'image' | 'video' } | null>(null)
 
-  const toggle = useCallback(() => setOpen((prev) => !prev), [])
+  const close = useCallback(() => setMedia(null), [])
 
   useEffect(() => {
-    if (!open) return
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      const el = target.closest('img, video') as HTMLElement | null
+      if (!el) return
+
+      if (getComputedStyle(el).cursor !== 'pointer') return
+
+      e.preventDefault()
+      e.stopPropagation()
+
+      if (el instanceof HTMLImageElement) {
+        setMedia({ src: el.src, type: 'image' })
+      } else if (el instanceof HTMLVideoElement) {
+        const source = el.querySelector('source') as HTMLSourceElement | null
+        const src = source?.src || el.src
+        if (src) setMedia({ src, type: 'video' })
+      }
+    }
+
+    document.addEventListener('click', handleClick)
+    return () => document.removeEventListener('click', handleClick)
+  }, [])
+
+  useEffect(() => {
+    if (!media) return
     const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false)
+      if (e.key === 'Escape') close()
     }
     document.addEventListener('keydown', handleKey)
     return () => document.removeEventListener('keydown', handleKey)
-  }, [open])
+  }, [media, close])
+
+  if (!media) return null
 
   return (
-    <>
-      <div onClick={toggle} className="cursor-pointer">
-        {children}
-      </div>
-
-      {open && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-8"
-          onClick={toggle}
-        >
-          <div className="max-w-[90vw] max-h-[90vh] [&>*]:!m-0 [&>*]:max-h-[90vh] [&>*]:w-auto [&>*]:object-contain">
-            {children}
-          </div>
-        </div>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-8 cursor-default"
+      onClick={close}
+    >
+      {media.type === 'video' ? (
+        <video
+          src={media.src}
+          autoPlay
+          controls
+          className="max-w-[90vw] max-h-[90vh] object-contain"
+          onClick={(e) => e.stopPropagation()}
+        />
+      ) : (
+        <img src={media.src} className="max-w-[90vw] max-h-[90vh] object-contain" alt="" />
       )}
-    </>
+    </div>
   )
 }

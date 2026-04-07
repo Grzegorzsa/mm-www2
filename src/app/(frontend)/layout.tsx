@@ -3,6 +3,7 @@ import '../globals.css'
 import { DM_Sans } from 'next/font/google'
 import Header from '@/components/frontend/Header'
 import Footer from '@/components/frontend/Footer'
+import { Lightbox } from '@/components/frontend/Lightbox'
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -20,6 +21,7 @@ export default async function FrontendLayout(props: { children: React.ReactNode 
         <Header />
         <main className="flex-1 pt-16">{children}</main>
         <Footer />
+        <Lightbox />
       </body>
     </html>
   )

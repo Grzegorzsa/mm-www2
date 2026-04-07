@@ -4,7 +4,6 @@ import config from '@/payload.config'
 import Link from 'next/link'
 import { Check, X } from 'lucide-react'
 import fallbackContent from '@/globals/pages/homepage.json'
-import { Lightbox } from '@/components/frontend/Lightbox'
 
 function BoolCell({ value }: { value: boolean }) {
   return value ? (
@@ -185,18 +184,16 @@ export default async function HomePage() {
             <br />
             <span className="text-[1.5vw]">{timeline.subheading}</span>
           </h3>
-          <Lightbox>
-            <video
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster="/images/home/mxgrid-intro.png"
-              className="w-full max-w-full mt-4 mx-auto block"
-            >
-              <source src={imageUrl(timeline.image)} type="video/mp4" />
-            </video>
-          </Lightbox>
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            poster="/images/home/mxgrid-intro.png"
+            className="w-full max-w-full mt-4 mx-auto block cursor-pointer"
+          >
+            <source src={imageUrl(timeline.image)} type="video/mp4" />
+          </video>
           <p className="text-[1.2vw] tracking-[0.2vw] font-semibold mt-4">{timeline.description}</p>
         </div>
       </section>
