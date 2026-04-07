@@ -1,6 +1,7 @@
 ﻿import type { Metadata } from 'next'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import fallbackContent from '@/globals/pages/manual.json'
 import './manual.css'
 
 export const metadata: Metadata = {
@@ -10,8 +11,19 @@ export const metadata: Metadata = {
 }
 
 export default async function ManualPage() {
-  const payload = await getPayload({ config: await config })
-  const manual = await payload.findGlobal({ slug: 'manual' })
+  let manualData: any = null
+  try {
+    const payload = await getPayload({ config: await config })
+    manualData = await payload.findGlobal({ slug: 'manual' })
+  } catch {
+    // fallback to hardcoded defaults
+  }
+
+  const manual = {
+    aside: manualData?.aside || fallbackContent.aside,
+    mobileToc: manualData?.mobileToc || fallbackContent.mobileToc,
+    sections: manualData?.sections?.length ? manualData.sections : fallbackContent.sections,
+  }
 
   return (
     <div className="manual">
@@ -21,7 +33,7 @@ export default async function ManualPage() {
         <div className="content">
           <div className="mobile-toc" dangerouslySetInnerHTML={{ __html: manual.mobileToc }} />
 
-          {manual.sections.map((section, i) => (
+          {manual.sections.map((section: any, i: number) => (
             <section key={section.id ?? i} dangerouslySetInnerHTML={{ __html: section.html }} />
           ))}
         </div>
