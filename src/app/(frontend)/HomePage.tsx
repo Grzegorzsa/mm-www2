@@ -6,8 +6,6 @@ import { Check, X } from 'lucide-react'
 import fallbackContent from '@/globals/pages/homepage.json'
 import { Lightbox } from '@/components/frontend/Lightbox'
 
-import React from 'react'
-
 function BoolCell({ value }: { value: boolean }) {
   return value ? (
     <Check className="mx-auto text-green-500" size={22} />
