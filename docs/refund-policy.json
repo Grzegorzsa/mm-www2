@@ -1,0 +1,331 @@
+{
+  "id": 3,
+  "title": "Refund Policy",
+  "slug": "refund-policy",
+
+  "content": {
+    "root": {
+      "type": "root",
+      "format": "",
+      "indent": 0,
+      "version": 1,
+
+      "children": [
+        {
+          "tag": "h1",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "Refund Policy",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "Trial Versions",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "We offer trial/demo versions of our products to allow customers to experience them before making a purchase. We strongly recommend installing these trial/demo versions to ensure compatibility with your system.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "Refund Eligibility",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "We approve refunds for purchases made within the last 30 days under the following circumstances:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "ol",
+          "type": "list",
+          "start": 1,
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "listitem",
+              "value": 1,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "Unsolvable Technical Issues: If you encounter an unsolvable technical issue caused by a bug or other product-related problem that renders the product unusable (e.g., frequent crashes), you are eligible for a refund.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "value": 2,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "System Requirements Met: Refunds are granted only when all system requirements described on the product page were met at the time of purchase.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "listType": "number",
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "Non-Refundable Situations",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "You will NOT be eligible for a refund if:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "ul",
+          "type": "list",
+          "start": 1,
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "The Software has been successfully activated or registered on a device and no technical fault prevents its use.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "The refund request is made after 30 days from the date of purchase.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "The request is based on a 'change of mind' after successful activation.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "Termination for Cause: Your license has been terminated due to a violation of the EULA.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "listType": "bullet",
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "Third-Party Purchases (Resellers)",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "If you purchased the Software through an authorized third-party reseller, any refund requests must be processed through that reseller. The Licensor is not responsible for issuing refunds for payments made to third parties.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "Contact Information",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "To request a refund, please contact us via our contact form with your order details and a description of the technical issue.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        }
+      ],
+      "direction": "ltr"
+    }
+  },
+
+  "meta": {
+    "title": null,
+    "description": "Read the MXbeats Refund Policy to understand our refund eligibility and process.",
+    "image": null
+  },
+  "updatedAt": "2026-04-07T14:50:22.612Z",
+  "createdAt": "2026-04-07T14:50:22.612Z"
+}

@@ -1,0 +1,467 @@
+{
+  "id": 1,
+  "title": "Terms and Conditions",
+  "slug": "terms-and-conditions",
+
+  "content": {
+    "root": {
+      "type": "root",
+      "format": "",
+      "indent": 0,
+      "version": 1,
+
+      "children": [
+        {
+          "tag": "h1",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "Terms and Conditions",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "1. Introduction",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "These terms and conditions govern your use of the mxbeats.com website and the purchase of our products. By using our website or purchasing our software, you accept these terms in full. If you disagree with any part of these terms, please do not use our website or services.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "2. Software License (EULA)",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "All software downloaded or purchased from this site is subject to our End User License Agreement (EULA). By installing the software, you agree to the terms set forth in that agreement, which is incorporated here by reference.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "3. Payment Methods and Currency",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "ul",
+          "type": "list",
+          "start": 1,
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "Payments are processed in your local currency whenever possible by our authorized payment gateway providers.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "The stated price on the website is an approximation. The final price depends on actual exchange rates at the time of transaction and any applicable local taxes (e.g., VAT).",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "Condition of Sale: Your license is valid only upon our receipt of full payment. If you purchase via a third-party reseller who fails to remit payment to us, we reserve the right to revoke the license.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "listType": "bullet",
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "4. Warranty and Support",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "ul",
+          "type": "list",
+          "start": 1,
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "Our software is provided 'as is,' without any warranties of any kind.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "We offer limited technical support via our contact form and email. We do not guarantee a specific response time, though we strive to assist all customers promptly.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "listType": "bullet",
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "5. Updates and Major Versions",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "ul",
+          "type": "list",
+          "start": 1,
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "Standard Updates: Customers receive lifetime free updates for the major version they purchased (e.g., all 1.x updates).",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "Major Upgrades: If a major version (e.g., 2.0) is released within six (6) months of your purchase date, you are eligible for a free upgrade. Outside of this window, major upgrades may require an additional fee.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "listType": "bullet",
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "6. License Consolidation Policy",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "ul",
+          "type": "list",
+          "start": 1,
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "The standard purchase is for a single-user license.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "In the event that a user purchases multiple licenses for the same product, the features of these licenses will be consolidated into a single master license associated with the user's account.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "listType": "bullet",
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "7. Limitations of Liability",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "ul",
+          "type": "list",
+          "start": 1,
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "We will not be liable for any damages of any kind arising from the use of this site or any product downloaded, including direct, indirect, incidental, punitive, and consequential damages.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "text": "The Licensor is not responsible for any issues arising from third-party resellers or unauthorized distributors.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "listType": "bullet",
+          "direction": "ltr"
+        },
+
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "8. Contact Information",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+
+          "children": [
+            {
+              "text": "Questions regarding these Terms and Conditions should be sent to us via mxbeats.com/contact.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        }
+      ],
+      "direction": "ltr"
+    }
+  },
+
+  "meta": {
+    "title": null,
+    "description": "Read the Terms and Conditions for using MXbeats software and website.",
+    "image": null
+  },
+  "updatedAt": "2026-04-07T14:50:22.592Z",
+  "createdAt": "2026-04-07T14:50:22.590Z"
+}
