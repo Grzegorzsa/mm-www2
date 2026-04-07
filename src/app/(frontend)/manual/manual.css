@@ -181,11 +181,14 @@
       @apply font-semibold;
     }
 
-    & img {
+    & img:not(.ico, .toolbar-widget) {
       @apply rounded-lg border border-gray-200;
-      width: 100%;
       cursor: pointer;
       margin-bottom: 0.5rem;
+    }
+
+    & .two-col img {
+      width: 100%;
     }
 
     & video {
@@ -193,6 +196,10 @@
       width: 100%;
       cursor: pointer;
       margin-bottom: 1rem;
+    }
+
+    & .two-col video {
+      margin-bottom: 0;
     }
 
     /* h4 inside list items (e.g. registration section) */

@@ -1,34 +1,10 @@
-﻿import Image from 'next/image'
-import Link from 'next/link'
-import type { Metadata } from 'next'
+﻿import type { Metadata } from 'next'
 import './manual.css'
 
 export const metadata: Metadata = {
   title: 'Manual — MX GRID by MXbeats',
   description:
     'Full documentation for MX GRID: installation, main panel, box editor, page editor, arranger, and project settings.',
-}
-
-const IMG = (src: string) => `/images/manual/${src}`
-
-/* ── Shared icon inline helper ── */
-function Ico({ src, alt }: { src: string; alt: string }) {
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={IMG(src)} alt={alt} className="ico" />
-  )
-}
-
-function ToolbarWidget({ src, alt }: { src: string; alt: string }) {
-  return (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img src={IMG(src)} alt={alt} className="toolbar-widget" />
-  )
-}
-
-/* ── Shared section card ── */
-function Section({ children }: { children: React.ReactNode }) {
-  return <section>{children}</section>
 }
 
 export default function ManualPage() {
@@ -148,12 +124,12 @@ export default function ManualPage() {
           </div>
 
           {/* ── Introduction ── */}
-          <Section>
+          <section>
             <h3 id="intro">Introduction</h3>
             <div className="two-col">
               <div>
-                <video autoPlay muted loop playsInline poster={IMG('intro.png')}>
-                  <source src={IMG('intro.mp4')} type="video/mp4" />
+                <video autoPlay muted loop playsInline poster="/images/manual/intro.png">
+                  <source src="/images/manual/intro.mp4" type="video/mp4" />
                 </video>
               </div>
               <div>
@@ -177,15 +153,15 @@ export default function ManualPage() {
                 </p>
               </div>
             </div>
-          </Section>
+          </section>
 
           {/* ── Main Panel ── */}
-          <Section>
+          <section>
             <h3 id="main-panel">Main Panel</h3>
             <div className="two-col">
               <div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={IMG('main-panel.png')} alt="MX GRID main panel" />
+                <img src="/images/manual/main-panel.png" alt="MX GRID main panel" />
               </div>
               <div>
                 <ol className="ref-list">
@@ -207,10 +183,10 @@ export default function ManualPage() {
                 </ol>
               </div>
             </div>
-          </Section>
+          </section>
 
           {/* ── Main Menu ── */}
-          <Section>
+          <section>
             <h3 id="main-menu">Main Menu</h3>
 
             <h4>File</h4>
@@ -294,48 +270,64 @@ export default function ManualPage() {
                 information.
               </li>
             </ul>
-          </Section>
+          </section>
 
           {/* ── Toolbar ── */}
-          <Section>
+          <section>
             <h3 id="toolbar">Toolbar</h3>
             <p>
-              <Ico src="open-project-icon.png" alt="open project" />
+              <img src="/images/manual/open-project-icon.png" alt="open project" className="ico" />
               <strong>Open Project</strong> — Open a project file
             </p>
             <p>
-              <Ico src="save-project-icon.png" alt="save project" />
+              <img src="/images/manual/save-project-icon.png" alt="save project" className="ico" />
               <strong>Save Project</strong> — Save the current project file
             </p>
             <p>
               <a href="#edit-box">
-                <Ico src="edit-box-icon.png" alt="edit box" />
+                <img src="/images/manual/edit-box-icon.png" alt="edit box" className="ico" />
               </a>
               <strong>Box Editor</strong> — Edit individual clip parameters
             </p>
             <p>
               <a href="#edit-page">
-                <Ico src="edit-page-icon.png" alt="edit page" />
+                <img src="/images/manual/edit-page-icon.png" alt="edit page" className="ico" />
               </a>
               <strong>Page Editor</strong> — Rearrange clips and batch operations
             </p>
             <p>
               <a href="#edit-timeline">
-                <Ico src="edit-timeline-icon.png" alt="show arranger" />
+                <img
+                  src="/images/manual/edit-timeline-icon.png"
+                  alt="show arranger"
+                  className="ico"
+                />
               </a>
               <strong>Show Arranger</strong> — Switch to arrangement mode
             </p>
             <p>
-              <Ico src="mute-all-sounds-icon.png" alt="mute all sounds" />
+              <img
+                src="/images/manual/mute-all-sounds-icon.png"
+                alt="mute all sounds"
+                className="ico"
+              />
               <strong>All Sounds Off</strong> — Panic button — mute all playing clips
             </p>
             <p>
-              <Ico src="refresh-device-icon.png" alt="refresh device" />
+              <img
+                src="/images/manual/refresh-device-icon.png"
+                alt="refresh device"
+                className="ico"
+              />
               <strong>Refresh MIDI Device</strong> — Update the state of your MIDI grid controller
             </p>
 
             <h4>Transport Control</h4>
-            <ToolbarWidget src="transport-control-main.png" alt="transport control" />
+            <img
+              src="/images/manual/transport-control-main.png"
+              alt="transport control"
+              className="toolbar-widget"
+            />
             <p>
               Starts or stops playback in Session or Arranger mode. During playback, an arc-shaped
               progress bar around the Stop button shows the current position within the bar. A label
@@ -344,7 +336,11 @@ export default function ManualPage() {
             </p>
 
             <h4>Tempo Widget</h4>
-            <ToolbarWidget src="tempo-widget.png" alt="tempo widget" />
+            <img
+              src="/images/manual/tempo-widget.png"
+              alt="tempo widget"
+              className="toolbar-widget"
+            />
             <p>
               Sets the current project tempo (BPM). Tap the metronome icon repeatedly to set tempo,
               or click the tempo value to type it manually. Use the <strong>+/−</strong> buttons to
@@ -354,10 +350,10 @@ export default function ManualPage() {
               If any loop has a different tempo than the project, an <strong>Apply</strong> button
               appears — click it to convert all mismatched loops to the project tempo.
             </p>
-          </Section>
+          </section>
 
           {/* ── Media Grid ── */}
-          <Section>
+          <section>
             <h3 id="media-grid">Media Grid</h3>
             <p>
               The <strong>Media Grid</strong> is the central area of the application — a virtual
@@ -367,7 +363,7 @@ export default function ManualPage() {
 
             <h4>Samples</h4>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMG('sample-boxes.png')} alt="sample boxes" style={{ width: 200 }} />
+            <img src="/images/manual/sample-boxes.png" alt="sample boxes" style={{ width: 200 }} />
             <p>
               <strong>Samples</strong> (one-shots) can be triggered at any point. They support
               variable velocity and can be routed to 32 outputs for VST effects processing. A gray
@@ -376,7 +372,7 @@ export default function ManualPage() {
 
             <h4>Loops</h4>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={IMG('loop-boxes.png')} alt="loop boxes" style={{ width: 200 }} />
+            <img src="/images/manual/loop-boxes.png" alt="loop boxes" style={{ width: 200 }} />
             <p>
               <strong>Loops</strong> are synchronized with the song. When triggered, a loop waits
               for the next bar boundary before starting playback.
@@ -417,10 +413,10 @@ export default function ManualPage() {
               </a>
               .
             </p>
-          </Section>
+          </section>
 
           {/* ── Stop Group Buttons ── */}
-          <Section>
+          <section>
             <h3 id="stop-group">Stop Group Buttons</h3>
             <p>
               The top row above the grid contains <strong>8 Stop Group</strong> buttons — one for
@@ -437,10 +433,10 @@ export default function ManualPage() {
                 group.
               </li>
             </ul>
-          </Section>
+          </section>
 
           {/* ── Page Buttons ── */}
-          <Section>
+          <section>
             <h3 id="page-buttons">Page Buttons</h3>
             <p>
               The column of <strong>8 page buttons</strong> on the right side of the grid lets you
@@ -448,13 +444,13 @@ export default function ManualPage() {
               <strong>512 slots</strong> across all 8 pages. The active page button is{' '}
               <strong>light blue</strong>; inactive pages are gray.
             </p>
-          </Section>
+          </section>
 
           {/* ── Box Editor ── */}
-          <Section>
+          <section>
             <h3 id="edit-box">Box Editor</h3>
             <p>
-              <Ico src="edit-box-icon.png" alt="edit box" />
+              <img src="/images/manual/edit-box-icon.png" alt="edit box" className="ico" />
               The <strong>Box Editor</strong> opens a right-side panel for editing individual clip
               parameters. Activate it from the{' '}
               <a href="#toolbar">
@@ -463,15 +459,15 @@ export default function ManualPage() {
               or the menu (View → Box Editor), then click any box on the grid to edit it. Clicking
               an empty slot lets you create a new sample or loop.
             </p>
-            <video autoPlay muted loop playsInline poster={IMG('box-edit.png')}>
-              <source src={IMG('box-edit.mp4')} type="video/mp4" />
+            <video autoPlay muted loop playsInline poster="/images/manual/box-edit.png">
+              <source src="/images/manual/box-edit.mp4" type="video/mp4" />
             </video>
 
             <h4 id="edit-samples">Edit Samples</h4>
             <div className="two-col">
               <div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={IMG('edit-sample-panel.png')} alt="edit sample panel" />
+                <img src="/images/manual/edit-sample-panel.png" alt="edit sample panel" />
               </div>
               <div>
                 <ol>
@@ -546,7 +542,7 @@ export default function ManualPage() {
             <div className="two-col">
               <div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={IMG('edit-loop-panel.png')} alt="edit loop panel" />
+                <img src="/images/manual/edit-loop-panel.png" alt="edit loop panel" />
               </div>
               <div>
                 <ol>
@@ -612,10 +608,10 @@ export default function ManualPage() {
               Click <strong>Apply</strong> to cache the processed audio for better performance, or{' '}
               <strong>Cancel</strong> to discard changes.
             </p>
-          </Section>
+          </section>
 
           {/* ── Page Editor ── */}
-          <Section>
+          <section>
             <h3 id="edit-page">Page Editor</h3>
             <p>
               The <strong>Page Editor</strong> lets you organize your grid and perform batch
@@ -625,8 +621,8 @@ export default function ManualPage() {
               Use <strong>left-click</strong> to select and drag individual boxes. Use{' '}
               <strong>right-click</strong> to select multiple boxes, then drag them together.
             </p>
-            <video autoPlay muted loop playsInline poster={IMG('page-edit.png')}>
-              <source src={IMG('page-edit.mp4')} type="video/mp4" />
+            <video autoPlay muted loop playsInline poster="/images/manual/page-edit.png">
+              <source src="/images/manual/page-edit.mp4" type="video/mp4" />
             </video>
 
             <h4>Edit</h4>
@@ -656,23 +652,27 @@ export default function ManualPage() {
             <p>
               <strong>Undo / Redo</strong>
             </p>
-          </Section>
+          </section>
 
           {/* ── Timeline Editor ── */}
-          <Section>
+          <section>
             <h3 id="edit-timeline">Arranger (Timeline Editor)</h3>
             <p>
-              <Ico src="edit-timeline-icon.png" alt="show arranger" />
+              <img
+                src="/images/manual/edit-timeline-icon.png"
+                alt="show arranger"
+                className="ico"
+              />
               The Arranger lets you compose a song by dragging and dropping clips onto a timeline
               grid.
             </p>
-            <video autoPlay muted loop playsInline poster={IMG('timeline-edit.png')}>
-              <source src={IMG('timeline-edit.mp4')} type="video/mp4" />
+            <video autoPlay muted loop playsInline poster="/images/manual/timeline-edit.png">
+              <source src="/images/manual/timeline-edit.mp4" type="video/mp4" />
             </video>
             <div className="two-col">
               <div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={IMG('timeline-panel.png')} alt="Timeline panel" />
+                <img src="/images/manual/timeline-panel.png" alt="Timeline panel" />
               </div>
               <div>
                 <ol className="ref-list">
@@ -705,7 +705,11 @@ export default function ManualPage() {
             </div>
 
             <h4 id="timeline-play-controllers">1) Transport Controls</h4>
-            <ToolbarWidget src="transport-controls.png" alt="transport controls" />
+            <img
+              src="/images/manual/transport-controls.png"
+              alt="transport controls"
+              className="toolbar-widget"
+            />
             <p>
               <strong>Play / Pause / Stop</strong> — <strong>Play</strong> starts the arrangement;
               during playback the button changes to <strong>Pause</strong>. A separate{' '}
@@ -722,7 +726,7 @@ export default function ManualPage() {
 
             <h4 id="edit-timeline-buttons">2) Edit Buttons</h4>
             <p>
-              <Ico src="drag-buttons-icon.png" alt="drag button" />
+              <img src="/images/manual/drag-buttons-icon.png" alt="drag button" className="ico" />
               <strong>Drag and Drop</strong> — enabled by default. Drag clips from the Media Grid
               onto the timeline. Dragging a clip back to the grid removes it from the timeline. The
               target track is highlighted while dragging.
@@ -785,7 +789,11 @@ export default function ManualPage() {
               </li>
             </ul>
             <p>
-              <ToolbarWidget src="timeline-sample-edit.png" alt="sample edit" />
+              <img
+                src="/images/manual/timeline-sample-edit.png"
+                alt="sample edit"
+                className="toolbar-widget"
+              />
               <strong>Velocity</strong> — set the sample&apos;s playback volume.{' '}
               <strong>Time Shift</strong> — set the exact trigger time within the bar.
             </p>
@@ -799,15 +807,15 @@ export default function ManualPage() {
               <li>Each cell represents one bar.</li>
               <li>Drag clips from the grid onto the timeline to build your arrangement.</li>
             </ul>
-          </Section>
+          </section>
 
           {/* ── Project Settings ── */}
-          <Section>
+          <section>
             <h3 id="settings">Project Settings</h3>
             <div className="two-col">
               <div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={IMG('settings-window.png')} alt="Project Settings" />
+                <img src="/images/manual/settings-window.png" alt="Project Settings" />
               </div>
               <div>
                 <ul>
@@ -846,15 +854,18 @@ export default function ManualPage() {
                 </ul>
               </div>
             </div>
-          </Section>
+          </section>
 
           {/* ── Product Registration ── */}
-          <Section>
+          <section>
             <h3 id="product-registration">Product Registration</h3>
             <div className="two-col">
               <div>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={IMG('register-product.png')} alt="Registration and License Management" />
+                <img
+                  src="/images/manual/register-product.png"
+                  alt="Registration and License Management"
+                />
               </div>
               <div>
                 <ul>
@@ -894,7 +905,7 @@ export default function ManualPage() {
                 </ul>
               </div>
             </div>
-          </Section>
+          </section>
         </div>
       </div>
     </div>
