@@ -1,6 +1,7 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import './manual.css'
 
 export const metadata: Metadata = {
   title: 'Manual — MX GRID by MXbeats',
@@ -44,7 +45,7 @@ function Section({ children }: { children: React.ReactNode }) {
 
 export default function ManualPage() {
   return (
-    <div className="bg-[#eaeaea] min-h-screen pb-8">
+    <div className="bg-[#eaeaea] min-h-screen pb-8 manual">
       <div className="max-w-[1400px] mx-auto flex gap-5 px-2 md:px-4">
         {/* ── Sidebar Table of Contents ── */}
         <aside className="hidden lg:block w-60 flex-shrink-0 sticky top-16 self-start h-[calc(100vh-64px)] overflow-y-auto rounded-xl shadow-md border border-black/8 bg-[#fafafa] text-[#444] p-4 mt-5">
