@@ -220,62 +220,18 @@ const pages = [
     slug: 'terms-and-conditions',
     pageType: 'policy',
     content: termsContent,
-    meta: {
-      description: 'Read the Terms and Conditions for using MXbeats software and website.',
-    },
   },
   {
     title: 'Privacy Policy',
     slug: 'privacy-policy',
     pageType: 'policy',
     content: privacyContent,
-    meta: {
-      description:
-        'Read the MXbeats Privacy Policy to understand how we collect and use your data.',
-    },
   },
   {
     title: 'Refund Policy',
     slug: 'refund-policy',
     pageType: 'policy',
     content: refundContent,
-    meta: {
-      description:
-        'Read the MXbeats Refund Policy to understand our refund eligibility and process.',
-    },
-  },
-  {
-    title: 'Contact Us',
-    slug: 'contact',
-    pageType: 'contact',
-    content: {
-      root: {
-        type: 'root',
-        children: [
-          {
-            type: 'paragraph',
-            children: [
-              {
-                type: 'text',
-                text: 'Get in touch with the MXbeats team. We appreciate your feedback and inquiries.',
-                version: 1,
-              },
-            ],
-            direction: 'ltr',
-            format: '',
-            indent: 0,
-            version: 1,
-          },
-        ],
-        direction: 'ltr',
-        format: '',
-        indent: 0,
-        version: 1,
-      },
-    },
-    meta: {
-      description: 'Get in touch with the MXbeats team',
-    },
   },
 ]
 

@@ -25,19 +25,6 @@ export const Pages: CollectionConfig = {
       },
     },
     {
-      name: 'pageType',
-      type: 'select',
-      options: [
-        { label: 'Policy Page', value: 'policy' },
-        { label: 'Contact Form', value: 'contact' },
-        { label: 'Generic', value: 'generic' },
-      ],
-      defaultValue: 'generic',
-      admin: {
-        description: 'Page layout type',
-      },
-    },
-    {
       name: 'content',
       type: 'richText',
       editor: lexicalEditor(),
