@@ -93,9 +93,11 @@ export interface Config {
   fallbackLocale: null;
   globals: {
     homepage: Homepage;
+    manual: Manual;
   };
   globalsSelect: {
     homepage: HomepageSelect<false> | HomepageSelect<true>;
+    manual: ManualSelect<false> | ManualSelect<true>;
   };
   locale: null;
   widgets: {
@@ -472,6 +474,33 @@ export interface Homepage {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "manual".
+ */
+export interface Manual {
+  id: number;
+  /**
+   * Sidebar navigation HTML
+   */
+  aside: string;
+  /**
+   * Mobile table of contents HTML
+   */
+  mobileToc: string;
+  /**
+   * Manual sections rendered in order
+   */
+  sections: {
+    /**
+     * Section HTML content
+     */
+    html: string;
+    id?: string | null;
+  }[];
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homepage_select".
  */
 export interface HomepageSelect<T extends boolean = true> {
@@ -528,6 +557,23 @@ export interface HomepageSelect<T extends boolean = true> {
         title?: T;
         description?: T;
         image?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "manual_select".
+ */
+export interface ManualSelect<T extends boolean = true> {
+  aside?: T;
+  mobileToc?: T;
+  sections?:
+    | T
+    | {
+        html?: T;
+        id?: T;
       };
   updatedAt?: T;
   createdAt?: T;
