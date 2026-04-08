@@ -55,9 +55,10 @@ export function Lightbox() {
         <video
           src={media.src}
           autoPlay
-          controls
-          className="max-w-[90vw] max-h-[90vh] object-contain"
-          onClick={(e) => e.stopPropagation()}
+          muted
+          loop
+          playsInline
+          className="max-w-[90vw] max-h-[90vh] object-contain pointer-events-none"
         />
       ) : (
         <img src={media.src} className="max-w-[90vw] max-h-[90vh] object-contain" alt="" />

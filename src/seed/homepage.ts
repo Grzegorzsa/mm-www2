@@ -12,7 +12,7 @@ const mediaFiles = [
   { filename: 'home-features-3.jpg', alt: 'MX Beats Feature 3' },
   { filename: 'home-features-4.jpg', alt: 'MX Beats Feature 4' },
   { filename: 'home-features-5.jpg', alt: 'MX Beats Feature 5' },
-  { filename: 'mxgrid-intro.mp4', alt: 'MX Grid intro' },
+  { filename: 'mxgrid_intro.mp4', alt: 'MX Grid intro' },
 ]
 
 async function ensureMedia(payload: Payload, filename: string, alt: string): Promise<number> {
@@ -97,7 +97,7 @@ async function seed() {
         subheading: 'for Complete Song Creation',
         description:
           'Compose entire songs with built-in timeline editor. Arrange loops and samples creating cohesive musical pieces.',
-        image: ids['mxgrid-intro.mp4'],
+        image: ids['mxgrid_intro.mp4'],
       },
       pricing: [
         { feature: 'Price', essentials: 'Free', loops: '$79' },
