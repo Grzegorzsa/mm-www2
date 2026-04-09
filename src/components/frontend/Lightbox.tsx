@@ -17,6 +17,9 @@ export function Lightbox() {
       const el = target.closest('img, video') as HTMLElement | null
       if (!el) return
 
+      // Skip images/videos that are inside links — let navigation happen normally
+      if (el.closest('a')) return
+
       if (getComputedStyle(el).cursor !== 'pointer') return
 
       e.preventDefault()
