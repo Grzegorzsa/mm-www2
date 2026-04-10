@@ -1,0 +1,128 @@
+<h3 id="edit-box">Box Editor</h3>
+<p>
+  <img src="/images/manual/edit-box-icon.png" alt="edit box" class="ico" /> The
+  <strong>Box Editor</strong> opens a right-side panel for editing individual clip parameters.
+  Activate it from the <a href="#toolbar"><strong>toolbar</strong></a> or the menu (View → Box
+  Editor), then click any box on the grid to edit it. Clicking an empty slot lets you create a new
+  sample or loop.
+</p>
+<video autoplay muted loop playsinline poster="/images/manual/box-edit.png">
+  <source src="/images/manual/box-edit.mp4" type="video/mp4" />
+</video>
+
+<h4 id="edit-samples">Edit Samples</h4>
+<div class="two-col">
+  <div>
+    <img src="/images/manual/edit-sample-panel.png" alt="edit sample panel" />
+  </div>
+  <div>
+    <ol>
+      <li>
+        Toolbar:
+        <ul>
+          <li>
+            <strong>Load file(s)</strong> — load one or more audio files. Additional files fill
+            consecutive empty slots.
+          </li>
+          <li><strong>Load folder</strong> — load all audio files from a folder.</li>
+          <li><strong>Convert to Loop</strong> — converts the sample into a loop.</li>
+          <li>
+            <strong>Open in external app</strong> — edit the file in your system’s default audio
+            editor (e.g., Audacity). <strong>(Pro)</strong>
+          </li>
+          <li><strong>Clear Box</strong> — remove the clip and reset the slot.</li>
+        </ul>
+      </li>
+      <li>Playback: Play/Stop button and the file path of the loaded audio file.</li>
+      <li>
+        Waveform: Visual waveform thumbnail. Click anywhere to start playback from that position.
+        Shows current time and total duration.
+      </li>
+      <li>
+        Name: Text field for the clip name (max <strong>12 characters</strong>). The name appears on
+        the grid box.
+      </li>
+      <li>
+        Icon: Choose from <strong>200+ music-related icons</strong>. Select the empty icon to
+        display the name in the center instead.
+      </li>
+      <li>
+        Volume &amp; Pan: <strong>Vol</strong>: 0%–200%. <strong>Pan</strong>: −100% (left) to +100%
+        (right).
+      </li>
+      <li>Color: Choose one of 16 colors. Colors are mirrored on your MIDI controller.</li>
+      <li>
+        Outputs: Route audio to specific stereo pairs (up to <strong>32 channels</strong>).
+        Available in DAW plugin mode for adding external effects.
+      </li>
+      <li>
+        Choke Samples: Comma-separated <strong>Box IDs</strong> that will be silenced when this
+        sample triggers (e.g., closed hi-hat stopping an open hi-hat).
+      </li>
+      <li>
+        Enable Velocity: When enabled, volume varies based on MIDI strike force. Requires a
+        velocity-sensitive controller.
+      </li>
+      <li>
+        Stop on Note Off: When enabled, the sample stops immediately on mouse/pad release. When
+        disabled (default), the sample plays to completion.
+      </li>
+    </ol>
+  </div>
+</div>
+
+<h4 id="edit-loops">Edit Loops</h4>
+<p>
+  The Loop Editor shares most features with the Sample Editor. Only the differences are covered
+  below.
+</p>
+<div class="two-col">
+  <div>
+    <img src="/images/manual/edit-loop-panel.png" alt="edit loop panel" />
+  </div>
+  <div>
+    <ol>
+      <li>
+        Group Number: Assign the loop to one of <strong>8 instrument groups</strong>. When another
+        loop from the same group starts, the previous one stops automatically.
+      </li>
+      <li>Duration: The loop length in <strong>musical bars</strong>.</li>
+      <li>
+        Original Tempo: The original BPM of the audio clip. Click the <strong>Auto</strong> button
+        (metronome icon) to detect it automatically. Multiple clicks may yield different results as
+        various detection algorithms are used.
+      </li>
+      <li>
+        Loop Checkbox: <strong>Enabled</strong>: the loop repeats after finishing.
+        <strong>Disabled</strong>: playback stops after one cycle.
+      </li>
+    </ol>
+    <p>
+      <strong>Note:</strong> “Convert to Loop” is replaced by <strong>Convert to Sample</strong> in
+      the toolbar. When previewing a loop during song playback, it synchronizes with the song rather
+      than playing from the beginning.
+    </p>
+  </div>
+</div>
+
+<h4 id="dsp-effects">DSP Effects <span>(Pro)</span></h4>
+<p>
+  Both sample and loop editors include a <strong>DSP Effects</strong> section at the bottom with
+  five knobs:
+</p>
+<ol>
+  <li><strong>Lo Pass</strong> — low-pass filter</li>
+  <li><strong>Hi Pass</strong> — high-pass filter</li>
+  <li><strong>Tempo</strong> — playback speed (50%–200%), without changing pitch</li>
+  <li><strong>Pitch</strong> — pitch shift (−12 to +12 semitones), without changing duration</li>
+  <li><strong>Fine Tune</strong> — fine pitch adjustment (works with the Pitch knob)</li>
+</ol>
+<p>
+  Each of the first four knobs has an enable/disable toggle. Fine Tune activates automatically with
+  Pitch. A small frequency spectrum display shows the filtered result. Combining Lo Pass and Hi Pass
+  creates band-pass or band-reject filtering.
+</p>
+<p>
+  Click <strong>Apply</strong> to cache the processed audio for better performance, or
+  <strong>Cancel</strong> to discard changes.
+</p>
