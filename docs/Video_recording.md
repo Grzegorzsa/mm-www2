@@ -19,4 +19,13 @@ Dodatkowe opcje:
 
 # skrypt
 -i "C:\Users\grzegorz\Documents\ShareX\Screenshots\2026-04\source.mp4" -c:v libx264 -preset slower -crf 26 -tune stillimage  -pix_fmt yuv420p -movflags +faststart -an -y "C:\Users\grzegorz\Documents\ShareX\Screenshots\output.mp4"
+
+# Crop
+-vf "crop=w:h:x:y"
+# w: Szerokość końcowa (zazwyczaj taka sama jak oryginał).
+# h: Wysokość końcowa (pomniejszona o te kilka pikseli).
+# x: Punkt startowy w poziomie (zazwyczaj 0).
+# y: Punkt startowy w pionie (zazwyczaj 0).
+-vf "crop=2160:1368:0:0"
+
 ```
