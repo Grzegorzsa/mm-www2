@@ -63,7 +63,7 @@ const sections = [
   <div>
     <p><strong>MX GRID</strong> by MXbeats is a versatile music production tool designed for both live performers and studio musicians. Available as a standalone application and DAW plugin (VST/AU), it provides 32 outputs for flexible routing and 512 slots for loops, one-shots, and audio clips.</p>
     <p>MX GRID supports two playback modes: <strong>Session</strong> for real-time triggering of clips using a mouse or MIDI controller (e.g., Launchpad), and <strong>Arranger</strong> for composing complete songs on a timeline. Seamless integration with grid controllers and effortless media management provide a distinctive experience for music creators.</p>
-    <p>Simply drag audio files (WAV, AIFF, MP3, OGG) or entire folders onto the grid \u2014 the application automatically detects whether each file is a sample or loop and assigns parameters like tempo, color, icon, and instrument group.</p>
+    <p>Simply drag audio files (WAV, AIFF, MP3, OGG) or entire folders onto the grid \u2014 the application automatically detects whether each file is a sample or loop and assigns parameters like tempo, color, icon, and instrument group. You can drag files from any file explorer on your computer, or use the built-in Media Explorer to browse and import directly from your library.</p>
   </div>
 </div>`,
 
@@ -107,20 +107,20 @@ const sections = [
 
 <h4>View</h4>
 <ul>
+  <li><strong>Media Explorer</strong> \u2014 <a href="#media-explorer">browse and import audio files from your file system</a>.</li>
   <li><strong>Box Editor</strong> \u2014 <a href="#edit-box">open the editor panel</a>.</li>
   <li><strong>Page Editor</strong> \u2014 <a href="#edit-page">rearrange boxes and batch operations</a>.</li>
   <li><strong>Timeline Editor</strong> \u2014 <a href="#edit-timeline">open the Arranger to compose songs</a>.</li>
-  <li><strong>Media Explorer</strong> \u2014 <a href="#media-explorer">browse and import audio files from your file system</a>.</li>
   <li><strong>Zoom In / Zoom Out</strong> \u2014 adjust the application size for different screen resolutions.</li>
   <li><strong>Light Mode / Dark Mode</strong> \u2014 switch the color theme.</li>
 </ul>
 
 <h4>Help</h4>
 <ul>
+  <li><strong>Project Notes</strong> \u2014 add and edit comments for the current project.</li>
   <li><strong>Online Help</strong> \u2014 open the online manual on the product website.</li>
   <li><strong>User Panel</strong> \u2014 open the user panel on the website.</li>
   <li><strong>Register Product</strong> \u2014 <a href="#product-registration">registration and license management</a>.</li>
-  <li><strong>Project Notes</strong> \u2014 add and edit comments for the current project.</li>
   <li><strong>About</strong> \u2014 display the installed version and current license information.</li>
 </ul>`,
 
@@ -132,7 +132,6 @@ const sections = [
 <p><a href="#edit-page"><img src="/images/manual/edit-page-icon.png" alt="edit page" class="ico" /></a> <strong>Page Editor</strong> \u2014 Rearrange clips and batch operations</p>
 <p><a href="#edit-timeline"><img src="/images/manual/edit-timeline-icon.png" alt="show arranger" class="ico" /></a> <strong>Show Arranger</strong> \u2014 Switch to arrangement mode</p>
 <p><img src="/images/manual/media-explorer-icon.png" alt="media explorer" class="ico" /> <strong>Media Explorer</strong> \u2014 Browse and import audio files from your file system</p>
-<p><img src="/images/manual/refresh-device-icon.png" alt="refresh device" class="ico" /> <strong>Refresh MIDI Device</strong> \u2014 Update the state of your MIDI grid controller</p>
 
 <h4>Transport Control</h4>
 <img src="/images/manual/transport-control-main.png" alt="transport control" class="toolbar-widget" />
@@ -144,7 +143,7 @@ const sections = [
 <p>If any loop has a different tempo than the project, an <strong>Apply</strong> button appears \u2014 click it to convert all mismatched loops to the project tempo.</p>
 
 <h4>Master Volume Widget</h4>
-<p>Located at the right end of the toolbar. Controls the overall playback volume of the project. Per-channel level meters and clipping indicators are shown to the right of the knob. Clipping indicators light up red if the audio clips at any point; click them to reset.</p>`,
+<p>Controls the overall playback volume of the project. Per-channel level meters and clipping indicators are shown to the right of the knob. Clipping indicators light up red if the audio clips at any point; click them to reset.</p>`,
 
   // 4 — Media Grid
   `<h3 id="media-grid">Media Grid</h3>
@@ -270,12 +269,12 @@ const sections = [
 <p><strong>Loop</strong> \u2014 convert selected samples to loops.</p>
 <p><strong>Tempo</strong> \u2014 convert selected loops to the project tempo. <strong>(Pro)</strong></p>
 
-<h4>File</h4>
-<p><strong>Save Meta</strong> \u2014 saves the metadata (name, icon, color, BPM, group number, key, instrument) of all selected clips directly into their audio files.</p>
-
 <h4>Actions</h4>
 <p><strong>Deselect</strong> \u2014 deselect all boxes.</p>
-<p><strong>Undo / Redo</strong></p>`,
+<p><strong>Undo / Redo</strong></p>
+
+<h4>File</h4>
+<p><strong>Save Meta</strong> \u2014 saves the metadata (name, icon, color, BPM, group number, key, instrument) of all selected clips directly into their audio files.</p>`,
 
   // 9 — Timeline Editor
   `<h3 id="edit-timeline">Arranger (Timeline Editor)</h3>
@@ -349,7 +348,7 @@ const sections = [
 
   // 10 — Media Explorer
   `<h3 id="media-explorer">Media Explorer</h3>
-<p><img src="/images/manual/media-explorer-icon.png" alt="Media Explorer" class="ico" /> The <strong>Media Explorer</strong> is a built-in browser for your audio file library. Open it from the toolbar or via <strong>View \u2192 Media Explorer</strong>.</p>
+<p><img src="/images/manual/media-explorer-icon.png" alt="Media Explorer" class="ico" /> The <strong>Media Explorer</strong> is a built-in tool designed for cataloguing, quickly finding, and previewing audio files on your computer. Open it from the toolbar or via <strong>View \u2192 Media Explorer</strong>.</p>
 
 <h4>Toolbar</h4>
 <ul>

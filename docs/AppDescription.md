@@ -22,7 +22,7 @@ MX GRID by MXbeats is a music production tool designed to simplify the music cre
 
 ### Key Features
 
-- **Simple media management** — drag entire folders of audio files (WAV, AIFF, MP3, OGG) onto the grid. The application automatically detects whether each file is a single-shot sample or a loop and assigns parameters such as tempo, color, icon, name, and instrument group.
+- **Simple media management** — drag entire folders of audio files (WAV, AIFF, MP3, OGG) onto the grid. The application automatically detects whether each file is a single-shot sample or a loop and assigns parameters such as tempo, color, icon, name, and instrument group. You can drag files from any file explorer on your computer, or use the built-in Media Explorer to browse and import directly from your library.
 - **One-click tempo conversion** — convert all loops to the current project tempo with a single click.
 - **Two playback modes:**
   1. **Session** — trigger samples and loops in real time using a mouse or a MIDI controller (e.g., Launchpad). Single-shot samples can be triggered at any moment; loops are triggered synchronously (at the beginning of the next musical bar).
@@ -144,7 +144,6 @@ Help
   - **Clear Cache** — clears cached audio files generated when applying DSP filters. The current cache size is displayed next to the button.
   - **Clear Media DB** — clears all data stored in the Media Explorer database. The current database size is displayed next to the button.
 - **Turn off All Sounds** — immediately silences all playing clips.
-- **Refresh MIDI Grid Device** — refreshes the state and colors on the connected MIDI controller (e.g., Launchpad).
 
 ### 5.3 View
 
@@ -189,7 +188,7 @@ Buttons (left to right):
   - **Status messages:**
     - _"Tempo Change"_ — displayed when the project tempo changes during playback (e.g., triggering a loop with a different tempo).
     - _"Tempo Mismatch"_ — displayed when the application runs as a DAW plugin and the host's tempo differs from the clips' tempo.
-- **Master Volume Widget** — located at the right end of the toolbar. Controls the overall playback volume of the project. To the right of the volume knob are per-channel level meters and clipping indicators. If the audio clips at any point, the indicators light up red; clicking them resets them.
+- **Master Volume Widget** — Controls the overall playback volume of the project. To the right of the volume knob are per-channel level meters and clipping indicators. If the audio clips at any point, the indicators light up red; clicking them resets them.
 
 ---
 
@@ -353,14 +352,14 @@ The Page Editor panel contains four sections:
 - **Loop** — converts selected samples to loops.
 - **Tempo** — converts the tempo of selected loops to the project tempo. **(Pro)**
 
-#### 3. File
-
-- **Save Meta** — saves the metadata (name, icon, color, BPM, group number, key, instrument) of all selected clips directly into their audio files.
-
-#### 4. Actions
+#### 3. Actions
 
 - **Deselect** — deselects all boxes.
 - **Undo / Redo** — undo or redo the last action.
+
+#### 4. File
+
+- **Save Meta** — saves the metadata (name, icon, color, BPM, group number, key, instrument) of all selected clips directly into their audio files.
 
 ---
 
@@ -453,7 +452,7 @@ The application **periodically checks** with the server to verify whether the li
 
 ## 13. Media Explorer
 
-The Media Explorer is a built-in browser for your audio file library. Open it from the toolbar (computer with magnifying glass icon — third icon from the left) or via **View → Media Explorer**. It appears docked to the right side of the main window, alongside the Box Editor, Page Editor, and Arranger panels.
+The Media Explorer is a built-in tool designed for cataloguing, quickly finding, and previewing audio files on your computer. Open it from the toolbar (computer with magnifying glass icon — third icon from the left) or via **View → Media Explorer**. It appears docked to the right side of the main window, alongside the Box Editor, Page Editor, and Arranger panels.
 
 ### 13.1 Toolbar
 
@@ -489,17 +488,3 @@ Hovering over a file reveals an **info** icon on the right. Clicking it opens a 
 ### 13.4 Transport Control
 
 When a file is being previewed, a transport bar appears at the bottom of the Files panel containing a **Play/Stop** button, a colour-coded waveform, the filename, and a **Volume** knob. The volume knob controls preview playback level. The bar remains visible even when scrolling through the file list. Clicking on the waveform scrubs the playhead to that position (not available in synchronized loop mode).
-
-# Updates
-
-1. W introduction pod koniec można dorzucić jedno zdanie, mówiące iż pliki można przeciągnąć z dowolnego eksplorera plików lub z wbudowanego Media Explorera. Jest to uzupełnieniem tego:
-
-"Simply drag audio files (WAV, AIFF, MP3, OGG) or entire folders onto the grid — the application automatically detects whether each file is a sample or loop and assigns parameters like tempo, color, icon, and instrument group."
-
-2. Sekcja Main Menu > View: Media Explorer powinien być na samym początku
-3. Main Menu > Help: Project Notes powinien być na samym początku
-4. Toolbar: Refresh MIDI Device - to usunąć (Zostało usunięte z toolbar'a, żeby zrobić miejsce dla Media Explorer'a)
-
-5) Master Volume Widget: Usunąć zdanie "Located at the right end of the toolbar." - tu będzie grafika
-6) File section z Save Meta - powinno być na końcu za Actions
-7) Media Explorer: Tu w pierwszym wprowadzającym zdaniu: 'The Media Explorer is a built-in browser for your audio file library. Open it from the toolbar or via View → Media Explorer.' dodajmy, że Media Explorer został zaprojektowany do katalogowania, szybkiego odnajdywania i podglądu plików dźwiękowych na komputerze.
