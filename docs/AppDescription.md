@@ -270,6 +270,8 @@ A waveform (oscillogram) thumbnail of the audio file. During playback, a playhea
 - **Choke Samples** — comma-separated list of Box IDs whose playback should be stopped when this sample is triggered (e.g., closed hi-hat stopping an open hi-hat).
 - **Enable Velocity** — checkbox. When enabled, sample volume varies based on MIDI velocity (strike force). Requires a velocity-sensitive MIDI controller (e.g., Launchpad X supports this; Launchpad Mini does not).
 - **Stop on Note Off** — checkbox (off by default). When enabled, the sample stops immediately when the mouse button or MIDI pad is released. When disabled, the sample plays to completion.
+- **Instrument Type** — dropdown for selecting the instrument category (e.g., Snare, Guitar, Bass).
+- **Key** — dropdown for selecting the musical key or scale of the clip (e.g., C#, Dm).
 
 #### Volume & Pan Knobs
 
@@ -319,6 +321,8 @@ The Play/Stop button works the same way, except that when a loop is previewed du
 - **Duration [bars]** — dropdown selector for the loop length in musical bars.
 - **Original Tempo** — text field showing the original tempo of the audio clip (e.g., 110). An **Auto** button (metronome icon) next to the field uses detection algorithms to determine the tempo automatically. Multiple clicks may yield different results as different algorithms are applied.
 - **Loop** — checkbox. When enabled, the loop repeats after finishing. When disabled, playback stops after one cycle.
+- **Instrument Type** — dropdown for selecting the instrument category (e.g., Snare, Guitar, Bass).
+- **Key** — dropdown for selecting the musical key or scale of the clip (e.g., C#, Dm).
 
 The DSP section and Box ID display are identical to the Sample Editor.
 
@@ -488,4 +492,14 @@ When a file is being previewed, a transport bar appears at the bottom of the Fil
 
 # Updates
 
-W sekcji Edit Box Content -> Edit Loop Box i Edit Sample Box dodano 'Instrument type' dropdown and 'Key' dropdown. Instrument type jest to typ instrumentu np: 'Snare' lub 'Guitar', a Key jest opisem skali lub konkretną wysokością dźwięku np: 'C#'.
+1. W introduction pod koniec można dorzucić jedno zdanie, mówiące iż pliki można przeciągnąć z dowolnego eksplorera plików lub z wbudowanego Media Explorera. Jest to uzupełnieniem tego:
+
+"Simply drag audio files (WAV, AIFF, MP3, OGG) or entire folders onto the grid — the application automatically detects whether each file is a sample or loop and assigns parameters like tempo, color, icon, and instrument group."
+
+2. Sekcja Main Menu > View: Media Explorer powinien być na samym początku
+3. Main Menu > Help: Project Notes powinien być na samym początku
+4. Toolbar: Refresh MIDI Device - to usunąć (Zostało usunięte z toolbar'a, żeby zrobić miejsce dla Media Explorer'a)
+
+5) Master Volume Widget: Usunąć zdanie "Located at the right end of the toolbar." - tu będzie grafika
+6) File section z Save Meta - powinno być na końcu za Actions
+7) Media Explorer: Tu w pierwszym wprowadzającym zdaniu: 'The Media Explorer is a built-in browser for your audio file library. Open it from the toolbar or via View → Media Explorer.' dodajmy, że Media Explorer został zaprojektowany do katalogowania, szybkiego odnajdywania i podglądu plików dźwiękowych na komputerze.

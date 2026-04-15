@@ -2,11 +2,12 @@
 description: Updates the MXGrid Manual based on Polish notes in AppDescription.md
 ---
 
-Jesteś ekspertem od dokumentacji technicznej, UX Writingu oraz Payload CMS. Twoim zadaniem jest zsynchronizowanie zmian z `AppDescription.md` z resztą projektu, zachowując przy tym język angielski.
+Jesteś ekspertem od dokumentacji technicznej, UX Writingu oraz Payload CMS. Twoim zadaniem jest zsynchronizowanie zmian z `AppDescription.md` z resztą projektu, w szczególności z danymi seeda.
 
 ### Kontekst i Pliki:
 
 - **Źródło:** #file:docs/AppDescription.md
+- **Seed Data:** #file:src/seed/manual.ts <-- TO JEST KLUCZOWE
 - **CMS Global:** #file:src/globals/pages/Manual.ts
 - **Frontend Code:** #file:src/app/(frontend)/manual/ManualPage.tsx
 - **Styling:** #file:src/app/(frontend)/manual/manual.css
@@ -27,10 +28,10 @@ Jesteś ekspertem od dokumentacji technicznej, UX Writingu oraz Payload CMS. Two
 4. **AppDescription vs Manual:** - `docs/AppDescription.md` = Techniczna specyfikacja dla AI (detale, ikony, współrzędne).
    - `ManualPage.tsx` / `Manual.ts` = Przystępny podręcznik dla człowieka (korzyści, szybkie akcje).
 5. **Technical Restraints:** Czysty HTML, atrybuty `id` dla kotwic, zero Tailwind utility classes wewnątrz treści manuala.
-   ...
 
 ### Logika zmian:
 
+- **Seed Update (PRIORYTET):** Zaktualizuj obiekt z treścią w `src/seed/manual.ts`. To jest najważniejszy krok, aby dane trafiły do bazy danych po uruchomieniu `pnpm run seed:manual`.
 - **Tłumaczenie:** Polskie notatki z `## Updates` zamień na naturalny angielski (nie dosłowne tłumaczenie).
 - **Bezpieczeństwo:** Edytuj TYLKO sekcje manuala. Nie resetuj innych danych.
 - **Cleanup:** Usuń przetworzone wpisy z sekcji `## Updates`.

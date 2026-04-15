@@ -216,6 +216,8 @@ const sections = [
       <li>Choke Samples: Comma-separated <strong>Box IDs</strong> that will be silenced when this sample triggers (e.g., closed hi-hat stopping an open hi-hat).</li>
       <li>Enable Velocity: When enabled, volume varies based on MIDI strike force. Requires a velocity-sensitive controller.</li>
       <li>Stop on Note Off: When enabled, the sample stops immediately on mouse/pad release. When disabled (default), the sample plays to completion.</li>
+      <li>Instrument Type: Choose the instrument category (e.g., Snare, Guitar, Bass). Helps identify and filter clips in the Media Explorer.</li>
+      <li>Key: Choose the musical key or scale of the clip (e.g., C#, Dm). Useful for organizing clips by pitch.</li>
     </ol>
   </div>
 </div>
@@ -232,6 +234,8 @@ const sections = [
       <li>Duration: The loop length in <strong>musical bars</strong>.</li>
       <li>Original Tempo: The original BPM of the audio clip. Click the <strong>Auto</strong> button (metronome icon) to detect it automatically. Multiple clicks may yield different results as various detection algorithms are used.</li>
       <li>Loop Checkbox: <strong>Enabled</strong>: the loop repeats after finishing. <strong>Disabled</strong>: playback stops after one cycle.</li>
+      <li>Instrument Type: Choose the instrument category (e.g., Snare, Guitar, Bass). Helps identify and filter clips in the Media Explorer.</li>
+      <li>Key: Choose the musical key or scale of the clip (e.g., C#, Dm). Useful for organizing clips by pitch.</li>
     </ol>
     <p><strong>Note:</strong> \u201CConvert to Loop\u201D is replaced by <strong>Convert to Sample</strong> in the toolbar. A <strong>Save metadata to audio file</strong> button is also available \u2014 it saves the clip\u2019s name, icon, color, BPM, group number, key, and instrument directly into the audio file so these settings are applied automatically on any future import. When previewing a loop during song playback, it synchronizes with the song rather than playing from the beginning.</p>
   </div>
