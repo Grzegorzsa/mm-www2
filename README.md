@@ -1,4 +1,12 @@
-# Payload Blank Template
+# mxbeats.com
+
+`pnpm run dev` - start dev mode
+
+`pnpm run seed:manual` - run content seed
+
+## Update Manual
+
+`/update-manual` - run in Copilot chat
 
 This template comes configured with the bare minimum to get started on anything you need.
 

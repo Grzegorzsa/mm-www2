@@ -15,8 +15,8 @@ export default async function ManualPage() {
   try {
     const payload = await getPayload({ config: await config })
     manualData = await payload.findGlobal({ slug: 'manual' })
-  } catch {
-    // fallback to hardcoded defaults
+  } catch (err) {
+    console.error('[ManualPage] Failed to load CMS data, using fallback content:', err)
   }
 
   const manual = {

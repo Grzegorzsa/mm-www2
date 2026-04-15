@@ -71,6 +71,7 @@ The application consists of the following main areas:
 4. **Box Editor** — right-side panel for editing individual clip parameters
 5. **Page Editor** — mode for rearranging clips and performing batch operations
 6. **Arranger (Timeline)** — song composition view with a vertical timeline
+7. **Media Explorer** — right-side panel for browsing and importing audio files from your file system
 
 ---
 
@@ -100,6 +101,8 @@ Edit
 └── Refresh MIDI Grid Device
 
 View
+├── Media Explorer
+├── ─────────────
 ├── Box Editor
 ├── Page Editor
 ├── Timeline Editor
@@ -111,6 +114,7 @@ View
 └── Dark Mode
 
 Help
+├── Project Notes
 ├── Online Help
 ├── User Panel
 ├── Register Product
@@ -134,16 +138,17 @@ Help
   - **Controller** — MIDI controller selection (None, Launchpad X).
   - **Zoom** — application zoom level.
   - **Theme** — Light or Dark.
-  - **Master Volume** — overall volume control.
   - **Latency Compensation** — checkbox, used in VST mode for better clip synchronization and latency reduction.
   - **Use Relative Paths** — stores file paths relative to the project location, allowing the project folder to be moved or shared with others.
-  - **Strict Mode** — enforces that loops of a given group are placed on the corresponding track in the Arranger.
+  - **Auto-Convert Tempo** — when enabled, all imported loops are automatically converted to the current project tempo.
   - **Clear Cache** — clears cached audio files generated when applying DSP filters. The current cache size is displayed next to the button.
+  - **Clear Media DB** — clears all data stored in the Media Explorer database. The current database size is displayed next to the button.
 - **Turn off All Sounds** — immediately silences all playing clips.
 - **Refresh MIDI Grid Device** — refreshes the state and colors on the connected MIDI controller (e.g., Launchpad).
 
 ### 5.3 View
 
+- **Media Explorer** — opens the Media Explorer panel for browsing and importing audio files from your file system.
 - **Box Editor** — opens the right-side panel for editing individual clip settings. Clicking a box on the grid in this mode opens its parameters for editing.
 - **Page Editor** — enables rearranging boxes and performing batch modifications (tempo, color, volume, icon, etc.).
 - **Timeline Editor** — opens the Arranger for composing songs from available clips.
@@ -152,6 +157,7 @@ Help
 
 ### 5.4 Help
 
+- **Project Notes** — opens a dialog to add and edit text comments for the current project.
 - **Online Help** — opens the online manual on the product website.
 - **User Panel** — opens the user panel on the website.
 - **Register Product** — opens the registration/deactivation/license renewal dialog.
@@ -170,8 +176,7 @@ Buttons (left to right):
 - **Edit Box** — opens the Box Editor for the selected slot. Icon: square with a pencil in the bottom-right corner.
 - **Edit Page** — opens the Page Editor. Icon: four squares with a pencil in the bottom-right corner.
 - **Show Arranger** — toggles the Arranger panel visibility. The tooltip reads "Switch to arrangement mode". Icon: vertical bars with a pencil in the bottom-right corner. Disabled during playback.
-- **All Sounds Off** — panic button; mutes all playing sounds. Icon: crossed-out speaker.
-- **Refresh MIDI Device** — refreshes the MIDI controller display (e.g., Launchpad). Icon: square containing 9 smaller squares with a counter-clockwise curved arrow in the bottom-right corner.
+- **Media Explorer** — opens the Media Explorer panel. Icon: computer monitor with a magnifying glass (third icon from the left).
 - **Transport Control** — starts or stops playback in Session or Arranger mode.
   - The left side has a Play/Stop button: Play is shown when stopped; Stop (highlighted in blue) is shown during playback.
   - During playback, an arc-shaped progress bar is drawn around the Stop button, indicating the current position within the bar. Loop switching occurs at the end of each bar.
@@ -184,6 +189,7 @@ Buttons (left to right):
   - **Status messages:**
     - _"Tempo Change"_ — displayed when the project tempo changes during playback (e.g., triggering a loop with a different tempo).
     - _"Tempo Mismatch"_ — displayed when the application runs as a DAW plugin and the host's tempo differs from the clips' tempo.
+- **Master Volume Widget** — located at the right end of the toolbar. Controls the overall playback volume of the project. To the right of the volume knob are per-channel level meters and clipping indicators. If the audio clips at any point, the indicators light up red; clicking them resets them.
 
 ---
 
@@ -281,7 +287,7 @@ Five knobs:
 1. **Lo Pass** — low-pass filter.
 2. **Hi Pass** — high-pass filter.
 3. **Tempo** — playback speed adjustment (50%–200%), without changing pitch.
-4. **Pitch** — pitch shift (−12 to +12 semitones), without changing duration.
+4. **Pitch** — pitch shift (−12 to +12 semitones), without changing tempo.
 5. **Fine Tune** — fine pitch adjustment, works in conjunction with the Pitch knob.
 
 The first four knobs each have an individual enable/disable toggle button. Fine Tune is automatically enabled when Pitch is activated.
@@ -301,6 +307,7 @@ The Loop Editor shares most features with the Sample Editor. Only the difference
 #### Toolbar Differences
 
 - **Convert to Sample** replaces "Convert to Loop".
+- **Save metadata to audio file** — saves all clip metadata (name, icon, color, BPM, group number, key, instrument) directly into the audio file. This allows overriding the automatic parser results so that the saved data is used whenever the file is imported into any project in the future.
 
 #### Playback Differences
 
@@ -325,10 +332,11 @@ The Page Editor is activated from the main menu (View → Page Editor) or the to
 
 - **Left mouse button** — select and drag individual boxes on the grid.
 - **Right mouse button** — select multiple boxes. Selected boxes can then be moved together via drag and drop.
+- **Shift+Click** — click a box, then Shift+click another box to select all boxes between them.
 
 ### Panel Sections
 
-The Page Editor panel contains three sections:
+The Page Editor panel contains four sections:
 
 #### 1. Edit
 
@@ -341,7 +349,11 @@ The Page Editor panel contains three sections:
 - **Loop** — converts selected samples to loops.
 - **Tempo** — converts the tempo of selected loops to the project tempo. **(Pro)**
 
-#### 3. Actions
+#### 3. File
+
+- **Save Meta** — saves the metadata (name, icon, color, BPM, group number, key, instrument) of all selected clips directly into their audio files.
+
+#### 4. Actions
 
 - **Deselect** — deselects all boxes.
 - **Undo / Redo** — undo or redo the last action.
@@ -357,6 +369,7 @@ The Arranger provides a timeline-based composition view for arranging clips into
 - **Drag Clips from Grid** — enabled by default when the Arranger opens. Allows dragging boxes from the Media Grid onto the timeline via drag and drop. Dragging a clip back to the grid removes it from the timeline. While dragging, the target track is highlighted. Icon: hand with pointing finger and a right arrow.
 - **Copy / Paste / Cut / Delete / Undo / Redo** — standard editing buttons.
 - **Song Length Widget** — sets the total song length in musical bars (minimum: 16 bars). Includes a text field for manual input and +/− buttons. If reducing the length would cut off existing content, an "Apply" button appears with a confirmation dialog warning that part of the arrangement will be deleted.
+- **Multi-selection** — use **Shift+Click** to select everything between two clicked cells, or **Ctrl+Click** to add individual cells to the current selection.
 
 ### 10.2 Timeline Layout
 
@@ -382,6 +395,7 @@ Below the track numbers are **Solo (S)** and **Mute (M)** buttons for each track
 - Loops can only be placed on the 8 loop tracks (columns 2–9).
 - The start position and length of a loop can be adjusted by dragging the top or bottom edge of the loop cell on the timeline.
 - Dragging a loop back to the Media Grid removes it from the timeline.
+- Use **Shift+Click** to select all cells between two clicked positions, or **Ctrl+Click** to add individual cells to the selection.
 
 ### 10.5 Working with Samples on the Timeline
 
@@ -390,6 +404,15 @@ Below the track numbers are **Solo (S)** and **Mute (M)** buttons for each track
 - **Right-click** a sample on the timeline for additional options:
   - **Velocity** — set the sample's playback volume.
   - **Time Shift** — set the exact trigger time within the bar.
+
+### 10.6 Transport Control
+
+When the Arranger is visible, its own toolbar (located at the top of the Arranger panel, separate from the main application toolbar) includes a **Transport Control** widget with the following elements (left to right):
+
+- **Play** button — starts playback of the arrangement. While the song is playing, the button changes to **Pause**, allowing the user to pause and resume playback.
+- **Stop** button — stops playback and resets the playhead position.
+- **Position display** — shows the current playback position in musical bars.
+- **Toggle Looping** button — when enabled, the song automatically restarts from the beginning after reaching the end.
 
 ---
 
@@ -424,155 +447,45 @@ The application **periodically checks** with the server to verify whether the li
 
 ---
 
-## 12. Arranger Transport Control
+## 13. Media Explorer
 
-When the Arranger is visible, its own toolbar (located at the top of the Arranger panel, separate from the main application toolbar) includes a **Transport Control** widget with the following elements (left to right):
+The Media Explorer is a built-in browser for your audio file library. Open it from the toolbar (computer with magnifying glass icon — third icon from the left) or via **View → Media Explorer**. It appears docked to the right side of the main window, alongside the Box Editor, Page Editor, and Arranger panels.
 
-- **Play** button — starts playback of the arrangement. While the song is playing, the button changes to **Pause**, allowing the user to pause and resume playback.
-- **Stop** button — stops playback and resets the playhead position.
-- **Position display** — shows the current playback position in musical bars.
-- **Toggle Looping** button — when enabled, the song automatically restarts from the beginning after reaching the end.
+### 13.1 Toolbar
 
----
+- **Add Media Folder** — add a folder to your media library.
+- **Remove Selected Folder** — remove the currently selected folder from the library.
+- **Stop Parsing** — stop the ongoing file-analysis process for the selected folder.
+- **Auto Preview One-Shot on Hover** — when enabled, moving the cursor over a file's icon automatically plays a preview of that one-shot sample without requiring a click. This option applies to one-shots only; loop preview on hover is intentionally disabled due to the conversion and synchronization overhead during playback.
 
-## Updates
+### 13.2 Folders Panel
 
-### Media Explorer
+A collapsible panel displaying the folder tree. Toggle visibility using the chevron icon on the right side of the panel header. The header also displays the name of the currently selected folder, so it remains visible even when the tree is collapsed.
 
-Została dodana funkcjonalność: "Media Explorer" i trzeba dla niej utworzyć osobną sekcję oraz dodać do "4. Application Interface (GUI) Overview".
+any number of media folders can be added to the library. Adding a folder initiates a scanning process that builds a database of audio files — detecting whether each is a loop or one-shot sample, assigning an icon, color, BPM (for loops), key, instrument category, and generating a waveform thumbnail. This enables fast browsing and smooth importing. Scanning can be stopped at any time via the **Stop Parsing** toolbar button.
 
-Media Explorer uruchamiamy za pomocą ikonki komputera z lupą (trzecia ikona od lewej) lub z menu głównego wybierają opcję "View -> Media Explorer".
+Subfolders can be browsed and selected. A virtual **All Folders** entry at the top of the panel lets you view all files across all added folders simultaneously. The number of detected media files is shown in parentheses next to each folder name in the tree.
 
-Okno Media Explorera pokazuje się po prawej stronie od okna głównego (podobnie jak w przypadku innych okien jak box editor, page editor lub Arranger).
+An entire folder can be imported into the project by dragging it onto the grid. During the drag, the first file's icon and the total file count are shown as a visual indicator.
 
-Media Explorer składa się z czterech podstawowych części:
+When the Media Explorer is opened and a folder is selected, a quick rescan is performed to detect any files that have changed since the last session.
 
-1. Toolbar
-2. Folders Tree panel
-3. Media files list
-4. Transport control
+### 13.3 Files Panel
 
-5. Toolbar
+A collapsible panel listing the audio files in the selected folder. The panel header shows the total file count and a **Search** text field for filtering by filename or instrument category. An advanced filter button reveals additional options: BPM min/max range, Key, loop checkbox, and one-shot checkbox. When any filter is active, an indicator displays the number of active filters along with a **Clear Filters** button.
 
-W toolbarze mamy dostępne 4 przyski:
+Each file row displays (left to right): a **Play/Stop** button, an instrument icon, a colour-coded waveform (violet for low frequencies, cyan for high), a loop/one-shot indicator, BPM, key, duration in seconds, and the filename.
 
-- Add media folder - dodanie folderu z mediami
-- Remove selected folder - usunięcie wybranego folderu
-- Stop parsing - zatrzymanie procesu analizy plików medialnych w zaznaczonym folderze.
-- Auto preview one-shot on hover - odgrywanie sampli przy przesuwaniu myszką nad ikoną bez konieczności kliknięcia na przycisk play.
+Clicking **Play** starts audio preview; the transport bar appears at the bottom of the panel. When the project is playing and a loop is previewed, it is converted to the current project tempo and synchronized — the button flashes until the next bar boundary, then playback starts. Loops previewed without project playback start immediately at their original tempo.
 
-2. Folders tree panel
+Audio files can be placed on the grid using **drag and drop**. Use **Ctrl+Click** or **Shift+Click** to select multiple files, or **Shift+A** to select all files in the current folder.
 
-Jest to panel typu collapsible i możemy ukrywać lub rozwijać jego zawartość za pomocą ikonki chevron po prawej stronie nagłówka panelu.
+Hovering over a file reveals an **info** icon on the right. Clicking it opens a detail window showing the full path, file size, type, BPM, key, and duration.
 
-W nagłówku znajduje się również nazwa zaznaczonego katalogu, także nawet gdy zwiniemy całe drzewko katalogów, widzimy, który katalog
-jest zaznaczony.
+### 13.4 Transport Control
 
-Do okna możemy dodawać dowolną liczbę katalogów z plikami medialnymi. Dodanie katalogu rozpoczyna proces skanowania jego zawartości.
-Podczas skanowania tworzona jest baza danych plików zawierająca informacje o danym pliku. Każdy plik jest również poddawany analizie
-i zapisywana jest informacja o tym czy dany plik jest w kategorii loop czy signe-shot sample. Przydzielana jest rownież ikonka, kolor
-BPM dla loops, Key, kategoria instrumentu oraz tworzona jest graficzna miniatura dla danego pliku. Umożliwia to szybkie przeszukiwanie
-plików oraz ich sprawne importowanie do projektu. Proces skanowania może być długi i możemy go w każdej chwili zatrzymać klikając na
-przycisk 'Stop parsing' w toolbarze.
+When a file is being previewed, a transport bar appears at the bottom of the Files panel containing a **Play/Stop** button, a colour-coded waveform, the filename, and a **Volume** knob. The volume knob controls preview playback level. The bar remains visible even when scrolling through the file list. Clicking on the waveform scrubs the playhead to that position (not available in synchronized loop mode).
 
-Możemy również wyświetlać i zaznaczać podkatalogi w danym katalogu. Na zamej górze panelu pokazuje nam wirtualny katalog "All Folders".
-Po kliknięciu na niego mamy możliwość przeglądania wszystkich dodanych przez nas katalogów.
+# Updates
 
-Jeśli otworzymy okno Media Explorer'a i zaznaczymy jakiś katalog program dokonuje szybkiego skanowania zawartości folderu w celu ustalenia
-czy jakieś pliki nie uległy zmianie.
-
-W drzewku katalogów po prawej stronie w nawiasach pokazuje nam się liczba znalezionych plików medialnych.
-
-Zawartość danego katalou możemy importować do projektu za pomocą drag-and-drop, przesuwając go do grida. Podczas przenoszenia katalogu
-zobaczymy pierwszą ikonkę pliku z folderu oraz liczbę plików, która jest importowana.
-
-3. Files panel
-
-Files panel, podobnie jak w przypadku folders, jest panelem typu collapsible. W nagłówku możemy zobaczyć liczbę wyświetlanych plików
-pole filtra tekstowego "Search...", który umożliwia nam wyszukiwanie po nazwie pliku oraz rodzaju instrumentu. Mamy również przycisk
-pokazujący więcej opcji filtrowania: BPM min, BPM max, Key, loop checkbox, one-shot checkbox. Jeśli mamy zaznaczony jakiś filtr
-obok pola wyszukiwania pokazuje nam się informacja na temat liczby aktywnych filtrów i opcja umożliwiająca wyszyszczenie ich "Clear Filters"
-
-W oknie plików pokazuje nam się lista plików multimedialnych. Z lewej strony jest przycisk play/stop umożliwiający odtwarzanie pliku.
-Następnie mamy przydzieloną ikonkę oraz waveform pliku. Następnie ikonę przedstawiającą loop lub one-shot sample, BPM,
-key, długość w sekundach i nazwę pliku.
-
-Waveform obrazujący plik dźwiękowy jest kolorowy i odzwierciedla dominującą częstotliwość w danym momencie. Dla niskich tonów mamy fiolet
-a dla wysokich cyan.
-
-Klikając na przycisk start/stop możemy włączać/wyłączać podgląd dźwięku. Pokazuje nam się wtedy również pasek transport na dole panelu.
-Jeśli włączymy odtwarzania projektu i klikniemy na odtwarzanie loop'a, będzie on przekonwertowany do aktualnego tempa oraz
-zsynchronizowany z odtwarzanym utworem. Zatem po kliknięciu na Play przycisk miga czekając na początek następnego bara a potem zaczyna grać.
-Jeśli nie jest włączone odtwarzanie projektu loop'y odgrywane są natychmiast w oryginalnym tempie.
-
-Jeśli w Toolbarze mamy zaznaczoną opcję 'Auto preview one-shots on hover' nie musimy klikać na start poszczególnych plików. Wystarczy,
-że ustawimy kursor myszki nad ikoną pliku a usłyszymy jego podgląd. Opcja ta umożliwia szybki podgląd jedynie one-shot samples. Dla loops
-opcja została celowo wyłączona ze względu na konieczność konwersji i synchronizacji w momencie, gdy utwór jest odtwarzany, co może powodować
-nadmierne obciążenie procesora.
-
-Z panelu Files możemy umieszczać pliki medialne w projekcie za pomocą drag-and-drop. Możemy używać również kombinacji klawiszy Ctrl+Click lub
-Shift+Click do zaznaczania i przenoszenia wielu plików jednocześnie. Możemy również użyć kombinacji klawiszy Shift + A, żeby zaznaczyć
-wszystkie pliki w danym folderze.
-
-Jeśli przesuwamy myszką nad plikiem medialnym, po prawej stronie, pokaże nam się ikona info (i). Po kliknięciu na nią wyświetli nam się okno
-ze szczegółami pliku dźwiękowego takimi jak: pełna ścieżka, rozmiar pliku, typ, bpm, key oraz długość w sekundach.
-
-4. Transport Control
-
-Jeśli włączymy odtwarzanie pliku medialnego, na dole pod listą plików pojawi nam się Transport Control.
-
-Składa się z przycisku start/stop, kolorowego waveform, nazwy pliku oraz pokrętła volume control.
-
-Przy pomocy pokrętłą możemy ustawić głośność odtwarzanego sampla. Transport Control jest również przydatny w sytuacji gdy włączymy odtwarzanie
-jakiegoś dźwięku i przesuniemy całą listę. Możemy wtedy taki dźwięk bez problemu wyłączyć.
-
-Gdy dźwięk jest odtwarzamy możemy również kliknąć na waveform przesuwając kursor odtwarzania do danego miejsca (nie działa w trybie
-synchronicznego odtwarzania loop'a).
-
-### Box Editor
-
-W Box Editor -> DSP Effects 'Pitch — pitch shift (−12 to +12 semitones), without changing duration' słowo 'duration' zamienić na 'tempo'.
-
-### Project Notes
-
-W menu Help została dodana opcja 'Project Notes'. Umożliwia ona dodanie i edycję komentarzy do projektu.
-
-### Save Meta
-
-Do Loop Box Editor i Page box editor została dodana w toolbarze ikonka 'Save metadata to audio file'. Umożliwia ona zapisanie bezpośrednio
-do pliku wszystkich informacji np: nazwa, ikona, kolor, bpm, group no, key i instrument. Można zatem zapisać własne ustawienia i nie
-polegać na parserze dostarczonym przez program. Jeśli zapiszemy te dane bezpośrednio w pliku, dane te będą w użyte w przypadku
-importowania danego pliku w przyszłości do projektu. W Page Editorze również został dodany przycisk 'Save Meta' w sekcji 'File'. Umożliwia
-on zapis meta danych wszystkich zaznaczonych plików.
-
-### Toolbar i All sounds off
-
-Z toolbar'a została usunięta ikonka 'Panic button' (turn off all sounds) tak, żeby zrobić miejsce na ikonkę Media Explorer. W menu głównym w sekcji edit możemy
-nadal wybrać opcję 'Turn off all sounds'.
-
-### Master Volume
-
-Na końcu toolbar'a sekcji głównej aplikacji dodano widget 'Master Volume'. Master volume zostało usunięte z okna opcji. Możemy tu ustawić
-głośność odtwarzania całego projektu tak. Po prawej stronie od pokrętłą znajdują się wskaźniki głośności dla każdego z kanałów oraz
-wskaźniki przesterowania. Jeśli dźwięk w dowolnym momencie będzie przesterowany wskaźniki zapalą się na czerwono. Umożliwi to nam
-ustawienie odpowiedniej głośności projektu. Kliknięcie na wskaźnik przesterowania spowoduje jego wygaszenie.
-
-### Page Editor
-
-W Page Editorze została dodana opcja zaznaczania Shift + Click. Możemy zatem zaznaczyć pierwszy box, następnie przytrzymując Shift kliknąć na kolejny box, a wtedy wszystkie boxy pomiędzy pierwszym a drugim box'em zostaną zaznaczone.
-
-### Timeline
-
-W timeline została opcja zaznaczania wielu elementów używając kombinacji klawiszy Shift + Click (zaznaczenie wszystkiego pomiędzy zaznaczonymi elementami) lub Ctrl + Click (dodanie do zaznaczenia poszczególnych elementów.)
-
-### Project Settings Window
-
-- Usunięto pokrętło master volume (dodano odpowiedni widget do toolbara)
-- Usunięto 'Strict Mode'
-- Dodano 'Auto-Convert Tempo'
-- Dodano przycisk 'Clear Media DB'
-
-**Auto-Convert Tempo** - Jeśli ta opcja jest zaznaczona, wszystkie importowane loop'y zostaną automatycznie przekonwertowane do aktualnego tempa.
-
-**Clear Media DB** - Wszystkie dane z media explorera przechowywane są w bazie danych. Umożliwia to szybkie wyświetlanie plików oraz ich import.
-Obok przycisku znajduje się informacja na temat ilości zajmowanego miejsca przez bazę plików medialnych - podobnie jak w przypadku cache.
+W sekcji Edit Box Content -> Edit Loop Box i Edit Sample Box dodano 'Instrument type' dropdown and 'Key' dropdown. Instrument type jest to typ instrumentu np: 'Snare' lub 'Guitar', a Key jest opisem skali lub konkretną wysokością dźwięku np: 'C#'.

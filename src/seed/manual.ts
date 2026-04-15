@@ -24,6 +24,7 @@ const aside = `<h2>Manual</h2>
   </li>
   <li><a href="#edit-page">Page Editor</a></li>
   <li><a href="#edit-timeline">Timeline Editor</a></li>
+  <li><a href="#media-explorer">Media Explorer</a></li>
   <li><a href="#settings">Project Settings</a></li>
   <li><a href="#product-registration">Registration</a></li>
 </ul>`
@@ -44,6 +45,7 @@ const mobileToc = `<details>
     <li class="sub"><a href="#dsp-effects">DSP Effects</a></li>
     <li><a href="#edit-page">Page Editor</a></li>
     <li><a href="#edit-timeline">Timeline Editor</a></li>
+    <li><a href="#media-explorer">Media Explorer</a></li>
     <li><a href="#settings">Project Settings</a></li>
     <li><a href="#product-registration">Registration</a></li>
   </ul>
@@ -108,6 +110,7 @@ const sections = [
   <li><strong>Box Editor</strong> \u2014 <a href="#edit-box">open the editor panel</a>.</li>
   <li><strong>Page Editor</strong> \u2014 <a href="#edit-page">rearrange boxes and batch operations</a>.</li>
   <li><strong>Timeline Editor</strong> \u2014 <a href="#edit-timeline">open the Arranger to compose songs</a>.</li>
+  <li><strong>Media Explorer</strong> \u2014 <a href="#media-explorer">browse and import audio files from your file system</a>.</li>
   <li><strong>Zoom In / Zoom Out</strong> \u2014 adjust the application size for different screen resolutions.</li>
   <li><strong>Light Mode / Dark Mode</strong> \u2014 switch the color theme.</li>
 </ul>
@@ -117,6 +120,7 @@ const sections = [
   <li><strong>Online Help</strong> \u2014 open the online manual on the product website.</li>
   <li><strong>User Panel</strong> \u2014 open the user panel on the website.</li>
   <li><strong>Register Product</strong> \u2014 <a href="#product-registration">registration and license management</a>.</li>
+  <li><strong>Project Notes</strong> \u2014 add and edit comments for the current project.</li>
   <li><strong>About</strong> \u2014 display the installed version and current license information.</li>
 </ul>`,
 
@@ -127,7 +131,7 @@ const sections = [
 <p><a href="#edit-box"><img src="/images/manual/edit-box-icon.png" alt="edit box" class="ico" /></a> <strong>Box Editor</strong> \u2014 Edit individual clip parameters</p>
 <p><a href="#edit-page"><img src="/images/manual/edit-page-icon.png" alt="edit page" class="ico" /></a> <strong>Page Editor</strong> \u2014 Rearrange clips and batch operations</p>
 <p><a href="#edit-timeline"><img src="/images/manual/edit-timeline-icon.png" alt="show arranger" class="ico" /></a> <strong>Show Arranger</strong> \u2014 Switch to arrangement mode</p>
-<p><img src="/images/manual/mute-all-sounds-icon.png" alt="mute all sounds" class="ico" /> <strong>All Sounds Off</strong> \u2014 Panic button \u2014 mute all playing clips</p>
+<p><img src="/images/manual/media-explorer-icon.png" alt="media explorer" class="ico" /> <strong>Media Explorer</strong> \u2014 Browse and import audio files from your file system</p>
 <p><img src="/images/manual/refresh-device-icon.png" alt="refresh device" class="ico" /> <strong>Refresh MIDI Device</strong> \u2014 Update the state of your MIDI grid controller</p>
 
 <h4>Transport Control</h4>
@@ -137,7 +141,10 @@ const sections = [
 <h4>Tempo Widget</h4>
 <img src="/images/manual/tempo-widget.png" alt="tempo widget" class="toolbar-widget" />
 <p>Sets the current project tempo (BPM). Tap the metronome icon repeatedly to set tempo, or click the tempo value to type it manually. Use the <strong>+/\u2212</strong> buttons to adjust by 1 BPM.</p>
-<p>If any loop has a different tempo than the project, an <strong>Apply</strong> button appears \u2014 click it to convert all mismatched loops to the project tempo.</p>`,
+<p>If any loop has a different tempo than the project, an <strong>Apply</strong> button appears \u2014 click it to convert all mismatched loops to the project tempo.</p>
+
+<h4>Master Volume Widget</h4>
+<p>Located at the right end of the toolbar. Controls the overall playback volume of the project. Per-channel level meters and clipping indicators are shown to the right of the knob. Clipping indicators light up red if the audio clips at any point; click them to reset.</p>`,
 
   // 4 — Media Grid
   `<h3 id="media-grid">Media Grid</h3>
@@ -226,7 +233,7 @@ const sections = [
       <li>Original Tempo: The original BPM of the audio clip. Click the <strong>Auto</strong> button (metronome icon) to detect it automatically. Multiple clicks may yield different results as various detection algorithms are used.</li>
       <li>Loop Checkbox: <strong>Enabled</strong>: the loop repeats after finishing. <strong>Disabled</strong>: playback stops after one cycle.</li>
     </ol>
-    <p><strong>Note:</strong> \u201CConvert to Loop\u201D is replaced by <strong>Convert to Sample</strong> in the toolbar. When previewing a loop during song playback, it synchronizes with the song rather than playing from the beginning.</p>
+    <p><strong>Note:</strong> \u201CConvert to Loop\u201D is replaced by <strong>Convert to Sample</strong> in the toolbar. A <strong>Save metadata to audio file</strong> button is also available \u2014 it saves the clip\u2019s name, icon, color, BPM, group number, key, and instrument directly into the audio file so these settings are applied automatically on any future import. When previewing a loop during song playback, it synchronizes with the song rather than playing from the beginning.</p>
   </div>
 </div>
 
@@ -236,7 +243,7 @@ const sections = [
   <li><strong>Lo Pass</strong> \u2014 low-pass filter</li>
   <li><strong>Hi Pass</strong> \u2014 high-pass filter</li>
   <li><strong>Tempo</strong> \u2014 playback speed (50%\u2013200%), without changing pitch</li>
-  <li><strong>Pitch</strong> \u2014 pitch shift (\u221212 to +12 semitones), without changing duration</li>
+  <li><strong>Pitch</strong> \u2014 pitch shift (\u221212 to +12 semitones), without changing tempo</li>
   <li><strong>Fine Tune</strong> \u2014 fine pitch adjustment (works with the Pitch knob)</li>
 </ol>
 <p>Each of the first four knobs has an enable/disable toggle. Fine Tune activates automatically with Pitch. A small frequency spectrum display shows the filtered result. Combining Lo Pass and Hi Pass creates band-pass or band-reject filtering.</p>
@@ -245,7 +252,7 @@ const sections = [
   // 8 — Page Editor
   `<h3 id="edit-page">Page Editor</h3>
 <p>The <strong>Page Editor</strong> lets you organize your grid and perform batch operations on multiple boxes.</p>
-<p>Use <strong>left-click</strong> to select and drag individual boxes. Use <strong>right-click</strong> to select multiple boxes, then drag them together.</p>
+<p>Use <strong>left-click</strong> to select and drag individual boxes. Use <strong>right-click</strong> to select multiple boxes, then drag them together. Use <strong>Shift+Click</strong> to select all boxes between the first and second clicked box.</p>
 <video autoplay muted loop playsinline poster="/images/manual/page-edit.png">
   <source src="/images/manual/page-edit.mp4" type="video/mp4" />
 </video>
@@ -258,6 +265,9 @@ const sections = [
 <p><strong>Sample</strong> \u2014 convert selected loops to samples.</p>
 <p><strong>Loop</strong> \u2014 convert selected samples to loops.</p>
 <p><strong>Tempo</strong> \u2014 convert selected loops to the project tempo. <strong>(Pro)</strong></p>
+
+<h4>File</h4>
+<p><strong>Save Meta</strong> \u2014 saves the metadata (name, icon, color, BPM, group number, key, instrument) of all selected clips directly into their audio files.</p>
 
 <h4>Actions</h4>
 <p><strong>Deselect</strong> \u2014 deselect all boxes.</p>
@@ -296,6 +306,7 @@ const sections = [
 <h4 id="edit-timeline-buttons">2) Edit Buttons</h4>
 <p><img src="/images/manual/drag-buttons-icon.png" alt="drag button" class="ico" /> <strong>Drag and Drop</strong> \u2014 enabled by default. Drag clips from the Media Grid onto the timeline. Dragging a clip back to the grid removes it from the timeline. The target track is highlighted while dragging.</p>
 <p>Additional buttons: <strong>Copy</strong>, <strong>Paste</strong>, <strong>Cut</strong>, <strong>Delete</strong>, <strong>Undo</strong>, and <strong>Redo</strong>.</p>
+<p>Use <strong>Shift+Click</strong> to select all cells between two clicked positions, or <strong>Ctrl+Click</strong> to add individual cells to the current selection.</p>
 
 <h4 id="timeline-duration">3) Song Length</h4>
 <p>Sets the total song length in musical bars (minimum 16). Use the text field or +/\u2212 buttons. If reducing the length would cut existing content, an <strong>Apply</strong> button appears with a confirmation dialog.</p>
@@ -314,7 +325,6 @@ const sections = [
 <h4 id="loop-tracks">6) Loop Tracks</h4>
 <ul>
   <li><strong>8 tracks</strong> reserved for loops (one per instrument group).</li>
-  <li>In <a href="#settings">Strict Mode</a>, loops can only be placed on the track matching their group number.</li>
   <li>Adjust loop start and length by dragging the top or bottom edge of the loop cell.</li>
 </ul>
 
@@ -333,7 +343,33 @@ const sections = [
   <li>Drag clips from the grid onto the timeline to build your arrangement.</li>
 </ul>`,
 
-  // 10 — Project Settings
+  // 10 — Media Explorer
+  `<h3 id="media-explorer">Media Explorer</h3>
+<p><img src="/images/manual/media-explorer-icon.png" alt="Media Explorer" class="ico" /> The <strong>Media Explorer</strong> is a built-in browser for your audio file library. Open it from the toolbar or via <strong>View \u2192 Media Explorer</strong>.</p>
+
+<h4>Toolbar</h4>
+<ul>
+  <li><strong>Add Media Folder</strong> \u2014 add a folder to your media library.</li>
+  <li><strong>Remove Selected Folder</strong> \u2014 remove the selected folder from the library.</li>
+  <li><strong>Stop Parsing</strong> \u2014 stop the background scan at any time.</li>
+  <li><strong>Auto Preview on Hover</strong> \u2014 hover over a one-shot to hear a quick preview. (Not available for loops to keep CPU usage low.)</li>
+</ul>
+
+<h4>Folders</h4>
+<p>Shows your media folders as a collapsible tree. When you add a folder, MX GRID scans it automatically \u2014 detecting each file\u2019s type, BPM, key, instrument, and generating a waveform thumbnail for fast browsing.</p>
+<p>Select <strong>All Folders</strong> at the top to browse your entire library at once. The file count for each folder is shown in parentheses.</p>
+<p>Drag an entire folder onto the grid to import all its files. Reopening the Explorer triggers a quick rescan to pick up any new or changed files.</p>
+
+<h4>Files</h4>
+<p>Lists all audio files in the selected folder. Use the <strong>Search</strong> field to filter by name or instrument. Click the filter button to narrow results by BPM range, key, or clip type.</p>
+<p>Click <strong>Play</strong> to preview a file. When your project is playing, previewing a loop syncs it to the current tempo and the next bar \u2014 the button flashes while it waits to start.</p>
+<p>Drag files onto the grid, or use <strong>Ctrl+Click</strong> / <strong>Shift+Click</strong> to select multiple files first. Press <strong>Shift+A</strong> to select all files in the current folder.</p>
+<p>Click the info button on any file to see its full path, size, type, BPM, key, and duration.</p>
+
+<h4>Transport Bar</h4>
+<p>While a file is previewing, a transport bar appears at the bottom of the panel. It shows the waveform, filename, and a <strong>Volume</strong> knob. Click the waveform to jump to any position. The bar stays visible while you scroll.</p>`,
+
+  // 11 — Project Settings
   `<h3 id="settings">Project Settings</h3>
 <div class="two-col">
   <div>
@@ -344,16 +380,16 @@ const sections = [
       <li><strong>Controller</strong> \u2014 select a MIDI controller (None, Launchpad X).</li>
       <li><strong>Zoom</strong> \u2014 adjust the application zoom level for different screen sizes.</li>
       <li><strong>Theme</strong> \u2014 switch between Light and Dark mode.</li>
-      <li><strong>Master Volume</strong> \u2014 overall volume control to prevent clipping and distortion.</li>
       <li><strong>Latency Compensation</strong> \u2014 used in <strong>VST mode</strong> to compensate for sound card latency and ensure accurate timing.</li>
       <li><strong>Use Relative Paths</strong> \u2014 stores file paths relative to the project location. Makes it easy to <strong>move or share</strong> projects between computers.</li>
-      <li><strong>Strict Mode</strong> \u2014 enforces that loops are placed on the <a href="#loop-tracks">timeline track</a> matching their instrument group number.</li>
+      <li><strong>Auto-Convert Tempo</strong> \u2014 when enabled, all imported loops are automatically converted to the current project tempo.</li>
+      <li><strong>Clear Media DB</strong> \u2014 clears all data stored in the Media Explorer database. The current database size is displayed next to the button.</li>
       <li><strong>Clear Cache</strong> \u2014 clears cached DSP-processed audio files. The current cache size is shown next to the button.</li>
     </ul>
   </div>
 </div>`,
 
-  // 11 — Product Registration
+  // 12 — Product Registration
   `<h3 id="product-registration">Product Registration</h3>
 <div class="two-col">
   <div>

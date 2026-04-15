@@ -108,8 +108,8 @@ export default async function HomePage() {
   try {
     const payload = await getPayload({ config: await config })
     homepageData = await payload.findGlobal({ slug: 'homepage' })
-  } catch {
-    // fallback to hardcoded defaults
+  } catch (err) {
+    console.error('[HomePage] Failed to load CMS data, using fallback content:', err)
   }
 
   const data = {
