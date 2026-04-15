@@ -32,11 +32,10 @@
 - **Naming:** PascalCase for components, camelCase for functions/variables.
 - **Imports:** Use clean import maps as per Payload 3.0 configuration.
 
-## Translation & Content Workflow
+## Language Policy
 
-- The source of truth for updates is `AppDescription.md`.
-- Although notes in `## Updates` may be in Polish, all code-level strings, comments, and CMS data (seeds) must be in **English**.
-- When modifying seed files, ensure the logic remains compatible with `tsx --env-file=.env`.
+- All code-level strings, comments, UI text, and CMS data (seeds) must be in **English**.
+- Even if prompted in Polish, always provide English outputs for the codebase.
 
 ## Architecture
 
