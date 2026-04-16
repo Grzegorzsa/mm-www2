@@ -13,9 +13,10 @@
       "files": [
         {
           "description": "64-bit desktop application and VST3 plugin",
-          "fileName": "mxsetup_1.1.1.exe",
+          "version": "1.2.0",
+          "fileName": "mxsetup_1.2.0.exe",
           "size": "13.9MB",
-          "url": "https://static.mxbeats.com/installers/1.1.1/mxsetup_1.1.1.exe"
+          "url": "https://static.mxbeats.com/installers/1.2.0/mxsetup_1.2.0.exe"
         }
       ]
     },
@@ -25,15 +26,17 @@
       "files": [
         {
           "description": "Desktop application",
+          "version": "1.2.0",
           "fileName": "MX GRID.exe",
           "size": "20.5MB",
-          "url": "https://static.mxbeats.com/installers/1.1.1/arm64/MX%20GRID.exe"
+          "url": "https://static.mxbeats.com/installers/1.2.0/arm64/MX%20GRID.exe"
         },
         {
           "description": "VST3 plugin",
+          "version": "1.2.0",
           "fileName": "MX GRID.vst3",
           "size": "19.6MB",
-          "url": "https://static.mxbeats.com/installers/1.1.1/arm64/MX%20GRID.vst3"
+          "url": "https://static.mxbeats.com/installers/1.2.0/arm64/MX%20GRID.vst3"
         }
       ]
     },
@@ -43,9 +46,10 @@
       "files": [
         {
           "description": "Desktop application, AU, and VST3 plugins",
-          "fileName": "MX GRID_1.1.1.pkg",
+          "version": "1.2.0",
+          "fileName": "MX GRID_1.2.0.pkg",
           "size": "53.4MB",
-          "url": "https://static.mxbeats.com/installers/1.1.1/MX%20GRID_1.1.1.pkg"
+          "url": "https://static.mxbeats.com/installers/1.2.0/MX%20GRID_1.2.0.pkg"
         }
       ]
     }

@@ -13,6 +13,7 @@ import { Pages } from './collections/Pages'
 import { ContactSubmissions } from './collections/ContactSubmissions'
 import { Homepage } from './globals/pages/Homepage'
 import { Manual } from './globals/pages/Manual'
+import { Downloads } from './globals/pages/Downloads'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -25,7 +26,7 @@ export default buildConfig({
     },
   },
   collections: [Users, Media, Pages, ContactSubmissions],
-  globals: [Homepage, Manual],
+  globals: [Homepage, Manual, Downloads],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {
@@ -53,7 +54,7 @@ export default buildConfig({
   plugins: [
     seoPlugin({
       collections: ['pages'],
-      globals: ['homepage'],
+      globals: ['homepage', 'downloads'],
       uploadsCollection: 'media',
       generateTitle: ({ doc }) => `MXbeats — ${doc.title}`,
       generateDescription: ({ doc }) => doc.excerpt,

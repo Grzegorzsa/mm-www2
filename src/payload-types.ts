@@ -94,10 +94,12 @@ export interface Config {
   globals: {
     homepage: Homepage;
     manual: Manual;
+    downloads: Download;
   };
   globalsSelect: {
     homepage: HomepageSelect<false> | HomepageSelect<true>;
     manual: ManualSelect<false> | ManualSelect<true>;
+    downloads: DownloadsSelect<false> | DownloadsSelect<true>;
   };
   locale: null;
   widgets: {
@@ -496,6 +498,57 @@ export interface Manual {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "downloads".
+ */
+export interface Download {
+  id: number;
+  intro: {
+    /**
+     * Introductory paragraph shown above the download list
+     */
+    text: string;
+    /**
+     * Note shown at the bottom of the page (e.g. registration requirement)
+     */
+    note: string;
+  };
+  /**
+   * Download groups (e.g. Windows, macOS)
+   */
+  downloads: {
+    /**
+     * Group heading (e.g. "Installer for MS Windows 64 bit")
+     */
+    title: string;
+    /**
+     * Individual files available for this group
+     */
+    files: {
+      description: string;
+      /**
+       * Version number (e.g. 1.2.0)
+       */
+      version?: string | null;
+      fileName: string;
+      size: string;
+      url: string;
+      id?: string | null;
+    }[];
+    id?: string | null;
+  }[];
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homepage_select".
  */
 export interface HomepageSelect<T extends boolean = true> {
@@ -569,6 +622,44 @@ export interface ManualSelect<T extends boolean = true> {
     | {
         html?: T;
         id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "downloads_select".
+ */
+export interface DownloadsSelect<T extends boolean = true> {
+  intro?:
+    | T
+    | {
+        text?: T;
+        note?: T;
+      };
+  downloads?:
+    | T
+    | {
+        title?: T;
+        files?:
+          | T
+          | {
+              description?: T;
+              version?: T;
+              fileName?: T;
+              size?: T;
+              url?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
       };
   updatedAt?: T;
   createdAt?: T;
