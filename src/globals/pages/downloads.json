@@ -1,0 +1,77 @@
+{
+  "id": 1,
+
+  "intro": {
+    "text": "Download the latest version of MXbeats. Create a free account to access all available downloads and manage your licenses.",
+    "note": "You need a free account to download and activate MXbeats.  Please register — it's free and takes less than a minute."
+  },
+
+  "downloads": [
+    {
+      "id": "69d4f804ea8dac6e8cdd96f9",
+      "title": "Installer for MS Windows 64 bit",
+      "files": [
+        {
+          "description": "64-bit desktop application and VST3 plugin",
+          "fileName": "mxsetup_1.1.1.exe",
+          "size": "13.9MB",
+          "url": "https://static.mxbeats.com/installers/1.1.1/mxsetup_1.1.1.exe"
+        }
+      ]
+    },
+    {
+      "id": "69d4f804ea8dac7984dd96f9",
+      "title": "Windows ARM64 - experimental",
+      "files": [
+        {
+          "description": "Desktop application",
+          "fileName": "MX GRID.exe",
+          "size": "20.5MB",
+          "url": "https://static.mxbeats.com/installers/1.1.1/arm64/MX%20GRID.exe"
+        },
+        {
+          "description": "VST3 plugin",
+          "fileName": "MX GRID.vst3",
+          "size": "19.6MB",
+          "url": "https://static.mxbeats.com/installers/1.1.1/arm64/MX%20GRID.vst3"
+        }
+      ]
+    },
+    {
+      "id": "69937804ea8dac6e8cdd96f9",
+      "title": "Universal x64 and ARM installer for macOS 10.13 and above",
+      "files": [
+        {
+          "description": "Desktop application, AU, and VST3 plugins",
+          "fileName": "MX GRID_1.1.1.pkg",
+          "size": "53.4MB",
+          "url": "https://static.mxbeats.com/installers/1.1.1/MX%20GRID_1.1.1.pkg"
+        }
+      ]
+    }
+  ],
+
+  "meta": {
+    "title": "Downloads — MXbeats",
+    "description": "Download MXbeats music looping software",
+
+    "image": {
+      "id": 1,
+      "alt": "MX Beats Slide",
+      "updatedAt": "2026-04-07T12:25:31.302Z",
+      "createdAt": "2026-04-07T12:11:17.730Z",
+      "url": "/api/media/file/mx_beats_side01.jpg",
+      "thumbnailURL": null,
+      "filename": "mx_beats_side01.jpg",
+      "mimeType": "image/jpeg",
+      "filesize": 216647,
+      "width": 1800,
+      "height": 846,
+      "focalX": 50,
+      "focalY": 50
+    }
+  },
+  "updatedAt": "2026-04-08T17:24:02.826Z",
+  "createdAt": "2026-04-07T12:11:17.827Z",
+  "globalType": "downloads"
+}
