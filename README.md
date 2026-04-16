@@ -2,7 +2,9 @@
 
 `pnpm run dev` - start dev mode
 
-`pnpm run seed:manual` - run content seed
+`pnpm run seed:manual` - run manual seed
+`pnpm run seed:homepage` - run home seed
+`pnpm run seed:downloads` - run downloads seed
 
 ## Update Manual
 

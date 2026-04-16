@@ -2,16 +2,18 @@
   "id": 1,
 
   "intro": {
-    "text": "Download the latest version of MXbeats.  We offer installers for Windows and macOS, as well as a collection of presets to get you started.",
-    "note": "You need a free account to and activate MXbeats.  Please register — it's free and takes less than a minute."
+    "text": "Download the latest version of MXbeats. We offer installers for Windows and macOS, as well as a collection of presets to get you started.",
+    "note": "You need a free account to and activate MXbeats. Please register — it's free and takes less than a minute."
   },
 
   "downloads": [
     {
-      "id": "69d4f804ea8dac6e8cdd96f9",
+      "id": "69e0e2638753728fb4042692",
       "title": "Installer for MS Windows 64 bit",
+
       "files": [
         {
+          "id": "69e0e2638753728fb4042691",
           "description": "64-bit desktop application and VST3 plugin",
           "version": "1.2.0",
           "fileName": "mxsetup_1.2.0.exe",
@@ -20,18 +22,23 @@
         }
       ]
     },
+
     {
-      "id": "69d4f804ea8dac7984dd96f9",
+      "id": "69e0e2638753728fb4042695",
       "title": "Windows ARM64 - experimental",
+
       "files": [
         {
+          "id": "69e0e2638753728fb4042693",
           "description": "Desktop application",
           "version": "1.2.0",
           "fileName": "MX GRID.exe",
           "size": "20.5MB",
           "url": "https://static.mxbeats.com/installers/1.2.0/arm64/MX%20GRID.exe"
         },
+
         {
+          "id": "69e0e2638753728fb4042694",
           "description": "VST3 plugin",
           "version": "1.2.0",
           "fileName": "MX GRID.vst3",
@@ -40,11 +47,14 @@
         }
       ]
     },
+
     {
-      "id": "69937804ea8dac6e8cdd96f9",
+      "id": "69e0e2638753728fb4042697",
       "title": "Universal x64 and ARM installer for macOS 10.13 and above",
+
       "files": [
         {
+          "id": "69e0e2638753728fb4042696",
           "description": "Desktop application, AU, and VST3 plugins",
           "version": "1.2.0",
           "fileName": "MX GRID_1.2.0.pkg",
@@ -53,11 +63,14 @@
         }
       ]
     },
+
     {
-      "id": "69937804876dac6e8cdd96f9",
+      "id": "69e0e2638753728fb4042699",
       "title": "Presets",
+
       "files": [
         {
+          "id": "69e0e2638753728fb4042698",
           "description": "Demo Content",
           "version": "1.0.0",
           "fileName": "Showcase.zip",
@@ -88,7 +101,7 @@
       "focalY": 50
     }
   },
-  "updatedAt": "2026-04-08T17:24:02.826Z",
-  "createdAt": "2026-04-07T12:11:17.827Z",
+  "updatedAt": "2026-04-16T13:21:39.241Z",
+  "createdAt": "2026-04-16T13:20:14.254Z",
   "globalType": "downloads"
 }

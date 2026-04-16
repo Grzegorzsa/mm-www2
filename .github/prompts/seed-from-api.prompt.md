@@ -11,6 +11,7 @@ Jesteś ekspertem od struktury danych Payload CMS. Musisz zaktualizować istniej
 
 - **HomePage:** Source #file:src/globals/pages/homepage.json -> Target #file:src/seed/homepage.ts
 - **ManualPage:** Source #file:src/globals/pages/manual.json -> Target #file:src/seed/manual.ts
+- **DownloadsPage:** Source #file:src/globals/pages/downloads.json -> Target #file:src/seed/downloads.ts
 
 **2. Collections (Wiele stron w jednym pliku):**
 

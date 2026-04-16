@@ -220,18 +220,29 @@ const pages = [
     slug: 'terms-and-conditions',
     pageType: 'policy',
     content: termsContent,
+    meta: {
+      description: 'Read the Terms and Conditions for using MXbeats software and website.',
+    },
   },
   {
     title: 'Privacy Policy',
     slug: 'privacy-policy',
     pageType: 'policy',
     content: privacyContent,
+    meta: {
+      description:
+        'Read the MXbeats Privacy Policy to understand how we collect and use your data.',
+    },
   },
   {
     title: 'Refund Policy',
     slug: 'refund-policy',
     pageType: 'policy',
     content: refundContent,
+    meta: {
+      description:
+        'Read the MXbeats Refund Policy to understand our refund eligibility and process.',
+    },
   },
 ]
 

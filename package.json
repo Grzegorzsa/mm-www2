@@ -14,6 +14,7 @@
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "seed": "cross-env NODE_OPTIONS=--no-deprecation tsx --env-file=.env src/seed/pages.ts",
     "seed:homepage": "cross-env NODE_OPTIONS=--no-deprecation tsx --env-file=.env src/seed/homepage.ts",
+    "seed:downloads": "cross-env NODE_OPTIONS=--no-deprecation tsx --env-file=.env src/seed/downloads.ts",
     "seed:manual": "cross-env NODE_OPTIONS=--no-deprecation tsx --env-file=.env src/seed/manual.ts",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "test": "pnpm run test:int && pnpm run test:e2e",
