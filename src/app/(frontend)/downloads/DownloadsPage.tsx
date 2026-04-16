@@ -56,11 +56,12 @@ export default async function DownloadsPage() {
                     className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pt-3 border-t border-gray-100 first:pt-0 first:border-t-0"
                   >
                     <div>
-                      <p className="text-gray-700 text-sm">{file.description}</p>
+                      <p className="text-gray-700 text-sm">
+                        {file.description} (<span>{file.size}</span>)
+                      </p>
                       <div className="flex gap-4 mt-1 text-xs text-gray-400">
-                        {file.version && <span>v{file.version}</span>}
                         <span>{file.fileName}</span>
-                        <span>{file.size}</span>
+                        {file.version && <span>ver: {file.version}</span>}
                       </div>
                     </div>
                     <a
