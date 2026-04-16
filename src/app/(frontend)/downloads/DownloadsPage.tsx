@@ -4,11 +4,6 @@ import config from '@/payload.config'
 import fallbackContent from '@/globals/pages/downloads.json'
 import { Download } from 'lucide-react'
 
-export const metadata: Metadata = {
-  title: 'Downloads — MXbeats',
-  description: 'Download MXbeats music looping software',
-}
-
 type DownloadFile = {
   description: string
   version?: string

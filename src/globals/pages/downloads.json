@@ -2,8 +2,8 @@
   "id": 1,
 
   "intro": {
-    "text": "Download the latest version of MXbeats. Create a free account to access all available downloads and manage your licenses.",
-    "note": "You need a free account to download and activate MXbeats.  Please register — it's free and takes less than a minute."
+    "text": "Download the latest version of MXbeats.  We offer installers for Windows and macOS, as well as a collection of presets to get you started.",
+    "note": "You need a free account to and activate MXbeats.  Please register — it's free and takes less than a minute."
   },
 
   "downloads": [
@@ -50,6 +50,19 @@
           "fileName": "MX GRID_1.2.0.pkg",
           "size": "53.4MB",
           "url": "https://static.mxbeats.com/installers/1.2.0/MX%20GRID_1.2.0.pkg"
+        }
+      ]
+    },
+    {
+      "id": "69937804876dac6e8cdd96f9",
+      "title": "Presets",
+      "files": [
+        {
+          "description": "Demo Content",
+          "version": "1.0.0",
+          "fileName": "Showcase.zip",
+          "size": "120MB",
+          "url": "https://static.mxbeats.com/presets/Showcase.zip"
         }
       ]
     }
