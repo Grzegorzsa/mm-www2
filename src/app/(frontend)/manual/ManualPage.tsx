@@ -2,6 +2,7 @@
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import fallbackContent from '@/globals/pages/manual.json'
+import HtmlSection from './HtmlSection'
 import './manual.css'
 
 export const metadata: Metadata = {
@@ -34,7 +35,7 @@ export default async function ManualPage() {
           <div className="mobile-toc" dangerouslySetInnerHTML={{ __html: manual.mobileToc }} />
 
           {manual.sections.map((section: any, i: number) => (
-            <section key={section.id ?? i} dangerouslySetInnerHTML={{ __html: section.html }} />
+            <HtmlSection key={section.id ?? i} html={section.html} />
           ))}
         </div>
       </div>
