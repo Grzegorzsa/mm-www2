@@ -1,6 +1,6 @@
 ---
 description: Prosty testowy prompt diagnostyczny.
-model: gpt-4.1
+model: GPT-4.1 (copilot)
 ---
 
 Zignoruj kontekst projektu. To jest test połączenia z plikiem .prompt.md.

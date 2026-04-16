@@ -488,3 +488,7 @@ Hovering over a file reveals an **info** icon on the right. Clicking it opens a 
 ### 13.4 Transport Control
 
 When a file is being previewed, a transport bar appears at the bottom of the Files panel containing a **Play/Stop** button, a colour-coded waveform, the filename, and a **Volume** knob. The volume knob controls preview playback level. The bar remains visible even when scrolling through the file list. Clicking on the waveform scrubs the playhead to that position (not available in synchronized loop mode).
+
+## Updates
+
+1. Main Menu > View - timeline editor - zamiast 'Timeline editor' jest teraz 'Arranger', więc tekst "Timeline Editor — open the Arranger to compose songs." powinien zostać poprawiony

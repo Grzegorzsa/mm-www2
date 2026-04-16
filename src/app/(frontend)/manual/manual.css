@@ -178,7 +178,7 @@
     /* Nested sublists */
     & :is(ol, ul) ul {
       @apply list-none font-normal;
-      padding-left: 0.75rem;
+      padding-left: 0;
       margin-top: 0.25rem;
       margin-bottom: 0;
     }
@@ -193,7 +193,7 @@
       margin-bottom: 0.5rem;
     }
 
-    & .two-col img {
+    & .two-col img:not(.ico, .toolbar-widget) {
       width: 100%;
     }
 
