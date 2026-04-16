@@ -143,6 +143,7 @@ const sections = [
 <p>If any loop has a different tempo than the project, an <strong>Apply</strong> button appears \u2014 click it to convert all mismatched loops to the project tempo.</p>
 
 <h4>Master Volume Widget</h4>
+<img src="/images/manual/master-volume-widget.png" alt="master volume widget" class="toolbar-widget" />
 <p>Controls the overall playback volume of the project. Per-channel level meters and clipping indicators are shown to the right of the knob. Clipping indicators light up red if the audio clips at any point; click them to reset.</p>`,
 
   // 4 — Media Grid
@@ -198,24 +199,25 @@ const sections = [
     <ol>
       <li>Toolbar:
         <ul>
-          <li><strong>Load file(s)</strong> \u2014 load one or more audio files. Additional files fill consecutive empty slots.</li>
-          <li><strong>Load folder</strong> \u2014 load all audio files from a folder.</li>
-          <li><strong>Convert to Loop</strong> \u2014 converts the sample into a loop.</li>
-          <li><strong>Open in external app</strong> \u2014 edit the file in your system\u2019s default audio editor (e.g., Audacity). <strong>(Pro)</strong></li>
-          <li><strong>Clear Box</strong> \u2014 remove the clip and reset the slot.</li>
+          <li><img src="/images/manual/load-files-icon.png" alt="load files" class="ico" /> <strong>Load file(s)</strong> \u2014 load one or more audio files. Additional files fill consecutive empty slots.</li>
+          <li><img src="/images/manual/load-folder-icon.png" alt="load folder" class="ico" /> <strong>Load folder</strong> \u2014 load all audio files from a folder.</li>
+          <li><img src="/images/manual/convert-to-loop-icon.png" alt="convert to loop" class="ico" /> <strong>Convert to Loop</strong> \u2014 converts the sample into a loop.</li>
+          <li><img src="/images/manual/open-in-editor-icon.png" alt="open in editor" class="ico" /> <strong>Open in external app</strong> \u2014 edit the file in your system\u2019s default audio editor (e.g., Audacity). <strong>(Pro)</strong></li>
+          <li><img src="/images/manual/save-meta-icon.png" alt="save meta" class="ico" /> <strong>Save Meta</strong> \u2014 saves the metadata (name, icon, color...)</li>
+          <li><img src="/images/manual/clear-box-icon.png" alt="clear box" class="ico" /> <strong>Clear Box</strong> \u2014 remove the clip and reset the slot.</li>
         </ul>
       </li>
       <li>Playback: Play/Stop button and the file path of the loaded audio file.</li>
       <li>Waveform: Visual waveform thumbnail. Click anywhere to start playback from that position. Shows current time and total duration.</li>
       <li>Name: Text field for the clip name (max <strong>12 characters</strong>). The name appears on the grid box.</li>
       <li>Icon: Choose from <strong>200+ music-related icons</strong>. Select the empty icon to display the name in the center instead.</li>
-      <li>Volume &amp; Pan: <strong>Vol</strong>: 0%\u2013200%. <strong>Pan</strong>: \u2212100% (left) to +100% (right).</li>
       <li>Color: Choose one of 16 colors. Colors are mirrored on your MIDI controller.</li>
+      <li>Volume &amp; Pan: <strong>Vol</strong>: 0%\u2013200%. <strong>Pan</strong>: \u2212100% (left) to +100% (right).</li>
       <li>Outputs: Route audio to specific stereo pairs (up to <strong>32 channels</strong>). Available in DAW plugin mode for adding external effects.</li>
+      <li>Instrument Type: Choose the instrument category (e.g., Snare, Guitar, Bass). Helps identify and filter clips in the Media Explorer.</li>
       <li>Choke Samples: Comma-separated <strong>Box IDs</strong> that will be silenced when this sample triggers (e.g., closed hi-hat stopping an open hi-hat).</li>
       <li>Enable Velocity: When enabled, volume varies based on MIDI strike force. Requires a velocity-sensitive controller.</li>
       <li>Stop on Note Off: When enabled, the sample stops immediately on mouse/pad release. When disabled (default), the sample plays to completion.</li>
-      <li>Instrument Type: Choose the instrument category (e.g., Snare, Guitar, Bass). Helps identify and filter clips in the Media Explorer.</li>
       <li>Key: Choose the musical key or scale of the clip (e.g., C#, Dm). Useful for organizing clips by pitch.</li>
     </ol>
   </div>
@@ -230,13 +232,11 @@ const sections = [
   <div>
     <ol>
       <li>Group Number: Assign the loop to one of <strong>8 instrument groups</strong>. When another loop from the same group starts, the previous one stops automatically.</li>
-      <li>Duration: The loop length in <strong>musical bars</strong>.</li>
       <li>Original Tempo: The original BPM of the audio clip. Click the <strong>Auto</strong> button (metronome icon) to detect it automatically. Multiple clicks may yield different results as various detection algorithms are used.</li>
+      <li>Duration: The loop length in <strong>musical bars</strong>.</li>
       <li>Loop Checkbox: <strong>Enabled</strong>: the loop repeats after finishing. <strong>Disabled</strong>: playback stops after one cycle.</li>
-      <li>Instrument Type: Choose the instrument category (e.g., Snare, Guitar, Bass). Helps identify and filter clips in the Media Explorer.</li>
-      <li>Key: Choose the musical key or scale of the clip (e.g., C#, Dm). Useful for organizing clips by pitch.</li>
     </ol>
-    <p><strong>Note:</strong> \u201CConvert to Loop\u201D is replaced by <strong>Convert to Sample</strong> in the toolbar. A <strong>Save metadata to audio file</strong> button is also available \u2014 it saves the clip\u2019s name, icon, color, BPM, group number, key, and instrument directly into the audio file so these settings are applied automatically on any future import. When previewing a loop during song playback, it synchronizes with the song rather than playing from the beginning.</p>
+    <p><strong>Note:</strong> \u201CConvert to Loop\u201D is replaced by <strong>Convert to Sample</strong> in the toolbar. A <strong>Save metadata to audio file</strong> saves the clip\u2019s name, icon, color, BPM, group number, key, and instrument directly into the audio file so these settings are applied automatically on any future import.</p>
   </div>
 </div>
 
@@ -350,12 +350,16 @@ const sections = [
   `<h3 id="media-explorer">Media Explorer</h3>
 <p><img src="/images/manual/media-explorer-icon.png" alt="Media Explorer" class="ico" /> The <strong>Media Explorer</strong> is a built-in tool designed for cataloguing, quickly finding, and previewing audio files on your computer. Open it from the toolbar or via <strong>View \u2192 Media Explorer</strong>.</p>
 
+<video autoplay muted loop playsinline poster="/images/manual/media-explorer.png">
+  <source src="/images/manual/media-explorer.mp4" type="video/mp4" />
+</video>
+
 <h4>Toolbar</h4>
 <ul>
-  <li><strong>Add Media Folder</strong> \u2014 add a folder to your media library.</li>
-  <li><strong>Remove Selected Folder</strong> \u2014 remove the selected folder from the library.</li>
-  <li><strong>Stop Parsing</strong> \u2014 stop the background scan at any time.</li>
-  <li><strong>Auto Preview on Hover</strong> \u2014 hover over a one-shot to hear a quick preview. (Not available for loops to keep CPU usage low.)</li>
+  <li><img src="/images/manual/add-folder-icon.png" alt="Add Folder" class="ico" /> <strong>Add Media Folder</strong> \u2014 add a folder to your media library.</li>
+  <li><img src="/images/manual/remove-folder-icon.png" alt="Add Folder" class="ico" /> <strong>Remove Selected Folder</strong> \u2014 remove the selected folder from the library.</li>
+  <li><img src="/images/manual/stop-parsing-icon.png" alt="Add Folder" class="ico" /> <strong>Stop Parsing</strong> \u2014 stop the background scan at any time.</li>
+  <li><img src="/images/manual/auto-preview-icon.png" alt="Add Folder" class="ico" /> <strong>Auto Preview on Hover</strong> \u2014 hover over a one-shot to hear a quick preview. (Not available for loops to keep CPU usage low.)</li>
 </ul>
 
 <h4>Folders</h4>
@@ -386,8 +390,8 @@ const sections = [
       <li><strong>Latency Compensation</strong> \u2014 used in <strong>VST mode</strong> to compensate for sound card latency and ensure accurate timing.</li>
       <li><strong>Use Relative Paths</strong> \u2014 stores file paths relative to the project location. Makes it easy to <strong>move or share</strong> projects between computers.</li>
       <li><strong>Auto-Convert Tempo</strong> \u2014 when enabled, all imported loops are automatically converted to the current project tempo.</li>
-      <li><strong>Clear Media DB</strong> \u2014 clears all data stored in the Media Explorer database. The current database size is displayed next to the button.</li>
       <li><strong>Clear Cache</strong> \u2014 clears cached DSP-processed audio files. The current cache size is shown next to the button.</li>
+      <li><strong>Clear Media DB</strong> \u2014 clears all data stored in the Media Explorer database. The current database size is displayed next to the button.</li>
     </ul>
   </div>
 </div>`,
