@@ -59,7 +59,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate className="space-y-4">
+    <form onSubmit={handleSubmit} noValidate className="space-y-4 text-gray-800">
       {serverError && (
         <div className="bg-red-50 border border-red-200 rounded p-3 text-red-700 text-sm">
           {serverError}
