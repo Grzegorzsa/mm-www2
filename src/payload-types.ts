@@ -64,10 +64,12 @@ export type SupportedTimezones =
 export interface Config {
   auth: {
     'admin-users': AdminUserAuthOperations;
+    users: UserAuthOperations;
   };
   blocks: {};
   collections: {
     'admin-users': AdminUser;
+    users: User;
     media: Media;
     pages: Page;
     'contact-submissions': ContactSubmission;
@@ -79,6 +81,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     'admin-users': AdminUsersSelect<false> | AdminUsersSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
@@ -105,13 +108,31 @@ export interface Config {
   widgets: {
     collections: CollectionsWidget;
   };
-  user: AdminUser;
+  user: AdminUser | User;
   jobs: {
     tasks: unknown;
     workflows: unknown;
   };
 }
 export interface AdminUserAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
+export interface UserAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -153,6 +174,41 @@ export interface AdminUser {
     | null;
   password?: string | null;
   collection: 'admin-users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  /**
+   * Prevent this user from logging in
+   */
+  blocked?: boolean | null;
+  /**
+   * Optional notes about this user
+   */
+  info?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  email: string;
+  resetPasswordToken?: string | null;
+  resetPasswordExpiration?: string | null;
+  salt?: string | null;
+  hash?: string | null;
+  _verified?: boolean | null;
+  _verificationToken?: string | null;
+  loginAttempts?: number | null;
+  lockUntil?: string | null;
+  sessions?:
+    | {
+        id: string;
+        createdAt?: string | null;
+        expiresAt: string;
+      }[]
+    | null;
+  password?: string | null;
+  collection: 'users';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -251,6 +307,10 @@ export interface PayloadLockedDocument {
         value: number | AdminUser;
       } | null)
     | ({
+        relationTo: 'users';
+        value: number | User;
+      } | null)
+    | ({
         relationTo: 'media';
         value: number | Media;
       } | null)
@@ -263,10 +323,15 @@ export interface PayloadLockedDocument {
         value: number | ContactSubmission;
       } | null);
   globalSlug?: string | null;
-  user: {
-    relationTo: 'admin-users';
-    value: number | AdminUser;
-  };
+  user:
+    | {
+        relationTo: 'admin-users';
+        value: number | AdminUser;
+      }
+    | {
+        relationTo: 'users';
+        value: number | User;
+      };
   updatedAt: string;
   createdAt: string;
 }
@@ -276,10 +341,15 @@ export interface PayloadLockedDocument {
  */
 export interface PayloadPreference {
   id: number;
-  user: {
-    relationTo: 'admin-users';
-    value: number | AdminUser;
-  };
+  user:
+    | {
+        relationTo: 'admin-users';
+        value: number | AdminUser;
+      }
+    | {
+        relationTo: 'users';
+        value: number | User;
+      };
   key?: string | null;
   value?:
     | {
@@ -316,6 +386,32 @@ export interface AdminUsersSelect<T extends boolean = true> {
   resetPasswordExpiration?: T;
   salt?: T;
   hash?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  blocked?: T;
+  info?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  _verified?: T;
+  _verificationToken?: T;
   loginAttempts?: T;
   lockUntil?: T;
   sessions?:

@@ -36,13 +36,13 @@ const Header = () => {
         {/* Desktop auth */}
         <div className="hidden md:flex items-center gap-4">
           <Link
-            href="/login"
+            href="/sign-in"
             className="text-sm tracking-widest uppercase hover:text-gray-300 transition-colors"
           >
             Login
           </Link>
           <Link
-            href="/register"
+            href="/sign-up"
             className="text-sm tracking-widest uppercase border border-white px-4 py-1.5 hover:bg-white hover:text-black transition-colors"
           >
             Register
@@ -74,14 +74,14 @@ const Header = () => {
           ))}
           <div className="flex gap-4 mt-4">
             <Link
-              href="/login"
+              href="/sign-in"
               className="text-sm tracking-widest uppercase hover:text-gray-300"
               onClick={() => setMenuOpen(false)}
             >
               Login
             </Link>
             <Link
-              href="/register"
+              href="/sign-up"
               className="text-sm tracking-widest uppercase border border-white px-4 py-1.5 hover:bg-white hover:text-black transition-colors"
               onClick={() => setMenuOpen(false)}
             >

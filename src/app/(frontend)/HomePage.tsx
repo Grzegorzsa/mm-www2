@@ -254,7 +254,7 @@ export default async function HomePage() {
                 </td>
                 <td className="bg-white border border-white border-b-4 text-center px-6 py-4">
                   <Link
-                    href="/register"
+                    href="/sign-in"
                     className="inline-block bg-[#3fbef2] text-white px-6 py-2 text-sm tracking-widest uppercase hover:bg-[#2da8d8] transition-colors font-medium rounded"
                   >
                     Register

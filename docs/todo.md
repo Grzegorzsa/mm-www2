@@ -17,7 +17,18 @@ pliki w projekcie:
 ## User Control
 
 Dodać pełną obsługę użytkowników. Musi być oddzielna od użytkowników z panelu administracyjnego.
-Może najlepiej zmienić nazwę obecnej kolekcji Users do AdminUsers
+Zmieniliśmy nazwę użytkowników panelu admina z Users na AdminUsers.
+Teraz dodajmy kolekcję Users, która będzie zawierała użytkowników platformy.
+Nie powinno być oddzielnej nazwy dla użytkownika. Do identyfikacji używajmy jedynie adresu email - nie
+będą oni nic publikować na stronie a jedynie będą mieć możliwość robienia zakupów i logowania do
+platformy.
+
+Czyli użytkownik powinien mieć pola:
+
+- email
+- confirmed
+- blocked
+- role - użytkownicy mogą miec różne role. Od zwykłych użytkowników, do
 
 ## User Panel
 

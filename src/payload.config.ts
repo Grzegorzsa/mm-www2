@@ -8,6 +8,7 @@ import sharp from 'sharp'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 
 import { AdminUsers } from './collections/AdminUsers'
+import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { ContactSubmissions } from './collections/ContactSubmissions'
@@ -25,7 +26,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [AdminUsers, Media, Pages, ContactSubmissions],
+  collections: [AdminUsers, Users, Media, Pages, ContactSubmissions],
   globals: [Homepage, Manual, Downloads],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
