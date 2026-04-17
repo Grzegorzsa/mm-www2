@@ -189,6 +189,10 @@ export interface User {
    * Optional notes about this user
    */
   info?: string | null;
+  /**
+   * User opted in to receive marketing emails
+   */
+  marketingConsent?: boolean | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -403,6 +407,7 @@ export interface AdminUsersSelect<T extends boolean = true> {
 export interface UsersSelect<T extends boolean = true> {
   blocked?: T;
   info?: T;
+  marketingConsent?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;

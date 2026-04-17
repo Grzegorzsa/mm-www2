@@ -85,6 +85,15 @@ export const Users: CollectionConfig = {
         description: 'Optional notes about this user',
       },
     },
+    {
+      name: 'marketingConsent',
+      type: 'checkbox',
+      defaultValue: false,
+      label: 'Inform me about promotions and updates',
+      admin: {
+        description: 'User opted in to receive marketing emails',
+      },
+    },
   ],
   timestamps: true,
 }
