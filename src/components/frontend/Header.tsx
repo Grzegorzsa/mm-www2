@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { Menu, X, User } from 'lucide-react'
 import Logo from './Logo'
@@ -14,6 +14,16 @@ const navLinks = [
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false)
+
+  useEffect(() => {
+    fetch('/api/users/me', { credentials: 'include' })
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data?.user?.collection === 'users') setLoggedIn(true)
+      })
+      .catch(() => {})
+  }, [])
 
   return (
     <header className="fixed top-0 w-full z-50 bg-black text-white">
@@ -35,18 +45,30 @@ const Header = () => {
 
         {/* Desktop auth */}
         <div className="hidden md:flex items-center gap-4">
-          <Link
-            href="/sign-in"
-            className="text-sm tracking-widest uppercase hover:text-gray-300 transition-colors"
-          >
-            Login
-          </Link>
-          <Link
-            href="/sign-up"
-            className="text-sm tracking-widest uppercase border border-white px-4 py-1.5 hover:bg-white hover:text-black transition-colors"
-          >
-            Register
-          </Link>
+          {loggedIn ? (
+            <Link
+              href="/panel/purchases"
+              className="flex items-center gap-2 text-sm tracking-widest uppercase hover:text-gray-300 transition-colors"
+            >
+              <User size={15} />
+              User Panel
+            </Link>
+          ) : (
+            <>
+              <Link
+                href="/sign-in"
+                className="text-sm tracking-widest uppercase hover:text-gray-300 transition-colors"
+              >
+                Login
+              </Link>
+              <Link
+                href="/sign-up"
+                className="text-sm tracking-widest uppercase border border-white px-4 py-1.5 hover:bg-white hover:text-black transition-colors"
+              >
+                Register
+              </Link>
+            </>
+          )}
         </div>
 
         {/* Mobile menu button */}
@@ -73,20 +95,33 @@ const Header = () => {
             </Link>
           ))}
           <div className="flex gap-4 mt-4">
-            <Link
-              href="/sign-in"
-              className="text-sm tracking-widest uppercase hover:text-gray-300"
-              onClick={() => setMenuOpen(false)}
-            >
-              Login
-            </Link>
-            <Link
-              href="/sign-up"
-              className="text-sm tracking-widest uppercase border border-white px-4 py-1.5 hover:bg-white hover:text-black transition-colors"
-              onClick={() => setMenuOpen(false)}
-            >
-              Register
-            </Link>
+            {loggedIn ? (
+              <Link
+                href="/panel/purchases"
+                className="flex items-center gap-2 text-sm tracking-widest uppercase hover:text-gray-300"
+                onClick={() => setMenuOpen(false)}
+              >
+                <User size={15} />
+                User Panel
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/sign-in"
+                  className="text-sm tracking-widest uppercase hover:text-gray-300"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/sign-up"
+                  className="text-sm tracking-widest uppercase border border-white px-4 py-1.5 hover:bg-white hover:text-black transition-colors"
+                  onClick={() => setMenuOpen(false)}
+                >
+                  Register
+                </Link>
+              </>
+            )}
           </div>
         </nav>
       )}

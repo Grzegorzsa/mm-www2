@@ -4,7 +4,7 @@ import { useState, type ChangeEvent, type FormEvent } from 'react'
 
 function SectionCard({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="rounded-xl border border-gray-200 bg-white p-6 mb-4">
+    <div className="rounded-xl border border-gray-200 bg-white p-6 mb-4   max-w-xl">
       <h2 className="text-sm font-semibold text-gray-900 mb-4">{title}</h2>
       {children}
     </div>
@@ -12,7 +12,7 @@ function SectionCard({ title, children }: { title: string; children: React.React
 }
 
 function inputClass(hasError?: boolean) {
-  return `block border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black w-full max-w-sm ${hasError ? 'border-red-400' : 'border-gray-300'}`
+  return `block border rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black w-full ${hasError ? 'border-red-400' : 'border-gray-300'}`
 }
 
 export default function AccountForms({

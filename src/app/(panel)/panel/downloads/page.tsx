@@ -39,7 +39,7 @@ export default async function PanelDownloadsPage() {
       <h1 className="text-xl font-semibold text-gray-900 mb-1">Downloads</h1>
       <p className="text-sm text-gray-500 mb-8">Download your licensed software</p>
 
-      <div className="space-y-4">
+      <div className="space-y-4 max-w-3xl">
         {downloads.map((group, groupIndex) => (
           <div
             key={group.id ?? groupIndex}
