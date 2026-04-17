@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import ForgotPasswordForm from './ForgotPasswordForm'
+import ClientOnly from '@/components/ClientOnly'
 
 export const metadata: Metadata = {
   title: 'Forgot Password — MXbeats',
@@ -12,7 +13,9 @@ export default function ForgotPasswordPage() {
       <p className="text-sm text-gray-500 mb-8">
         Enter your email address and we&apos;ll send you a link to reset your password.
       </p>
-      <ForgotPasswordForm />
+      <ClientOnly>
+        <ForgotPasswordForm />
+      </ClientOnly>
     </>
   )
 }

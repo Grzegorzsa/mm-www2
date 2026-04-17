@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import ContactForm from './ContactForm'
+import ClientOnly from '@/components/ClientOnly'
 
 export const metadata: Metadata = {
   title: 'Contact Us — MXbeats',
@@ -18,7 +19,9 @@ export default function ContactPage() {
 
       {/* Contact form section */}
       <div className="max-w-2xl mx-auto px-4 sm:px-6 md:px-8 py-12 md:py-16">
-        <ContactForm />
+        <ClientOnly>
+          <ContactForm />
+        </ClientOnly>
       </div>
     </div>
   )

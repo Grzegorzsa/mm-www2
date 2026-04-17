@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, type ChangeEvent, type FormEvent } from 'react'
+import { h } from '@/lib/h'
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -23,10 +24,10 @@ export default function ForgotPasswordForm() {
     setError('')
     try {
       // Always show success to prevent email enumeration
-      await fetch('/api/users/forgot-password', {
+      await fetch('/api/auth/forgot-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, scs: h(email) }),
       })
       setSent(true)
     } catch {

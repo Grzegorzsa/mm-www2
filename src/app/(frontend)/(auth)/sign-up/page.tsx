@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import SignUpForm from './SignUpForm'
+import ClientOnly from '@/components/ClientOnly'
 
 export const metadata: Metadata = {
   title: 'Create Account — MXbeats',
@@ -16,7 +17,9 @@ export default function SignUpPage() {
           Sign in
         </a>
       </p>
-      <SignUpForm />
+      <ClientOnly>
+        <SignUpForm />
+      </ClientOnly>
     </>
   )
 }

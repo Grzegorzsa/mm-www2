@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, type ChangeEvent, type FormEvent } from 'react'
+import { h } from '@/lib/h'
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -32,14 +33,14 @@ export default function SignUpForm() {
     setIsLoading(true)
     setServerError('')
     try {
-      const res = await fetch('/api/users', {
+      const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, scs: h(email) }),
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
-        throw new Error(data?.errors?.[0]?.message ?? data?.message ?? 'Registration failed')
+        throw new Error(data?.error ?? data?.errors?.[0]?.message ?? 'Registration failed')
       }
       setSent(true)
     } catch (err: unknown) {

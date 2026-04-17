@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import SignInForm from './SignInForm'
+import ClientOnly from '@/components/ClientOnly'
 
 export const metadata: Metadata = {
   title: 'Sign In — MXbeats',
@@ -16,7 +17,9 @@ export default function SignInPage() {
           Create one
         </a>
       </p>
-      <SignInForm />
+      <ClientOnly>
+        <SignInForm />
+      </ClientOnly>
     </>
   )
 }

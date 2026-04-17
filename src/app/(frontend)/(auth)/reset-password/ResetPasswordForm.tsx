@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, type ChangeEvent, type FormEvent } from 'react'
+import { h } from '@/lib/h'
 
 export default function ResetPasswordForm({ token }: { token: string }) {
   const [password, setPassword] = useState('')
@@ -26,14 +27,14 @@ export default function ResetPasswordForm({ token }: { token: string }) {
     setIsLoading(true)
     setServerError('')
     try {
-      const res = await fetch('/api/users/reset-password', {
+      const res = await fetch('/api/auth/reset-password', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ token, password }),
+        body: JSON.stringify({ token, password, scs: h(token) }),
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
-        throw new Error(data?.errors?.[0]?.message ?? data?.message ?? 'Password reset failed')
+        throw new Error(data?.error ?? data?.errors?.[0]?.message ?? 'Password reset failed')
       }
       setDone(true)
     } catch (err: unknown) {

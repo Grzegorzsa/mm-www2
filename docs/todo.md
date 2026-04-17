@@ -99,3 +99,10 @@ Nawiguj przez interaktywne pytania (wybierając "create table" dla wszystkich ta
 Zastąp stare pliki migracji tym jednym pełnym
 To będzie właściwy moment — teraz nie ma sensu tego robić
 Do tego czasu kontynuuj development normalnie — `pnpm dev` auto-pushuje zmiany schematu, a pnpm payload migrate:create wywołujesz tylko gdy przygotujesz się do deploymentu.
+
+## Sugestia ulepszeń (jeśli security będzie priorytetem)
+
+Cloudflare Turnstile / hCaptcha — jedyna metoda, której bot nie obejdzie analizując bundle JS
+Redis-backed rate limiter — potrzebny przy wieloinstancyjnym deploymencie
+Sliding window z Redis — np. @upstash/ratelimit (1 linijka konfiguracji)
+Nonce endpoint — serwer generuje jednorazowy token podpisany PAYLOAD_SECRET, formularz go dołącza → nie do odtworzenia z bundle'a

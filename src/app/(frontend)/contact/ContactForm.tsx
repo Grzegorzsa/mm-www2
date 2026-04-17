@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, type ChangeEvent, type FormEvent } from 'react'
+import { h } from '@/lib/h'
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -35,7 +36,7 @@ export default function ContactForm() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, subject, message }),
+        body: JSON.stringify({ email, subject, message, scs: h(message + email + subject) }),
       })
       if (!res.ok) {
         const data = await res.json().catch(() => ({}))

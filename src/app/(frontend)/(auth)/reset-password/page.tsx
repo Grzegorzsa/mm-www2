@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import ResetPasswordForm from './ResetPasswordForm'
+import ClientOnly from '@/components/ClientOnly'
 
 export const metadata: Metadata = {
   title: 'Set New Password — MXbeats',
@@ -27,7 +28,9 @@ export default async function ResetPasswordPage({
     <>
       <h1 className="text-2xl font-bold text-gray-900 mb-2">Set New Password</h1>
       <p className="text-sm text-gray-500 mb-8">Choose a strong password for your account.</p>
-      <ResetPasswordForm token={token} />
+      <ClientOnly>
+        <ResetPasswordForm token={token} />
+      </ClientOnly>
     </>
   )
 }

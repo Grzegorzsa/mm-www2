@@ -2,12 +2,23 @@ import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { h } from '@/lib/h'
+import { contactLimiter, getClientIp } from '@/lib/rateLimiter'
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
 export async function POST(req: NextRequest) {
+  // Rate-limit: max 4 messages per IP per 24 hours
+  const ip = getClientIp(req)
+  if (!contactLimiter.check(ip)) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again tomorrow.' },
+      { status: 429 },
+    )
+  }
+
   let body: unknown
   try {
     body = await req.json()
@@ -25,7 +36,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
   }
 
-  const { email, subject, message } = body as Record<string, unknown>
+  const { email, subject, message, scs } = body as Record<string, unknown>
 
   if (typeof email !== 'string' || !isValidEmail(email)) {
     return NextResponse.json({ error: 'Invalid email address' }, { status: 400 })
@@ -35,6 +46,11 @@ export async function POST(req: NextRequest) {
   }
   if (typeof message !== 'string' || message.trim().length === 0) {
     return NextResponse.json({ error: 'Message is required' }, { status: 400 })
+  }
+
+  // Parity check — reject automated requests that bypassed the form
+  if (typeof scs !== 'string' || scs !== h(message + email + subject)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   // Sanitize inputs (strip HTML tags for plain text)
@@ -78,8 +94,8 @@ export async function POST(req: NextRequest) {
         to: contactTo,
         replyTo: safeEmail,
         subject: `[Contact] ${safeSubject}`,
-        text: `From: ${safeEmail}\n\n${safeMessage}`,
-        html: `<p><strong>From:</strong> ${safeEmail}</p><pre style="font-family:inherit">${safeMessage.replace(/</g, '&lt;')}</pre>`,
+        text: `Email: ${safeEmail}\nIP: ${ip}\nSubject: ${safeSubject}\n\nMessage: ${safeMessage}`,
+        html: `<p><strong>Email:</strong> ${safeEmail}</p><p><strong>IP:</strong> ${ip}</p><p><strong>Subject:</strong> ${safeSubject}</p><p><strong>Message:</strong></p><pre style="font-family:inherit;white-space:pre-wrap">${safeMessage.replace(/</g, '&lt;')}</pre>`,
       })
     } catch (err) {
       console.error('Failed to send contact email:', err)

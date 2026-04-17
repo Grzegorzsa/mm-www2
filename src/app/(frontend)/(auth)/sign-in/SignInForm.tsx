@@ -2,6 +2,7 @@
 
 import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
+import { h } from '@/lib/h'
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
@@ -31,15 +32,15 @@ export default function SignInForm() {
     setIsLoading(true)
     setServerError('')
     try {
-      const res = await fetch('/api/users/login', {
+      const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, scs: h(email) }),
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
-        throw new Error(data?.errors?.[0]?.message ?? data?.message ?? 'Sign in failed')
+        throw new Error(data?.error ?? data?.errors?.[0]?.message ?? 'Sign in failed')
       }
       router.push('/panel/purchases')
       router.refresh()
