@@ -13,7 +13,7 @@ describe('API', () => {
 
   it('fetches users', async () => {
     const users = await payload.find({
-      collection: 'users',
+      collection: 'admin-users',
     })
     expect(users).toBeDefined()
   })

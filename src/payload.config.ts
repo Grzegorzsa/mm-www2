@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url'
 import sharp from 'sharp'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 
-import { Users } from './collections/Users'
+import { AdminUsers } from './collections/AdminUsers'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { ContactSubmissions } from './collections/ContactSubmissions'
@@ -20,12 +20,12 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
-    user: Users.slug,
+    user: AdminUsers.slug,
     importMap: {
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Pages, ContactSubmissions],
+  collections: [AdminUsers, Media, Pages, ContactSubmissions],
   globals: [Homepage, Manual, Downloads],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
