@@ -9,15 +9,16 @@ Jesteś ekspertem od struktury danych Payload CMS. Musisz zaktualizować istniej
 
 **1. Globals (Pojedyncze instancje):**
 
-- **HomePage:** Source #file:src/globals/pages/homepage.json -> Target #file:src/seed/homepage.ts
-- **ManualPage:** Source #file:src/globals/pages/manual.json -> Target #file:src/seed/manual.ts
-- **DownloadsPage:** Source #file:src/globals/pages/downloads.json -> Target #file:src/seed/downloads.ts
+- **HomePage:** Source #file:src/seed/homepage.json -> Target #file:src/seed/homepage.ts
+- **ManualPage:** Source #file:src/seed/manual.json -> Target #file:src/seed/manual.ts
+- **DownloadsPage:** Source #file:src/seed/downloads.json -> Target #file:src/seed/downloads.ts
 
 **2. Collections (Wiele stron w jednym pliku):**
 
-- **PrivacyPage:** Source #file:docs/privacy-policy.json -> Target #file:src/seed/pages.ts
-- **TermsPage:** Source #file:docs/terms-and-conditions.json -> Target #file:src/seed/pages.ts
-- **RefundPage:** Source #file:docs/refund-policy.json -> Target #file:src/seed/pages.ts
+- **PrivacyPage:** Source #file:src/seed/privacy-policy.json -> Target #file:src/seed/pages.ts
+- **TermsPage:** Source #file:src/seed/terms-and-conditions.json -> Target #file:src/seed/pages.ts
+- **RefundPage:** Source #file:src/seed/refund-policy.json -> Target #file:src/seed/pages.ts
+- **Products:** Source #file:src/seed/products.json -> Target #file:src/seed/products.ts
 
 ### Zasady transformacji:
 

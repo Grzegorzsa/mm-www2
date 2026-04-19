@@ -1,7 +1,7 @@
 ﻿import type { Metadata } from 'next'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
-import fallbackContent from '@/globals/pages/manual.json'
+import fallbackContent from '@/seed/manual.json'
 import HtmlSection from './HtmlSection'
 import './manual.css'
 

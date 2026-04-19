@@ -3,7 +3,7 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import Link from 'next/link'
 import { Check, X } from 'lucide-react'
-import fallbackContent from '@/globals/pages/homepage.json'
+import fallbackContent from '@/seed/homepage.json'
 
 function BoolCell({ value }: { value: boolean }) {
   return value ? (
