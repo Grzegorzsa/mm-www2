@@ -2,35 +2,95 @@
 
 # ToDos and problems
 
-## Zabezpieczyć Contact Form
+## Kolekcje
 
-W **maxapi** w pliku `src\api\contact\controllers\contact.ts` mamy poprzednie zabezpieczenia - sprawdzić
+### Dodać kolekcję 'Product'. Będzie na razie zawierać pola (App w starym API na Strapi)
 
-i dodać np. Zliczanie parzystości maila, data sanitation ip checking ... po stronie backendu.
+- name (text)
+- description (text)
+- version (text np 1.2.0)
+- versionNo (int np 1) - numer wersji liczbowy. Np mamy licencję 1 i możemy używać w aplikacjach npm '1.9.99'
+- uid (jakiś identyfikator tekstowy np 'mx-grid' - - tu nie musi być uid, ale tak było w strapi)
+- thumb - obrazek png lub jpg...
+- dodać relację one to many productExtensions - produkt będzie mógł zawierać wiele (lub żadnych) rozszerzeń
 
-pliki w projekcie:
+### License
 
-- src\app\api\contact\route.ts
-- src\app\(frontend)\contact\ContactForm.tsx
-- src\collections\ContactSubmissions.ts
+Licencja użytkownika do posiadania produktu
 
-## User Control
+- relacja do produktu
+- validTill (w przypadku null - bezterminowo)
+- active (bool)
+- deactivatedReason(text - np. rezygnacja i refund)
+- versionFrom (int minimum version this license covers e.g. 1)
+- versionTo (int maximum version this license covers e.g. 999 for all versions)
+- info - description
+- maxInstallations (int, by default 2 for two allowed concurrent installations)
+- relacja do User
+- productExtensions - dodać relację
 
-Dodać pełną obsługę użytkowników. Musi być oddzielna od użytkowników z panelu administracyjnego.
-Zmieniliśmy nazwę użytkowników panelu admina z Users na AdminUsers.
-Teraz dodajmy kolekcję Users, która będzie zawierała użytkowników platformy.
-Nie powinno być oddzielnej nazwy dla użytkownika. Do identyfikacji używajmy jedynie adresu email - nie
-będą oni nic publikować na stronie a jedynie będą mieć możliwość robienia zakupów i logowania do
-platformy.
+### Dodać kolekcję 'ProductExtensions' - będzie zawierać możliwe rozszerzenia produktu np. essentials, pro, max...
 
-Czyli użytkownik powinien mieć pola:
+Tu propozycja od Gemini:
 
-- email
-- confirmed
-- blocked
-- role - użytkownicy mogą miec różne role. Od zwykłych użytkowników, do
+```ts
+import { CollectionConfig } from 'payload/types'
 
-## User Panel
+export const Extensions: CollectionConfig = {
+  slug: 'extensions',
+  admin: {
+    useAsTitle: 'name',
+    group: 'Produkty', // Ta sama grupa co kolekcja Products
+  },
+  fields: [
+    {
+      name: 'name',
+      type: 'text',
+      required: true, // np. "Essentials", "Pro", "Trial"
+    },
+    {
+      name: 'key',
+      type: 'text',
+      required: true,
+      unique: true, // np. "essentials", "pro" - do sprawdzania w kodzie Next.js
+    },
+    {
+      name: 'description',
+      type: 'textarea',
+    },
+  ],
+}
+```
+
+Dodać kolekcję Installations
+
+- user - relacja do użytkownika
+- machineID - text - zazwyczaj 10 znaków np: ME36144B9B i oznacza automatycznie wygenerowany przez aplilkację
+  identyfikator maszyny
+- disabled bool
+- disabledReason - text do dodania jeśli chcemy dezaktywować - dla czego
+- disabledAt - czas/data deaktywacji
+- token - text, np:9ab6c77d555df282a3d59a856eb8843e76a551f4 - służy do logowania aplikacji przy pomocy tokena
+- computerName - nazwa komputera użytkownika
+- os - system operacyjny użytkownika
+- relacja do product - w celach informacyjnych
+- certificate - wygenerowany certyfikat
+
+np:
+
+PE1FU1NBR0UgbWVzc2FnZT0iVGhhbmtzIGZvciByZWdpc3RlcmluZyBvdXIgcHJvZHVjdCEiPjxLRVk+IzE5YjE0ZGQ0YzQyOTAzNjcwOWI0ZWE3MTExNmJkMjk0OGIzODZmZTdkNDRjM2RmMDlhNzJjMTFlNzJmYzUyOWJjY2I0NGE3MjZmNWM3YTBlYzA2NDlmNGFhZmFiZGRiMjRiYWE0YjQzNDQzM2I1NmJiMTAyZGZjOTAwOGYzNTc1MmNjODEwMDlmMjY0NDdiZDg1N2ZjMDg2MDQyYjhhNGEzNzJkZDViZDkyNzBkZTA5MzRlYzI1MWFlYTlkMmExZDExOWQ4MjVkMDc3MTA4Yzg5MjIzZjQ0ZjE0MWE0Mzc0ZGE1NTY1ZmViNjc4YjE4ODNlOTI0Njc2YTZhZGIxNWEzYjYyMTRkYWRhZmU1NmRlZTIxODIxOTVkZGQ1MGI3OGQ1YjkxZmFkMzVjNDAyMDRmMDA2MDc0NmM5Nzc4OTNmYjJjNmY1YThhOGIyOGIxNjY4OGEyZTI5ZjdlNDc0OTI4ZDdiNjA3YjRkZmQ3NTRhZWQyZWE3MWY1ZGMzZmNhM2EwODVkZGEyZjFlMTYxNzRhNWU5MTMwNWJjYjYxNzVmYWI0ZWYyYmM1YmM2YmM0M2VlOWE3NTc4NTliYjY4ZTEyYTEwMmJlMTU0MzIyMjJiMzJiNjczNGY5OTY0MDEwOWEyMzI3YzkzM2JlODNkZGI1YjIxODEyZjdjYzg3MmRlZGZhNGIyMDA0MzYxZDI4NTE4ODBlNmJlYjU2YjhhNWQ2YjJlZDg2NDRkMzJiNDk0NWE0YjUwY2I4ZDQ4MmEyMzIwZTU2NGQ1Y2FkNGFjM2VhOGYwMWJkMWE5NTgyMGFkMGMyMjFmYWM1NTNlOGFlNTFhMjZjZmEyN2UwYjVjY2U1NGJiZWRmZjRhYjdmMGQzY2M5ZGZjYzA4NDNkZDcxMDg4ZmRkZDZmYTk0ODhmZWM3YWU2MTM0ODJkNWVmY2EwOTRkZmM2NzlkNDk0ZjY4ODFjMWYwZDNhNjM1MzQ4ZWRkY2UzNzU3YTQyOTQ0Mjk0MzQxZGM1ZjA2ZjhhMjRiZTk0ZGIyZTBlYjYxYTA0ZjAyMDk1OTg0YWY1Y2JhMGQ2OWZiNTE2YmQ4Y2Q2YWU2ZDY5ZjI0MmZjYTIwZDRmZGZjZTZjNGRhZjI0MDkwZTAyNzg5ZDg3MTQzNWJkZWI1Y2EzMWZlOTU3M2FiZmU2NDNiOTJkNGRjYWE5YTFlNjY1OWExOWNmMjJhZDdkZGIxYTk5OGQ5NGNjMTg1YTJlOTM5NjhmNGNkOGQ1MWU5NTQ3ZjEzMTczYjljMDZlNWU5NDNlOGZjYjNhMDg4MTkxYWU0ZTk5YTYxN2U1YjJhMGMwMDcyZTVjMjY2MmY5MzA4ZDBhNGY1Y2Q5N2ZmOTIzNDVkYjU1YzI1NmQ1NDkyNzFlMTZhNzg5Y2U2NTgzZDkzMzkxNjc3ZmQyZTc4NmNkY2IzZGViMjYxMTA4YzdkYTZiZDlmMGE4ODNiMWE2ZjlmNTlkOWM3YmRhYWUzYjA4NGUxNGVjYzRhMmE0OTVmODE3ZDI5ZDk1ZDY2YWIyNWZhMmRkYTE2MzRiNTA0ZGU4OTZiZWI2NzEwMDI5OGM0NDMxYzI2YzgzNjIxYTU5NzI2YjViYmY5Nzc3OTE0ZTcxYzc3YmY1NWViZGFkNjZiNTRkY2I2ZDNmOWIxNTczYzMyYjcyMTg1MjVhNDkwZmFiYjJlZjAwNGE5YTIxZmI1MTEzMmIwNTJlZTE4ZGIxYWJjZTA0OGUwZTA3MzhiZTY2NzE3ZTk4MWQzODhiNDE5YWQ3YWIxZWNmYzRjZWJjZDVhMjE1NWVmZGViYWNkOGE2M2RkNzc5MjliMThmMzg0MmI0OTIwYTY5OWM5ZjlkMzAyNTFhYzhiYmZhNjNiYmE3MDczYmQwZjY4ODdlZWQ3YzIyZDYzOThiNmFhNzE1ZWVkZTQ5NWQxYWM0ZDU1ZTgyYzU2ZTNmNTcxMDljNDNiMjZlZjM1MGJjZGZiNTA3Mjk2YjlhNjFjZDQ3YzVjNWRmZjY4NWViNjAwZGVjNWU3MzliMzBiMTQ0NGVmNjUwNzA0NTg1NjE1MmY4ZDM0MDUyNWM4ZTkxYjliYWYzN2RkMGZjMDM4YzdhM2VlZDQxNDUxYmQ5YWM4YzEwMWQ0YjkwZmRmOWE4MWE1ODQwMWJkZTYwMGY5MmVjM2I2NmM2NTIzZWI0MTYxZjJmZjQ4ODFiNGNhZmM5ZmNlOWRlMmZhNDc0NTQwN2Y2ZWY3NTVlYjJkNzlkN2JlZTY4OTI0MWMxNzcwNWZiMDI3M2U0OTdiMTg1OGFiMWE0MDNiOGE5ZTBiYWUxZDFkOWYyYWNlY2Q0Nzk2MTdlMTQ3NDgwNDAwZjg2YTUyOTU3NTMzNDVmMTcyNzhhMjAxNDYwZWMyNzRiOTkzZTMyMmE0Zjg1ZDJiM2U2MjVmMjFlMGIzZDJmZWEyNmFkMmJlY2NiOGM3NmUzZjRlN2I0OWI3ZmNlOGNhODdkNGMxYzc3YjQzNWRhYzk4MGI1YjE1NzBmYTFjYjk1NDk5NzI0ODhlNGNmMWM2ZTUxZmM4MzkwYjU3NjkyNWI5PC9LRVk+PC9NRVNTQUdFPgA=
+
+### Wygenerować collection WelcomeLicense
+
+Licencje, które mają być przydzielone użytkownikowi, który utworzył konto.
+
+- product - relacja do produktu
+- productExtension - relacja do rozszerzenia produktu
+- maxInstallations (default 2)
+- versionFrom
+- versionTo
+- info
+- daysValid (int 0 - bezterminowo, 30 - na 30 dni)
 
 ## Inne
 

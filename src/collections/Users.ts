@@ -1,5 +1,6 @@
 import type { Access, CollectionConfig, FieldAccess } from 'payload'
 import { APIError } from 'payload'
+import { createWelcomeLicenses } from '@/lib/licenseHelper'
 
 const serverURL = () => process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
 
@@ -55,6 +56,19 @@ export const Users: CollectionConfig = {
         if (docs[0]?.blocked) {
           throw new APIError('Your account has been blocked. Please contact support.', 403)
         }
+      },
+    ],
+    afterChange: [
+      async ({ doc, previousDoc, req, operation }) => {
+        // When user verifies email, assign welcome licenses and send welcome email
+        if (doc._verified && (!previousDoc?._verified || operation === 'create')) {
+          try {
+            await createWelcomeLicenses(req.payload, { id: doc.id, email: doc.email })
+          } catch (err) {
+            console.error('Failed to create welcome licenses:', err)
+          }
+        }
+        return doc
       },
     ],
   },

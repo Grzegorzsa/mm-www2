@@ -12,9 +12,15 @@ import { Users } from './collections/Users'
 import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { ContactSubmissions } from './collections/ContactSubmissions'
+import { Products } from './collections/Products'
+import { ProductExtensions } from './collections/ProductExtensions'
+import { Licenses } from './collections/Licenses'
+import { Installations } from './collections/Installations'
+import { WelcomeLicenses } from './collections/WelcomeLicenses'
 import { Homepage } from './globals/pages/Homepage'
 import { Manual } from './globals/pages/Manual'
 import { Downloads } from './globals/pages/Downloads'
+import { WelcomeEmail } from './globals/WelcomeEmail'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -26,8 +32,19 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [AdminUsers, Users, Media, Pages, ContactSubmissions],
-  globals: [Homepage, Manual, Downloads],
+  collections: [
+    AdminUsers,
+    Users,
+    Media,
+    Pages,
+    ContactSubmissions,
+    Products,
+    ProductExtensions,
+    Licenses,
+    Installations,
+    WelcomeLicenses,
+  ],
+  globals: [Homepage, Manual, Downloads, WelcomeEmail],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

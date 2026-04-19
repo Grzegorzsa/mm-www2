@@ -73,6 +73,11 @@ export interface Config {
     media: Media;
     pages: Page;
     'contact-submissions': ContactSubmission;
+    products: Product;
+    'product-extensions': ProductExtension;
+    licenses: License;
+    installations: Installation;
+    'welcome-licenses': WelcomeLicense;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -85,6 +90,11 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
+    'product-extensions': ProductExtensionsSelect<false> | ProductExtensionsSelect<true>;
+    licenses: LicensesSelect<false> | LicensesSelect<true>;
+    installations: InstallationsSelect<false> | InstallationsSelect<true>;
+    'welcome-licenses': WelcomeLicensesSelect<false> | WelcomeLicensesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -98,11 +108,13 @@ export interface Config {
     homepage: Homepage;
     manual: Manual;
     downloads: Download;
+    'welcome-email': WelcomeEmail;
   };
   globalsSelect: {
     homepage: HomepageSelect<false> | HomepageSelect<true>;
     manual: ManualSelect<false> | ManualSelect<true>;
     downloads: DownloadsSelect<false> | DownloadsSelect<true>;
+    'welcome-email': WelcomeEmailSelect<false> | WelcomeEmailSelect<true>;
   };
   locale: null;
   widgets: {
@@ -284,6 +296,110 @@ export interface ContactSubmission {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: number;
+  name: string;
+  /**
+   * Unique identifier for the product (e.g. "mx-grid")
+   */
+  uid: string;
+  version: string;
+  /**
+   * Numeric version used for license version range checks
+   */
+  versionNo: number;
+  releasedAt: string;
+  releaseUpdatedAt: string;
+  description?: string | null;
+  thumb?: (number | null) | Media;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "product-extensions".
+ */
+export interface ProductExtension {
+  id: number;
+  name: string;
+  /**
+   * Unique identifier (e.g. "essentials", "pro", "trial")
+   */
+  uid: string;
+  description?: string | null;
+  product?: (number | null) | Product;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "licenses".
+ */
+export interface License {
+  id: number;
+  product: number | Product;
+  user: number | User;
+  productExtensions?: (number | ProductExtension)[] | null;
+  /**
+   * Leave empty for unlimited validity
+   */
+  validTill?: string | null;
+  active?: boolean | null;
+  deactivatedReason?: string | null;
+  versionFrom: number;
+  versionTo: number;
+  info?: string | null;
+  maxInstallations?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "installations".
+ */
+export interface Installation {
+  id: number;
+  user: number | User;
+  product: number | Product;
+  machineId?: string | null;
+  token?: string | null;
+  /**
+   * Base64-encoded XML certificate
+   */
+  certificate?: string | null;
+  computerName?: string | null;
+  os?: string | null;
+  disabled?: boolean | null;
+  disabledReason?: string | null;
+  disabledAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Licenses that are automatically assigned to new users upon registration
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "welcome-licenses".
+ */
+export interface WelcomeLicense {
+  id: number;
+  product: number | Product;
+  productExtensions?: (number | ProductExtension)[] | null;
+  versionFrom: number;
+  versionTo: number;
+  info?: string | null;
+  maxInstallations: number;
+  /**
+   * Number of days the license is valid. Leave empty for unlimited.
+   */
+  daysValid?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -325,6 +441,26 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'contact-submissions';
         value: number | ContactSubmission;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: number | Product;
+      } | null)
+    | ({
+        relationTo: 'product-extensions';
+        value: number | ProductExtension;
+      } | null)
+    | ({
+        relationTo: 'licenses';
+        value: number | License;
+      } | null)
+    | ({
+        relationTo: 'installations';
+        value: number | Installation;
+      } | null)
+    | ({
+        relationTo: 'welcome-licenses';
+        value: number | WelcomeLicense;
       } | null);
   globalSlug?: string | null;
   user:
@@ -471,6 +607,85 @@ export interface ContactSubmissionsSelect<T extends boolean = true> {
   email?: T;
   subject?: T;
   message?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  name?: T;
+  uid?: T;
+  version?: T;
+  versionNo?: T;
+  releasedAt?: T;
+  releaseUpdatedAt?: T;
+  description?: T;
+  thumb?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "product-extensions_select".
+ */
+export interface ProductExtensionsSelect<T extends boolean = true> {
+  name?: T;
+  uid?: T;
+  description?: T;
+  product?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "licenses_select".
+ */
+export interface LicensesSelect<T extends boolean = true> {
+  product?: T;
+  user?: T;
+  productExtensions?: T;
+  validTill?: T;
+  active?: T;
+  deactivatedReason?: T;
+  versionFrom?: T;
+  versionTo?: T;
+  info?: T;
+  maxInstallations?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "installations_select".
+ */
+export interface InstallationsSelect<T extends boolean = true> {
+  user?: T;
+  product?: T;
+  machineId?: T;
+  token?: T;
+  certificate?: T;
+  computerName?: T;
+  os?: T;
+  disabled?: T;
+  disabledReason?: T;
+  disabledAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "welcome-licenses_select".
+ */
+export interface WelcomeLicensesSelect<T extends boolean = true> {
+  product?: T;
+  productExtensions?: T;
+  versionFrom?: T;
+  versionTo?: T;
+  info?: T;
+  maxInstallations?: T;
+  daysValid?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -649,6 +864,26 @@ export interface Download {
   createdAt?: string | null;
 }
 /**
+ * Email template sent to new users after email verification, along with welcome licenses
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "welcome-email".
+ */
+export interface WelcomeEmail {
+  id: number;
+  subject: string;
+  /**
+   * Plain text version of the email
+   */
+  text: string;
+  /**
+   * HTML version of the email
+   */
+  html: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homepage_select".
  */
@@ -762,6 +997,18 @@ export interface DownloadsSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "welcome-email_select".
+ */
+export interface WelcomeEmailSelect<T extends boolean = true> {
+  subject?: T;
+  text?: T;
+  html?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
