@@ -197,6 +197,14 @@ async function getInstallationsByUserId(payload: Payload, userId: number) {
     depth: 2,
     limit: 999,
     overrideAccess: true,
+    select: {
+      product: true,
+      machineId: true,
+      computerName: true,
+      os: true,
+      disabled: true,
+      createdAt: true,
+    },
   })
   return docs
 }

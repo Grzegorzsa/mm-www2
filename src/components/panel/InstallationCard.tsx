@@ -1,7 +1,10 @@
 import type { Installation, Product } from '@/payload-types'
 import Image from 'next/image'
 
-type PopulatedInstallation = Omit<Installation, 'product'> & {
+type PopulatedInstallation = Pick<
+  Installation,
+  'id' | 'machineId' | 'computerName' | 'os' | 'disabled' | 'createdAt'
+> & {
   product: Product
 }
 
