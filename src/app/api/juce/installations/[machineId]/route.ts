@@ -1,6 +1,6 @@
 /**
- * GET  /api/installations/[machineId] — Quick revalidation by token + machineId
- * DELETE /api/installations/[machineId] — Deactivate installation by token + machineId
+ * GET  /api/juce/installations/[machineId] — Quick revalidation by token + machineId
+ * DELETE /api/juce/installations/[machineId] — Deactivate installation by token + machineId
  *
  * Both endpoints use the `token` header for authentication.
  * The machineId is the dynamic route parameter.

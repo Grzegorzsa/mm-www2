@@ -1,5 +1,5 @@
 /**
- * POST /api/installations
+ * POST /api/juce/installations
  *
  * Multi-purpose endpoint consumed by the JUCE desktop application:
  *
