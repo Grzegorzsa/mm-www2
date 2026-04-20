@@ -90,12 +90,18 @@ export const Installations: CollectionConfig = {
         {
           name: 'disabledAt',
           type: 'date',
-          admin: { width: '15%' },
+          admin: {
+            width: '15%',
+            condition: (data) => Boolean(data?.disabled),
+          },
         },
         {
           name: 'disabledReason',
           type: 'text',
-          admin: { width: '70%' },
+          admin: {
+            width: '70%',
+            condition: (data) => Boolean(data?.disabled),
+          },
         },
       ],
     },
