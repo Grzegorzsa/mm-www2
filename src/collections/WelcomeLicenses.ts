@@ -15,43 +15,72 @@ export const WelcomeLicenses: CollectionConfig = {
   },
   fields: [
     {
-      name: 'product',
-      type: 'relationship',
-      relationTo: 'products',
-      required: true,
+      type: 'row',
+      fields: [
+        {
+          name: 'product',
+          type: 'relationship',
+          relationTo: 'products',
+          required: true,
+          admin: {
+            width: '25%',
+          },
+        },
+        {
+          name: 'productExtensions',
+          type: 'relationship',
+          relationTo: 'product-extensions',
+          hasMany: true,
+          admin: {
+            width: '25%',
+          },
+        },
+        {
+          name: 'versionFrom',
+          type: 'number',
+          required: true,
+          admin: {
+            width: '25%',
+          },
+        },
+        {
+          name: 'versionTo',
+          type: 'number',
+          required: true,
+          admin: {
+            width: '25%',
+          },
+        },
+      ],
     },
     {
-      name: 'productExtensions',
-      type: 'relationship',
-      relationTo: 'product-extensions',
-      hasMany: true,
-    },
-    {
-      name: 'versionFrom',
-      type: 'number',
-      required: true,
-    },
-    {
-      name: 'versionTo',
-      type: 'number',
-      required: true,
-    },
-    {
-      name: 'info',
-      type: 'textarea',
-    },
-    {
-      name: 'maxInstallations',
-      type: 'number',
-      required: true,
-      defaultValue: 2,
-    },
-    {
-      name: 'daysValid',
-      type: 'number',
-      admin: {
-        description: 'Number of days the license is valid. Leave empty for unlimited.',
-      },
+      type: 'row',
+      fields: [
+        {
+          name: 'info',
+          type: 'textarea',
+          admin: {
+            width: '50%',
+          },
+        },
+        {
+          name: 'maxInstallations',
+          type: 'number',
+          required: true,
+          defaultValue: 2,
+          admin: {
+            width: '25%',
+          },
+        },
+        {
+          name: 'daysValid',
+          type: 'number',
+          admin: {
+            description: 'Number of days the license is valid. Leave empty for unlimited.',
+            width: '25%',
+          },
+        },
+      ],
     },
   ],
   timestamps: true,
