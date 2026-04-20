@@ -14,27 +14,49 @@ export const ProductExtensions: CollectionConfig = {
   },
   fields: [
     {
-      name: 'name',
-      type: 'text',
-      required: true,
+      type: 'row',
+      fields: [
+        {
+          name: 'name',
+          type: 'text',
+          required: true,
+          admin: {
+            width: '50%',
+          },
+        },
+        {
+          name: 'uid',
+          type: 'text',
+          required: true,
+          unique: true,
+          admin: {
+            description: 'Unique identifier (e.g. "essentials", "pro", "trial")',
+            width: '50%',
+          },
+        },
+      ],
     },
     {
-      name: 'uid',
-      type: 'text',
-      required: true,
-      unique: true,
-      admin: {
-        description: 'Unique identifier (e.g. "essentials", "pro", "trial")',
-      },
-    },
-    {
-      name: 'description',
-      type: 'text',
-    },
-    {
-      name: 'product',
-      type: 'relationship',
-      relationTo: 'products',
+      type: 'row',
+      fields: [
+        {
+          name: 'description',
+          type: 'text',
+          required: true,
+          admin: {
+            width: '50%',
+          },
+        },
+        {
+          name: 'product',
+          type: 'relationship',
+          relationTo: 'products',
+          required: true,
+          admin: {
+            width: '50%',
+          },
+        },
+      ],
     },
   ],
   timestamps: true,

@@ -166,3 +166,95 @@ Cloudflare Turnstile / hCaptcha — jedyna metoda, której bot nie obejdzie anal
 Redis-backed rate limiter — potrzebny przy wieloinstancyjnym deploymencie
 Sliding window z Redis — np. @upstash/ratelimit (1 linijka konfiguracji)
 Nonce endpoint — serwer generuje jednorazowy token podpisany PAYLOAD_SECRET, formularz go dołącza → nie do odtworzenia z bundle'a
+
+**Porównanie wersji MX GRID**
+
+```text
+Funkcja              Loops SE (Standalone Edition)    Loops Pro
+Formaty              Samodzielna aplikacja            Standalone + VST3 / AU / AAX
+Zarządzanie Loopami  Pełna funkcjonalność             Pełna funkcjonalność
+Arrangement          Tak                              Tak
+Export Audio         MP3 (128 kbps)                   WAV / AIFF / MP3 (320 kbps)
+Zastosowanie         Szkicowanie, Live, Organizacja   Produkcja, Mix, Mastering
+```
+
+**Transparentność to klucz:** Upewnij się, że w oknie eksportu w wersji SE widnieje jasny komunikat:
+"Exporting in Preview Quality (128 kbps MP3). Upgrade to Pro for lossless WAV export." To najlepszy moment na przycisk "Upgrade".
+
+**Jak ugryźć "ukrycie" wersji SE na stronie?**
+Zgadzam się – nie wrzucaj jej do głównej tabeli cenowej. To by tylko zdezorientowało klienta indywidualnego.
+Zamiast tego możesz zastosować jedno z poniższych rozwiązań:
+
+**Sekcja "Redeem"**: W stopce lub w menu nawigacyjnym dodaj mały link "Redeem Code".
+Tam użytkownik wpisuje klucz od partnera i dowiaduje się, że właśnie odblokował wersję SE.
+
+**Podstrona dla Partnerów:** Strona typu mxgrid.com/partner-offers, gdzie wyjaśniasz różnicę.
+
+**Landing Page dedykowany:** Jeśli firma X rozdaje Twój soft, zrób stronę mxgrid.com/firma-x.
+Tam możesz napisać: "Dzięki współpracy z [Firma X] otrzymujesz MX GRID: Loops SE – w pełni funkcjonalne
+narzędzie do aranżacji w wersji Standalone".
+
+**Komunikat o renderingu w wersji SE**
+Skoro SE ma być "nagrodą" za zakup u partnera, okno dialogowe przy eksporcie musi być bardzo uprzejme,
+by nie zepsuć relacji z tym partnerem.
+
+Dziękujemy za korzystanie z MX GRID: Loops SE!
+"Ta licencja, otrzymana od naszego partnera, pozwala na nielimitowane korzystanie z funkcji projektowych
+w wersji Standalone. Eksport audio jest ograniczony do formatu MP3 128 kbps. Aby odblokować format WAV
+oraz wersje plugin (VST/AU), sprawdź ofertę Upgrade dla użytkowników SE."
+
+**Dlaczego to zadziała?**
+Użytkownik, który dostał SE "za darmo" do kursu, czuje się wyróżniony względem użytkownika Essentials
+(bo ma więcej funkcji), ale jednocześnie ma bardzo jasną ścieżkę do stania się klientem Pro, gdy tylko
+zacznie potrzebować profesjonalnej jakości plików.
+
+Partner, który udostępnił kod SE powinien mieć możliwość otrzymania 30% jeśli użytkownik zakupi werję Loops Pro.
+i 10% od każdego zakupu o ile zakup wykonanego bezpośrednio na stronie o ile zakup ten nie pochodzi z
+innego linku afiliacyjnego.
+
+Lemon Squeezy
+
+1. Czy do Sandboxa potrzebne są wszystkie dane?
+   Nie. Do samego uruchomienia trybu testowego (Sandbox) wystarczy założenie konta na podstawowy adres e-mail.
+
+Możesz od razu tworzyć testowe produkty, generować testowe checkouty i konfigurować Webhooki pod swój serwer/aplikację w JUCE.
+
+Możesz testować całą logikę afiliacji bez podawania NIP-u czy danych fundacji.
+
+Dopiero w momencie, gdy zechcesz aktywować sklep (Store Activation), by móc przyjmować realne pieniądze, będziesz musiał przejść proces weryfikacji (KYC – Know Your Customer).
+
+2. Lemon Squeezy a Twój Startup (Model Biznesowy)
+   Tutaj musisz zachować czujność. Lemon Squeezy (LS) staje się technicznie sprzedawcą Twojego towaru, ale Ty musisz podać dane podmiotu, który jest prawnym właścicielem konta.
+
+Dane firmy: Jako firmę podajesz dane Fundacji Rozwoju Przedsiębiorczości "Twój Startup" (ich NIP, adres, KRS).
+
+Twoja rola: Ty występujesz jako osoba zarządzająca danym subkontem (projektem) w ramach fundacji.
+
+Wypłaty: LS musi przelewać pieniądze na konto bankowe fundacji. Będziesz musiał podać numer subkonta, który otrzymałeś od Twojego Startupu.
+
+3. Pułapka weryfikacji (Strona WWW)
+   Aby Lemon Squeezy zatwierdziło sklep dla Twojego Startupu, na Twojej stronie WWW muszą się znaleźć:
+
+Regulamin (Terms of Service) i Polityka Prywatności, które jasno wskazują na Fundację "Twój Startup" jako operatora, ale z Twoim adresem kontaktowym dla klienta.
+
+Dane firmy w stopce: Lemon Squeezy ręcznie sprawdza stronę. Jeśli zobaczą tam "MX GRID" bez żadnej informacji o podmiocie prawnym, a we wniosku podasz fundację, mogą poprosić o wyjaśnienia.
+
+Akcelerator: Warto w polu opisu biznesu przy aktywacji dopisać, że działasz w ramach akceleratora biznesu (pre-incubation program).
+
+4. Jak przetestować afiliację w tym modelu?
+   Możesz to zrobić w 100% w Sandboxie:
+
+W panelu LS włącz Affiliates.
+
+Dodaj siebie (inny mail) jako partnera.
+
+Stwórz testowy checkout z parametrem ?aff=TWÓJ_KOD.
+
+Dokonaj płatności testową kartą (np. 4242...).
+
+Sprawdź, czy w sekcji Affiliates -> Commissions pojawiła się naliczona prowizja.
+
+Moja rada dotycząca Twojego Startupu:
+Zanim złożysz wniosek o aktywację sklepu (ten finalny), skontaktuj się ze swoim opiekunem w Twoim Startupie. Zapytaj, czy mają już doświadczenie z Lemon Squeezy lub Paddle. Niektóre akceleratory wymagają specyficznych zapisów w umowach z zagranicznymi pośrednikami płatności, ponieważ to fundacja (prawnie) zawiera umowę z Lemon Squeezy, a Ty jesteś tylko "beneficjentem".
+
+Podsumowując: Teraz możesz śmiało zakładać konto i kodować wszystko w JUCE/Sandboxie. Dane fundacji będą Ci potrzebne dopiero za kilka tygodni/miesięcy, gdy będziesz gotowy do premiery (Launch).

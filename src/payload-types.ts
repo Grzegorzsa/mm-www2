@@ -328,8 +328,8 @@ export interface ProductExtension {
    * Unique identifier (e.g. "essentials", "pro", "trial")
    */
   uid: string;
-  description?: string | null;
-  product?: (number | null) | Product;
+  description: string;
+  product: number | Product;
   updatedAt: string;
   createdAt: string;
 }
