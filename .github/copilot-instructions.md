@@ -41,3 +41,59 @@
 
 - Maintain clear separation between Payload collections and Next.js frontend components.
 - Use `cross-env` for environment-specific scripts as defined in `package.json`.
+
+## Panel Page Structure
+
+**Purpose:** Keep `page.tsx` files minimal and focused on metadata. Extract page logic into dedicated component files.
+
+**Naming Convention:**
+
+- Component file: `ComponentName.tsx` (e.g., `Purchases.tsx`, `Downloads.tsx`, `Account.tsx`)
+- Page file: `page.tsx` (minimal, only imports the component)
+- Component export: Named export (e.g., `export async function Purchases()`)
+
+**Pattern:**
+
+Each page (e.g., `src/app/(panel)/panel/purchases/`) follows this structure:
+
+```
+purchases/
+├── Purchases.tsx        # Server Component with business logic
+└── page.tsx             # Minimal page wrapper, exports metadata
+```
+
+**Purchases.tsx** (Server Component):
+
+```typescript
+import type { Metadata } from 'next'
+// ...imports...
+
+export async function Purchases() {
+  // Fetch data, process logic
+  return (
+    <div>
+      {/* Page content */}
+    </div>
+  )
+}
+```
+
+**page.tsx** (Minimal wrapper):
+
+```typescript
+import type { Metadata } from 'next'
+import { Purchases } from './Purchases'
+
+export const metadata: Metadata = { title: 'Purchases — MXbeats' }
+
+export default function PurchasesPage() {
+  return <Purchases />
+}
+```
+
+**Benefits:**
+
+- Clear separation of concerns (routing vs. logic)
+- Easier to maintain and test
+- Consistent naming across all panel pages
+- Reusable components (same component can be used in multiple pages if needed)
