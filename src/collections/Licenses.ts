@@ -1,14 +1,6 @@
-import type { Access, CollectionConfig } from 'payload'
-
-const adminOrOwner: Access = ({ req: { user } }) => {
-  if (!user) return false
-  if (user.collection === 'admin-users') return true
-  return { user: { equals: user.id } }
-}
-
-const adminOnly: Access = ({ req: { user } }) => {
-  return user?.collection === 'admin-users'
-}
+import type { CollectionConfig } from 'payload'
+import { isAdmin } from '@/access/isAdmin'
+import { isAdminOrSelf } from '@/access/isAdminOrSelf'
 
 export const Licenses: CollectionConfig = {
   slug: 'licenses',
@@ -17,10 +9,10 @@ export const Licenses: CollectionConfig = {
     defaultColumns: ['user', 'product', 'active', 'validTill', 'versionFrom', 'versionTo'],
   },
   access: {
-    read: adminOrOwner,
-    create: adminOnly,
-    update: adminOnly,
-    delete: adminOnly,
+    read: isAdminOrSelf, // user can read own licenses, admin can read all
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {
