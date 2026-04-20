@@ -24,27 +24,51 @@ export const Installations: CollectionConfig = {
   },
   fields: [
     {
-      name: 'user',
-      type: 'relationship',
-      relationTo: 'users',
-      required: true,
-      index: true,
+      type: 'row',
+      fields: [
+        {
+          name: 'user',
+          type: 'relationship',
+          relationTo: 'users',
+          required: true,
+          index: true,
+          admin: { width: '25%' },
+        },
+        {
+          name: 'product',
+          type: 'relationship',
+          relationTo: 'products',
+          required: true,
+          admin: { width: '25%' },
+        },
+        {
+          name: 'machineId',
+          type: 'text',
+          admin: { width: '25%' },
+        },
+      ],
     },
     {
-      name: 'product',
-      type: 'relationship',
-      relationTo: 'products',
-      required: true,
-    },
-    {
-      name: 'machineId',
-      type: 'text',
-    },
-    {
-      name: 'token',
-      type: 'text',
-      unique: true,
-      index: true,
+      type: 'row',
+      fields: [
+        {
+          name: 'computerName',
+          type: 'text',
+          admin: { width: '25%' },
+        },
+        {
+          name: 'os',
+          type: 'text',
+          admin: { width: '25%' },
+        },
+        {
+          name: 'token',
+          type: 'text',
+          unique: true,
+          index: true,
+          admin: { width: '50%' },
+        },
+      ],
     },
     {
       name: 'certificate',
@@ -54,25 +78,26 @@ export const Installations: CollectionConfig = {
       },
     },
     {
-      name: 'computerName',
-      type: 'text',
-    },
-    {
-      name: 'os',
-      type: 'text',
-    },
-    {
-      name: 'disabled',
-      type: 'checkbox',
-      defaultValue: false,
-    },
-    {
-      name: 'disabledReason',
-      type: 'text',
-    },
-    {
-      name: 'disabledAt',
-      type: 'date',
+      type: 'row',
+      fields: [
+        {
+          name: 'disabled',
+          label: 'Disabled',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: { width: '15%' },
+        },
+        {
+          name: 'disabledAt',
+          type: 'date',
+          admin: { width: '15%' },
+        },
+        {
+          name: 'disabledReason',
+          type: 'text',
+          admin: { width: '70%' },
+        },
+      ],
     },
   ],
   timestamps: true,

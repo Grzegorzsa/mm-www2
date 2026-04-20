@@ -364,16 +364,16 @@ export interface Installation {
   user: number | User;
   product: number | Product;
   machineId?: string | null;
+  computerName?: string | null;
+  os?: string | null;
   token?: string | null;
   /**
    * Base64-encoded XML certificate
    */
   certificate?: string | null;
-  computerName?: string | null;
-  os?: string | null;
   disabled?: boolean | null;
-  disabledReason?: string | null;
   disabledAt?: string | null;
+  disabledReason?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -664,13 +664,13 @@ export interface InstallationsSelect<T extends boolean = true> {
   user?: T;
   product?: T;
   machineId?: T;
-  token?: T;
-  certificate?: T;
   computerName?: T;
   os?: T;
+  token?: T;
+  certificate?: T;
   disabled?: T;
-  disabledReason?: T;
   disabledAt?: T;
+  disabledReason?: T;
   updatedAt?: T;
   createdAt?: T;
 }
