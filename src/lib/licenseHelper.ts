@@ -15,6 +15,16 @@ async function getUserLicenses(payload: Payload, userId: number) {
     depth: 2,
     limit: 999,
     overrideAccess: true,
+    select: {
+      product: true,
+      productExtensions: true,
+      validTill: true,
+      versionFrom: true,
+      versionTo: true,
+      active: true,
+      createdAt: true,
+      info: true,
+    },
   })
   return docs
 }

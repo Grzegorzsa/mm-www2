@@ -1,7 +1,10 @@
 import type { License, Product, ProductExtension } from '@/payload-types'
 import Image from 'next/image'
 
-type PopulatedLicense = Omit<License, 'product' | 'productExtensions'> & {
+type PopulatedLicense = Pick<
+  License,
+  'id' | 'validTill' | 'versionFrom' | 'versionTo' | 'active' | 'createdAt' | 'info'
+> & {
   product: Product
   productExtensions: ProductExtension[]
 }
