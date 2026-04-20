@@ -1,18 +1,10 @@
 import type { Access, CollectionConfig, FieldAccess } from 'payload'
 import { APIError } from 'payload'
 import { createWelcomeLicenses } from '@/lib/licenseHelper'
+import { isAdmin } from '@/access/isAdmin'
+import { isAdminOrSelf } from '@/access/isAdminOrSelf'
 
 const serverURL = () => process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
-
-const adminOrSelf: Access = ({ req: { user } }) => {
-  if (!user) return false
-  if (user.collection === 'admin-users') return true
-  return { id: { equals: user.id } }
-}
-
-const adminOnly: Access = ({ req: { user } }) => {
-  return user?.collection === 'admin-users'
-}
 
 export const Users: CollectionConfig = {
   slug: 'users',
@@ -74,9 +66,9 @@ export const Users: CollectionConfig = {
   },
   access: {
     create: () => true,
-    read: adminOrSelf,
-    update: adminOrSelf,
-    delete: adminOnly,
+    read: isAdminOrSelf,
+    update: isAdminOrSelf,
+    delete: isAdmin,
   },
   fields: [
     {
@@ -95,8 +87,8 @@ export const Users: CollectionConfig = {
         description: 'Prevent this user from logging in',
       },
       access: {
-        create: adminOnly as FieldAccess,
-        update: adminOnly as FieldAccess,
+        create: isAdmin as FieldAccess,
+        update: isAdmin as FieldAccess,
       },
     },
 
