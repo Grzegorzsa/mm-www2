@@ -363,14 +363,14 @@ export interface Installation {
   id: number;
   user: number | User;
   product: number | Product;
-  machineId?: string | null;
+  machineId: string;
   computerName?: string | null;
   os?: string | null;
-  token?: string | null;
+  token: string;
   /**
    * Base64-encoded XML certificate
    */
-  certificate?: string | null;
+  certificate: string;
   disabled?: boolean | null;
   disabledAt?: string | null;
   disabledReason?: string | null;

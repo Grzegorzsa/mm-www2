@@ -1,14 +1,5 @@
-import type { Access, CollectionConfig } from 'payload'
-
-const adminOrOwner: Access = ({ req: { user } }) => {
-  if (!user) return false
-  if (user.collection === 'admin-users') return true
-  return { user: { equals: user.id } }
-}
-
-const adminOnly: Access = ({ req: { user } }) => {
-  return user?.collection === 'admin-users'
-}
+import type { CollectionConfig } from 'payload'
+import { isAdmin } from '@/access/isAdmin'
 
 export const Installations: CollectionConfig = {
   slug: 'installations',
@@ -17,10 +8,14 @@ export const Installations: CollectionConfig = {
     defaultColumns: ['user', 'product', 'machineId', 'computerName', 'os', 'disabled'],
   },
   access: {
-    read: adminOrOwner,
-    create: adminOnly,
-    update: adminOnly,
-    delete: adminOnly,
+    read: ({ req: { user } }) => {
+      if (!user) return false
+      if (user.collection === 'admin-users') return true
+      return { user: { equals: user.id } }
+    },
+    create: isAdmin,
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {
@@ -44,6 +39,7 @@ export const Installations: CollectionConfig = {
         {
           name: 'machineId',
           type: 'text',
+          required: true,
           admin: { width: '25%' },
         },
       ],
@@ -64,6 +60,7 @@ export const Installations: CollectionConfig = {
         {
           name: 'token',
           type: 'text',
+          required: true,
           unique: true,
           index: true,
           admin: { width: '50%' },
@@ -73,6 +70,7 @@ export const Installations: CollectionConfig = {
     {
       name: 'certificate',
       type: 'textarea',
+      required: true,
       admin: {
         description: 'Base64-encoded XML certificate',
       },
