@@ -13,12 +13,16 @@ Jesteś ekspertem od struktury danych Payload CMS. Musisz zaktualizować istniej
 - **ManualPage:** Source #file:src/seed/manual.json -> Target #file:src/seed/manual.ts
 - **DownloadsPage:** Source #file:src/seed/downloads.json -> Target #file:src/seed/downloads.ts
 
-**2. Collections (Wiele stron w jednym pliku):**
+**2. Collections (Regularne):**
+
+- **Products:** Source #file:src/seed/products.json -> Target #file:src/seed/products.ts
+- **ProductExtensions:** Source #file:src/seed/product-extensions.json -> Target #file:src/seed/product-extensions.ts
+
+**3. Collections (Wiele stron w jednym pliku):**
 
 - **PrivacyPage:** Source #file:src/seed/privacy-policy.json -> Target #file:src/seed/pages.ts
 - **TermsPage:** Source #file:src/seed/terms-and-conditions.json -> Target #file:src/seed/pages.ts
 - **RefundPage:** Source #file:src/seed/refund-policy.json -> Target #file:src/seed/pages.ts
-- **Products:** Source #file:src/seed/products.json -> Target #file:src/seed/products.ts
 
 ### Zasady transformacji:
 

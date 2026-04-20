@@ -1,5 +1,5 @@
 /**
- * GET /api/licenses
+ * GET /api/user/licenses
  *
  * Returns the authenticated user's licenses (for the user panel).
  */

@@ -80,6 +80,14 @@ export const Users: CollectionConfig = {
   },
   fields: [
     {
+      name: 'info',
+      type: 'textarea',
+      required: false,
+      admin: {
+        description: 'Optional notes about this user',
+      },
+    },
+    {
       name: 'blocked',
       type: 'checkbox',
       defaultValue: false,
@@ -91,14 +99,7 @@ export const Users: CollectionConfig = {
         update: adminOnly as FieldAccess,
       },
     },
-    {
-      name: 'info',
-      type: 'textarea',
-      required: false,
-      admin: {
-        description: 'Optional notes about this user',
-      },
-    },
+
     {
       name: 'marketingConsent',
       type: 'checkbox',

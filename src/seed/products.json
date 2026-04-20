@@ -1,28 +1,30 @@
-{
-  "id": 1,
-  "name": "MX GRID",
-  "uid": "mx-grid",
-  "version": "1.2.0",
-  "versionNo": 1,
-  "releasedAt": "2024-08-06T12:00:00.000Z",
-  "releaseUpdatedAt": "2026-04-19T12:00:00.000Z",
-  "description": "Compose entire songs with built-in timeline editor. Arrange loops and samples creating cohesive musical pieces.",
+[
+  {
+    "id": 1,
+    "name": "MX GRID",
+    "uid": "mx-grid",
+    "version": "1.2.0",
+    "versionNo": 1,
+    "releasedAt": "2024-08-06T12:00:00.000Z",
+    "releaseUpdatedAt": "2026-04-19T12:00:00.000Z",
+    "description": "Compose entire songs with built-in timeline editor. Arrange loops and samples creating cohesive musical pieces.",
 
-  "thumb": {
-    "id": 9,
-    "alt": "MX GRID",
-    "updatedAt": "2026-04-19T06:52:38.986Z",
-    "createdAt": "2026-04-19T06:52:38.985Z",
-    "url": "/api/media/file/mx-grid-thumb.jpg",
-    "thumbnailURL": null,
-    "filename": "mx-grid-thumb.jpg",
-    "mimeType": "image/jpeg",
-    "filesize": 60573,
-    "width": 864,
-    "height": 350,
-    "focalX": 50,
-    "focalY": 50
-  },
-  "updatedAt": "2026-04-19T06:52:41.740Z",
-  "createdAt": "2026-04-19T06:52:41.740Z"
-}
+    "thumb": {
+      "id": 9,
+      "alt": "MX GRID",
+      "updatedAt": "2026-04-19T06:52:38.986Z",
+      "createdAt": "2026-04-19T06:52:38.985Z",
+      "url": "/api/media/file/mx-grid-thumb.jpg",
+      "thumbnailURL": null,
+      "filename": "mx-grid-thumb.jpg",
+      "mimeType": "image/jpeg",
+      "filesize": 60573,
+      "width": 864,
+      "height": 350,
+      "focalX": 50,
+      "focalY": 50
+    },
+    "updatedAt": "2026-04-19T06:52:41.740Z",
+    "createdAt": "2026-04-19T06:52:41.740Z"
+  }
+]

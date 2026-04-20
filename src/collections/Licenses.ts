@@ -24,58 +24,101 @@ export const Licenses: CollectionConfig = {
   },
   fields: [
     {
-      name: 'product',
-      type: 'relationship',
-      relationTo: 'products',
-      required: true,
+      type: 'row',
+      fields: [
+        {
+          name: 'product',
+          type: 'relationship',
+          relationTo: 'products',
+          required: true,
+          admin: {
+            width: '25%',
+          },
+        },
+        {
+          name: 'user',
+          type: 'relationship',
+          relationTo: 'users',
+          required: true,
+          index: true,
+          admin: {
+            width: '25%',
+          },
+        },
+        {
+          name: 'productExtensions',
+          type: 'relationship',
+          relationTo: 'product-extensions',
+          hasMany: true,
+          admin: {
+            width: '25%',
+          },
+        },
+        {
+          name: 'validTill',
+          type: 'date',
+          admin: {
+            description: 'Leave empty for unlimited validity',
+            width: '25%',
+          },
+        },
+      ],
     },
     {
-      name: 'user',
-      type: 'relationship',
-      relationTo: 'users',
-      required: true,
-      index: true,
+      type: 'row',
+      fields: [
+        {
+          name: 'active',
+          type: 'checkbox',
+          defaultValue: true,
+          admin: {
+            width: '25%',
+          },
+        },
+        {
+          name: 'deactivatedReason',
+          type: 'text',
+          admin: {
+            width: '25%',
+          },
+        },
+        {
+          name: 'versionFrom',
+          type: 'number',
+          required: true,
+          admin: {
+            width: '25%',
+          },
+        },
+        {
+          name: 'versionTo',
+          type: 'number',
+          required: true,
+          admin: {
+            width: '25%',
+          },
+        },
+      ],
     },
     {
-      name: 'productExtensions',
-      type: 'relationship',
-      relationTo: 'product-extensions',
-      hasMany: true,
-    },
-    {
-      name: 'validTill',
-      type: 'date',
-      admin: {
-        description: 'Leave empty for unlimited validity',
-      },
-    },
-    {
-      name: 'active',
-      type: 'checkbox',
-      defaultValue: true,
-    },
-    {
-      name: 'deactivatedReason',
-      type: 'text',
-    },
-    {
-      name: 'versionFrom',
-      type: 'number',
-      required: true,
-    },
-    {
-      name: 'versionTo',
-      type: 'number',
-      required: true,
-    },
-    {
-      name: 'info',
-      type: 'textarea',
-    },
-    {
-      name: 'maxInstallations',
-      type: 'number',
-      defaultValue: 2,
+      type: 'row',
+      fields: [
+        {
+          name: 'info',
+          type: 'textarea',
+          admin: {
+            width: '75%',
+          },
+        },
+        {
+          name: 'maxInstallations',
+          type: 'number',
+          defaultValue: 2,
+          admin: {
+            width: '25%',
+          },
+        },
+      ],
     },
   ],
   timestamps: true,

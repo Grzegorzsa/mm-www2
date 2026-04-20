@@ -194,13 +194,13 @@ export interface AdminUser {
 export interface User {
   id: number;
   /**
-   * Prevent this user from logging in
-   */
-  blocked?: boolean | null;
-  /**
    * Optional notes about this user
    */
   info?: string | null;
+  /**
+   * Prevent this user from logging in
+   */
+  blocked?: boolean | null;
   /**
    * User opted in to receive marketing emails
    */
@@ -541,8 +541,8 @@ export interface AdminUsersSelect<T extends boolean = true> {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
-  blocked?: T;
   info?: T;
+  blocked?: T;
   marketingConsent?: T;
   updatedAt?: T;
   createdAt?: T;
