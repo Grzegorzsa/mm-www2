@@ -29,7 +29,7 @@ export async function Purchases() {
           <p className="text-gray-400 text-sm">No purchases yet.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4 justify-items-center">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 w-fit">
           {licenses.map((license) => (
             <LicenseCard key={license.id} license={license} />
           ))}

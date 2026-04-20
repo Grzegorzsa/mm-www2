@@ -22,7 +22,7 @@ export function LicenseCard({ license }: { license: PopulatedLicense }) {
   const thumb = product.thumb && typeof product.thumb === 'object' ? product.thumb : null
 
   return (
-    <div className="bg-white rounded-sm border border-gray-200 overflow-hidden shadow-sm w-full max-w-md">
+    <div className="bg-white rounded-sm border border-gray-200 overflow-hidden shadow-sm w-full max-w-sm">
       {thumb?.url && (
         <div className="relative w-full aspect-864/350 bg-gray-100">
           <Image
@@ -36,7 +36,7 @@ export function LicenseCard({ license }: { license: PopulatedLicense }) {
       )}
 
       <div className="p-5">
-        <div className="flex items-start justify-between gap-2 mb-3">
+        <div className="flex items-start justify-between gap-5 mb-3">
           <h2 className="text-base font-semibold text-gray-900">{product.name}</h2>
           <span
             className={`text-xs font-medium px-2 py-0.5 rounded-full ${
