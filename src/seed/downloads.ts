@@ -1,6 +1,6 @@
 import { getPayload } from 'payload'
 import config from '../payload.config'
-import downloadsData from '../globals/pages/downloads.json'
+import downloadsData from '../seed/downloads.json'
 
 async function seed() {
   const payload = await getPayload({ config: await config })

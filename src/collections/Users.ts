@@ -4,7 +4,15 @@ import { createWelcomeLicenses } from '@/lib/licenseHelper'
 import { isAdmin } from '@/access/isAdmin'
 import { isAdminOrSelf } from '@/access/isAdminOrSelf'
 
-const serverURL = () => process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+const serverURL = () => {
+  const configuredURL = process.env.NEXT_PUBLIC_SERVER_URL?.trim()
+
+  if (configuredURL) {
+    return configuredURL.replace(/\/$/, '')
+  }
+
+  return 'http://localhost:3000'
+}
 
 export const Users: CollectionConfig = {
   slug: 'users',
