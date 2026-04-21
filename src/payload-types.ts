@@ -341,6 +341,7 @@ export interface License {
   id: number;
   product: number | Product;
   user: number | User;
+  userEmail?: string | null;
   productExtensions?: (number | ProductExtension)[] | null;
   /**
    * Leave empty for unlimited validity
@@ -645,6 +646,7 @@ export interface ProductExtensionsSelect<T extends boolean = true> {
 export interface LicensesSelect<T extends boolean = true> {
   product?: T;
   user?: T;
+  userEmail?: T;
   productExtensions?: T;
   validTill?: T;
   active?: T;

@@ -2,11 +2,50 @@ import type { CollectionConfig } from 'payload'
 import { isAdmin } from '@/access/isAdmin'
 import { isAdminOrSelf } from '@/access/isAdminOrSelf'
 
+async function resolveUserEmail(userValue: unknown, req: any): Promise<string | undefined> {
+  if (!userValue) return undefined
+
+  if (typeof userValue === 'object' && userValue !== null && 'email' in userValue) {
+    const email = (userValue as { email?: unknown }).email
+    return typeof email === 'string' ? email : undefined
+  }
+
+  if (typeof userValue !== 'string' && typeof userValue !== 'number') {
+    return undefined
+  }
+
+  try {
+    const user = (await req.payload.findByID({
+      collection: 'users',
+      id: userValue,
+      depth: 0,
+      req,
+    })) as { email?: unknown }
+
+    return typeof user?.email === 'string' ? user.email : undefined
+  } catch {
+    return undefined
+  }
+}
+
 export const Licenses: CollectionConfig = {
   slug: 'licenses',
   admin: {
-    useAsTitle: 'id',
+    useAsTitle: 'userEmail',
+    listSearchableFields: ['userEmail'],
     defaultColumns: ['user', 'product', 'active', 'validTill', 'versionFrom', 'versionTo'],
+  },
+  hooks: {
+    beforeChange: [
+      async ({ data, req, originalDoc }) => {
+        const userEmail = await resolveUserEmail(data?.user ?? originalDoc?.user, req)
+        if (userEmail) {
+          data.userEmail = userEmail
+        }
+
+        return data
+      },
+    ],
   },
   access: {
     read: isAdminOrSelf, // user can read own licenses, admin can read all
@@ -35,6 +74,14 @@ export const Licenses: CollectionConfig = {
           index: true,
           admin: {
             width: '25%',
+          },
+        },
+        {
+          name: 'userEmail',
+          type: 'text',
+          index: true,
+          admin: {
+            hidden: true,
           },
         },
         {
