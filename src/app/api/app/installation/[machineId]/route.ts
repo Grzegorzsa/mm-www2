@@ -13,6 +13,7 @@ import config from '@payload-config'
 import { juceErrorXml } from '@/lib/juceRSA'
 import { getInstallationByToken, removeInstallation } from '@/lib/installationsHelper'
 
+// const divider = '----------------------------------------'
 function xmlResponse(xml: string, status = 200) {
   return new Response(xml, {
     status,
@@ -21,7 +22,11 @@ function xmlResponse(xml: string, status = 200) {
 }
 
 function errorResponse(message: string) {
-  return xmlResponse(juceErrorXml(message))
+  return new Response('500 Internal Server Error', {
+    status: 500,
+    headers: { 'Content-Type': 'text/xml; charset=utf-8' },
+  })
+  // return xmlResponse(juceErrorXml(message))
 }
 
 /**
@@ -32,13 +37,16 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ machineId: string }> },
 ) {
+  // console.log(divider)
   const { machineId: mach } = await params
   const token = req.headers.get('token')
+  // console.log('Received GET request for machineId:', mach, 'with token:', token)
 
   if (!token || !mach) return errorResponse('Authorization failed')
-
+  // console.log('Token and machineId are present, proceeding with authentication.')
   const payload = await getPayload({ config })
   const installation = await getInstallationByToken(payload, token)
+  // console.log('Installation:', installation)
 
   if (
     !installation ||
@@ -46,12 +54,16 @@ export async function GET(
     (installation as { machineId?: string }).machineId !== mach ||
     !(installation as { certificate?: string }).certificate
   ) {
+    // console.log('#1 Authorization failed')
     return errorResponse('Authorization failed')
   }
 
   // Check user is not blocked
   const user = installation.user as { blocked?: boolean } | undefined
-  if (user?.blocked) return errorResponse('Authorization failed')
+  if (user?.blocked) {
+    // console.log('#2 User is blocked')
+    return errorResponse('Authorization failed')
+  }
 
   let certificate: string
   try {
@@ -60,9 +72,12 @@ export async function GET(
       'base64',
     ).toString('utf-8')
   } catch {
+    // console.log('#3 Failed to decode certificate')
     return errorResponse('Authorization failed')
   }
-
+  // console.log('Authentication successful, returning certificate.')
+  // console.log(certificate)
+  // console.log(divider)
   return xmlResponse(certificate)
 }
 
