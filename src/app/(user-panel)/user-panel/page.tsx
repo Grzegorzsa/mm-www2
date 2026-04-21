@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation'
 
 export default function PanelRootPage() {
-  redirect('/panel/purchases')
+  redirect('/user-panel/purchases')
 }

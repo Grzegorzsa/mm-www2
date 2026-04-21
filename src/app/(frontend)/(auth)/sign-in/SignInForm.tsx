@@ -42,7 +42,7 @@ export default function SignInForm() {
       if (!res.ok) {
         throw new Error(data?.error ?? data?.errors?.[0]?.message ?? 'Sign in failed')
       }
-      router.push('/panel/purchases')
+      router.push('/user-panel/purchases')
       router.refresh()
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'An error occurred, please try again'

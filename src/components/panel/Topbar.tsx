@@ -65,7 +65,7 @@ export default function Topbar({
         {dropdownOpen && (
           <div className="absolute right-0 top-full mt-1 w-48 rounded-lg border border-gray-200 bg-white shadow-md z-50 py-1">
             <Link
-              href="/panel/account"
+              href="/user-panel/account"
               onClick={() => setDropdownOpen(false)}
               className="flex items-center gap-2.5 px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
             >

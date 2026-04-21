@@ -47,7 +47,7 @@ const Header = () => {
         <div className="hidden md:flex items-center gap-4">
           {loggedIn ? (
             <Link
-              href="/panel/purchases"
+              href="/user-panel/purchases"
               className="flex items-center gap-2 text-sm tracking-widest uppercase hover:text-gray-300 transition-colors"
             >
               <User size={15} />
@@ -97,7 +97,7 @@ const Header = () => {
           <div className="flex gap-4 mt-4">
             {loggedIn ? (
               <Link
-                href="/panel/purchases"
+                href="/user-panel/purchases"
                 className="flex items-center gap-2 text-sm tracking-widest uppercase hover:text-gray-300"
                 onClick={() => setMenuOpen(false)}
               >

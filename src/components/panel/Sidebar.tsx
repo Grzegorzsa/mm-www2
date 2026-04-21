@@ -6,10 +6,10 @@ import { ShoppingBag, Monitor, Download, User } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navItems = [
-  { href: '/panel/purchases', label: 'Purchases', icon: ShoppingBag },
-  { href: '/panel/installations', label: 'Installations', icon: Monitor },
-  { href: '/panel/downloads', label: 'Downloads', icon: Download },
-  { href: '/panel/account', label: 'My Account', icon: User },
+  { href: '/user-panel/purchases', label: 'Purchases', icon: ShoppingBag },
+  { href: '/user-panel/installations', label: 'Installations', icon: Monitor },
+  { href: '/user-panel/downloads', label: 'Downloads', icon: Download },
+  { href: '/user-panel/account', label: 'My Account', icon: User },
 ]
 
 export default function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
