@@ -15,12 +15,9 @@ async function backfillLicenseUserEmail() {
       overrideAccess: true,
     })
 
-    for (const license of result.docs as Array<Record<string, unknown>>) {
+    for (const license of result.docs) {
       const userValue = license.user
-      const userId =
-        typeof userValue === 'object' && userValue !== null
-          ? (userValue as { id?: string | number }).id
-          : userValue
+      const userId = typeof userValue === 'object' && userValue !== null ? userValue.id : userValue
 
       if (!userId) {
         continue
@@ -45,7 +42,7 @@ async function backfillLicenseUserEmail() {
       if (email && license.userEmail !== email) {
         await payload.update({
           collection: 'licenses',
-          id: license.id as string | number,
+          id: license.id,
           data: { userEmail: email },
           overrideAccess: true,
         })
