@@ -23,7 +23,7 @@ const aside = `<h2>Manual</h2>
     </ul>
   </li>
   <li><a href="#edit-page">Page Editor</a></li>
-  <li><a href="#edit-timeline">Timeline Editor</a></li>
+  <li><a href="#edit-timeline">Arranger</a></li>
   <li><a href="#media-explorer">Media Explorer</a></li>
   <li><a href="#settings">Project Settings</a></li>
   <li><a href="#product-registration">Registration</a></li>
@@ -44,7 +44,7 @@ const mobileToc = `<details>
     <li class="sub"><a href="#edit-loops">Edit Loops</a></li>
     <li class="sub"><a href="#dsp-effects">DSP Effects</a></li>
     <li><a href="#edit-page">Page Editor</a></li>
-    <li><a href="#edit-timeline">Timeline Editor</a></li>
+    <li><a href="#edit-timeline">Arranger</a></li>
     <li><a href="#media-explorer">Media Explorer</a></li>
     <li><a href="#settings">Project Settings</a></li>
     <li><a href="#product-registration">Registration</a></li>
