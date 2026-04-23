@@ -31,6 +31,9 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      afterNavLinks: ['@/components/admin/LogoutButton#LogoutButton'],
+    },
   },
   collections: [
     AdminUsers,
