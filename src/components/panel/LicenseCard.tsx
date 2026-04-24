@@ -34,6 +34,7 @@ export function LicenseCard({ license }: { license: PopulatedLicense }) {
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"
+            loading="eager"
           />
         </div>
       )}
