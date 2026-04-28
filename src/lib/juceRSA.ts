@@ -94,7 +94,6 @@ function createCertificate(
   token: string,
   options: object,
 ): string {
-  console.log('Creating certificate with options:', options)
   const now = Date.now()
   const msFromDays = (days: number) => 1000 * 60 * 60 * 24 * days
   const expiryTime = (now + msFromDays(90)).toString(16)

@@ -64,6 +64,9 @@ export const Installations: CollectionConfig = {
           unique: true,
           index: true,
           admin: { width: '50%' },
+          access: {
+            read: ({ req: { user } }) => user?.collection === 'admin-users',
+          },
         },
       ],
     },

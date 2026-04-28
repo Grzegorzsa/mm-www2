@@ -111,7 +111,6 @@ export async function POST(req: NextRequest) {
 
   const body = await parseRequestBody(req)
   if (!body) {
-    console.log('Failed to parse request body as JSON or form data')
     return errorResponse('Invalid request')
   }
 

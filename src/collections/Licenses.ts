@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { isAdmin } from '@/access/isAdmin'
-import { isAdminOrSelf } from '@/access/isAdminOrSelf'
+import { isAdminOrOwner } from '@/access/isAdminOrOwner'
 
 async function resolveUserEmail(userValue: unknown, req: any): Promise<string | undefined> {
   if (!userValue) return undefined
@@ -48,7 +48,7 @@ export const Licenses: CollectionConfig = {
     ],
   },
   access: {
-    read: isAdminOrSelf, // user can read own licenses, admin can read all
+    read: isAdminOrOwner('user'), // user can read own licenses (matched by `user` field), admin can read all
     create: isAdmin,
     update: isAdmin,
     delete: isAdmin,

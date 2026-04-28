@@ -7,12 +7,10 @@ export const ContactSubmissions: CollectionConfig = {
     defaultColumns: ['email', 'subject', 'createdAt'],
   },
   access: {
-    read: ({ req }) => {
-      return Boolean(req.user)
-    },
+    read: ({ req: { user } }) => user?.collection === 'admin-users',
     create: () => true,
-    update: ({ req }) => Boolean(req.user),
-    delete: ({ req }) => Boolean(req.user),
+    update: ({ req: { user } }) => user?.collection === 'admin-users',
+    delete: ({ req: { user } }) => user?.collection === 'admin-users',
   },
   fields: [
     {
