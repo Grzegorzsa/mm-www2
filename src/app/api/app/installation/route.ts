@@ -24,6 +24,7 @@ import {
   updateAndSendExistingInstallation,
   type AuthUser,
 } from '@/lib/installationsHelper'
+import { installationLimiter, getClientIp } from '@/lib/rateLimiter'
 
 const MAX_INSTALLATIONS = parseInt(process.env.MAX_INSTALLATIONS || '2', 10)
 
@@ -103,7 +104,11 @@ async function authenticateUserPW(
 }
 
 export async function POST(req: NextRequest) {
-  console.log('--- Received POST request for installation endpoint ---')
+  const ip = getClientIp(req)
+  if (!installationLimiter.check(ip)) {
+    return errorResponse('Too many requests. Please try again later.')
+  }
+
   const body = await parseRequestBody(req)
   if (!body) {
     console.log('Failed to parse request body as JSON or form data')
@@ -119,10 +124,10 @@ export async function POST(req: NextRequest) {
   const os = body.os as string | undefined
   const compName = body.compName as string | undefined
   const ver = parseInt(String(body.ver ?? '0'), 10)
-  console.log('Request body:', { email, product, mach, prevMach, token, os, compName, ver })
+
+  if (isNaN(ver)) return errorResponse('Invalid request')
 
   if (!(email && pw) && !token) {
-    console.log('Not authorized')
     return errorResponse('Not authorized')
   }
 
@@ -131,26 +136,21 @@ export async function POST(req: NextRequest) {
   // 1. Authenticate the user
   let user: AuthUser & { error?: string }
   if (email && pw) {
-    console.log('Authenticating user with email and password')
     user = await authenticateUserPW(email, pw)
   } else {
-    console.log('Authenticating user with token')
     user = await getUserByInstallationToken(payload, token!)
   }
 
   if (user.error) {
-    console.log('Authentication failed:', user.error)
     return errorResponse(user.error)
   }
 
   // 2. Get all user installations for this product
   const userInstallations = await getUserInstallations(payload, user.email, product!)
-  console.log('No of installations found for user:', userInstallations.length)
   // console.log('User installations:', userInstallations)
 
   // 3a. No existing installations → create new
   if (userInstallations.length === 0) {
-    console.log('No installations found, creating new one')
     const cert = await createAndSendNewInstallation(
       payload,
       user,
@@ -168,7 +168,6 @@ export async function POST(req: NextRequest) {
     (i) => (i as { machineId?: string }).machineId === mach,
   )
   if (currentInstallation) {
-    console.log('Updating and sending existing installation')
     const cert = await updateAndSendExistingInstallation(
       payload,
       currentInstallation.id as number,
@@ -186,7 +185,6 @@ export async function POST(req: NextRequest) {
     (i) => (i as { machineId?: string }).machineId === prevMach,
   )
   if (prevInstallation) {
-    console.log('Updating and sending existing installation')
     const cert = await updateAndSendExistingInstallation(
       payload,
       prevInstallation.id as number,
@@ -201,7 +199,6 @@ export async function POST(req: NextRequest) {
 
   // 4. Max installations reached
   if (userInstallations.length >= MAX_INSTALLATIONS) {
-    console.log('Maximum number of active installations reached')
     return errorResponse('Maximum number of active installation reached.')
   }
 
@@ -215,7 +212,6 @@ export async function POST(req: NextRequest) {
     os ?? '',
     compName ?? '',
   )
-  console.log('Created new installation, sending certificate')
 
   return xmlResponse(cert)
 }

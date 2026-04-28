@@ -22,11 +22,7 @@ function xmlResponse(xml: string, status = 200) {
 }
 
 function errorResponse(message: string) {
-  return new Response('500 Internal Server Error', {
-    status: 500,
-    headers: { 'Content-Type': 'text/xml; charset=utf-8' },
-  })
-  // return xmlResponse(juceErrorXml(message))
+  return xmlResponse(juceErrorXml(message), 401)
 }
 
 /**

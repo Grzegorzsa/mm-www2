@@ -53,6 +53,12 @@ export const registerLimiter = new RateLimiter(60 * 60 * 1000, 5)
 /** Forgot-password: max 5 requests per IP per hour */
 export const forgotPasswordLimiter = new RateLimiter(60 * 60 * 1000, 5)
 
+/** Reset-password: max 5 requests per IP per hour */
+export const resetPasswordLimiter = new RateLimiter(60 * 60 * 1000, 5)
+
+/** JUCE installation endpoint: max 20 requests per IP per 15 minutes */
+export const installationLimiter = new RateLimiter(15 * 60 * 1000, 20)
+
 // ---------------------------------------------------------------------------
 // Helper: extract client IP from Next.js request headers
 // ---------------------------------------------------------------------------

@@ -2,8 +2,17 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { h } from '@/lib/h'
+import { resetPasswordLimiter, getClientIp } from '@/lib/rateLimiter'
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req)
+  if (!resetPasswordLimiter.check(ip)) {
+    return NextResponse.json(
+      { error: 'Too many requests. Please try again later.' },
+      { status: 429 },
+    )
+  }
+
   let body: unknown
   try {
     body = await req.json()
@@ -28,7 +37,11 @@ export async function POST(req: NextRequest) {
 
   try {
     const payload = await getPayload({ config })
-    await payload.resetPassword({ collection: 'users', data: { token, password }, overrideAccess: true })
+    await payload.resetPassword({
+      collection: 'users',
+      data: { token, password },
+      overrideAccess: true,
+    })
     return NextResponse.json({ ok: true })
   } catch (err: unknown) {
     const message = err instanceof Error ? err.message : 'Password reset failed'

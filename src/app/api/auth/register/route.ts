@@ -39,8 +39,7 @@ export async function POST(req: NextRequest) {
     const payload = await getPayload({ config })
     const user = await payload.create({ collection: 'users', data: { email, password } })
     return NextResponse.json({ user }, { status: 201 })
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : 'Registration failed'
-    return NextResponse.json({ error: message }, { status: 400 })
+  } catch {
+    return NextResponse.json({ error: 'Registration failed' }, { status: 400 })
   }
 }
