@@ -221,10 +221,10 @@ export default async function HomePage() {
               <tr>
                 <th className="bg-transparent w-[44%] p-4" />
                 <th className="bg-[#72cd78] text-white p-4 min-w-50 text-xl font-semibold">
-                  MXbeats Essentials
+                  MX Grid Elements
                 </th>
                 <th className="bg-[#3fbef2] text-white p-4 min-w-50 text-xl font-semibold">
-                  MXbeats Loops
+                  MX Grid Loops Pro
                 </th>
               </tr>
             </thead>
