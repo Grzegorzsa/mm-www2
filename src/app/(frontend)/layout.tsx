@@ -4,6 +4,8 @@ import { DM_Sans } from 'next/font/google'
 import Header from '@/components/frontend/Header'
 import Footer from '@/components/frontend/Footer'
 import { Lightbox } from '@/components/frontend/Lightbox'
+import { CookieConsent } from '@/components/frontend/CookieConsent'
+import { GoogleAnalytics } from '@/components/frontend/GoogleAnalytics'
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -22,6 +24,8 @@ export default async function FrontendLayout(props: { children: React.ReactNode 
         <main className="flex-1 pt-16">{children}</main>
         <Footer />
         <Lightbox />
+        <CookieConsent />
+        <GoogleAnalytics />
       </body>
     </html>
   )
