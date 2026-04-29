@@ -1,3 +1,4 @@
+import { withSentryConfig } from '@sentry/nextjs'
 import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
 import path from 'path'
@@ -49,4 +50,13 @@ const nextConfig: NextConfig = {
   },
 }
 
-export default withPayload(nextConfig, { devBundleServerPackages: false })
+export default withSentryConfig(withPayload(nextConfig, { devBundleServerPackages: false }), {
+  // Disable source map upload (no org/project credentials needed)
+  sourcemaps: {
+    disable: true,
+  },
+  // Suppress build-time output
+  silent: true,
+  // Disable Sentry build-time telemetry
+  telemetry: false,
+})
