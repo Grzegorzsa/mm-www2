@@ -25,7 +25,7 @@ export function LicenseCard({ license }: { license: PopulatedLicense }) {
   const thumb = product.thumb && typeof product.thumb === 'object' ? product.thumb : null
 
   return (
-    <div className="bg-white rounded-sm border border-gray-200 overflow-hidden shadow-sm w-full max-w-sm">
+    <div className="bg-white rounded-sm border border-gray-200 overflow-hidden shadow-sm w-full min-w-xsm max-w-sm">
       {thumb?.url && (
         <div className="relative w-full aspect-864/350 bg-gray-100">
           <Image
