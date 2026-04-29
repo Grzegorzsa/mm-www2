@@ -10,68 +10,212 @@
 
 `/update-manual` - run in Copilot chat
 
-This template comes configured with the bare minimum to get started on anything you need.
+## Deplay - Standalone
 
-## Quick start
+Z powodu ograniczonych zasobów build będzie wykonany lokalnie.
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+Dodano do pliku konfiguracyjnego `output: 'standalone',` do `next.config.ts`
 
-## Quick Start - local setup
+1. Wykonać build na maszynie lokalnej: `pnpm build`
+2. Usunąć `node_modules` znajdujący się w `.next/standalone`
+3. Przegrać na serwer:
 
-To spin up this template locally, follow these steps:
+- Zawartość `.next/standalone` na serwer
+- Z katalogu `.next` przegrać katalog `static` na serwer
+- przegrać katalog `public`
 
-### Clone
+```bash
+# Wymuszenie instalacji pg i innych binariów pod Linuxa
+pnpm add pg
+pnpm install --prod
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+# Start PM2
+pm2 start server.js --name "mxbeats"
+pm2 logs mxbeats
+```
 
-### Development
+## Dodanie SWAP
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+```bash
+sudo fallocate -l 2G /swapfile
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+```
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+## Deploys keys na VPS
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+```bash
+# Zaakceptować domyślne wartości
+ssh-keygen -t ed25519 -C "vps@mxbeats.com"
 
-#### Docker (Optional)
+# Pobranie klucza do GitHub
+cat ~/.ssh/id_ed25519.pub
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+# Sprawdzenie połączenia
+ssh -T git@github.com
+```
 
-To do so, follow these steps:
+Skopiuj cały wyświetlony tekst (zaczynający się od ssh-ed25519...) i dodaj go na GitHubie:
 
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+Wejdź w swoje repozytorium.
 
-## How it works
+Settings -> Deploy keys -> Add deploy key.
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+Buid na serwerze:
 
-### Collections
+```bash
+NODE_OPTIONS="--max-old-space-size=1536" pnpm run build
+```
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+Backup mxbeats.com
 
-- #### Users (Authentication)
+```bash
+server {
+    server_name mxbeats.com; # You can adjust server names as needed
 
-  Users are auth-enabled collections that have access to the admin panel.
+    root /home/grzegorz/www/mxbeats.com/build/;
+    index index.html index.htm;
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/main/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+    error_log /home/grzegorz/www/mxbeats.com/nginx-error.log;
+    access_log off; # You can enable access logs if needed
 
-- #### Media
+    # Blokowanie plików .php, .asp, .exe itp.
+    location ~* \.(php|aspx?|jsp|cgi|exe|pl|py)$ {
+        return 444; # "Connection Closed Without Response" - oszczędza transfer
+    }
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+    # Blokowanie podwójnych slashy (częsty trik botów)
+    merge_slashes on;
 
-### Docker
+    # Access control
+    # allow 89.45.5.237;
+    # allow 109.173.0.0/16; # This represents the range 109.173.*.*
+    # deny all;
+    # allow all;
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+    location /.well-known/acme-challenge/ {
+        # This is where Certbot will place the challenge files.
+        # This path must be the webroot of your site.
+        root /home/grzegorz/www/mxbeats.com/build;
+    }
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+   location ~* \.(?:jpg|jpeg|png|gif|webp|ico)$ {
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000";
+        add_header Pragma public; # For older browsers
+    }
 
-## Questions
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/mxbeats.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/mxbeats.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name mxbeats.com;
+
+    # This location block is crucial for Certbot renewals with the webroot authenticator.
+    location /.well-known/acme-challenge/ {
+        # This path must be the webroot of your site.
+        root /home/grzegorz/www/mxbeats.com/build;
+    }
+
+    # All other HTTP traffic is permanently redirected to HTTPS.
+    location / {
+        return 301 https://mxbeats.com$request_uri;
+    }
+}
+```
+
+```bash
+server {
+    server_name mxbeats.com;
+
+    # Logi (zmienione na nową ścieżkę)
+    error_log /var/www/mxbeats.com/nginx-error.log;
+    access_log off;
+
+    # Zwiększenie limitu uploadu (ważne dla wgrywania mediów do Payload)
+    client_max_body_size 50M;
+
+    # 1. Blokowanie podejrzanych plików
+    location ~* \.(php|aspx?|jsp|cgi|exe|pl|py)$ {
+        return 444;
+    }
+
+    # 2. Obsługa wyzwań Certbota (SSL)
+    location /.well-known/acme-challenge/ {
+        # W Next.js standalone wyzwania najlepiej kierować do folderu public
+        root /var/www/mxbeats.com/public;
+    }
+
+    # 3. Blokada panelu ADMIN (tylko dla Twojego IP)
+    location /admin {
+        allow 98.45.5.237; # <--- WPISZ SWOJE IP
+        deny all;
+
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # 4. Główne Proxy dla Next.js
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    # 5. Optymalizacja cache dla obrazków (serwowanych przez Next/Payload)
+    location ~* \.(?:jpg|jpeg|png|gif|webp|ico)$ {
+        proxy_pass http://localhost:3000;
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000";
+    }
+
+    # --- Sekcja SSL (ZACHOWANA) ---
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/mxbeats.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/mxbeats.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+}
+
+# --- Przekierowanie HTTP -> HTTPS ---
+server {
+    listen 80;
+    listen [::]:80;
+    server_name mxbeats.com;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/mxbeats.com/public;
+    }
+
+    location / {
+        return 301 https://mxbeats.com$request_uri;
+    }
+}
+```
