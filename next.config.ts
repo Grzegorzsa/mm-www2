@@ -3,6 +3,10 @@ import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { createRequire } from 'module'
+
+const _require = createRequire(import.meta.url)
+const { version: appVersion } = _require('./package.json') as { version: string }
 
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
@@ -51,9 +55,14 @@ const nextConfig: NextConfig = {
 }
 
 export default withSentryConfig(withPayload(nextConfig, { devBundleServerPackages: false }), {
-  // Disable source map upload (no org/project credentials needed)
+  org: 'gssoftpl',
+  project: 'mxbeats-www',
+  authToken: process.env.SENTRY_AUTH_TOKEN,
+  release: { name: appVersion },
+  // Upload source maps on every production build
   sourcemaps: {
-    disable: true,
+    disable: false,
+    deleteSourcemapsAfterUpload: true,
   },
   // Suppress build-time output
   silent: true,

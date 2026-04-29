@@ -12,29 +12,20 @@
 
 ## Deplay - Standalone
 
-Z powodu ograniczonych zasobów build będzie wykonany lokalnie.
+1. Przed wysłaniem zmian na serwer zaktualizować wersję w package.json
+2. Na serwerze wykonać `git pull`
+3. W razie potrzeby podinstalować nowe biblioteki `pnpm install`
+4. Wykonanie builda `pnpm build` - powinny zostać wysłane mapy na Sentry
+5. Restart PM2 `pm2 restart mxbeats`
 
-Dodano do pliku konfiguracyjnego `output: 'standalone',` do `next.config.ts`
-
-1. Wykonać build na maszynie lokalnej: `pnpm build`
-2. Usunąć `node_modules` znajdujący się w `.next/standalone`
-3. Przegrać na serwer:
-
-- Zawartość `.next/standalone` na serwer
-- Z katalogu `.next` przegrać katalog `static` na serwer
-- przegrać katalog `public`
+## PM2
 
 ```bash
-# Wymuszenie instalacji pg i innych binariów pod Linuxa
-pnpm add pg
-pnpm install --prod
-
-# Start PM2
 pm2 start server.js --name "mxbeats"
 pm2 logs mxbeats
 ```
 
-## Dodanie SWAP
+## Dodanie SWAP przy rozwalającym się buildzie
 
 ```bash
 sudo fallocate -l 2G /swapfile
