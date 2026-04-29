@@ -15,8 +15,9 @@
 1. Przed wysłaniem zmian na serwer zaktualizować wersję w package.json
 2. Na serwerze wykonać `git pull`
 3. W razie potrzeby podinstalować nowe biblioteki `pnpm install`
-4. Wykonanie builda `pnpm build` - powinny zostać wysłane mapy na Sentry
-5. Restart PM2 `pm2 restart mxbeats`
+4. W razie potrzeby zaktualizować `.env`
+5. Wykonanie builda `pnpm build` - powinny zostać wysłane mapy na Sentry
+6. Restart PM2 `pm2 restart mxbeats`
 
 ## PM2
 
