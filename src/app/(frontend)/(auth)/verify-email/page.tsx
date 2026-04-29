@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { createWelcomeLicenses } from '@/lib/licenseHelper'
 
 export const metadata: Metadata = {
   title: 'Verify Email — MXbeats',
@@ -32,8 +33,28 @@ export default async function VerifyEmailPage({
 
   try {
     const payload = await getPayload({ config })
+
+    // payload.verifyEmail() uses a direct DB operation that bypasses afterChange hooks,
+    // so we must look up the user first and run the welcome logic explicitly after.
+    const { docs } = await payload.find({
+      collection: 'users',
+      where: {
+        and: [{ _verificationToken: { equals: token } }, { _verified: { not_equals: true } }],
+      },
+      limit: 1,
+      overrideAccess: true,
+    })
+
     await payload.verifyEmail({ collection: 'users', token })
     success = true
+
+    if (docs[0]) {
+      try {
+        await createWelcomeLicenses(payload, { id: docs[0].id, email: docs[0].email })
+      } catch (err) {
+        console.error('Failed to create welcome licenses:', err)
+      }
+    }
   } catch (err: unknown) {
     if (err instanceof Error) {
       errorMessage = err.message
