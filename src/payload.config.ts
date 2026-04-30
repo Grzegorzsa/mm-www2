@@ -61,7 +61,7 @@ export default buildConfig({
   sharp,
   email: nodemailerAdapter({
     defaultFromAddress: 'noreply@mxbeats.com',
-    defaultFromName: 'MXbeats',
+    defaultFromName: 'MX BEATS',
     transportOptions: {
       host: process.env.SMTP_HOST || 'ssl0.ovh.net',
       port: Number(process.env.SMTP_PORT ?? 465),

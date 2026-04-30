@@ -78,9 +78,9 @@ export async function POST(req: NextRequest) {
   const smtpHost = process.env.SMTP_HOST
   const smtpUser = process.env.SMTP_USERNAME
   const smtpPass = process.env.SMTP_PASSWORD
-  const contactTo = process.env.CONTACT_EMAIL
+  const smtpTo = process.env.SMTP_TO
 
-  if (smtpHost && smtpUser && smtpPass && contactTo) {
+  if (smtpHost && smtpUser && smtpPass) {
     try {
       const transporter = nodemailer.createTransport({
         host: smtpHost,
@@ -90,8 +90,8 @@ export async function POST(req: NextRequest) {
       })
 
       await transporter.sendMail({
-        from: `"MXbeats Contact" <${smtpUser}>`,
-        to: contactTo,
+        from: `"MX BEATS" <${smtpUser}>`,
+        to: smtpTo,
         replyTo: safeEmail,
         subject: `[Contact] ${safeSubject}`,
         text: `Email: ${safeEmail}\nIP: ${ip}\nSubject: ${safeSubject}\n\nMessage: ${safeMessage}`,
@@ -101,6 +101,8 @@ export async function POST(req: NextRequest) {
       console.error('Failed to send contact email:', err)
       // Non-fatal — submission is already stored in DB
     }
+  } else {
+    console.warn('E-mail not sent: Missing SMTP configuration variables.')
   }
 
   return NextResponse.json({ ok: true })
