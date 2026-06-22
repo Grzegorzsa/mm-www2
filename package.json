@@ -76,10 +76,10 @@
     "onlyBuiltDependencies": [
       "sharp",
       "esbuild",
-      "unrs-resolver"
+      "unrs-resolver",
+      "@sentry/cli"
     ],
     "ignoredBuiltDependencies": [
-      "@sentry/cli",
       "msw"
     ]
   },
