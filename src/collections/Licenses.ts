@@ -159,6 +159,30 @@ export const Licenses: CollectionConfig = {
         },
       ],
     },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'order',
+          type: 'relationship',
+          relationTo: 'orders',
+          admin: {
+            description: 'Associated purchase order transaction',
+            width: '50%',
+          },
+        },
+        {
+          name: 'preassignedPartner',
+          type: 'relationship',
+          relationTo: 'affiliates',
+          admin: {
+            description:
+              'Affiliate partner who distributed this specific key (e.g., for Player variant)',
+            width: '50%',
+          },
+        },
+      ],
+    },
   ],
   timestamps: true,
 }

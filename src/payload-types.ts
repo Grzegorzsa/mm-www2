@@ -79,6 +79,7 @@ export interface Config {
     licenses: License;
     installations: Installation;
     'welcome-licenses': WelcomeLicense;
+    affiliates: Affiliate;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -97,6 +98,7 @@ export interface Config {
     licenses: LicensesSelect<false> | LicensesSelect<true>;
     installations: InstallationsSelect<false> | InstallationsSelect<true>;
     'welcome-licenses': WelcomeLicensesSelect<false> | WelcomeLicensesSelect<true>;
+    affiliates: AffiliatesSelect<false> | AffiliatesSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -208,14 +210,9 @@ export interface User {
    */
   marketingConsent?: boolean | null;
   /**
-   * The affiliate partner who referred this user to the platform
+   * The affiliate partner who referred this user
    */
-  referredBy?: (number | null) | User;
-  affiliateType?: ('lifetime' | 'once') | null;
-  /**
-   * Check this if the user is an authorized affiliate partner who can refer others
-   */
-  isAffiliatePartner?: boolean | null;
+  referredBy?: (number | null) | Affiliate;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -236,6 +233,58 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "affiliates".
+ */
+export interface Affiliate {
+  id: number;
+  /**
+   * Friendly name or company name for this partner
+   */
+  name: string;
+  /**
+   * Tracking code used in URLs or embedded in Player keys (e.g. "john20")
+   */
+  affiliateCode: string;
+  /**
+   * Toggle to temporarily disable tracking and payouts
+   */
+  active: boolean;
+  /**
+   * Link to the actual user account registered in our system
+   */
+  user: number | User;
+  /**
+   * Rules applied when a user registers or buys via an affiliate tracking link
+   */
+  linkStrategy: {
+    enabled?: boolean | null;
+    isLifetime?: boolean | null;
+    /**
+     * Commission for the user's very first transaction
+     */
+    firstPurchaseRate: number;
+    /**
+     * Commission for following purchases (only if Lifetime is enabled)
+     */
+    subsequentPurchaseRate?: number | null;
+  };
+  /**
+   * Rules applied when a user binds their account using a physical license key from this partner
+   */
+  keyStrategy: {
+    enabled?: boolean | null;
+    isLifetime?: boolean | null;
+    commissionRate: number;
+  };
+  /**
+   * Internal admin notes, logs, or reasons for deactivation
+   */
+  info?: string | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -309,7 +358,7 @@ export interface Order {
    * Transaction amount in cents/lowest currency unit (integer)
    */
   amount: number;
-  affiliatePartner?: (number | null) | User;
+  affiliatePartner?: (number | null) | Affiliate;
   /**
    * Commission percentage granted for this specific order (e.g., 10 or 20)
    */
@@ -389,6 +438,14 @@ export interface License {
   versionTo: number;
   info?: string | null;
   maxInstallations?: number | null;
+  /**
+   * Associated purchase order transaction
+   */
+  order?: (number | null) | Order;
+  /**
+   * Affiliate partner who distributed this specific key (e.g., for Player variant)
+   */
+  preassignedPartner?: (number | null) | Affiliate;
   updatedAt: string;
   createdAt: string;
 }
@@ -502,6 +559,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'welcome-licenses';
         value: number | WelcomeLicense;
+      } | null)
+    | ({
+        relationTo: 'affiliates';
+        value: number | Affiliate;
       } | null);
   globalSlug?: string | null;
   user:
@@ -586,8 +647,6 @@ export interface UsersSelect<T extends boolean = true> {
   blocked?: T;
   marketingConsent?: T;
   referredBy?: T;
-  affiliateType?: T;
-  isAffiliatePartner?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -713,6 +772,8 @@ export interface LicensesSelect<T extends boolean = true> {
   versionTo?: T;
   info?: T;
   maxInstallations?: T;
+  order?: T;
+  preassignedPartner?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -746,6 +807,34 @@ export interface WelcomeLicensesSelect<T extends boolean = true> {
   info?: T;
   maxInstallations?: T;
   daysValid?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "affiliates_select".
+ */
+export interface AffiliatesSelect<T extends boolean = true> {
+  name?: T;
+  affiliateCode?: T;
+  active?: T;
+  user?: T;
+  linkStrategy?:
+    | T
+    | {
+        enabled?: T;
+        isLifetime?: T;
+        firstPurchaseRate?: T;
+        subsequentPurchaseRate?: T;
+      };
+  keyStrategy?:
+    | T
+    | {
+        enabled?: T;
+        isLifetime?: T;
+        commissionRate?: T;
+      };
+  info?: T;
   updatedAt?: T;
   createdAt?: T;
 }

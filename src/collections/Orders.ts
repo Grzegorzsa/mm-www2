@@ -54,7 +54,7 @@ export const Orders: CollectionConfig = {
     {
       name: 'affiliatePartner',
       type: 'relationship',
-      relationTo: 'users',
+      relationTo: 'affiliates',
     },
     {
       name: 'affiliateRate',

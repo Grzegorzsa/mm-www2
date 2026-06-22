@@ -22,6 +22,7 @@ import { Manual } from './globals/pages/Manual'
 import { Downloads } from './globals/pages/Downloads'
 import { WelcomeEmail } from './globals/WelcomeEmail'
 import Orders from './collections/Orders'
+import Affiliates from './collections/Affiliates'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -48,6 +49,7 @@ export default buildConfig({
     Licenses,
     Installations,
     WelcomeLicenses,
+    Affiliates,
   ],
   globals: [Homepage, Manual, Downloads, WelcomeEmail],
   editor: lexicalEditor(),
