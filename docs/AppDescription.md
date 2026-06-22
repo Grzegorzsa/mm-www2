@@ -491,4 +491,134 @@ When a file is being previewed, a transport bar appears at the bottom of the Fil
 
 ## Updates
 
-1. Main Menu > View - timeline editor - zamiast 'Timeline editor' jest teraz 'Arranger', więc tekst "Timeline Editor — open the Arranger to compose songs." powinien zostać poprawiony
+- Main Menu > View - timeline editor - zamiast 'Timeline editor' jest teraz 'Arranger', więc tekst "Timeline Editor — open the Arranger to compose songs." powinien zostać poprawiony
+- W trybach "Edit Page", "Edit Box" i "Arranger" klikając na box podczas gdy wciśnięty jest Alt powoduje uruchomienie klipu
+- W trybie "Arranger" kliknięcie prawym przyciskiem myszki na klip umożliwia edycję podstawowych właściwości klipu, bez konieczności uruchamiania Box Edytora
+- Dodano 2 nowe typy klipu: Note i Beat - zostaną one dokładnie opisane poniżej
+
+### MIDI Note (w skrócie Note)
+
+MIDI Note umożliwia mapowanie różnych instrumentów perkusyjnych do różnych nut midi, co umożliwia używanie używanie w Beats nie tylko sampli, ale i zewnętrznych instrumentów MIDI i wtyczek perkusyjnych w DAW.
+
+Po kliknięciu na puste pole w gridzie i zaznaczeniu edycji box'a w toolbarze zobaczymy wszystkie obecnie dostępne opcje klipów: Note, Sample, Loop i Beat.
+
+#### Note Toolbar
+
+- Save - zapisuje definicję box'a na dysk
+- Open - umożliwia odtworzenie box'a z dysku
+- Open Folder - załadowanie wielu box'ów na raz
+- Delete - usunięcie box'a
+
+#### Note - ustawienia
+
+- Numer nuty midi
+- Przyciski/strzałki poprzedni i następny do szybkiego wybierania poprzedniego lub następnego numeru midi
+- Przycisk Play (ikonka nutki) do podglądu/odgrywania nutki
+- Name (max 12 znaków)
+- Color
+- Icon
+- Type - typ instrumentu
+- Key - wysokość np C#
+- Preset - MIDI preset, np: General MIDI2
+- Auto-fill Notes - po kliknięciu wstawiamy do grida wszystkie skonfigurowane nuty z danego presetu
+
+### Beat
+
+Beats umożliwia tworzenie loopów perkusyjnych. Do tworzenia perkusji możemy używać zaimportowanych sampli jak również zewnętrznych syntezatorów
+i modułów perkusyjnych zawierających wejście MIDI, jak również wtyczek DAW (wersja plugin - nie standalone).
+Mamy możliwość skorzystania z ponad 1000 gotowych presetów z różnych gatunków muzycznych oraz skorzystania z zaawansowanego
+sekwencera MIDI.
+
+#### Beats Toolbar
+
+- Save - zapisuje definicję box'a na dysk
+- Open - umożliwia odtworzenie box'a z dysku
+- Open Folder - załadowanie wielu box'ów na raz
+- Delete - usunięcie box'a
+
+#### Beats - Panel ustawień
+
+- Przycisk "Play" - odgrywanie beat'u
+- Thumbnail - wizualny podgląd beat'u
+- Name - nazwa beatu (max 12 znaków)
+- Color - kolor box'a
+- Icon - ikona box'a
+- Original Tempo - oryginalne tempo beat'u przy jakim brzmi najlepiej. Ustawienie to nie ma wpływu na odtwarzanie, ale ułatwia filtrowanie
+  zapisanych box'ów z poziomu Media Explorer'a
+- Group No - numer grupy instrumentów
+- Loop - określa czy beat ma się zatrzymać na końcu, czy się zapętlać
+- Vel - korekcja velocyty dla wszystkich nut [%]. Nie jest to to samo co volume dla sampli i należy używać tego ustawienia ostrożnie.
+- Open Step Sequencer - otwarcie sekwencera perkusyjnego
+- Load Factory Preset - podgląd i załadowanie presetów
+
+#### Step Sequencer
+
+Sekwencer umożliwia tworzenie beat'ów składający się maksymalnie z 16 ścieżek i długości do 4 barów.
+
+##### Toolbar
+
+Toolbar zawiera przyciski - ikonki
+
+- New Beat - wyczyszczenie obecnego beat'u i rozpoczęcie tworzenia nowego
+- Open - zapisanego wcześniej beat'u
+- Save - sapisanie beat'u na dysk
+- Undo i Redo
+- Copy, Cut, Paste i Delete - operacje na zaznaczonych nutach
+- - / - - dodanie lub usunięcie ścieźki
+- Panic - wyciszenie wszystkich dźwięków
+- Play - podgląd beat'u
+- Volume - knob, w którym można ustawić głośność beat'u
+
+##### Beat Options
+
+Operacje na globalnych ustawieniach beat'u
+
+- Tempo - domyślnie tempo projektu. Jeśli chcemy zobaczyć jak dany beat brzmiał by w innym tempie możemy tutaj to ustawić
+- Swing - globalny swing
+- Bars - liczba barów [1, 2, 4]
+
+##### Track Options
+
+Żeby zobaczyć track options musimy zaznaczyć ścieżkę. W menu na górze opcji mamy: Options, Velocity i Time-Shift. W zakładkach
+Velocity i Time-Shift możemy modyfikować parametry velocity/time-shift dla poszczególnych nut. W przypadku Options mamy:
+
+- Steps/bar - w każdej ścieżce możemy osobno ustawić liczbę kroków [4, 8, 14]
+- Gain - modyfikacja velocity dla wszystkich nut w danej ścieżce
+- Swing - swing dla wybanej ścieżki. Swing dla ścieżki i globalny się sumują.
+- Time Shift - przesunięcie czasowe wszystkich nut w ścieżce [-50% do +50%]
+- Velocyty Humanization - humanizacja velocity dla całej ścieżki
+- Time Humanization - humanizacja czasu dla wszsystkich nut w ścieżce
+- Probability - prawdopodobność pojawienia się nutki
+
+##### Track
+
+Ścieżki składają się z kilku elementów:
+
+- Drag and drop handle - pozycję danej ścieżki możemy zmienić chwytają za handle i przeciągając góra/dół.
+- Select checkbox - checkbox służący do zaznaczania ścieżki
+- Box Icon - ikonka przypisana do box'u, który jest przypisany do ścieżki. Kliknięcie na nią powoduje podgląd sampla
+- Box Name - nazwa przypisanego do ścieżki box'u
+- Left/Right icons - ikonki/przyciski do nawigowania pomiędzy różnymi box'ami z danej kategorii instrumentu. Możemy w danej ścieżce używać
+  różnych box'ów z samplami lub nutami przypisanymi do danej kategorii np.: Kick, Snare itp.
+- Sampe Type - wybór typu sampla/nuty np.: Kick, Snare ...
+- Solo and Mute buttons - solo i mute dla danej ścieżki
+- grid - siatka umożliwiająca stawianie/usuwanie nutek. Kliknięcie na puste pole stawia nutkę, natomiast kliknięcie na nutkę usuwa ją.
+  Jeśli klikniemy na nutkę i przesuwamy ją góra/dół - modyfikujemy jej velocity. Nutka jest staje się niższa. Domyślne velocity dla
+  nut to 100. Jeśli klikniemy na nutkę i zaczniemy przeciągać prawo/lewo - modyfikujemy jej time-shift
+
+##### Action Buttons
+
+Na dole ekranu po prawej stronie mamy 2 przyciski:
+
+- Cancel - zamknięcie edycji beat'u bez zapisywania zmian
+- Save - zamknięcie edycji beat'u z zapisaniem zmian
+
+### Project Settings
+
+Zmienił się project settings za sprawą dodania konfituracji beats, ale również konfiguracji kontrolera. Poprzednio wybierało się typ kontrolera MIDI i
+obsługiwało za pomocą urządzenia midi znajdującego się w ustawieniach audio. Obecnie urządzenie MIDI w audio służy wyłącznie do podłączenia
+zewnętrznego syntezatora a ustawienia kontrolera MIDI grid przechodzą do Project Settings.
+
+- Pod polem Select Controller mamy jeszcze 2 widżety typu select: "MIDI In" i "MIDI Out". Wybieramy tam odpowiednie porty dla kontrolera typu Launchpad.
+- Uzunięta została opcja wyboru Theme - teraz jest dostępna wyłącznie z poziomu górnego menu.
+- Dodano Beats MIDI Channel - wybór kanału midi dla beats czyli perkusji.

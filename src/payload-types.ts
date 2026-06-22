@@ -767,6 +767,8 @@ export interface Homepage {
         feature: string;
         essentials: string;
         loops: string;
+        beats?: string | null;
+        composer?: string | null;
         id?: string | null;
       }[]
     | null;
@@ -927,6 +929,8 @@ export interface HomepageSelect<T extends boolean = true> {
         feature?: T;
         essentials?: T;
         loops?: T;
+        beats?: T;
+        composer?: T;
         id?: T;
       };
   demo?:

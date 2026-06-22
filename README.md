@@ -10,6 +10,10 @@
 
 `/update-manual` - run in Copilot chat
 
+## Czyszczena Cache
+
+`rm -rf .next`
+
 ## Deplay - Standalone
 
 1. Przed wysłaniem zmian na serwer zaktualizować wersję w package.json

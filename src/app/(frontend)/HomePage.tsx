@@ -226,6 +226,9 @@ export default async function HomePage() {
                 <th className="bg-[#3fbef2] text-white p-4 min-w-50 text-xl font-semibold">
                   MX Grid Loops Pro
                 </th>
+                <th className="bg-[#d800d0] text-white p-4 min-w-50 text-xl font-semibold">
+                  MX Grid Beats
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -239,6 +242,9 @@ export default async function HomePage() {
                   </td>
                   <td className="bg-white border border-white text-center px-6 py-2 text-lg">
                     <PricingCell value={row.loops} />
+                  </td>
+                  <td className="bg-white border border-white text-center px-6 py-2 text-lg">
+                    <PricingCell value={row.beats} />
                   </td>
                 </tr>
               ))}
@@ -256,6 +262,14 @@ export default async function HomePage() {
                   <Link
                     href="/sign-in"
                     className="inline-block bg-[#3fbef2] text-white px-6 py-2 text-sm tracking-widest uppercase hover:bg-[#2da8d8] transition-colors font-medium rounded"
+                  >
+                    Register
+                  </Link>
+                </td>
+                <td className="bg-white border border-white border-b-4 text-center px-6 py-4">
+                  <Link
+                    href="/sign-in"
+                    className="inline-block bg-[#d800d0] text-white px-6 py-2 text-sm tracking-widest uppercase hover:bg-[#2da8d8] transition-colors font-medium rounded"
                   >
                     Register
                   </Link>

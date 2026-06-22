@@ -23,7 +23,7 @@
   },
 
   "intro": {
-    "text": "MXbeats is a cutting-edge music looping software that empowers musicians, producers, and performers to create, arrange, and perform their music with ease and precision.",
+    "text": "Build, arrange, and perform with MXGRID—a powerful music creation suite built for seamless beat-making and fluid loop sequencing. From raw samples to finished tracks, shape your sound with total precision.",
     "ctaLabel": "GET IT NOW",
     "ctaUrl": "#pricing"
   },
@@ -54,7 +54,7 @@
     {
       "id": "69d4f804ea8dac6e8cdd96f5",
       "heading": "Ample Space for Creativity",
-      "description": "With over 500 slots, organize your loops and samples without limitations. Let your imagination run wild.",
+      "description": "With over 500 slots, organize your samples, loops and beats without limitations. Let your imagination run wild.",
 
       "image": {
         "id": 3,
@@ -143,7 +143,7 @@
   "timeline": {
     "heading": "Timeline Editor",
     "subheading": "for Complete Song Creation",
-    "description": "Compose entire songs with built-in timeline editor. Arrange loops and samples creating cohesive musical pieces.",
+    "description": "Compose entire songs with built-in timeline editor. Arrange loops, beats and samples creating cohesive musical pieces.",
 
     "image": {
       "id": 8,
@@ -167,77 +167,117 @@
       "id": "69d4f804ea8dac6e8cdd96f9",
       "feature": "Price",
       "essentials": "Free",
-      "loops": "$79"
+      "loops": "$49",
+      "beats": "$89",
+      "composer": "$139"
     },
 
     {
       "id": "69d4f804ea8dac6e8cdd96fa",
       "feature": "Timeline Editor",
       "essentials": "true",
-      "loops": "true"
+      "loops": "true",
+      "beats": "true",
+      "composer": "true"
     },
 
     {
       "id": "69d4f804ea8dac6e8cdd96fb",
       "feature": "MIDI Controller Support",
       "essentials": "true",
-      "loops": "true"
+      "loops": "true",
+      "beats": "true",
+      "composer": "true"
     },
 
     {
       "id": "69d4f804ea8dac6e8cdd96fc",
       "feature": "Play Loops and Samples",
       "essentials": "true",
-      "loops": "true"
+      "loops": "true",
+      "beats": "true",
+      "composer": "true"
     },
 
     {
       "id": "69d4f804ea8dac6e8cdd96fd",
       "feature": "Slots for Loops and Samples",
       "essentials": "512",
-      "loops": "512"
+      "loops": "512",
+      "beats": "512",
+      "composer": "512"
     },
 
     {
       "id": "69d4f804ea8dac6e8cdd96fe",
       "feature": "Max Number of Outputs",
       "essentials": "2",
-      "loops": "32"
+      "loops": "32",
+      "beats": "32",
+      "composer": "32"
     },
 
     {
       "id": "69d4f804ea8dac6e8cdd96ff",
       "feature": "Standalone App",
       "essentials": "true",
-      "loops": "true"
+      "loops": "true",
+      "beats": "true",
+      "composer": "true"
     },
 
     {
       "id": "69d4f804ea8dac6e8cdd9700",
       "feature": "DAW Plugin",
       "essentials": "false",
-      "loops": "true"
+      "loops": "true",
+      "beats": "true",
+      "composer": "true"
     },
 
     {
       "id": "69d4f804ea8dac6e8cdd9701",
       "feature": "Render Audio",
       "essentials": "false",
-      "loops": "true"
+      "loops": "true",
+      "beats": "true",
+      "composer": "true"
     },
 
     {
       "id": "69d4f804ea8dac6e8cdd9702",
       "feature": "DSP",
       "essentials": "false",
-      "loops": "true"
+      "loops": "true",
+      "beats": "true",
+      "composer": "true"
+    },
+
+    {
+      "id": "6a37e92fd8002f92e932298b",
+      "feature": "Play Beats",
+      "essentials": "false",
+      "loops": "true",
+      "beats": "true",
+      "composer": "true"
+    },
+
+    {
+      "id": "6a37e949d8002f92e932298d",
+      "feature": "Add and Edit Beats",
+      "essentials": "false",
+      "loops": "false",
+      "beats": "true",
+      "composer": "true"
     },
 
     {
       "id": "69d4f804ea8dac6e8cdd9703",
       "feature": "License Type",
       "essentials": "Personal use only",
-      "loops": "Commercial"
+      "loops": "Commercial",
+      "beats": "Commercial",
+      "composer": "Commercial"
     }
   ],
 
@@ -268,7 +308,7 @@
       "focalY": 50
     }
   },
-  "updatedAt": "2026-04-08T17:24:02.826Z",
+  "updatedAt": "2026-06-21T13:39:06.228Z",
   "createdAt": "2026-04-07T12:11:17.827Z",
   "globalType": "homepage"
 }
