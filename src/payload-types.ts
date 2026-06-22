@@ -389,15 +389,6 @@ export interface License {
   versionTo: number;
   info?: string | null;
   maxInstallations?: number | null;
-  productVariant: 'player' | 'elements' | 'loops_pro' | 'beats' | 'composer';
-  /**
-   * Associated order transaction (empty if generated externally before activation)
-   */
-  order?: (number | null) | Order;
-  /**
-   * Affiliate partner pre-assigned to this key (used for Player variant distribution)
-   */
-  preassignedPartner?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -722,9 +713,6 @@ export interface LicensesSelect<T extends boolean = true> {
   versionTo?: T;
   info?: T;
   maxInstallations?: T;
-  productVariant?: T;
-  order?: T;
-  preassignedPartner?: T;
   updatedAt?: T;
   createdAt?: T;
 }
