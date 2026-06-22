@@ -21,6 +21,7 @@ import { Homepage } from './globals/pages/Homepage'
 import { Manual } from './globals/pages/Manual'
 import { Downloads } from './globals/pages/Downloads'
 import { WelcomeEmail } from './globals/WelcomeEmail'
+import Orders from './collections/Orders'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -40,6 +41,7 @@ export default buildConfig({
     Users,
     Media,
     Pages,
+    Orders,
     ContactSubmissions,
     Products,
     ProductExtensions,

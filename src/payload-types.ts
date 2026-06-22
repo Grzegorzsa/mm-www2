@@ -72,6 +72,7 @@ export interface Config {
     users: User;
     media: Media;
     pages: Page;
+    orders: Order;
     'contact-submissions': ContactSubmission;
     products: Product;
     'product-extensions': ProductExtension;
@@ -89,6 +90,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
+    orders: OrdersSelect<false> | OrdersSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     'product-extensions': ProductExtensionsSelect<false> | ProductExtensionsSelect<true>;
@@ -205,6 +207,15 @@ export interface User {
    * User opted in to receive marketing emails
    */
   marketingConsent?: boolean | null;
+  /**
+   * The affiliate partner who referred this user to the platform
+   */
+  referredBy?: (number | null) | User;
+  affiliateType?: ('lifetime' | 'once') | null;
+  /**
+   * Check this if the user is an authorized affiliate partner who can refer others
+   */
+  isAffiliatePartner?: boolean | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -284,6 +295,31 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders".
+ */
+export interface Order {
+  id: number;
+  user: number | User;
+  source: 'lemon_squeezy' | 'plugin_boutique';
+  /**
+   * The order identifier from the external system (e.g., Order Number)
+   */
+  externalOrderId: string;
+  /**
+   * Transaction amount in cents/lowest currency unit (integer)
+   */
+  amount: number;
+  affiliatePartner?: (number | null) | User;
+  /**
+   * Commission percentage granted for this specific order (e.g., 10 or 20)
+   */
+  affiliateRate?: number | null;
+  affiliatePayoutStatus?: ('none' | 'pending' | 'paid') | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "contact-submissions".
  */
 export interface ContactSubmission {
@@ -353,6 +389,15 @@ export interface License {
   versionTo: number;
   info?: string | null;
   maxInstallations?: number | null;
+  productVariant: 'player' | 'elements' | 'loops_pro' | 'beats' | 'composer';
+  /**
+   * Associated order transaction (empty if generated externally before activation)
+   */
+  order?: (number | null) | Order;
+  /**
+   * Affiliate partner pre-assigned to this key (used for Player variant distribution)
+   */
+  preassignedPartner?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -438,6 +483,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'pages';
         value: number | Page;
+      } | null)
+    | ({
+        relationTo: 'orders';
+        value: number | Order;
       } | null)
     | ({
         relationTo: 'contact-submissions';
@@ -545,6 +594,9 @@ export interface UsersSelect<T extends boolean = true> {
   info?: T;
   blocked?: T;
   marketingConsent?: T;
+  referredBy?: T;
+  affiliateType?: T;
+  isAffiliatePartner?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -597,6 +649,21 @@ export interface PagesSelect<T extends boolean = true> {
         description?: T;
         image?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "orders_select".
+ */
+export interface OrdersSelect<T extends boolean = true> {
+  user?: T;
+  source?: T;
+  externalOrderId?: T;
+  amount?: T;
+  affiliatePartner?: T;
+  affiliateRate?: T;
+  affiliatePayoutStatus?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -655,6 +722,9 @@ export interface LicensesSelect<T extends boolean = true> {
   versionTo?: T;
   info?: T;
   maxInstallations?: T;
+  productVariant?: T;
+  order?: T;
+  preassignedPartner?: T;
   updatedAt?: T;
   createdAt?: T;
 }

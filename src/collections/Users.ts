@@ -109,6 +109,37 @@ export const Users: CollectionConfig = {
         description: 'User opted in to receive marketing emails',
       },
     },
+    {
+      name: 'referredBy',
+      type: 'relationship',
+      relationTo: 'users',
+      admin: {
+        position: 'sidebar',
+        description: 'The affiliate partner who referred this user to the platform',
+      },
+    },
+    {
+      name: 'affiliateType',
+      type: 'select',
+      defaultValue: 'lifetime',
+      admin: {
+        position: 'sidebar',
+      },
+      options: [
+        { label: 'Lifetime (% on all purchases)', value: 'lifetime' },
+        { label: 'One-Time (% on the first purchase only)', value: 'once' },
+      ],
+    },
+    {
+      name: 'isAffiliatePartner',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description:
+          'Check this if the user is an authorized affiliate partner who can refer others',
+      },
+    },
   ],
   timestamps: true,
 }
