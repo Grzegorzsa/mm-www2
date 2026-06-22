@@ -1,4 +1,4 @@
-import type { License, Product, ProductExtension } from '@/payload-types'
+import type { License, Product, ProductVariant } from '@/payload-types'
 import Image from 'next/image'
 
 type PopulatedLicense = Pick<
@@ -6,7 +6,7 @@ type PopulatedLicense = Pick<
   'id' | 'validTill' | 'versionFrom' | 'versionTo' | 'active' | 'createdAt' | 'info'
 > & {
   product: Product
-  productExtensions: ProductExtension[]
+  productVariants: ProductVariant[]
 }
 
 function formatDate(iso: string | null | undefined): string {
@@ -19,7 +19,7 @@ function formatDate(iso: string | null | undefined): string {
 }
 
 export function LicenseCard({ license }: { license: PopulatedLicense }) {
-  const { product, productExtensions, validTill, versionFrom, versionTo, active, createdAt, info } =
+  const { product, productVariants, validTill, versionFrom, versionTo, active, createdAt, info } =
     license
 
   const thumb = product.thumb && typeof product.thumb === 'object' ? product.thumb : null
@@ -70,10 +70,10 @@ export function LicenseCard({ license }: { license: PopulatedLicense }) {
               {versionFrom} – {versionTo >= 999 ? '∞' : versionTo}
             </dd>
           </div>
-          {productExtensions && productExtensions.length > 0 && (
+          {productVariants && productVariants.length > 0 && (
             <div className="flex gap-1">
-              <dt className="text-gray-400">Extensions:</dt>
-              <dd>{productExtensions.map((e) => e.name).join(', ')}</dd>
+              <dt className="text-gray-400">Variants:</dt>
+              <dd>{productVariants.map((e) => e.name).join(', ')}</dd>
             </div>
           )}
         </dl>

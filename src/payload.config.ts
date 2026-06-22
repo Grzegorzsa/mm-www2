@@ -13,7 +13,7 @@ import { Media } from './collections/Media'
 import { Pages } from './collections/Pages'
 import { ContactSubmissions } from './collections/ContactSubmissions'
 import { Products } from './collections/Products'
-import { ProductExtensions } from './collections/ProductExtensions'
+import { ProductVariants } from './collections/ProductVariants'
 import { Licenses } from './collections/Licenses'
 import { Installations } from './collections/Installations'
 import { WelcomeLicenses } from './collections/WelcomeLicenses'
@@ -44,7 +44,7 @@ export default buildConfig({
     Orders,
     ContactSubmissions,
     Products,
-    ProductExtensions,
+    ProductVariants,
     Licenses,
     Installations,
     WelcomeLicenses,

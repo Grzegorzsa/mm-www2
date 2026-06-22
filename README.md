@@ -14,6 +14,10 @@
 
 `rm -rf .next`
 
+## Sprawdzanie błędów TypeScript
+
+`pnpm tsc --noEmit`
+
 ## Deplay - Standalone
 
 1. Przed wysłaniem zmian na serwer zaktualizować wersję w package.json

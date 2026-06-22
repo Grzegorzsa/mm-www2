@@ -75,7 +75,7 @@ export interface Config {
     orders: Order;
     'contact-submissions': ContactSubmission;
     products: Product;
-    'product-extensions': ProductExtension;
+    'product-variants': ProductVariant;
     licenses: License;
     installations: Installation;
     'welcome-licenses': WelcomeLicense;
@@ -93,7 +93,7 @@ export interface Config {
     orders: OrdersSelect<false> | OrdersSelect<true>;
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
-    'product-extensions': ProductExtensionsSelect<false> | ProductExtensionsSelect<true>;
+    'product-variants': ProductVariantsSelect<false> | ProductVariantsSelect<true>;
     licenses: LicensesSelect<false> | LicensesSelect<true>;
     installations: InstallationsSelect<false> | InstallationsSelect<true>;
     'welcome-licenses': WelcomeLicensesSelect<false> | WelcomeLicensesSelect<true>;
@@ -355,9 +355,9 @@ export interface Product {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "product-extensions".
+ * via the `definition` "product-variants".
  */
-export interface ProductExtension {
+export interface ProductVariant {
   id: number;
   name: string;
   /**
@@ -378,7 +378,7 @@ export interface License {
   product: number | Product;
   user: number | User;
   userEmail?: string | null;
-  productExtensions?: (number | ProductExtension)[] | null;
+  productVariants?: (number | ProductVariant)[] | null;
   /**
    * Leave empty for unlimited validity
    */
@@ -423,7 +423,7 @@ export interface Installation {
 export interface WelcomeLicense {
   id: number;
   product: number | Product;
-  productExtensions?: (number | ProductExtension)[] | null;
+  productVariants?: (number | ProductVariant)[] | null;
   versionFrom: number;
   versionTo: number;
   info?: string | null;
@@ -488,8 +488,8 @@ export interface PayloadLockedDocument {
         value: number | Product;
       } | null)
     | ({
-        relationTo: 'product-extensions';
-        value: number | ProductExtension;
+        relationTo: 'product-variants';
+        value: number | ProductVariant;
       } | null)
     | ({
         relationTo: 'licenses';
@@ -687,9 +687,9 @@ export interface ProductsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "product-extensions_select".
+ * via the `definition` "product-variants_select".
  */
-export interface ProductExtensionsSelect<T extends boolean = true> {
+export interface ProductVariantsSelect<T extends boolean = true> {
   name?: T;
   uid?: T;
   description?: T;
@@ -705,7 +705,7 @@ export interface LicensesSelect<T extends boolean = true> {
   product?: T;
   user?: T;
   userEmail?: T;
-  productExtensions?: T;
+  productVariants?: T;
   validTill?: T;
   active?: T;
   deactivatedReason?: T;
@@ -740,7 +740,7 @@ export interface InstallationsSelect<T extends boolean = true> {
  */
 export interface WelcomeLicensesSelect<T extends boolean = true> {
   product?: T;
-  productExtensions?: T;
+  productVariants?: T;
   versionFrom?: T;
   versionTo?: T;
   info?: T;

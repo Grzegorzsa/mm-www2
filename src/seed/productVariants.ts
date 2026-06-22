@@ -17,7 +17,7 @@ async function seed() {
 
   const mxGridId = await getProductId(payload, 'mx-grid')
 
-  const extensions = [
+  const variants = [
     {
       name: 'Developer',
       uid: 'mx-grid-dev',
@@ -50,26 +50,26 @@ async function seed() {
     },
   ]
 
-  for (const ext of extensions) {
+  for (const variant of variants) {
     const existing = await payload.find({
-      collection: 'product-extensions',
-      where: { uid: { equals: ext.uid } },
+      collection: 'product-variants',
+      where: { uid: { equals: variant.uid } },
       limit: 1,
     })
 
     if (existing.docs.length > 0) {
       await payload.update({
-        collection: 'product-extensions',
+        collection: 'product-variants',
         id: existing.docs[0].id,
-        data: ext as any,
+        data: variant as any,
       })
-      console.log(`Updated product extension: ${ext.uid}`)
+      console.log(`Updated product variant: ${variant.uid}`)
     } else {
       await payload.create({
-        collection: 'product-extensions',
-        data: ext as any,
+        collection: 'product-variants',
+        data: variant as any,
       })
-      console.log(`Created product extension: ${ext.uid}`)
+      console.log(`Created product variant: ${variant.uid}`)
     }
   }
 

@@ -12,7 +12,7 @@
 - versionNo (int np 1) - numer wersji liczbowy. Np mamy licencję 1 i możemy używać w aplikacjach npm '1.9.99'
 - uid (jakiś identyfikator tekstowy np 'mx-grid' - - tu nie musi być uid, ale tak było w strapi)
 - thumb - obrazek png lub jpg...
-- dodać relację one to many productExtensions - produkt będzie mógł zawierać wiele (lub żadnych) rozszerzeń
+- dodać relację one to many productVariants - produkt będzie mógł zawierać wiele (lub żadnych) rozszerzeń
 
 ### License
 
@@ -27,9 +27,9 @@ Licencja użytkownika do posiadania produktu
 - info - description
 - maxInstallations (int, by default 2 for two allowed concurrent installations)
 - relacja do User
-- productExtensions - dodać relację
+- productVariants - dodać relację
 
-### Dodać kolekcję 'ProductExtensions' - będzie zawierać możliwe rozszerzenia produktu np. essentials, pro, max...
+### Dodać kolekcję 'ProductVariants' - będzie zawierać możliwe warianty produktu np. essentials, pro, max...
 
 Tu propozycja od Gemini:
 
@@ -85,7 +85,7 @@ PE1FU1NBR0UgbWVzc2FnZT0iVGhhbmtzIGZvciByZWdpc3RlcmluZyBvdXIgcHJvZHVjdCEiPjxLRVk+
 Licencje, które mają być przydzielone użytkownikowi, który utworzył konto.
 
 - product - relacja do produktu
-- productExtension - relacja do rozszerzenia produktu
+- productVariant - relacja do wariantu produktu
 - maxInstallations (default 2)
 - versionFrom
 - versionTo

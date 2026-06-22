@@ -17,7 +17,7 @@ async function getUserLicenses(payload: Payload, userId: number) {
     overrideAccess: true,
     select: {
       product: true,
-      productExtensions: true,
+      productVariants: true,
       validTill: true,
       versionFrom: true,
       versionTo: true,
@@ -58,7 +58,7 @@ async function createWelcomeLicenses(payload: Payload, user: { id: number; email
       validTill = date.toISOString()
     }
 
-    const extensionIds = ((wl.productExtensions ?? []) as Array<{ id: number }>).map((e) => e.id)
+    const variantIds = ((wl.productVariants ?? []) as Array<{ id: number }>).map((e) => e.id)
 
     await payload.create({
       collection: 'licenses',
@@ -71,7 +71,7 @@ async function createWelcomeLicenses(payload: Payload, user: { id: number; email
         versionFrom: wl.versionFrom,
         versionTo: wl.versionTo,
         active: true,
-        productExtensions: extensionIds,
+        productVariants: variantIds,
       },
       overrideAccess: true,
     })

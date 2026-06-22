@@ -16,7 +16,7 @@ Jesteś ekspertem od struktury danych Payload CMS. Musisz zaktualizować istniej
 **2. Collections (Regularne):**
 
 - **Products:** Source #file:src/seed/products.json -> Target #file:src/seed/products.ts
-- **ProductExtensions:** Source #file:src/seed/product-extensions.json -> Target #file:src/seed/product-extensions.ts
+- **ProductVariants:** Source #file:src/seed/productVariants.json -> Target #file:src/seed/productVariants.ts
 
 **3. Collections (Wiele stron w jednym pliku):**
 

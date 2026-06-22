@@ -1,7 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
-export const ProductExtensions: CollectionConfig = {
-  slug: 'product-extensions',
+export const ProductVariants: CollectionConfig = {
+  slug: 'product-variants',
   admin: {
     useAsTitle: 'name',
     defaultColumns: ['name', 'uid', 'product'],

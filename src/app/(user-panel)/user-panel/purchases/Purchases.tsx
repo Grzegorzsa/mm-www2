@@ -3,7 +3,7 @@ import config from '@payload-config'
 import { getSessionUser } from '@/lib/session'
 import { getUserLicenses } from '@/lib/licenseHelper'
 import { LicenseCard } from '@/components/panel/LicenseCard'
-import type { Product, ProductExtension } from '@/payload-types'
+import type { Product, ProductVariant } from '@/payload-types'
 
 export async function Purchases() {
   const user = await getSessionUser()
@@ -15,7 +15,7 @@ export async function Purchases() {
   const licenses = rawLicenses.filter((l) => l.product && typeof l.product === 'object') as Array<
     (typeof rawLicenses)[number] & {
       product: Product
-      productExtensions: ProductExtension[]
+      productVariants: ProductVariant[]
     }
   >
 

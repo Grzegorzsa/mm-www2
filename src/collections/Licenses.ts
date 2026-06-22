@@ -85,9 +85,9 @@ export const Licenses: CollectionConfig = {
           },
         },
         {
-          name: 'productExtensions',
+          name: 'productVariants',
           type: 'relationship',
-          relationTo: 'product-extensions',
+          relationTo: 'product-variants',
           hasMany: true,
           admin: {
             width: '25%',

@@ -1,20 +1,23 @@
-import { CollectionConfig } from 'payload/types'
+import type { CollectionConfig } from 'payload'
+import { isAdmin } from '@/access/isAdmin'
+import { isAdminOrOwner } from '@/access/isAdminOrOwner'
 
-const Orders: CollectionConfig = {
+export const Orders: CollectionConfig = {
   slug: 'orders',
   admin: {
     useAsTitle: 'externalOrderId',
     defaultColumns: ['externalOrderId', 'source', 'amount', 'createdAt'],
   },
   access: {
-    read: ({ req: { user } }) => {
-      // Admin widzi wszystko, zalogowany użytkownik tylko swoje zamówienia
-      if (user?.role === 'admin') return true
-      return { user: { equals: user?.id } }
-    },
-    create: () => true, // Zezwalamy na tworzenie zamówień przez webhook
-    update: () => false, // Raz zapisane zamówienie finansowe powinno być niezmienialne
-    delete: () => false,
+    // Użytkownik widzi swoje zamówienia (szukane po polu 'user'), admin widzi wszystkie
+    read: isAdminOrOwner('user'),
+
+    // Zezwalamy anonimowemu webhookowi z Lemon Squeezy na tworzenie obiektów Orders
+    create: () => true,
+
+    // Tylko admin może modyfikować lub usuwać zamówienia (choć z założenia powinny być niezmienne)
+    update: isAdmin,
+    delete: isAdmin,
   },
   fields: [
     {
@@ -48,7 +51,6 @@ const Orders: CollectionConfig = {
         description: 'Transaction amount in cents/lowest currency unit (integer)',
       },
     },
-    // Sekcja Afiliacyjna - zamrażana w strukturze zamówienia w momencie zakupu
     {
       name: 'affiliatePartner',
       type: 'relationship',

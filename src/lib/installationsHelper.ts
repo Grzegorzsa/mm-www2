@@ -109,7 +109,7 @@ async function getProductLicenseInfo(
       info.validTill = validTill
       const product = license.product as { id: number } | undefined
       info.id = product?.id ?? 0
-      const exts = (license.productExtensions ?? []) as Array<{
+      const exts = (license.productVariants ?? []) as Array<{
         uid: string
         name: string
         description?: string | null
@@ -131,7 +131,7 @@ async function getProductLicenseInfo(
           info.validTill = validTill
         }
       }
-      const exts = (license.productExtensions ?? []) as Array<{
+      const exts = (license.productVariants ?? []) as Array<{
         uid: string
         name: string
         description?: string | null
