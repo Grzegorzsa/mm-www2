@@ -77,6 +77,7 @@ export interface Config {
     products: Product;
     'product-variants': ProductVariant;
     'commerce-offers': CommerceOffer;
+    'banned-domains': BannedDomain;
     licenses: License;
     'license-transactions': LicenseTransaction;
     installations: Installation;
@@ -98,6 +99,7 @@ export interface Config {
     products: ProductsSelect<false> | ProductsSelect<true>;
     'product-variants': ProductVariantsSelect<false> | ProductVariantsSelect<true>;
     'commerce-offers': CommerceOffersSelect<false> | CommerceOffersSelect<true>;
+    'banned-domains': BannedDomainsSelect<false> | BannedDomainsSelect<true>;
     licenses: LicensesSelect<false> | LicensesSelect<true>;
     'license-transactions': LicenseTransactionsSelect<false> | LicenseTransactionsSelect<true>;
     installations: InstallationsSelect<false> | InstallationsSelect<true>;
@@ -546,6 +548,21 @@ export interface CommerceOffer {
   createdAt: string;
 }
 /**
+ * Disposable and temporary email domains blocked in registration and Lemon webhook.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banned-domains".
+ */
+export interface BannedDomain {
+  id: number;
+  /**
+   * Domain only, for example: 10minutemail.com
+   */
+  domain: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "installations".
  */
@@ -647,6 +664,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'commerce-offers';
         value: number | CommerceOffer;
+      } | null)
+    | ({
+        relationTo: 'banned-domains';
+        value: number | BannedDomain;
       } | null)
     | ({
         relationTo: 'licenses';
@@ -881,6 +902,15 @@ export interface CommerceOffersSelect<T extends boolean = true> {
   isCommercial?: T;
   referencePriceCents?: T;
   info?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banned-domains_select".
+ */
+export interface BannedDomainsSelect<T extends boolean = true> {
+  domain?: T;
   updatedAt?: T;
   createdAt?: T;
 }

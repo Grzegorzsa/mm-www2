@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { h } from '@/lib/h'
 import { registerLimiter, getClientIp } from '@/lib/rateLimiter'
+import { isBannedEmailDomain, TEMP_EMAIL_REJECT_MESSAGE } from '@/lib/bannedDomains'
 
 export async function POST(req: NextRequest) {
   const ip = getClientIp(req)
@@ -37,6 +38,12 @@ export async function POST(req: NextRequest) {
 
   try {
     const payload = await getPayload({ config })
+
+    const blocked = await isBannedEmailDomain(payload, email)
+    if (blocked) {
+      return NextResponse.json({ error: TEMP_EMAIL_REJECT_MESSAGE }, { status: 400 })
+    }
+
     const user = await payload.create({ collection: 'users', data: { email, password } })
     return NextResponse.json({ user }, { status: 201 })
   } catch {

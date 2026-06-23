@@ -13,6 +13,7 @@
     "lint": "cross-env NODE_OPTIONS=--no-deprecation eslint .",
     "payload": "cross-env NODE_OPTIONS=--no-deprecation payload",
     "seed": "cross-env NODE_OPTIONS=--no-deprecation tsx --env-file=.env src/seed/pages.ts",
+    "seed:banned-domains": "cross-env NODE_OPTIONS=--no-deprecation tsx --env-file=.env src/scripts/seedBannedDomains.ts",
     "seed:homepage": "cross-env NODE_OPTIONS=--no-deprecation tsx --env-file=.env src/seed/homepage.ts",
     "seed:downloads": "cross-env NODE_OPTIONS=--no-deprecation tsx --env-file=.env src/seed/downloads.ts",
     "seed:manual": "cross-env NODE_OPTIONS=--no-deprecation tsx --env-file=.env src/seed/manual.ts",

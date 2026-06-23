@@ -8,6 +8,7 @@ This document explains how to use and maintain the current sales flow implementa
 - Post-registration and post-purchase email templates
 - Audit model: Orders + License Transactions + Licenses
 - Admin debug endpoint for order trace by external order id
+- Temporary email domain blocking for registration and webhook
 
 Use this file as the source of truth for support and operations.
 
@@ -222,6 +223,7 @@ Always update these sections if applicable:
 4. Email variables and template behavior
 5. Data model relationships
 6. Debug/support endpoints
+7. Temporary email domain policy
 
 Required validation after sales-related changes:
 
@@ -248,10 +250,48 @@ Template:
 Current entries:
 
 - Date: 2026-06-23
+- Scope: webhook, checkout
+- Change: Added banned temporary email domain validation in registration flow and Lemon webhook.
+- Files: src/collections/BannedDomains.ts, src/lib/bannedDomains.ts, src/app/api/auth/register/route.ts, src/app/api/auth/check-email-domain/route.ts, src/app/api/webhooks/lemon/route.ts, src/app/(frontend)/(auth)/sign-up/SignUpForm.tsx
+- Validation: pnpm payload generate:types, pnpm tsc --noEmit
+
+- Date: 2026-06-23
 - Scope: support-tools
 - Change: Added admin order trace endpoint returning order + license transaction + licenses by order.
 - Files: src/app/api/admin/debug/order-trace/route.ts
 - Validation: pnpm tsc --noEmit
+
+## 9. Temporary Email Domain Policy
+
+Collection:
+
+- src/collections/BannedDomains.ts
+
+Helpers:
+
+- src/lib/bannedDomains.ts
+
+Validation points:
+
+- Registration API: src/app/api/auth/register/route.ts
+- Frontend pre-check endpoint: src/app/api/auth/check-email-domain/route.ts
+- Sign-up form pre-validation: src/app/(frontend)/(auth)/sign-up/SignUpForm.tsx
+- Lemon webhook: src/app/api/webhooks/lemon/route.ts
+
+Rejected message:
+
+- Temporary email addresses are not allowed
+
+How to update blocked domains:
+
+1. Add or remove entries in Payload Admin -> Banned Domains.
+2. Keep domains lowercase (normalization is automatic).
+3. If you want to bootstrap default domains in a fresh environment, run:
+   - pnpm seed:banned-domains
+
+Default seed list source:
+
+- src/lib/bannedDomains.ts (DEFAULT_BANNED_DOMAINS)
 
 - Date: 2026-06-23
 - Scope: webhook, data-model

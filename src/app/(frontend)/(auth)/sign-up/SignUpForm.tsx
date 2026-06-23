@@ -3,6 +3,8 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { h } from '@/lib/h'
 
+const TEMP_EMAIL_REJECT_MESSAGE = 'Temporary email addresses are not allowed'
+
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
@@ -33,6 +35,21 @@ export default function SignUpForm() {
     setIsLoading(true)
     setServerError('')
     try {
+      const domainCheck = await fetch('/api/auth/check-email-domain', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+
+      const domainData = await domainCheck.json().catch(() => ({}))
+      if (!domainCheck.ok) {
+        throw new Error(domainData?.error ?? 'Email domain validation failed')
+      }
+
+      if (domainData?.allowed === false) {
+        throw new Error(domainData?.error ?? TEMP_EMAIL_REJECT_MESSAGE)
+      }
+
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

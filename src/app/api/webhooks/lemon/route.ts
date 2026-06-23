@@ -9,6 +9,7 @@ import crypto from 'crypto'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { sendPurchaseWelcomeEmail } from '@/lib/licenseHelper'
+import { isBannedEmailDomain, TEMP_EMAIL_REJECT_MESSAGE } from '@/lib/bannedDomains'
 
 type RelationValue = string | number | { id?: string | number } | null | undefined
 type OfferActionType = 'new_purchase' | 'upgrade_replace' | 'renewal'
@@ -114,6 +115,11 @@ export async function POST(req: Request) {
   if (!customerEmail) {
     console.error('Webhook error: Missing user_email in Lemon Squeezy payload.')
     return new NextResponse('Missing customer email in event data', { status: 400 })
+  }
+
+  const blockedDomain = await isBannedEmailDomain(payload, customerEmail)
+  if (blockedDomain) {
+    return NextResponse.json({ error: TEMP_EMAIL_REJECT_MESSAGE }, { status: 400 })
   }
 
   if (!externalOrderId) {
