@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { getSessionUser } from '@/lib/session'
 import PanelShell from '@/components/panel/PanelShell'
+import { LemonSqueezyScript } from '@/components/shared/LemonSqueezyScript'
 import '../globals.css'
 
 export default async function PanelLayout({ children }: { children: React.ReactNode }) {
@@ -11,6 +12,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
     <html lang="en">
       <body className="bg-gray-50 antialiased">
         <PanelShell userEmail={user.email}>{children}</PanelShell>
+        <LemonSqueezyScript />
       </body>
     </html>
   )

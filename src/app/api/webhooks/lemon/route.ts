@@ -37,6 +37,14 @@ function asNumberId(value: string | number | undefined): number | undefined {
   return undefined
 }
 
+function asNumberFromUnknown(value: unknown): number | undefined {
+  if (typeof value === 'number' || typeof value === 'string') {
+    return asNumberId(value)
+  }
+
+  return undefined
+}
+
 function getNumberRelationIds(values: unknown): number[] {
   return getRelationIds(values)
     .map((value) => asNumberId(value))
@@ -92,6 +100,17 @@ export async function POST(req: Request) {
   // const eventName = event.meta?.event_name
   // console.log('Full Event Payload:', JSON.stringify(event.data, null, 2))
   const customData = event.meta?.custom_data || {}
+  const flowFromCheckout =
+    typeof customData?.flow === 'string' ? normalizeOfferActionType(customData.flow) : undefined
+  const requestedOfferId = asNumberFromUnknown(
+    customData?.commerceOfferId ?? customData?.commerce_offer_id,
+  )
+  const requestedSourceLicenseId = asNumberFromUnknown(
+    customData?.currentLicenseId ?? customData?.current_license_id,
+  )
+  const requestedSourceVariantId = asNumberFromUnknown(
+    customData?.sourceVariantId ?? customData?.source_variant_id,
+  )
 
   // --- MAPOWANIE STRUKTURY ZGODNIE Z REALNYM PAYLOADEM ---
   const orderAttributes = event.data?.attributes
@@ -193,17 +212,55 @@ export async function POST(req: Request) {
     }
 
     // 4. Resolve rule from commerce-offers (policy-driven), then fallback to legacy direct variant mapping.
-    const offerSearch = await payload.find({
-      collection: 'commerce-offers',
-      where: {
-        and: [{ lemonSqueezyVariantId: { equals: lemonVariantId } }, { active: { equals: true } }],
-      },
-      limit: 1,
-      depth: 2,
-      overrideAccess: true,
-    })
+    let offerRecord: any = null
 
-    const offerRecord = offerSearch.docs[0] ?? null
+    if (requestedOfferId) {
+      const offerById = await payload.findByID({
+        collection: 'commerce-offers',
+        id: requestedOfferId,
+        depth: 2,
+        overrideAccess: true,
+      })
+
+      if (
+        offerById &&
+        offerById.active === true &&
+        String(offerById.lemonSqueezyVariantId) === String(lemonVariantId)
+      ) {
+        offerRecord = offerById
+      }
+    }
+
+    if (!offerRecord) {
+      const offerWhere: any[] = [
+        { lemonSqueezyVariantId: { equals: lemonVariantId } },
+        { active: { equals: true } },
+      ]
+
+      if (flowFromCheckout) {
+        offerWhere.push({ actionType: { equals: flowFromCheckout } })
+      }
+
+      const offerSearch = await payload.find({
+        collection: 'commerce-offers',
+        where: {
+          and: offerWhere,
+        },
+        sort: '-createdAt',
+        limit: 1,
+        depth: 2,
+        overrideAccess: true,
+      })
+
+      offerRecord = offerSearch.docs[0] ?? null
+    }
+
+    if (!offerRecord && flowFromCheckout === 'upgrade_replace') {
+      return new NextResponse('Upgrade offer metadata did not match any active offer', {
+        status: 400,
+      })
+    }
+
     let offerActionType: OfferActionType = 'new_purchase'
     let productVariantRecord: any = null
     let productData: any = null
@@ -286,38 +343,70 @@ export async function POST(req: Request) {
       const allowedFromVariantIds = new Set(getNumberRelationIds(offerRecord.allowedFromVariants))
       const denyFromVariantIds = new Set(getNumberRelationIds(offerRecord.denyFromVariants))
 
-      const activeLicenses = await payload.find({
-        collection: 'licenses',
-        where: {
-          and: [
-            { user: { equals: userRecord.id } },
-            { product: { equals: productId } },
-            { active: { equals: true } },
-          ],
-        },
-        sort: '-createdAt',
-        depth: 2,
-        limit: 100,
-        overrideAccess: true,
-      })
-
-      sourceLicense = activeLicenses.docs.find((license) => {
+      const isEligibleSourceLicense = (license: any) => {
         const licenseVariantIds = getLicenseVariantIds(license)
         const hasAllowed =
           allowedFromVariantIds.size === 0 ||
           licenseVariantIds.some((variantId) => allowedFromVariantIds.has(variantId))
         const hasDenied = licenseVariantIds.some((variantId) => denyFromVariantIds.has(variantId))
         return hasAllowed && !hasDenied
-      })
+      }
+
+      if (requestedSourceLicenseId) {
+        const requestedSourceLicense = await payload.findByID({
+          collection: 'licenses',
+          id: requestedSourceLicenseId,
+          depth: 2,
+          overrideAccess: true,
+        })
+
+        const requestedProductId = asNumberId(
+          getRelationId(requestedSourceLicense?.product as RelationValue),
+        )
+
+        if (
+          requestedSourceLicense &&
+          requestedSourceLicense.active === true &&
+          asNumberId(getRelationId(requestedSourceLicense.user as RelationValue)) ===
+            userRecord.id &&
+          requestedProductId === productId &&
+          isEligibleSourceLicense(requestedSourceLicense)
+        ) {
+          sourceLicense = requestedSourceLicense
+        }
+      }
+
+      if (!sourceLicense) {
+        const activeLicenses = await payload.find({
+          collection: 'licenses',
+          where: {
+            and: [
+              { user: { equals: userRecord.id } },
+              { product: { equals: productId } },
+              { active: { equals: true } },
+            ],
+          },
+          sort: '-createdAt',
+          depth: 2,
+          limit: 100,
+          overrideAccess: true,
+        })
+
+        sourceLicense = activeLicenses.docs.find((license) => isEligibleSourceLicense(license))
+      }
 
       if (!sourceLicense) {
         return new NextResponse('No eligible source license for this upgrade path', { status: 400 })
       }
 
       const sourceLicenseVariantIds = getLicenseVariantIds(sourceLicense)
-      sourceVariantId =
-        sourceLicenseVariantIds.find((variantId) => allowedFromVariantIds.has(variantId)) ||
-        sourceLicenseVariantIds[0]
+      if (requestedSourceVariantId && sourceLicenseVariantIds.includes(requestedSourceVariantId)) {
+        sourceVariantId = requestedSourceVariantId
+      } else {
+        sourceVariantId =
+          sourceLicenseVariantIds.find((variantId) => allowedFromVariantIds.has(variantId)) ||
+          sourceLicenseVariantIds[0]
+      }
 
       await payload.update({
         collection: 'licenses',

@@ -3,6 +3,7 @@ import config from '@payload-config'
 import { getSessionUser } from '@/lib/session'
 import { getUserLicenses } from '@/lib/licenseHelper'
 import { LicenseCard } from '@/components/panel/LicenseCard'
+import { UpgradeButton } from '@/components/panel/UpgradeButton'
 import type { CommerceOffer, License, Product, ProductVariant } from '@/payload-types'
 
 type PopulatedLicense = Pick<
@@ -18,7 +19,8 @@ type UpgradeOfferView = {
   name: string
   fromVariantNames: string[]
   toVariantName: string
-  checkoutUrl: string
+  targetVariantId: number
+  hasLemonVariantMapping: boolean
   referencePriceCents: number | undefined
 }
 
@@ -26,18 +28,6 @@ function getVariantId(value: ProductVariant | number | null | undefined): number
   if (!value) return null
   if (typeof value === 'number') return value
   return value.id
-}
-
-function toCheckoutUrl(baseUrl: string, lemonVariantId: string): string {
-  if (!baseUrl || !lemonVariantId) return ''
-
-  try {
-    const url = new URL(baseUrl)
-    url.searchParams.set('variant', lemonVariantId)
-    return url.toString()
-  } catch {
-    return ''
-  }
 }
 
 function formatPrice(cents?: number): string | null {
@@ -52,7 +42,6 @@ function formatPrice(cents?: number): string | null {
 export async function Purchases() {
   const user = await getSessionUser()
   const payload = await getPayload({ config })
-  const lemonBaseCheckoutUrl = process.env.NEXT_PUBLIC_LEMON_CHECKOUT_BASE_URL ?? ''
 
   const rawLicenses = user ? await getUserLicenses(payload, user.id) : []
 
@@ -118,17 +107,13 @@ export async function Purchases() {
 
     if (matchedFromVariants.length === 0) return acc
 
-    const checkoutUrl = toCheckoutUrl(
-      lemonBaseCheckoutUrl,
-      String(targetVariant.lemonSqueezyVariantId ?? ''),
-    )
-
     acc.push({
       id: offer.id,
       name: offer.name,
       fromVariantNames: matchedFromVariants.map((v) => v.name),
       toVariantName: targetVariant.name,
-      checkoutUrl,
+      targetVariantId: targetVariant.id,
+      hasLemonVariantMapping: Boolean(targetVariant.lemonSqueezyVariantId),
       referencePriceCents: offer.referencePriceCents ?? undefined,
     })
 
@@ -178,16 +163,11 @@ export async function Purchases() {
                     <p className="mt-1 text-sm text-gray-700">Reference price: {priceLabel}</p>
                   ) : null}
 
-                  {upgrade.checkoutUrl ? (
-                    <a
-                      href={upgrade.checkoutUrl}
-                      className="inline-block mt-4 bg-black text-white px-4 py-2 text-xs tracking-widest uppercase hover:bg-gray-800 transition-colors font-medium rounded-lg"
-                    >
-                      Upgrade
-                    </a>
+                  {upgrade.hasLemonVariantMapping ? (
+                    <UpgradeButton variantId={upgrade.targetVariantId} />
                   ) : (
                     <p className="mt-4 text-xs text-amber-700">
-                      Checkout URL is not configured for this variant yet.
+                      Lemon variant mapping is not configured for this target variant yet.
                     </p>
                   )}
                 </div>

@@ -6,6 +6,7 @@ import Footer from '@/components/frontend/Footer'
 import { Lightbox } from '@/components/frontend/Lightbox'
 import { CookieConsent } from '@/components/frontend/CookieConsent'
 import { GoogleAnalytics } from '@/components/frontend/GoogleAnalytics'
+import { LemonSqueezyScript } from '@/components/shared/LemonSqueezyScript'
 
 const dmSans = DM_Sans({
   subsets: ['latin'],
@@ -26,6 +27,7 @@ export default async function FrontendLayout(props: { children: React.ReactNode 
         <Lightbox />
         <CookieConsent />
         <GoogleAnalytics />
+        <LemonSqueezyScript />
       </body>
     </html>
   )
