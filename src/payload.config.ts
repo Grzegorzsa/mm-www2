@@ -21,6 +21,7 @@ import { Homepage } from './globals/pages/Homepage'
 import { Manual } from './globals/pages/Manual'
 import { Downloads } from './globals/pages/Downloads'
 import { RegisterWelcomeEmail } from './globals/RegisterWelcomeEmail'
+import { PurchaseWelcomeEmail } from './globals/PurchaseWelcomeEmail'
 import Orders from './collections/Orders'
 import Affiliates from './collections/Affiliates'
 
@@ -51,7 +52,7 @@ export default buildConfig({
     WelcomeLicenses,
     Affiliates,
   ],
-  globals: [Homepage, Manual, Downloads, RegisterWelcomeEmail],
+  globals: [Homepage, Manual, Downloads, RegisterWelcomeEmail, PurchaseWelcomeEmail],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   typescript: {

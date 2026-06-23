@@ -113,12 +113,14 @@ export interface Config {
     manual: Manual;
     downloads: Download;
     'register-welcome-email': RegisterWelcomeEmail;
+    'purchase-welcome-email': PurchaseWelcomeEmail;
   };
   globalsSelect: {
     homepage: HomepageSelect<false> | HomepageSelect<true>;
     manual: ManualSelect<false> | ManualSelect<true>;
     downloads: DownloadsSelect<false> | DownloadsSelect<true>;
     'register-welcome-email': RegisterWelcomeEmailSelect<false> | RegisterWelcomeEmailSelect<true>;
+    'purchase-welcome-email': PurchaseWelcomeEmailSelect<false> | PurchaseWelcomeEmailSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1040,6 +1042,29 @@ export interface RegisterWelcomeEmail {
   createdAt?: string | null;
 }
 /**
+ * Email template sent after a successful purchase. Supported template variables: {{applicationName}}, {{variantName}}, {{variantDetails}}, {{loginEmail}}, {{loginPassword}}, {{externalOrderId}}, {{internalOrderId}}, {{downloadsUrl}}, {{userPanelUrl}}, {{signInUrl}}, {{passwordInstructions}}, {{accountSecurityNotice}}
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "purchase-welcome-email".
+ */
+export interface PurchaseWelcomeEmail {
+  id: number;
+  /**
+   * Available variables: {{applicationName}}, {{variantName}}, {{variantDetails}}, {{loginEmail}}, {{loginPassword}}, {{externalOrderId}}, {{internalOrderId}}, {{downloadsUrl}}, {{userPanelUrl}}, {{signInUrl}}, {{passwordInstructions}}, {{accountSecurityNotice}}
+   */
+  subject: string;
+  /**
+   * Plain text version. Available variables: {{applicationName}}, {{variantName}}, {{variantDetails}}, {{loginEmail}}, {{loginPassword}}, {{externalOrderId}}, {{internalOrderId}}, {{downloadsUrl}}, {{userPanelUrl}}, {{signInUrl}}, {{passwordInstructions}}, {{accountSecurityNotice}}
+   */
+  text: string;
+  /**
+   * HTML version. Available variables: {{applicationName}}, {{variantName}}, {{variantDetails}}, {{loginEmail}}, {{loginPassword}}, {{externalOrderId}}, {{internalOrderId}}, {{downloadsUrl}}, {{userPanelUrl}}, {{signInUrl}}, {{passwordInstructions}}, {{accountSecurityNotice}}
+   */
+  html: string;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "homepage_select".
  */
@@ -1164,6 +1189,18 @@ export interface DownloadsSelect<T extends boolean = true> {
  * via the `definition` "register-welcome-email_select".
  */
 export interface RegisterWelcomeEmailSelect<T extends boolean = true> {
+  subject?: T;
+  text?: T;
+  html?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "purchase-welcome-email_select".
+ */
+export interface PurchaseWelcomeEmailSelect<T extends boolean = true> {
   subject?: T;
   text?: T;
   html?: T;

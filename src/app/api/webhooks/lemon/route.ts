@@ -8,6 +8,7 @@ import { NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { sendPurchaseWelcomeEmail } from '@/lib/licenseHelper'
 
 // Funkcja weryfikująca, czy żądanie rzeczywiście pochodzi z Lemon Squeezy
 function verifySignature(rawBody: string, signature: string, secret: string): boolean {
@@ -76,6 +77,7 @@ export async function POST(req: Request) {
   try {
     // 3. Znajdź lub utwórz użytkownika (klienta) w systemie
     let userRecord: any = null
+    let generatedPassword: string | null = null
     const usersSearch = await payload.find({
       collection: 'users',
       where: { email: { equals: customerEmail } },
@@ -86,7 +88,7 @@ export async function POST(req: Request) {
       userRecord = usersSearch.docs[0]
     } else {
       // Jeśli użytkownik kupił produkt, a nie ma konta – tworzymy je automatycznie
-      const temporaryPassword = crypto.randomBytes(16).toString('hex')
+      generatedPassword = crypto.randomBytes(16).toString('hex')
 
       userRecord = await payload.create({
         collection: 'users',
@@ -102,7 +104,7 @@ export async function POST(req: Request) {
         data: {
           email: customerEmail,
           name: customerName,
-          password: temporaryPassword,
+          password: generatedPassword,
           _verified: true,
         } as any,
       })
@@ -120,10 +122,15 @@ export async function POST(req: Request) {
       return new NextResponse('Product variant not mapped', { status: 400 })
     }
     const productVariantRecord = variantSearch.docs[0]
+    const productData = productVariantRecord?.product as any
     const productId =
       typeof productVariantRecord.product === 'object'
         ? productVariantRecord.product.id
         : productVariantRecord.product
+    const applicationName = String(productData?.name ?? 'MXbeats')
+    const variantName = String(
+      productVariantRecord?.description ?? productVariantRecord?.name ?? '',
+    ).trim()
 
     // 5. LOGIKA AFILIACJI (Nasza strategia hybrydowa)
     let finalAffiliateRecord: any = null
@@ -222,7 +229,6 @@ export async function POST(req: Request) {
     // 7. Generujemy i zapisujemy licencję dla użytkownika
     // Konfigurujemy domyślne parametry na sztywno, tak jak w Twojej obecnej strukturze
     // console.log(JSON.stringify(productVariantRecord, null, 2))
-    const productData = productVariantRecord?.product as any
     const versionNo = productData?.versionNo || 1
     await payload.create({
       collection: 'licenses',
@@ -237,6 +243,15 @@ export async function POST(req: Request) {
         order: newOrder.id,
         info: `License automatically provisioned via Lemon Squeezy. External Order ID: ${externalOrderId}`,
       },
+    })
+
+    await sendPurchaseWelcomeEmail(payload, {
+      email: customerEmail,
+      generatedPassword,
+      externalOrderId: String(externalOrderId),
+      internalOrderId: String(newOrder.id),
+      applicationName,
+      variantName: variantName || null,
     })
 
     return NextResponse.json({ success: true, orderId: newOrder.id })
