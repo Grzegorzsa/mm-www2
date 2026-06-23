@@ -1,3 +1,9 @@
+/**
+ * This is a Next.js API route that handles webhooks from Lemon Squeezy.
+ * It verifies the signature of incoming requests to ensure they are from Lemon Squeezy,
+ * processes the event data, and creates or updates user, order, and license records in the Payload CMS.
+ */
+
 import { NextResponse } from 'next/server'
 import crypto from 'crypto'
 import { getPayload } from 'payload'
@@ -34,12 +40,7 @@ export async function POST(req: Request) {
 
   // 2. Parsujemy dane zdarzenia
   const event = JSON.parse(rawBody)
-  const eventName = event.meta?.event_name
-  console.log('--- LEMON WEBHOOK DEBUG ---')
-  console.log('Event Name:', eventName)
-  console.log('Received Variant ID from Lemon:', event.data?.attributes?.variant_id)
-  console.log('Customer Email:', event.data?.attributes?.customer_email)
-  console.log('---------------------------')
+  // const eventName = event.meta?.event_name
   // console.log('Full Event Payload:', JSON.stringify(event.data, null, 2))
   const customData = event.meta?.custom_data || {}
 
@@ -54,6 +55,13 @@ export async function POST(req: Request) {
   const lemonVariantId = orderAttributes?.first_order_item?.variant_id
     ? String(orderAttributes.first_order_item.variant_id)
     : undefined
+  console.log('--- LEMON WEBHOOK DEBUG ---')
+  console.log('Event Name:', customerName)
+  console.log('Received Variant ID from Lemon:', lemonVariantId)
+  console.log('External Order ID:', externalOrderId)
+  console.log('Total Amount (in cents):', totalAmountInCents)
+  console.log('Customer Email:', customerEmail)
+  console.log('---------------------------')
 
   if (!customerEmail) {
     console.error('Webhook error: Missing user_email in Lemon Squeezy payload.')
@@ -82,11 +90,19 @@ export async function POST(req: Request) {
 
       userRecord = await payload.create({
         collection: 'users',
-        // Rzutujemy obiekt danych na 'any', aby uciszyć rygorystyczny sprawdzian typów dla pola 'password'
+        disableVerificationEmail: true, // Opcjonalnie: blokuje wysyłkę standardowego maila aktywacyjnego Payload, jeśli jest włączona
+        req: {
+          ...req,
+          // Wstrzykujemy flagę do kontekstu, którą odczyta nasz hook w kolekcji Users
+          context: {
+            preventWelcomeLicenses: true,
+          },
+        } as any,
         data: {
           email: customerEmail,
           name: customerName,
           password: temporaryPassword,
+          _verified: true,
         } as any,
       })
     }

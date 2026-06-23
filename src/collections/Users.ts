@@ -60,7 +60,16 @@ export const Users: CollectionConfig = {
     ],
     afterChange: [
       async ({ doc, previousDoc, req, operation }) => {
-        // When user verifies email, assign welcome licenses and send welcome email
+        // 1. Sprawdzamy, czy żądanie nie pochodzi z webhooka zakupowego
+        const isPurchaseProcess = req.context?.preventWelcomeLicenses === true
+
+        // 2. Jeśli to zakup, nie generujemy darmowych licencji (proces zakupowy wygeneruje płatną)
+        if (isPurchaseProcess) {
+          return doc
+        }
+
+        // 3. Logika dla zwykłej rejestracji (Darmowy wariant Elements)
+        // Ponieważ teraz rejestracja od razu może ustawiać _verified lub dziać się przy create:
         if (doc._verified && (!previousDoc?._verified || operation === 'create')) {
           try {
             await createWelcomeLicenses(req.payload, { id: doc.id, email: doc.email })
@@ -99,7 +108,6 @@ export const Users: CollectionConfig = {
         update: isAdmin as FieldAccess,
       },
     },
-
     {
       name: 'marketingConsent',
       type: 'checkbox',
