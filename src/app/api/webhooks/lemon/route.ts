@@ -56,13 +56,13 @@ export async function POST(req: Request) {
   const lemonVariantId = orderAttributes?.first_order_item?.variant_id
     ? String(orderAttributes.first_order_item.variant_id)
     : undefined
-  console.log('--- LEMON WEBHOOK DEBUG ---')
-  console.log('Event Name:', customerName)
-  console.log('Received Variant ID from Lemon:', lemonVariantId)
-  console.log('External Order ID:', externalOrderId)
-  console.log('Total Amount (in cents):', totalAmountInCents)
-  console.log('Customer Email:', customerEmail)
-  console.log('---------------------------')
+  // console.log('--- LEMON WEBHOOK DEBUG ---')
+  // console.log('Event Name:', customerName)
+  // console.log('Received Variant ID from Lemon:', lemonVariantId)
+  // console.log('External Order ID:', externalOrderId)
+  // console.log('Total Amount (in cents):', totalAmountInCents)
+  // console.log('Customer Email:', customerEmail)
+  // console.log('---------------------------')
 
   if (!customerEmail) {
     console.error('Webhook error: Missing user_email in Lemon Squeezy payload.')
