@@ -6,7 +6,7 @@ export const Orders: CollectionConfig = {
   slug: 'orders',
   admin: {
     useAsTitle: 'externalOrderId',
-    defaultColumns: ['externalOrderId', 'source', 'amount', 'createdAt'],
+    defaultColumns: ['externalOrderId', 'source', 'transactionType', 'amount', 'createdAt'],
   },
   access: {
     // Użytkownik widzi swoje zamówienia (szukane po polu 'user'), admin widzi wszystkie
@@ -60,6 +60,14 @@ export const Orders: CollectionConfig = {
         { label: 'Upgrade', value: 'upgrade' },
         { label: 'Renewal', value: 'renewal' },
       ],
+    },
+    {
+      name: 'licenseTransaction',
+      type: 'relationship',
+      relationTo: 'license-transactions',
+      admin: {
+        description: 'Audit record of the licensing operation triggered by this order.',
+      },
     },
     {
       name: 'affiliatePartner',

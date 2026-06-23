@@ -434,6 +434,7 @@ export async function POST(req: Request) {
         externalOrderId: String(externalOrderId),
         amount: totalAmountInCents,
         transactionType: normalizedTransactionType,
+        licenseTransaction: licenseTransaction.id,
         affiliatePartner: finalAffiliateRecord ? finalAffiliateRecord.id : undefined,
         affiliateRate: calculatedRate > 0 ? calculatedRate : undefined,
         affiliatePayoutStatus: payoutStatus,
