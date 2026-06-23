@@ -10,6 +10,53 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { sendPurchaseWelcomeEmail } from '@/lib/licenseHelper'
 
+type RelationValue = string | number | { id?: string | number } | null | undefined
+type OfferActionType = 'new_purchase' | 'upgrade_replace' | 'renewal'
+
+function getRelationId(value: RelationValue): string | number | undefined {
+  if (!value) return undefined
+  if (typeof value === 'string' || typeof value === 'number') return value
+  if (typeof value === 'object' && value.id) return value.id
+  return undefined
+}
+
+function getRelationIds(values: unknown): Array<string | number> {
+  if (!Array.isArray(values)) return []
+  return values
+    .map((value) => getRelationId(value as RelationValue))
+    .filter((value): value is string | number => value !== undefined)
+}
+
+function asNumberId(value: string | number | undefined): number | undefined {
+  if (typeof value === 'number' && Number.isFinite(value)) return value
+  if (typeof value === 'string') {
+    const parsed = Number(value)
+    return Number.isFinite(parsed) ? parsed : undefined
+  }
+  return undefined
+}
+
+function getNumberRelationIds(values: unknown): number[] {
+  return getRelationIds(values)
+    .map((value) => asNumberId(value))
+    .filter((value): value is number => value !== undefined)
+}
+
+function getLicenseVariantIds(license: any): number[] {
+  return getNumberRelationIds(license?.productVariants)
+}
+
+function mapActionToTransactionType(actionType: string): 'new_purchase' | 'upgrade' | 'renewal' {
+  if (actionType === 'upgrade_replace') return 'upgrade'
+  if (actionType === 'renewal') return 'renewal'
+  return 'new_purchase'
+}
+
+function normalizeOfferActionType(value: unknown): OfferActionType {
+  if (value === 'upgrade_replace' || value === 'renewal') return value
+  return 'new_purchase'
+}
+
 // Funkcja weryfikująca, czy żądanie rzeczywiście pochodzi z Lemon Squeezy
 function verifySignature(rawBody: string, signature: string, secret: string): boolean {
   try {
@@ -69,12 +116,41 @@ export async function POST(req: Request) {
     return new NextResponse('Missing customer email in event data', { status: 400 })
   }
 
+  if (!externalOrderId) {
+    console.error('Webhook error: Missing external order ID.')
+    return new NextResponse('Missing external order ID in event data', { status: 400 })
+  }
+
   if (!lemonVariantId) {
     console.error('Webhook error: Missing variant_id inside first_order_item.')
     return new NextResponse('Missing variant ID in event data', { status: 400 })
   }
 
+  let licenseTransaction: any = null
+
   try {
+    // 2.1 Idempotency guard — repeated webhook for the same external order should be a no-op
+    const existingOrder = await payload.find({
+      collection: 'orders',
+      where: {
+        and: [
+          { source: { equals: 'lemon_squeezy' } },
+          { externalOrderId: { equals: String(externalOrderId) } },
+        ],
+      },
+      limit: 1,
+      depth: 0,
+      overrideAccess: true,
+    })
+
+    if (existingOrder.docs.length > 0) {
+      return NextResponse.json({
+        success: true,
+        cached: true,
+        orderId: existingOrder.docs[0].id,
+      })
+    }
+
     // 3. Znajdź lub utwórz użytkownika (klienta) w systemie
     let userRecord: any = null
     let generatedPassword: string | null = null
@@ -110,27 +186,145 @@ export async function POST(req: Request) {
       })
     }
 
-    // 4. Szukamy odpowiedniego wariantu produktu na podstawie zmapowanego ID z Lemon Squeezy
-    const variantSearch = await payload.find({
-      collection: 'product-variants',
-      where: { lemonSqueezyVariantId: { equals: lemonVariantId } },
+    // 4. Resolve rule from commerce-offers (policy-driven), then fallback to legacy direct variant mapping.
+    const offerSearch = await payload.find({
+      collection: 'commerce-offers',
+      where: {
+        and: [{ lemonSqueezyVariantId: { equals: lemonVariantId } }, { active: { equals: true } }],
+      },
       limit: 1,
+      depth: 2,
+      overrideAccess: true,
     })
 
-    if (variantSearch.docs.length === 0) {
-      console.error(`Product variant with UID/LemonID ${lemonVariantId} not found in database.`)
-      return new NextResponse('Product variant not mapped', { status: 400 })
+    const offerRecord = offerSearch.docs[0] ?? null
+    let offerActionType: OfferActionType = 'new_purchase'
+    let productVariantRecord: any = null
+    let productData: any = null
+    let productId: number | undefined
+    let versionFrom = 1
+    let versionTo = 1
+
+    if (offerRecord) {
+      offerActionType = normalizeOfferActionType(offerRecord.actionType)
+
+      if (typeof offerRecord.targetVariant === 'object' && offerRecord.targetVariant?.id) {
+        productVariantRecord = offerRecord.targetVariant
+      } else {
+        const targetVariantId = asNumberId(
+          getRelationId(offerRecord.targetVariant as RelationValue),
+        )
+        if (targetVariantId) {
+          productVariantRecord = await payload.findByID({
+            collection: 'product-variants',
+            id: targetVariantId,
+            depth: 2,
+            overrideAccess: true,
+          })
+        }
+      }
+
+      if (!productVariantRecord) {
+        return new NextResponse('Offer target variant not configured', { status: 400 })
+      }
+
+      productData =
+        typeof productVariantRecord.product === 'object' ? productVariantRecord.product : null
+      productId = asNumberId(
+        getRelationId(offerRecord.product as RelationValue) ||
+          getRelationId(productVariantRecord.product as RelationValue),
+      )
+
+      if (!productId) {
+        return new NextResponse('Offer product mapping not configured', { status: 400 })
+      }
+
+      versionFrom = Number(offerRecord.versionFrom ?? productData?.versionNo ?? 1)
+      versionTo = Number(offerRecord.versionTo ?? versionFrom)
+    } else {
+      const variantSearch = await payload.find({
+        collection: 'product-variants',
+        where: { lemonSqueezyVariantId: { equals: lemonVariantId } },
+        limit: 1,
+        depth: 2,
+        overrideAccess: true,
+      })
+
+      if (variantSearch.docs.length === 0) {
+        console.error(`Product variant with UID/LemonID ${lemonVariantId} not found in database.`)
+        return new NextResponse('Product variant not mapped', { status: 400 })
+      }
+
+      productVariantRecord = variantSearch.docs[0]
+      productData =
+        typeof productVariantRecord.product === 'object' ? productVariantRecord.product : null
+      productId = asNumberId(getRelationId(productVariantRecord.product as RelationValue))
+
+      if (!productId) {
+        return new NextResponse('Product mapping is invalid for variant', { status: 400 })
+      }
+
+      versionFrom = Number(productData?.versionNo ?? 1)
+      versionTo = Number(productData?.versionNo ?? 1)
     }
-    const productVariantRecord = variantSearch.docs[0]
-    const productData = productVariantRecord?.product as any
-    const productId =
-      typeof productVariantRecord.product === 'object'
-        ? productVariantRecord.product.id
-        : productVariantRecord.product
+
     const applicationName = String(productData?.name ?? 'MXbeats')
     const variantName = String(
       productVariantRecord?.description ?? productVariantRecord?.name ?? '',
     ).trim()
+
+    let sourceLicense: any = null
+    let sourceVariantId: number | undefined
+
+    if (offerRecord && offerActionType === 'upgrade_replace') {
+      const allowedFromVariantIds = new Set(getNumberRelationIds(offerRecord.allowedFromVariants))
+      const denyFromVariantIds = new Set(getNumberRelationIds(offerRecord.denyFromVariants))
+
+      const activeLicenses = await payload.find({
+        collection: 'licenses',
+        where: {
+          and: [
+            { user: { equals: userRecord.id } },
+            { product: { equals: productId } },
+            { active: { equals: true } },
+          ],
+        },
+        sort: '-createdAt',
+        depth: 2,
+        limit: 100,
+        overrideAccess: true,
+      })
+
+      sourceLicense = activeLicenses.docs.find((license) => {
+        const licenseVariantIds = getLicenseVariantIds(license)
+        const hasAllowed =
+          allowedFromVariantIds.size === 0 ||
+          licenseVariantIds.some((variantId) => allowedFromVariantIds.has(variantId))
+        const hasDenied = licenseVariantIds.some((variantId) => denyFromVariantIds.has(variantId))
+        return hasAllowed && !hasDenied
+      })
+
+      if (!sourceLicense) {
+        return new NextResponse('No eligible source license for this upgrade path', { status: 400 })
+      }
+
+      const sourceLicenseVariantIds = getLicenseVariantIds(sourceLicense)
+      sourceVariantId =
+        sourceLicenseVariantIds.find((variantId) => allowedFromVariantIds.has(variantId)) ||
+        sourceLicenseVariantIds[0]
+
+      await payload.update({
+        collection: 'licenses',
+        id: sourceLicense.id,
+        data: {
+          active: false,
+          deactivatedReason: `Upgraded to ${productVariantRecord?.name || 'new variant'}`,
+        },
+        overrideAccess: true,
+      })
+    }
+
+    const normalizedTransactionType = mapActionToTransactionType(offerActionType)
 
     // 5. LOGIKA AFILIACJI (Nasza strategia hybrydowa)
     let finalAffiliateRecord: any = null
@@ -212,7 +406,26 @@ export async function POST(req: Request) {
       }
     }
 
-    // 6. Tworzymy zamówienie w kolekcji Orders
+    // 6. Create a pending transaction record for auditability
+    licenseTransaction = await payload.create({
+      collection: 'license-transactions',
+      data: {
+        externalOrderId: String(externalOrderId),
+        externalOrderTimestamp: orderAttributes?.created_at,
+        user: userRecord.id,
+        fromLicense: sourceLicense?.id,
+        fromVariant: sourceVariantId,
+        toVariant: productVariantRecord.id,
+        product: productId,
+        transactionType: normalizedTransactionType,
+        amountPaidInCents: Number(totalAmountInCents ?? 0),
+        status: 'pending',
+        info: `Lemon variant ID: ${lemonVariantId}`,
+      },
+      overrideAccess: true,
+    })
+
+    // 7. Tworzymy zamówienie w kolekcji Orders
     const newOrder = await payload.create({
       collection: 'orders',
       data: {
@@ -220,29 +433,43 @@ export async function POST(req: Request) {
         source: 'lemon_squeezy',
         externalOrderId: String(externalOrderId),
         amount: totalAmountInCents,
+        transactionType: normalizedTransactionType,
         affiliatePartner: finalAffiliateRecord ? finalAffiliateRecord.id : undefined,
         affiliateRate: calculatedRate > 0 ? calculatedRate : undefined,
         affiliatePayoutStatus: payoutStatus,
       },
+      overrideAccess: true,
     })
 
-    // 7. Generujemy i zapisujemy licencję dla użytkownika
-    // Konfigurujemy domyślne parametry na sztywno, tak jak w Twojej obecnej strukturze
-    // console.log(JSON.stringify(productVariantRecord, null, 2))
-    const versionNo = productData?.versionNo || 1
-    await payload.create({
+    // 8. Generujemy i zapisujemy licencję dla użytkownika
+    const newLicense = await payload.create({
       collection: 'licenses',
       data: {
         product: productId,
         user: userRecord.id,
         productVariants: [productVariantRecord.id], // Relacja do wariantu jako tablica (hasMany)
         active: true,
-        versionFrom: versionNo,
-        versionTo: versionNo,
-        maxInstallations: 2,
+        versionFrom,
+        versionTo,
+        maxInstallations: sourceLicense?.maxInstallations ?? 2,
         order: newOrder.id,
+        upgradedFromLicense: sourceLicense?.id,
+        upgradeFromVariant: sourceVariantId,
         info: `License automatically provisioned via Lemon Squeezy. External Order ID: ${externalOrderId}`,
       },
+      overrideAccess: true,
+    })
+
+    // 9. Mark transaction as completed
+    await payload.update({
+      collection: 'license-transactions',
+      id: licenseTransaction.id,
+      data: {
+        status: 'completed',
+        order: newOrder.id,
+        toLicense: newLicense.id,
+      },
+      overrideAccess: true,
     })
 
     await sendPurchaseWelcomeEmail(payload, {
@@ -255,6 +482,22 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ success: true, orderId: newOrder.id })
   } catch (error: any) {
+    if (licenseTransaction?.id) {
+      try {
+        await payload.update({
+          collection: 'license-transactions',
+          id: licenseTransaction.id,
+          data: {
+            status: 'failed',
+            errorMessage: error?.message || 'Unknown error during webhook processing',
+          },
+          overrideAccess: true,
+        })
+      } catch {
+        // no-op: avoid masking original error
+      }
+    }
+
     console.error('Error processing Lemon Squeezy webhook:', error)
     return new NextResponse(`Internal Server Error: ${error.message}`, { status: 500 })
   }

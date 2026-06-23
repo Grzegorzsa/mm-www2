@@ -41,6 +41,16 @@ Dokument definiuje architekturę dystrybucji oprogramowania "MX GRID" (dostępne
 - **Kolekcja `Users`**: Reprezentuje standardowych klientów. Posiada wyłącznie pole relacji `referredBy` (celujące w kolekcję `affiliates`), wskazujące na stałego opiekuna konta.
 - **Kolekcja `ProductVariants`**: Zawiera logiczne pole `uid` (np. "beats", "loops_pro") oraz niezależne pole tekstowe `lemonSqueezyVariantId` mapujące wariant z zewnętrznym ID platformy płatniczej.
 
+### Polityka Wersjonowania Licencji (Krytyczne)
+
+- Pola `versionFrom` i `versionTo` w kolekcji `Licenses` oznaczają **zakres numerów głównych wersji aplikacji** zapisanych jako integer.
+- Numer integer wersji pobieramy z `Products.versionNo` (kolekcja `products`).
+- Przykład mapowania: wersja aplikacji `1.2.3` oznacza `versionNo = 1`.
+- W typowym przypadku licencja ma ten sam zakres start/koniec, np. `versionFrom = 1` i `versionTo = 1`.
+- Zakres wielowersyjny stosujemy wyłącznie świadomie (np. klient kupił pod koniec cyklu v1, więc otrzymuje `versionFrom = 1`, `versionTo = 2`).
+- **Nigdy przenigdy nie przyznajemy domyślnie nielimitowanego zakresu wersji** (np. automatyczne `1..999` dla zwykłego zakupu).
+- Jeśli kod nie ma pewności co do wersji, bezpieczny fallback to `versionFrom = product.versionNo` oraz `versionTo = product.versionNo`.
+
 ---
 
 ## Scenariusze Sprzedażowe i Logika Biznesowa

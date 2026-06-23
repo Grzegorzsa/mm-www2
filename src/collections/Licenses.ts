@@ -172,6 +172,29 @@ export const Licenses: CollectionConfig = {
           },
         },
         {
+          name: 'upgradedFromLicense',
+          type: 'relationship',
+          relationTo: 'licenses',
+          admin: {
+            description: 'Source license used for upgrade transitions',
+            width: '50%',
+          },
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'upgradeFromVariant',
+          type: 'relationship',
+          relationTo: 'product-variants',
+          admin: {
+            description: 'Source variant used for upgrade transitions',
+            width: '50%',
+          },
+        },
+        {
           name: 'preassignedPartner',
           type: 'relationship',
           relationTo: 'affiliates',

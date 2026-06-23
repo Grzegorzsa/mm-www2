@@ -76,7 +76,9 @@ export interface Config {
     'contact-submissions': ContactSubmission;
     products: Product;
     'product-variants': ProductVariant;
+    'commerce-offers': CommerceOffer;
     licenses: License;
+    'license-transactions': LicenseTransaction;
     installations: Installation;
     'welcome-licenses': WelcomeLicense;
     affiliates: Affiliate;
@@ -95,7 +97,9 @@ export interface Config {
     'contact-submissions': ContactSubmissionsSelect<false> | ContactSubmissionsSelect<true>;
     products: ProductsSelect<false> | ProductsSelect<true>;
     'product-variants': ProductVariantsSelect<false> | ProductVariantsSelect<true>;
+    'commerce-offers': CommerceOffersSelect<false> | CommerceOffersSelect<true>;
     licenses: LicensesSelect<false> | LicensesSelect<true>;
+    'license-transactions': LicenseTransactionsSelect<false> | LicenseTransactionsSelect<true>;
     installations: InstallationsSelect<false> | InstallationsSelect<true>;
     'welcome-licenses': WelcomeLicensesSelect<false> | WelcomeLicensesSelect<true>;
     affiliates: AffiliatesSelect<false> | AffiliatesSelect<true>;
@@ -360,6 +364,7 @@ export interface Order {
    * Transaction amount in cents/lowest currency unit (integer)
    */
   amount: number;
+  transactionType?: ('new_purchase' | 'upgrade' | 'renewal') | null;
   affiliatePartner?: (number | null) | Affiliate;
   /**
    * Commission percentage granted for this specific order (e.g., 10 or 20)
@@ -425,6 +430,54 @@ export interface ProductVariant {
   createdAt: string;
 }
 /**
+ * Policy rules for Lemon Squeezy variants. Use this to control new purchases, upgrades, and renewals.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "commerce-offers".
+ */
+export interface CommerceOffer {
+  id: number;
+  name: string;
+  active?: boolean | null;
+  /**
+   * Lemon Squeezy variant_id that triggers this offer rule.
+   */
+  lemonSqueezyVariantId: string;
+  actionType: 'new_purchase' | 'upgrade_replace' | 'renewal';
+  product: number | Product;
+  /**
+   * Variant entitlement created by this purchase/upgrade.
+   */
+  targetVariant: number | ProductVariant;
+  versionFrom: number;
+  /**
+   * Set explicit upper major version.
+   */
+  versionTo: number;
+  /**
+   * Optional whitelist for upgrade source variants. Used only with Upgrade (Replace).
+   */
+  allowedFromVariants?: (number | ProductVariant)[] | null;
+  /**
+   * Optional blacklist for upgrade source variants. Useful to block Elements discount paths.
+   */
+  denyFromVariants?: (number | ProductVariant)[] | null;
+  /**
+   * Mark commercial variants (Loops/Beats/Composer) for reporting and filtering.
+   */
+  isCommercial?: boolean | null;
+  /**
+   * Optional reference list price in cents (for reporting only).
+   */
+  referencePriceCents?: number | null;
+  /**
+   * Optional notes describing business intent for this rule.
+   */
+  info?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "licenses".
  */
@@ -449,9 +502,42 @@ export interface License {
    */
   order?: (number | null) | Order;
   /**
+   * Source license used for upgrade transitions
+   */
+  upgradedFromLicense?: (number | null) | License;
+  /**
+   * Source variant used for upgrade transitions
+   */
+  upgradeFromVariant?: (number | null) | ProductVariant;
+  /**
    * Affiliate partner who distributed this specific key (e.g., for Player variant)
    */
   preassignedPartner?: (number | null) | Affiliate;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Immutable audit log for purchase, renewal, and upgrade license operations.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "license-transactions".
+ */
+export interface LicenseTransaction {
+  id: number;
+  externalOrderId: string;
+  externalOrderTimestamp?: string | null;
+  user: number | User;
+  order?: (number | null) | Order;
+  product: number | Product;
+  transactionType: 'new_purchase' | 'upgrade' | 'renewal';
+  fromLicense?: (number | null) | License;
+  toLicense?: (number | null) | License;
+  fromVariant?: (number | null) | ProductVariant;
+  toVariant: number | ProductVariant;
+  amountPaidInCents: number;
+  status: 'pending' | 'completed' | 'failed';
+  errorMessage?: string | null;
+  info?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -555,8 +641,16 @@ export interface PayloadLockedDocument {
         value: number | ProductVariant;
       } | null)
     | ({
+        relationTo: 'commerce-offers';
+        value: number | CommerceOffer;
+      } | null)
+    | ({
         relationTo: 'licenses';
         value: number | License;
+      } | null)
+    | ({
+        relationTo: 'license-transactions';
+        value: number | LicenseTransaction;
       } | null)
     | ({
         relationTo: 'installations';
@@ -717,6 +811,7 @@ export interface OrdersSelect<T extends boolean = true> {
   source?: T;
   externalOrderId?: T;
   amount?: T;
+  transactionType?: T;
   affiliatePartner?: T;
   affiliateRate?: T;
   affiliatePayoutStatus?: T;
@@ -765,6 +860,27 @@ export interface ProductVariantsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "commerce-offers_select".
+ */
+export interface CommerceOffersSelect<T extends boolean = true> {
+  name?: T;
+  active?: T;
+  lemonSqueezyVariantId?: T;
+  actionType?: T;
+  product?: T;
+  targetVariant?: T;
+  versionFrom?: T;
+  versionTo?: T;
+  allowedFromVariants?: T;
+  denyFromVariants?: T;
+  isCommercial?: T;
+  referencePriceCents?: T;
+  info?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "licenses_select".
  */
 export interface LicensesSelect<T extends boolean = true> {
@@ -780,7 +896,31 @@ export interface LicensesSelect<T extends boolean = true> {
   info?: T;
   maxInstallations?: T;
   order?: T;
+  upgradedFromLicense?: T;
+  upgradeFromVariant?: T;
   preassignedPartner?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "license-transactions_select".
+ */
+export interface LicenseTransactionsSelect<T extends boolean = true> {
+  externalOrderId?: T;
+  externalOrderTimestamp?: T;
+  user?: T;
+  order?: T;
+  product?: T;
+  transactionType?: T;
+  fromLicense?: T;
+  toLicense?: T;
+  fromVariant?: T;
+  toVariant?: T;
+  amountPaidInCents?: T;
+  status?: T;
+  errorMessage?: T;
+  info?: T;
   updatedAt?: T;
   createdAt?: T;
 }

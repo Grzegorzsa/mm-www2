@@ -52,6 +52,16 @@ export const Orders: CollectionConfig = {
       },
     },
     {
+      name: 'transactionType',
+      type: 'select',
+      defaultValue: 'new_purchase',
+      options: [
+        { label: 'New Purchase', value: 'new_purchase' },
+        { label: 'Upgrade', value: 'upgrade' },
+        { label: 'Renewal', value: 'renewal' },
+      ],
+    },
+    {
       name: 'affiliatePartner',
       type: 'relationship',
       relationTo: 'affiliates',
