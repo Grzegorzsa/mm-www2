@@ -112,13 +112,13 @@ export interface Config {
     homepage: Homepage;
     manual: Manual;
     downloads: Download;
-    'welcome-email': WelcomeEmail;
+    'register-welcome-email': RegisterWelcomeEmail;
   };
   globalsSelect: {
     homepage: HomepageSelect<false> | HomepageSelect<true>;
     manual: ManualSelect<false> | ManualSelect<true>;
     downloads: DownloadsSelect<false> | DownloadsSelect<true>;
-    'welcome-email': WelcomeEmailSelect<false> | WelcomeEmailSelect<true>;
+    'register-welcome-email': RegisterWelcomeEmailSelect<false> | RegisterWelcomeEmailSelect<true>;
   };
   locale: null;
   widgets: {
@@ -1023,9 +1023,9 @@ export interface Download {
  * Email template sent to new users after email verification, along with welcome licenses
  *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "welcome-email".
+ * via the `definition` "register-welcome-email".
  */
-export interface WelcomeEmail {
+export interface RegisterWelcomeEmail {
   id: number;
   subject: string;
   /**
@@ -1161,9 +1161,9 @@ export interface DownloadsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "welcome-email_select".
+ * via the `definition` "register-welcome-email_select".
  */
-export interface WelcomeEmailSelect<T extends boolean = true> {
+export interface RegisterWelcomeEmailSelect<T extends boolean = true> {
   subject?: T;
   text?: T;
   html?: T;

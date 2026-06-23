@@ -93,7 +93,8 @@ export async function POST(req: Request) {
         disableVerificationEmail: true, // Opcjonalnie: blokuje wysyłkę standardowego maila aktywacyjnego Payload, jeśli jest włączona
         req: {
           ...req,
-          // Wstrzykujemy flagę do kontekstu, którą odczyta nasz hook w kolekcji Users
+          // Wstrzykujemy flagę do kontekstu, którą odczyta nasz hook w kolekcji Users -
+          //  zapobiegamy generowaniu darmowych licencji powitalnych przy zakupie
           context: {
             preventWelcomeLicenses: true,
           },
@@ -220,6 +221,9 @@ export async function POST(req: Request) {
 
     // 7. Generujemy i zapisujemy licencję dla użytkownika
     // Konfigurujemy domyślne parametry na sztywno, tak jak w Twojej obecnej strukturze
+    // console.log(JSON.stringify(productVariantRecord, null, 2))
+    const productData = productVariantRecord?.product as any
+    const versionNo = productData?.versionNo || 1
     await payload.create({
       collection: 'licenses',
       data: {
@@ -227,8 +231,8 @@ export async function POST(req: Request) {
         user: userRecord.id,
         productVariants: [productVariantRecord.id], // Relacja do wariantu jako tablica (hasMany)
         active: true,
-        versionFrom: 100, // format integer np. v1.0.0 -> 100
-        versionTo: 999, // dozwolone aktualizacje do wersji v9.9.9
+        versionFrom: versionNo,
+        versionTo: versionNo,
         maxInstallations: 2,
         order: newOrder.id,
         info: `License automatically provisioned via Lemon Squeezy. External Order ID: ${externalOrderId}`,

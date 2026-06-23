@@ -33,7 +33,7 @@ async function getUserLicenses(payload: Payload, userId: number) {
  * Create welcome licenses for a newly verified user and send the welcome email.
  *
  * Reads the WelcomeLicense collection for templates, creates License records,
- * then reads the WelcomeEmail global for the email template.
+ * then reads the RegisterWelcomeEmail global for the email template.
  */
 async function createWelcomeLicenses(payload: Payload, user: { id: number; email: string }) {
   // 1. Fetch welcome license templates
@@ -80,7 +80,7 @@ async function createWelcomeLicenses(payload: Payload, user: { id: number; email
   // 3. Send welcome email
   try {
     const welcomeEmail = await payload.findGlobal({
-      slug: 'welcome-email',
+      slug: 'register-welcome-email',
       overrideAccess: true,
     })
 

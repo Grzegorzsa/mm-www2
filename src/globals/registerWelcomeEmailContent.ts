@@ -1,28 +1,6 @@
-import type { GlobalConfig } from 'payload'
-
-export const WelcomeEmail: GlobalConfig = {
-  slug: 'welcome-email',
-  label: 'Welcome Email',
-  admin: {
-    description:
-      'Email template sent to new users after email verification, along with welcome licenses',
-  },
-  access: {
-    read: ({ req: { user } }) => user?.collection === 'admin-users',
-    update: ({ req: { user } }) => user?.collection === 'admin-users',
-  },
-  fields: [
-    {
-      name: 'subject',
-      type: 'text',
-      required: true,
-      defaultValue: 'Welcome to MXbeats!',
-    },
-    {
-      name: 'text',
-      type: 'textarea',
-      required: true,
-      defaultValue: `Thank you for signing up!
+export const registerWelcomeEmailDefaults = {
+  subject: 'Welcome to MXbeats!',
+  text: `Thank you for signing up!
 
 An MX GRID Essentials license has been added to your account.
 
@@ -32,19 +10,7 @@ You can log in to your account here: https://mxbeats.com/sign-in
 
 Thanks,
 MXbeats Team`,
-      admin: {
-        description: 'Plain text version of the email',
-      },
-    },
-    {
-      name: 'html',
-      type: 'code',
-      required: true,
-      admin: {
-        language: 'html',
-        description: 'HTML version of the email',
-      },
-      defaultValue: `<div style="font-family: sans-serif; line-height: 1.6; color: #333; max-width: 600px;">
+  html: `<div style="font-family: sans-serif; line-height: 1.6; color: #333; max-width: 600px;">
   <h2 style="color: #800a9d;">Welcome to the beat! 🎹</h2>
 
   <p>
@@ -75,6 +41,4 @@ MXbeats Team`,
     <strong>The MXbeats Team</strong>
   </p>
 </div>`,
-    },
-  ],
 }
