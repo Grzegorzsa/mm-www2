@@ -4,6 +4,7 @@ import config from '@/payload.config'
 import Link from 'next/link'
 import { Check, X } from 'lucide-react'
 import fallbackContent from '@/seed/homepage.json'
+import { PricingActions } from '@/components/frontend/PricingActions'
 
 function BoolCell({ value }: { value: boolean }) {
   return value ? (
@@ -105,9 +106,40 @@ function HeroSection({ hero }: any) {
 
 export default async function HomePage() {
   let homepageData: any = null
+  let loopsVariantId = ''
+  let beatsVariantId = ''
+
   try {
     const payload = await getPayload({ config: await config })
     homepageData = await payload.findGlobal({ slug: 'homepage' })
+
+    const variants = await payload.find({
+      collection: 'product-variants',
+      depth: 0,
+      limit: 100,
+    })
+
+    const loopsVariant = variants.docs.find((variant: any) => {
+      const uid = String(variant?.uid ?? '').toLowerCase()
+      const name = String(variant?.name ?? '').toLowerCase()
+
+      return (
+        (uid.includes('loops') || name.includes('loops')) &&
+        !uid.includes('elements') &&
+        !uid.includes('player') &&
+        !name.includes('elements')
+      )
+    })
+
+    const beatsVariant = variants.docs.find((variant: any) => {
+      const uid = String(variant?.uid ?? '').toLowerCase()
+      const name = String(variant?.name ?? '').toLowerCase()
+
+      return uid.includes('beats') || name.includes('beats')
+    })
+
+    loopsVariantId = String(loopsVariant?.lemonSqueezyVariantId ?? '')
+    beatsVariantId = String(beatsVariant?.lemonSqueezyVariantId ?? '')
   } catch (err) {
     console.error('[HomePage] Failed to load CMS data, using fallback content:', err)
   }
@@ -124,6 +156,26 @@ export default async function HomePage() {
   const { hero, intro, features, timeline, pricing, demo } = data
 
   const imageUrl = (image: any) => (typeof image === 'object' && image?.url ? image.url : image)
+
+  const lemonBaseCheckoutUrl = process.env.NEXT_PUBLIC_LEMON_CHECKOUT_BASE_URL ?? ''
+  const explicitLoopsCheckoutUrl = process.env.NEXT_PUBLIC_LEMON_CHECKOUT_LOOPS_URL ?? ''
+  const explicitBeatsCheckoutUrl = process.env.NEXT_PUBLIC_LEMON_CHECKOUT_BEATS_URL ?? ''
+
+  const buildCheckoutUrl = (explicitUrl: string, variantId: string) => {
+    if (explicitUrl) return explicitUrl
+    if (!lemonBaseCheckoutUrl || !variantId) return ''
+
+    try {
+      const checkoutUrl = new URL(lemonBaseCheckoutUrl)
+      checkoutUrl.searchParams.set('variant', variantId)
+      return checkoutUrl.toString()
+    } catch {
+      return ''
+    }
+  }
+
+  const loopsCheckoutUrl = buildCheckoutUrl(explicitLoopsCheckoutUrl, loopsVariantId)
+  const beatsCheckoutUrl = buildCheckoutUrl(explicitBeatsCheckoutUrl, beatsVariantId)
 
   return (
     <>
@@ -248,33 +300,10 @@ export default async function HomePage() {
                   </td>
                 </tr>
               ))}
-              <tr>
-                <th className="bg-[#fafafa] border border-white border-b-4 px-6 py-4" />
-                <td className="bg-white border border-white border-b-4 text-center px-6 py-4">
-                  <Link
-                    href="/downloads"
-                    className="inline-block bg-[#72cd78] text-white px-6 py-2 text-sm tracking-widest uppercase hover:bg-[#5ab360] transition-colors font-medium rounded"
-                  >
-                    Download
-                  </Link>
-                </td>
-                <td className="bg-white border border-white border-b-4 text-center px-6 py-4">
-                  <Link
-                    href="/sign-in"
-                    className="inline-block bg-[#3fbef2] text-white px-6 py-2 text-sm tracking-widest uppercase hover:bg-[#2da8d8] transition-colors font-medium rounded"
-                  >
-                    Register
-                  </Link>
-                </td>
-                <td className="bg-white border border-white border-b-4 text-center px-6 py-4">
-                  <Link
-                    href="/sign-in"
-                    className="inline-block bg-[#d800d0] text-white px-6 py-2 text-sm tracking-widest uppercase hover:bg-[#2da8d8] transition-colors font-medium rounded"
-                  >
-                    Register
-                  </Link>
-                </td>
-              </tr>
+              <PricingActions
+                loopsCheckoutUrl={loopsCheckoutUrl}
+                beatsCheckoutUrl={beatsCheckoutUrl}
+              />
             </tbody>
           </table>
         </div>

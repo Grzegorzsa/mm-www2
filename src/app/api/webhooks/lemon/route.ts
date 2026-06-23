@@ -35,24 +35,34 @@ export async function POST(req: Request) {
   // 2. Parsujemy dane zdarzenia
   const event = JSON.parse(rawBody)
   const eventName = event.meta?.event_name
+  console.log('--- LEMON WEBHOOK DEBUG ---')
+  console.log('Event Name:', eventName)
+  console.log('Received Variant ID from Lemon:', event.data?.attributes?.variant_id)
+  console.log('Customer Email:', event.data?.attributes?.customer_email)
+  console.log('---------------------------')
+  // console.log('Full Event Payload:', JSON.stringify(event.data, null, 2))
   const customData = event.meta?.custom_data || {}
 
-  // Interesuje nas tylko pomyślne utworzenie zamówienia
-  if (eventName !== 'order_created') {
-    return NextResponse.json({ received: true, message: `Ignored event: ${eventName}` })
-  }
-
+  // --- MAPOWANIE STRUKTURY ZGODNIE Z REALNYM PAYLOADEM ---
   const orderAttributes = event.data?.attributes
-  const customerEmail = orderAttributes?.customer_email
-  const customerName = orderAttributes?.customer_name || 'Client'
-  const externalOrderId = event.data?.id // ID zamówienia z Lemon Squeezy
-  const totalAmountInCents = orderAttributes?.total // Kwota w centach jako integer
+  const customerEmail = orderAttributes?.user_email
+  const customerName = orderAttributes?.user_name || 'Client'
+  const externalOrderId = event.data?.id
+  const totalAmountInCents = orderAttributes?.total
 
-  // Pobieramy ID wariantu z Lemon Squeezy, aby wiedzieć co klient kupił
-  const lemonVariantId = String(orderAttributes?.variant_id)
+  // Wyciągamy cyfrowe variant_id z obiektu first_order_item
+  const lemonVariantId = orderAttributes?.first_order_item?.variant_id
+    ? String(orderAttributes.first_order_item.variant_id)
+    : undefined
 
   if (!customerEmail) {
+    console.error('Webhook error: Missing user_email in Lemon Squeezy payload.')
     return new NextResponse('Missing customer email in event data', { status: 400 })
+  }
+
+  if (!lemonVariantId) {
+    console.error('Webhook error: Missing variant_id inside first_order_item.')
+    return new NextResponse('Missing variant ID in event data', { status: 400 })
   }
 
   try {
