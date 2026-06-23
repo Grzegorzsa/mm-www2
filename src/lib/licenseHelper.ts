@@ -156,7 +156,6 @@ async function sendPurchaseWelcomeEmail(payload: Payload, args: PurchaseWelcomeE
       text: cleanupRenderedPurchaseEmail(renderTemplate(purchaseWelcomeEmail.text, variables)),
       html: cleanupRenderedPurchaseEmail(renderTemplate(purchaseWelcomeEmail.html, variables)),
     })
-    console.log(`Sent purchase welcome email to ${args.email} for order ${args.externalOrderId}`)
   } catch (err) {
     console.error('Failed to send purchase welcome email:', err)
   }
