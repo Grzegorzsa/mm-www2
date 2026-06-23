@@ -2,7 +2,7 @@ import type { GlobalConfig } from 'payload'
 import { purchaseWelcomeEmailDefaults } from './purchaseWelcomeEmailContent'
 
 const supportedVariables =
-  '{{applicationName}}, {{variantName}}, {{variantDetails}}, {{loginEmail}}, {{loginPassword}}, {{externalOrderId}}, {{internalOrderId}}, {{downloadsUrl}}, {{userPanelUrl}}, {{signInUrl}}, {{passwordInstructions}}, {{accountSecurityNotice}}'
+  '{{applicationName}}, {{variantName}}, {{loginEmail}}, {{loginPassword}}, {{externalOrderId}}, {{downloadsUrl}}, {{userPanelUrl}}, {{signInUrl}}, {{accountSecurityNotice}}'
 
 export const PurchaseWelcomeEmail: GlobalConfig = {
   slug: 'purchase-welcome-email',

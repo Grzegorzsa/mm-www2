@@ -249,7 +249,6 @@ export async function POST(req: Request) {
       email: customerEmail,
       generatedPassword,
       externalOrderId: String(externalOrderId),
-      internalOrderId: String(newOrder.id),
       applicationName,
       variantName: variantName || null,
     })

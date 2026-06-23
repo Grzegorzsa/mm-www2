@@ -1042,7 +1042,7 @@ export interface RegisterWelcomeEmail {
   createdAt?: string | null;
 }
 /**
- * Email template sent after a successful purchase. Supported template variables: {{applicationName}}, {{variantName}}, {{variantDetails}}, {{loginEmail}}, {{loginPassword}}, {{externalOrderId}}, {{internalOrderId}}, {{downloadsUrl}}, {{userPanelUrl}}, {{signInUrl}}, {{passwordInstructions}}, {{accountSecurityNotice}}
+ * Email template sent after a successful purchase. Supported template variables: {{applicationName}}, {{variantName}}, {{loginEmail}}, {{loginPassword}}, {{externalOrderId}}, {{downloadsUrl}}, {{userPanelUrl}}, {{signInUrl}}, {{accountSecurityNotice}}
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "purchase-welcome-email".
@@ -1050,15 +1050,15 @@ export interface RegisterWelcomeEmail {
 export interface PurchaseWelcomeEmail {
   id: number;
   /**
-   * Available variables: {{applicationName}}, {{variantName}}, {{variantDetails}}, {{loginEmail}}, {{loginPassword}}, {{externalOrderId}}, {{internalOrderId}}, {{downloadsUrl}}, {{userPanelUrl}}, {{signInUrl}}, {{passwordInstructions}}, {{accountSecurityNotice}}
+   * Available variables: {{applicationName}}, {{variantName}}, {{loginEmail}}, {{loginPassword}}, {{externalOrderId}}, {{downloadsUrl}}, {{userPanelUrl}}, {{signInUrl}}, {{accountSecurityNotice}}
    */
   subject: string;
   /**
-   * Plain text version. Available variables: {{applicationName}}, {{variantName}}, {{variantDetails}}, {{loginEmail}}, {{loginPassword}}, {{externalOrderId}}, {{internalOrderId}}, {{downloadsUrl}}, {{userPanelUrl}}, {{signInUrl}}, {{passwordInstructions}}, {{accountSecurityNotice}}
+   * Plain text version. Available variables: {{applicationName}}, {{variantName}}, {{loginEmail}}, {{loginPassword}}, {{externalOrderId}}, {{downloadsUrl}}, {{userPanelUrl}}, {{signInUrl}}, {{accountSecurityNotice}}
    */
   text: string;
   /**
-   * HTML version. Available variables: {{applicationName}}, {{variantName}}, {{variantDetails}}, {{loginEmail}}, {{loginPassword}}, {{externalOrderId}}, {{internalOrderId}}, {{downloadsUrl}}, {{userPanelUrl}}, {{signInUrl}}, {{passwordInstructions}}, {{accountSecurityNotice}}
+   * HTML version. Available variables: {{applicationName}}, {{variantName}}, {{loginEmail}}, {{loginPassword}}, {{externalOrderId}}, {{downloadsUrl}}, {{userPanelUrl}}, {{signInUrl}}, {{accountSecurityNotice}}
    */
   html: string;
   updatedAt?: string | null;

@@ -9,7 +9,6 @@ type PurchaseWelcomeEmailArgs = {
   email: string
   generatedPassword?: string | null
   externalOrderId: string
-  internalOrderId: string
   applicationName: string
   variantName?: string | null
 }
@@ -22,6 +21,13 @@ function renderTemplate(template: string, variables: Record<string, string>) {
   return Object.entries(variables).reduce((result, [key, value]) => {
     return result.replaceAll(`{{${key}}}`, value)
   }, template)
+}
+
+function cleanupRenderedPurchaseEmail(template: string) {
+  return template
+    .replace(/^Purchased variant:\s*$/gm, '')
+    .replace(/<p>\s*Purchased variant:\s*<strong>\s*<\/strong>\s*<\/p>/g, '')
+    .replace(/\n{3,}/g, '\n\n')
 }
 
 /**
@@ -123,33 +129,34 @@ async function sendPurchaseWelcomeEmail(payload: Payload, args: PurchaseWelcomeE
       overrideAccess: true,
     })
 
-    const passwordInstructions = args.generatedPassword
-      ? 'Use the generated password shown in this email to authorize the desktop application immediately. After logging in, change it from the My Account section in the user panel.'
-      : 'No new password was generated for this purchase because your account already existed. Use your current MXbeats password to authorize the desktop application.'
+    if (!purchaseWelcomeEmail) {
+      console.warn('Purchase welcome email global (purchase-welcome-email) not found in database.')
+      return
+    }
 
     const variables = {
       applicationName: args.applicationName,
       variantName: args.variantName || '',
-      variantDetails: args.variantName ? `Purchased variant: ${args.variantName}` : '',
       loginEmail: args.email,
       loginPassword:
         args.generatedPassword ||
         'Use your existing MXbeats password (no new password was generated).',
       externalOrderId: args.externalOrderId,
-      internalOrderId: args.internalOrderId,
       downloadsUrl: PURCHASE_DOWNLOADS_URL,
       userPanelUrl: PURCHASE_USER_PANEL_URL,
       signInUrl: PURCHASE_SIGN_IN_URL,
-      passwordInstructions,
       accountSecurityNotice: `Open ${PURCHASE_USER_PANEL_URL} and change your password in My Account as soon as possible.`,
     }
 
     await payload.sendEmail({
       to: args.email,
-      subject: renderTemplate(purchaseWelcomeEmail.subject, variables),
-      text: renderTemplate(purchaseWelcomeEmail.text, variables),
-      html: renderTemplate(purchaseWelcomeEmail.html, variables),
+      subject: cleanupRenderedPurchaseEmail(
+        renderTemplate(purchaseWelcomeEmail.subject, variables),
+      ),
+      text: cleanupRenderedPurchaseEmail(renderTemplate(purchaseWelcomeEmail.text, variables)),
+      html: cleanupRenderedPurchaseEmail(renderTemplate(purchaseWelcomeEmail.html, variables)),
     })
+    console.log(`Sent purchase welcome email to ${args.email} for order ${args.externalOrderId}`)
   } catch (err) {
     console.error('Failed to send purchase welcome email:', err)
   }

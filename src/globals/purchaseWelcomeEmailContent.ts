@@ -4,7 +4,7 @@ export const purchaseWelcomeEmailDefaults = {
 
 Thank you for your purchase of {{applicationName}}.
 
-{{variantDetails}}
+Purchased variant: {{variantName}}
 
 Your order ID: {{externalOrderId}}
 
@@ -17,7 +17,9 @@ How to activate the app:
 3. Enter this password: {{loginPassword}}
 4. Complete authorization inside the app.
 
-{{passwordInstructions}}
+Use the credentials above to authorize the desktop application. If this account was created during purchase, this is your generated password.
+
+If you purchased a higher variant and already have the application installed, for example in a demo version, open Help -> Register Product, click "Refresh License", and then reload the application.
 
 User panel:
 {{userPanelUrl}}
@@ -27,8 +29,6 @@ After signing in, we recommend changing your password in the My Account section:
 
 You can also sign in here:
 {{signInUrl}}
-
-Internal order record: {{internalOrderId}}
 
 Best regards,
 MXbeats Team`,
@@ -40,7 +40,7 @@ MXbeats Team`,
     <strong>{{externalOrderId}}</strong>.
   </p>
 
-  <p>{{variantDetails}}</p>
+  <p>Purchased variant: <strong>{{variantName}}</strong></p>
 
   <p>
     Download the application here:<br />
@@ -56,7 +56,13 @@ MXbeats Team`,
   </ol>
 
   <p style="background: #f5f9fc; border: 1px solid #d7e7f2; padding: 14px; border-radius: 6px;">
-    {{passwordInstructions}}
+    Use the credentials above to authorize the desktop application. If this account was created during purchase,
+    this is your generated password.
+  </p>
+
+  <p>
+    If you purchased a higher variant and already have the application installed, for example in a demo version,
+    open <strong>Help -> Register Product</strong>, click <strong>Refresh License</strong>, and then reload the application.
   </p>
 
   <p>
@@ -72,10 +78,6 @@ MXbeats Team`,
   <p>
     Direct sign-in page:<br />
     <a href="{{signInUrl}}" style="color: #0f7db7;">{{signInUrl}}</a>
-  </p>
-
-  <p style="font-size: 13px; color: #666;">
-    Internal order record: {{internalOrderId}}
   </p>
 
   <hr style="border: none; border-top: 1px solid #eee; margin: 24px 0;" />
