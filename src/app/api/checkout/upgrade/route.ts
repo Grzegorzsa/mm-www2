@@ -2,7 +2,13 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { getSessionUser } from '@/lib/session'
-import { getEmailDomain, isBannedDomain, TEMP_EMAIL_REJECT_MESSAGE } from '@/lib/bannedDomains'
+import {
+  getEmailDomain,
+  isBannedEmailAddress,
+  isBannedEmailDomain,
+  isBannedDomain,
+  TEMP_EMAIL_REJECT_MESSAGE,
+} from '@/lib/bannedDomains'
 import type { CommerceOffer, ProductVariant } from '@/payload-types'
 
 type RelationValue = string | number | { id?: string | number } | null | undefined
@@ -193,7 +199,12 @@ export async function POST(req: NextRequest) {
 
   const payload = await getPayload({ config })
   const domain = getEmailDomain(user.email)
-  if (domain && (await isBannedDomain(payload, domain))) {
+  const blocked =
+    (await isBannedEmailAddress(payload, user.email)) ||
+    (domain ? await isBannedDomain(payload, domain) : false) ||
+    (await isBannedEmailDomain(payload, user.email))
+
+  if (blocked) {
     return NextResponse.json({ error: TEMP_EMAIL_REJECT_MESSAGE }, { status: 400 })
   }
 

@@ -48,6 +48,19 @@ export function parseBannedDomainsInput(value: string): string[] {
   return Array.from(new Set(domains))
 }
 
+export function normalizeEmailAddress(value: string): string {
+  return value.trim().toLowerCase()
+}
+
+export function parseBannedEmailsInput(value: string): string[] {
+  const emails = value
+    .split(/[,;\s]+/)
+    .map((email) => normalizeEmailAddress(email))
+    .filter(Boolean)
+
+  return Array.from(new Set(emails))
+}
+
 export function getEmailDomain(email: string): string | null {
   const atIndex = email.lastIndexOf('@')
   if (atIndex <= 0 || atIndex === email.length - 1) return null
@@ -76,4 +89,19 @@ export async function isBannedEmailDomain(payload: Payload, email: string): Prom
   const domain = getEmailDomain(email)
   if (!domain) return false
   return isBannedDomain(payload, domain)
+}
+
+export async function isBannedEmailAddress(payload: Payload, email: string): Promise<boolean> {
+  const normalized = normalizeEmailAddress(email)
+  if (!normalized) return false
+
+  const result = await payload.find({
+    collection: 'banned-emails',
+    where: { email: { equals: normalized } },
+    limit: 1,
+    depth: 0,
+    overrideAccess: true,
+  })
+
+  return result.totalDocs > 0
 }

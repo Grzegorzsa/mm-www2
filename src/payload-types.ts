@@ -78,6 +78,7 @@ export interface Config {
     'product-variants': ProductVariant;
     'commerce-offers': CommerceOffer;
     'banned-domains': BannedDomain;
+    'banned-emails': BannedEmail;
     licenses: License;
     'license-transactions': LicenseTransaction;
     installations: Installation;
@@ -100,6 +101,7 @@ export interface Config {
     'product-variants': ProductVariantsSelect<false> | ProductVariantsSelect<true>;
     'commerce-offers': CommerceOffersSelect<false> | CommerceOffersSelect<true>;
     'banned-domains': BannedDomainsSelect<false> | BannedDomainsSelect<true>;
+    'banned-emails': BannedEmailsSelect<false> | BannedEmailsSelect<true>;
     licenses: LicensesSelect<false> | LicensesSelect<true>;
     'license-transactions': LicenseTransactionsSelect<false> | LicenseTransactionsSelect<true>;
     installations: InstallationsSelect<false> | InstallationsSelect<true>;
@@ -574,6 +576,21 @@ export interface BannedDomain {
   createdAt: string;
 }
 /**
+ * Specific email addresses blocked from registration and checkout, even when the domain is allowed.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banned-emails".
+ */
+export interface BannedEmail {
+  id: number;
+  /**
+   * Email address only, for example: spam@example.com. You can also paste multiple emails separated by commas, semicolons, spaces, or new lines.
+   */
+  email: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "installations".
  */
@@ -679,6 +696,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'banned-domains';
         value: number | BannedDomain;
+      } | null)
+    | ({
+        relationTo: 'banned-emails';
+        value: number | BannedEmail;
       } | null)
     | ({
         relationTo: 'licenses';
@@ -925,6 +946,15 @@ export interface CommerceOffersSelect<T extends boolean = true> {
  */
 export interface BannedDomainsSelect<T extends boolean = true> {
   domain?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "banned-emails_select".
+ */
+export interface BannedEmailsSelect<T extends boolean = true> {
+  email?: T;
   updatedAt?: T;
   createdAt?: T;
 }

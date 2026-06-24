@@ -9,7 +9,11 @@ import crypto from 'crypto'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
 import { sendPurchaseWelcomeEmail } from '@/lib/licenseHelper'
-import { isBannedEmailDomain, TEMP_EMAIL_REJECT_MESSAGE } from '@/lib/bannedDomains'
+import {
+  isBannedEmailAddress,
+  isBannedEmailDomain,
+  TEMP_EMAIL_REJECT_MESSAGE,
+} from '@/lib/bannedDomains'
 
 type RelationValue = string | number | { id?: string | number } | null | undefined
 type OfferActionType = 'new_purchase' | 'upgrade_replace' | 'crossgrade' | 'renewal'
@@ -183,6 +187,14 @@ export async function POST(req: Request) {
       customerEmail,
       expectedCheckoutEmail,
       requestedUserId,
+    })
+  }
+
+  if (await isBannedEmailAddress(payload, customerEmail)) {
+    return badRequest(TEMP_EMAIL_REJECT_MESSAGE, {
+      eventName,
+      externalOrderId,
+      customerEmail,
     })
   }
 

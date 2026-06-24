@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { getEmailDomain, isBannedEmailDomain, TEMP_EMAIL_REJECT_MESSAGE } from '@/lib/bannedDomains'
+import {
+  getEmailDomain,
+  isBannedEmailAddress,
+  isBannedEmailDomain,
+  TEMP_EMAIL_REJECT_MESSAGE,
+} from '@/lib/bannedDomains'
 
 export async function POST(req: NextRequest) {
   let body: unknown
@@ -27,7 +32,8 @@ export async function POST(req: NextRequest) {
   }
 
   const payload = await getPayload({ config })
-  const blocked = await isBannedEmailDomain(payload, email)
+  const blocked =
+    (await isBannedEmailAddress(payload, email)) || (await isBannedEmailDomain(payload, email))
 
   if (blocked) {
     return NextResponse.json(

@@ -20,6 +20,7 @@ import { WelcomeLicenses } from './collections/WelcomeLicenses'
 import { CommerceOffers } from './collections/CommerceOffers'
 import { LicenseTransactions } from './collections/LicenseTransactions'
 import { BannedDomains } from './collections/BannedDomains'
+import { BannedEmails } from './collections/BannedEmails'
 import { Homepage } from './globals/pages/Homepage'
 import { Manual } from './globals/pages/Manual'
 import { Downloads } from './globals/pages/Downloads'
@@ -52,6 +53,7 @@ export default buildConfig({
     ProductVariants,
     CommerceOffers,
     BannedDomains,
+    BannedEmails,
     Licenses,
     LicenseTransactions,
     Installations,
