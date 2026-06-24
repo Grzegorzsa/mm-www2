@@ -510,9 +510,9 @@ export interface CommerceOffer {
   name: string;
   active?: boolean | null;
   /**
-   * Lemon Squeezy variant_id that triggers this offer rule.
+   * Lemon Squeezy variant_id that triggers this offer rule. Optional for Upgrade (Replace).
    */
-  lemonSqueezyVariantId: string;
+  lemonSqueezyVariantId?: string | null;
   actionType: 'new_purchase' | 'upgrade_replace' | 'renewal';
   product: number | Product;
   /**

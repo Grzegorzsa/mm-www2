@@ -2,6 +2,22 @@ import type { CollectionConfig } from 'payload'
 
 export const CommerceOffers: CollectionConfig = {
   slug: 'commerce-offers',
+  hooks: {
+    beforeValidate: [
+      ({ data }) => {
+        if (!data || typeof data !== 'object') return data
+
+        const mutableData = data as Record<string, unknown>
+        const rawValue = mutableData.lemonSqueezyVariantId
+
+        if (typeof rawValue === 'string' && rawValue.trim() === '') {
+          mutableData.lemonSqueezyVariantId = null
+        }
+
+        return mutableData
+      },
+    ],
+  },
   admin: {
     useAsTitle: 'name',
     defaultColumns: [
@@ -45,11 +61,24 @@ export const CommerceOffers: CollectionConfig = {
         {
           name: 'lemonSqueezyVariantId',
           type: 'text',
-          required: true,
+          required: false,
           unique: true,
+          validate: (value: unknown, { siblingData }: { siblingData?: unknown }) => {
+            const actionType =
+              typeof siblingData === 'object' && siblingData
+                ? (siblingData as { actionType?: string }).actionType
+                : undefined
+
+            if (actionType !== 'upgrade_replace' && !value) {
+              return 'Lemon Squeezy variant_id is required for New Purchase and Renewal offers.'
+            }
+
+            return true
+          },
           admin: {
             width: '50%',
-            description: 'Lemon Squeezy variant_id that triggers this offer rule.',
+            description:
+              'Lemon Squeezy variant_id that triggers this offer rule. Optional for Upgrade (Replace).',
           },
         },
         {
