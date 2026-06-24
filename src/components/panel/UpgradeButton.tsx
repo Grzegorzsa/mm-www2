@@ -1,6 +1,5 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
 type UpgradeButtonProps = {
@@ -9,7 +8,6 @@ type UpgradeButtonProps = {
 }
 
 export function UpgradeButton({ variantId, className }: UpgradeButtonProps) {
-  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -35,17 +33,9 @@ export function UpgradeButton({ variantId, className }: UpgradeButtonProps) {
         throw new Error('Checkout URL is missing')
       }
 
-      window.createLemonSqueezy?.()
-
-      const channel = window.LemonSqueezy?.Setup?.CHANNELS
-      channel?.on?.('LemonSqueezy.checkout.closed', () => {
-        router.refresh()
-      })
-
-      if (typeof window.LemonSqueezy?.Url?.Open === 'function') {
-        window.LemonSqueezy.Url.Open(checkoutUrl)
-      } else {
-        window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
+      const openedWindow = window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
+      if (!openedWindow) {
+        throw new Error('Pop-up was blocked. Please allow pop-ups for this site.')
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Could not start upgrade checkout'

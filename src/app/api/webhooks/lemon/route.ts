@@ -82,6 +82,14 @@ export async function POST(req: Request) {
   const payload = await getPayload({ config })
   const webhookSecret = process.env.LEMON_SQUEEZY_WEBHOOK_SECRET
 
+  const badRequest = (message: string, details?: Record<string, unknown>) => {
+    console.error('[webhooks/lemon] 400', {
+      message,
+      ...(details || {}),
+    })
+    return new NextResponse(message, { status: 400 })
+  }
+
   if (!webhookSecret) {
     console.error('Missing LEMON_SQUEEZY_WEBHOOK_SECRET in environment variables.')
     return new NextResponse('Webhook configuration error', { status: 500 })
@@ -97,8 +105,7 @@ export async function POST(req: Request) {
 
   // 2. Parsujemy dane zdarzenia
   const event = JSON.parse(rawBody)
-  // const eventName = event.meta?.event_name
-  // console.log('Full Event Payload:', JSON.stringify(event.data, null, 2))
+  const eventName = typeof event?.meta?.event_name === 'string' ? event.meta.event_name : 'unknown'
   const customData = event.meta?.custom_data || {}
   const flowFromCheckout =
     typeof customData?.flow === 'string' ? normalizeOfferActionType(customData.flow) : undefined
@@ -111,6 +118,20 @@ export async function POST(req: Request) {
   const requestedSourceVariantId = asNumberFromUnknown(
     customData?.sourceVariantId ?? customData?.source_variant_id,
   )
+  const requestedTargetVariantId = asNumberFromUnknown(
+    customData?.targetVariantId ?? customData?.target_variant_id,
+  )
+  const checkoutRequestId =
+    typeof customData?.checkout_request_id === 'string' ? customData.checkout_request_id : undefined
+
+  if (eventName !== 'order_created') {
+    console.info('[webhooks/lemon] Ignoring non-order event', {
+      eventName,
+      checkoutRequestId,
+      externalOrderId: event?.data?.id,
+    })
+    return NextResponse.json({ success: true, skipped: true, eventName })
+  }
 
   // --- MAPOWANIE STRUKTURY ZGODNIE Z REALNYM PAYLOADEM ---
   const orderAttributes = event.data?.attributes
@@ -123,32 +144,52 @@ export async function POST(req: Request) {
   const lemonVariantId = orderAttributes?.first_order_item?.variant_id
     ? String(orderAttributes.first_order_item.variant_id)
     : undefined
-  // console.log('--- LEMON WEBHOOK DEBUG ---')
-  // console.log('Event Name:', customerName)
-  // console.log('Received Variant ID from Lemon:', lemonVariantId)
-  // console.log('External Order ID:', externalOrderId)
-  // console.log('Total Amount (in cents):', totalAmountInCents)
-  // console.log('Customer Email:', customerEmail)
-  // console.log('---------------------------')
+
+  console.info('[webhooks/lemon] Received order_created', {
+    checkoutRequestId,
+    eventName,
+    externalOrderId,
+    lemonVariantId,
+    customerEmail,
+    totalAmountInCents,
+    customData: JSON.stringify(customData),
+  })
 
   if (!customerEmail) {
-    console.error('Webhook error: Missing user_email in Lemon Squeezy payload.')
-    return new NextResponse('Missing customer email in event data', { status: 400 })
+    return badRequest('Missing customer email in event data', {
+      checkoutRequestId,
+      eventName,
+      externalOrderId,
+      lemonVariantId,
+    })
   }
 
   const blockedDomain = await isBannedEmailDomain(payload, customerEmail)
   if (blockedDomain) {
-    return NextResponse.json({ error: TEMP_EMAIL_REJECT_MESSAGE }, { status: 400 })
+    return badRequest(TEMP_EMAIL_REJECT_MESSAGE, {
+      checkoutRequestId,
+      eventName,
+      externalOrderId,
+      customerEmail,
+    })
   }
 
   if (!externalOrderId) {
-    console.error('Webhook error: Missing external order ID.')
-    return new NextResponse('Missing external order ID in event data', { status: 400 })
+    return badRequest('Missing external order ID in event data', {
+      checkoutRequestId,
+      eventName,
+      customerEmail,
+      lemonVariantId,
+    })
   }
 
   if (!lemonVariantId) {
-    console.error('Webhook error: Missing variant_id inside first_order_item.')
-    return new NextResponse('Missing variant ID in event data', { status: 400 })
+    return badRequest('Missing variant ID in event data', {
+      checkoutRequestId,
+      eventName,
+      externalOrderId,
+      customerEmail,
+    })
   }
 
   let licenseTransaction: any = null
@@ -222,23 +263,28 @@ export async function POST(req: Request) {
         overrideAccess: true,
       })
 
+      const offerAction = normalizeOfferActionType(offerById?.actionType)
+
       if (
         offerById &&
         offerById.active === true &&
-        String(offerById.lemonSqueezyVariantId) === String(lemonVariantId)
+        (!flowFromCheckout || offerAction === flowFromCheckout)
       ) {
         offerRecord = offerById
       }
     }
 
     if (!offerRecord) {
-      const offerWhere: any[] = [
-        { lemonSqueezyVariantId: { equals: lemonVariantId } },
-        { active: { equals: true } },
-      ]
+      const offerWhere: any[] = [{ active: { equals: true } }]
 
       if (flowFromCheckout) {
         offerWhere.push({ actionType: { equals: flowFromCheckout } })
+      }
+
+      if (requestedTargetVariantId) {
+        offerWhere.push({ targetVariant: { equals: requestedTargetVariantId } })
+      } else {
+        offerWhere.push({ lemonSqueezyVariantId: { equals: lemonVariantId } })
       }
 
       const offerSearch = await payload.find({
@@ -253,11 +299,35 @@ export async function POST(req: Request) {
       })
 
       offerRecord = offerSearch.docs[0] ?? null
+
+      if (!offerRecord && requestedTargetVariantId) {
+        const fallbackOfferSearch = await payload.find({
+          collection: 'commerce-offers',
+          where: {
+            and: [
+              { active: { equals: true } },
+              { lemonSqueezyVariantId: { equals: lemonVariantId } },
+              ...(flowFromCheckout ? [{ actionType: { equals: flowFromCheckout } }] : []),
+            ],
+          },
+          sort: '-createdAt',
+          limit: 1,
+          depth: 2,
+          overrideAccess: true,
+        })
+
+        offerRecord = fallbackOfferSearch.docs[0] ?? null
+      }
     }
 
     if (!offerRecord && flowFromCheckout === 'upgrade_replace') {
-      return new NextResponse('Upgrade offer metadata did not match any active offer', {
-        status: 400,
+      return badRequest('Upgrade offer metadata did not match any active offer', {
+        checkoutRequestId,
+        externalOrderId,
+        lemonVariantId,
+        flowFromCheckout,
+        requestedOfferId,
+        requestedTargetVariantId,
       })
     }
 
@@ -288,7 +358,11 @@ export async function POST(req: Request) {
       }
 
       if (!productVariantRecord) {
-        return new NextResponse('Offer target variant not configured', { status: 400 })
+        return badRequest('Offer target variant not configured', {
+          checkoutRequestId,
+          externalOrderId,
+          offerId: offerRecord.id,
+        })
       }
 
       productData =
@@ -299,7 +373,12 @@ export async function POST(req: Request) {
       )
 
       if (!productId) {
-        return new NextResponse('Offer product mapping not configured', { status: 400 })
+        return badRequest('Offer product mapping not configured', {
+          checkoutRequestId,
+          externalOrderId,
+          offerId: offerRecord.id,
+          targetVariantId: productVariantRecord?.id,
+        })
       }
 
       versionFrom = Number(offerRecord.versionFrom ?? productData?.versionNo ?? 1)
@@ -315,7 +394,11 @@ export async function POST(req: Request) {
 
       if (variantSearch.docs.length === 0) {
         console.error(`Product variant with UID/LemonID ${lemonVariantId} not found in database.`)
-        return new NextResponse('Product variant not mapped', { status: 400 })
+        return badRequest('Product variant not mapped', {
+          checkoutRequestId,
+          externalOrderId,
+          lemonVariantId,
+        })
       }
 
       productVariantRecord = variantSearch.docs[0]
@@ -324,7 +407,12 @@ export async function POST(req: Request) {
       productId = asNumberId(getRelationId(productVariantRecord.product as RelationValue))
 
       if (!productId) {
-        return new NextResponse('Product mapping is invalid for variant', { status: 400 })
+        return badRequest('Product mapping is invalid for variant', {
+          checkoutRequestId,
+          externalOrderId,
+          lemonVariantId,
+          targetVariantId: productVariantRecord?.id,
+        })
       }
 
       versionFrom = Number(productData?.versionNo ?? 1)
@@ -360,16 +448,11 @@ export async function POST(req: Request) {
           overrideAccess: true,
         })
 
-        const requestedProductId = asNumberId(
-          getRelationId(requestedSourceLicense?.product as RelationValue),
-        )
-
         if (
           requestedSourceLicense &&
           requestedSourceLicense.active === true &&
           asNumberId(getRelationId(requestedSourceLicense.user as RelationValue)) ===
             userRecord.id &&
-          requestedProductId === productId &&
           isEligibleSourceLicense(requestedSourceLicense)
         ) {
           sourceLicense = requestedSourceLicense
@@ -380,11 +463,7 @@ export async function POST(req: Request) {
         const activeLicenses = await payload.find({
           collection: 'licenses',
           where: {
-            and: [
-              { user: { equals: userRecord.id } },
-              { product: { equals: productId } },
-              { active: { equals: true } },
-            ],
+            and: [{ user: { equals: userRecord.id } }, { active: { equals: true } }],
           },
           sort: '-createdAt',
           depth: 2,
@@ -396,7 +475,14 @@ export async function POST(req: Request) {
       }
 
       if (!sourceLicense) {
-        return new NextResponse('No eligible source license for this upgrade path', { status: 400 })
+        return badRequest('No eligible source license for this upgrade path', {
+          checkoutRequestId,
+          externalOrderId,
+          userId: userRecord?.id,
+          offerId: offerRecord?.id,
+          requestedSourceLicenseId,
+          requestedSourceVariantId,
+        })
       }
 
       const sourceLicenseVariantIds = getLicenseVariantIds(sourceLicense)
@@ -594,7 +680,12 @@ export async function POST(req: Request) {
       }
     }
 
-    console.error('Error processing Lemon Squeezy webhook:', error)
+    console.error('Error processing Lemon Squeezy webhook:', {
+      checkoutRequestId,
+      eventName,
+      errorMessage: error?.message || 'Unknown error',
+      fullError: JSON.stringify(error, null, 2),
+    })
     return new NextResponse(`Internal Server Error: ${error.message}`, { status: 500 })
   }
 }

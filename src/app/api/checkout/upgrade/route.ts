@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createCheckout, lemonSqueezySetup } from '@lemonsqueezy/lemonsqueezy.js'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { getSessionUser } from '@/lib/session'
@@ -95,6 +94,11 @@ function resolveUpgradeForUser(
 }
 
 export async function POST(req: NextRequest) {
+  const checkoutRequestId =
+    typeof globalThis.crypto?.randomUUID === 'function'
+      ? globalThis.crypto.randomUUID()
+      : `checkout-${Date.now()}`
+
   let body: unknown
 
   try {
@@ -165,11 +169,7 @@ export async function POST(req: NextRequest) {
   const activeLicensesResult = await payload.find({
     collection: 'licenses',
     where: {
-      and: [
-        { user: { equals: user.id } },
-        { product: { equals: productId } },
-        { active: { equals: true } },
-      ],
+      and: [{ user: { equals: user.id } }, { active: { equals: true } }],
     },
     limit: 100,
     sort: '-createdAt',
@@ -241,63 +241,102 @@ export async function POST(req: NextRequest) {
   const customPriceCents = Math.max(targetPriceCents - sourcePriceCents, 0)
 
   try {
-    lemonSqueezySetup({ apiKey: lemonApiKey })
-
-    const checkoutData: {
-      email: string
-      custom?: Record<string, string>
-      customPrice?: number
-    } = {
-      email: user.email,
-      custom: {
-        flow: 'upgrade_replace',
-        userId: String(user.id),
-        userEmail: user.email,
-        currentLicenseId: String(resolvedUpgrade.sourceLicenseId),
-        sourceVariantId: String(resolvedUpgrade.sourceVariantId),
-        targetVariantId: String(targetVariantId),
-        commerceOfferId: String(resolvedUpgrade.offer.id),
+    const checkoutBody = {
+      data: {
+        type: 'checkouts',
+        attributes: {
+          ...(customPriceCents > 0 ? { custom_price: customPriceCents } : {}),
+          checkout_data: {
+            email: user.email,
+            custom: {
+              flow: 'upgrade_replace',
+              checkout_request_id: checkoutRequestId,
+              user_id: String(user.id),
+              user_email: user.email,
+              current_license_id: String(resolvedUpgrade.sourceLicenseId),
+              source_variant_id: String(resolvedUpgrade.sourceVariantId),
+              target_variant_id: String(targetVariantId),
+              commerce_offer_id: String(resolvedUpgrade.offer.id),
+            },
+          },
+          product_options: {
+            enabled_variants: [targetLemonVariantId],
+          },
+          checkout_options: {
+            embed: false,
+          },
+        },
+        relationships: {
+          store: {
+            data: {
+              type: 'stores',
+              id: String(lemonStoreId),
+            },
+          },
+          variant: {
+            data: {
+              type: 'variants',
+              id: String(targetLemonVariantId),
+            },
+          },
+        },
       },
     }
 
-    // Lemon API expects custom_price to be a positive integer when provided.
-    if (customPriceCents > 0) {
-      checkoutData.customPrice = customPriceCents
+    console.info('[checkout/upgrade] Creating Lemon checkout', {
+      checkoutRequestId,
+      userId: user.id,
+      userEmail: user.email,
+      targetVariantId,
+      targetLemonVariantId,
+      sourceVariantId: resolvedUpgrade.sourceVariantId,
+      sourceLicenseId: resolvedUpgrade.sourceLicenseId,
+      commerceOfferId: resolvedUpgrade.offer.id,
+      customPriceCents,
+      enabledVariants: [targetLemonVariantId],
+    })
+
+    const checkoutResponse = await fetch('https://api.lemonsqueezy.com/v1/checkouts', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/vnd.api+json',
+        'Content-Type': 'application/vnd.api+json',
+        Authorization: `Bearer ${lemonApiKey}`,
+      },
+      body: JSON.stringify(checkoutBody),
+    })
+
+    const checkoutResult = await checkoutResponse.json().catch(() => null)
+
+    console.info('[checkout/upgrade] Lemon checkout response', {
+      checkoutRequestId,
+      status: checkoutResponse.status,
+      statusText: checkoutResponse.statusText,
+      responseData: JSON.stringify(checkoutResult, null, 2),
+    })
+
+    if (!checkoutResponse.ok) {
+      console.error('Lemon checkout API error:', {
+        checkoutRequestId,
+        status: checkoutResponse.status,
+        statusText: checkoutResponse.statusText,
+        body: JSON.stringify(checkoutResult, null, 2),
+      })
+      return NextResponse.json({ error: 'Failed to create Lemon checkout' }, { status: 502 })
     }
 
-    const checkoutPayload = {
-      checkoutData,
-    } as any
-
-    const checkoutResponse = await createCheckout(
-      lemonStoreId,
-      targetLemonVariantId,
-      checkoutPayload,
-    )
-
-    const checkoutUrl = checkoutResponse.data?.data?.attributes?.url
+    const checkoutUrl = checkoutResult?.data?.attributes?.url
     if (!checkoutUrl) {
-      const responseData = checkoutResponse.data
-      console.error('Lemon SDK response missing checkout URL:', {
-        statusCode: checkoutResponse.statusCode,
-        error: checkoutResponse.error
-          ? {
-              name: checkoutResponse.error.name,
-              message: checkoutResponse.error.message,
-              cause: checkoutResponse.error.cause,
-            }
-          : null,
-        errors:
-          responseData && typeof responseData === 'object' && 'errors' in responseData
-            ? (responseData as { errors?: unknown }).errors
-            : null,
-        responseData: JSON.stringify(responseData, null, 2),
+      console.error('Lemon checkout response missing url:', {
+        status: checkoutResponse.status,
+        body: JSON.stringify(checkoutResult, null, 2),
       })
       return NextResponse.json({ error: 'Failed to create Lemon checkout' }, { status: 502 })
     }
 
     return NextResponse.json({
       checkoutUrl,
+      checkoutRequestId,
       customPriceCents,
       sourceVariantId: resolvedUpgrade.sourceVariantId,
       targetVariantId,
