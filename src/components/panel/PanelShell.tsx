@@ -7,9 +7,11 @@ import { cn } from '@/lib/utils'
 
 export default function PanelShell({
   userEmail,
+  offersCount,
   children,
 }: {
   userEmail: string
+  offersCount?: number
   children: React.ReactNode
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -25,7 +27,7 @@ export default function PanelShell({
       <div className="flex flex-1 overflow-hidden">
         {/* Desktop sidebar */}
         <aside className="hidden lg:flex w-56 shrink-0 flex-col border-r border-gray-200 bg-white">
-          <Sidebar />
+          <Sidebar offersCount={offersCount} />
         </aside>
 
         {/* Mobile sidebar overlay */}
@@ -46,7 +48,7 @@ export default function PanelShell({
           <div className="h-14 border-b border-gray-200 flex items-center px-4 text-sm font-semibold text-gray-700">
             Menu
           </div>
-          <Sidebar onNavigate={() => setSidebarOpen(false)} />
+          <Sidebar offersCount={offersCount} onNavigate={() => setSidebarOpen(false)} />
         </aside>
 
         {/* Main content */}

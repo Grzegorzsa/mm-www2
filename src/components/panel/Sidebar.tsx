@@ -2,17 +2,24 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ShoppingBag, Monitor, Download, User } from 'lucide-react'
+import { ShoppingBag, Monitor, Download, User, BadgePercent } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navItems = [
   { href: '/user-panel/purchases', label: 'Purchases', icon: ShoppingBag },
+  { href: '/user-panel/offers', label: 'Offers', icon: BadgePercent },
   { href: '/user-panel/installations', label: 'Installations', icon: Monitor },
   { href: '/user-panel/downloads', label: 'Downloads', icon: Download },
   { href: '/user-panel/account', label: 'My Account', icon: User },
 ]
 
-export default function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
+export default function Sidebar({
+  onNavigate,
+  offersCount = 0,
+}: {
+  onNavigate?: () => void
+  offersCount?: number
+}) {
   const pathname = usePathname()
 
   return (
@@ -33,6 +40,11 @@ export default function Sidebar({ onNavigate }: { onNavigate?: () => void }) {
           >
             <Icon size={18} className="shrink-0" />
             {label}
+            {href === '/user-panel/offers' && offersCount > 0 ? (
+              <span className="ml-auto inline-flex min-w-5 items-center justify-center rounded-full bg-gray-900 px-1.5 py-0.5 text-[10px] font-semibold text-white">
+                {offersCount}
+              </span>
+            ) : null}
           </Link>
         )
       })}
