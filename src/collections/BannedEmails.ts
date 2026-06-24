@@ -1,9 +1,5 @@
 import { APIError } from 'payload'
-import type {
-  CollectionAfterChangeHook,
-  CollectionBeforeValidateHook,
-  CollectionConfig,
-} from 'payload'
+import type { CollectionBeforeValidateHook, CollectionConfig } from 'payload'
 import { normalizeEmailAddress, parseBannedEmailsInput } from '@/lib/bannedDomains'
 
 type BulkImportContext = {
@@ -11,12 +7,17 @@ type BulkImportContext = {
   skipBannedEmailsBulkImport?: boolean
 }
 
+function getBulkImportContext(req: { context?: BulkImportContext }) {
+  req.context ??= {}
+  return req.context
+}
+
 const normalizeEmailField: CollectionBeforeValidateHook = async ({ data, context, req }) => {
   if (!data) return data
 
   const emailValue = data?.email
   if (typeof emailValue === 'string') {
-    const hookContext = context as BulkImportContext
+    const hookContext = getBulkImportContext(req)
 
     if (hookContext.skipBannedEmailsBulkImport) {
       data.email = normalizeEmailAddress(emailValue)
@@ -52,12 +53,43 @@ const normalizeEmailField: CollectionBeforeValidateHook = async ({ data, context
         throw new APIError('All provided banned emails already exist', 409)
       }
 
-      hookContext.bannedEmailsBulk = importedEmails.filter(
+      const emailsToCreate = importedEmails.filter(
         (candidateEmail) => candidateEmail !== selectedEmail,
       )
+
+      for (const email of emailsToCreate) {
+        const existing = await req.payload.find({
+          collection: 'banned-emails',
+          where: { email: { equals: email } },
+          limit: 1,
+          depth: 0,
+          overrideAccess: true,
+          req,
+        })
+
+        if (existing.totalDocs > 0) {
+          continue
+        }
+
+        try {
+          await req.payload.create({
+            collection: 'banned-emails',
+            data: { email },
+            req,
+            overrideAccess: false,
+            context: { skipBannedEmailsBulkImport: true },
+          })
+        } catch (error) {
+          const message = error instanceof Error ? error.message.toLowerCase() : ''
+          if (message.includes('duplicate') || message.includes('unique')) {
+            continue
+          }
+
+          throw error
+        }
+      }
     } else {
       selectedEmail = importedEmails[0] ?? null
-      hookContext.bannedEmailsBulk = undefined
     }
 
     if (!selectedEmail) {
@@ -68,46 +100,6 @@ const normalizeEmailField: CollectionBeforeValidateHook = async ({ data, context
   }
 
   return data
-}
-
-const createBulkImportedEmails: CollectionAfterChangeHook = async ({ operation, context, req }) => {
-  if (operation !== 'create') return
-
-  const hookContext = context as BulkImportContext
-  const bulkEmails = hookContext.bannedEmailsBulk ?? []
-  if (bulkEmails.length === 0) return
-
-  for (const email of bulkEmails) {
-    const existing = await req.payload.find({
-      collection: 'banned-emails',
-      where: { email: { equals: email } },
-      limit: 1,
-      depth: 0,
-      overrideAccess: true,
-      req,
-    })
-
-    if (existing.totalDocs > 0) {
-      continue
-    }
-
-    try {
-      await req.payload.create({
-        collection: 'banned-emails',
-        data: { email },
-        req,
-        overrideAccess: false,
-        context: { skipBannedEmailsBulkImport: true },
-      })
-    } catch (error) {
-      const message = error instanceof Error ? error.message.toLowerCase() : ''
-      if (message.includes('duplicate') || message.includes('unique')) {
-        continue
-      }
-
-      throw error
-    }
-  }
 }
 
 export const BannedEmails: CollectionConfig = {
@@ -126,7 +118,6 @@ export const BannedEmails: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [normalizeEmailField],
-    afterChange: [createBulkImportedEmails],
   },
   fields: [
     {

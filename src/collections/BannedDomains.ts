@@ -1,9 +1,5 @@
 import { APIError } from 'payload'
-import type {
-  CollectionAfterChangeHook,
-  CollectionBeforeValidateHook,
-  CollectionConfig,
-} from 'payload'
+import type { CollectionBeforeValidateHook, CollectionConfig } from 'payload'
 import { normalizeDomain, parseBannedDomainsInput } from '@/lib/bannedDomains'
 
 type BulkImportContext = {
@@ -11,12 +7,17 @@ type BulkImportContext = {
   skipBannedDomainsBulkImport?: boolean
 }
 
+function getBulkImportContext(req: { context?: BulkImportContext }) {
+  req.context ??= {}
+  return req.context
+}
+
 const normalizeDomainField: CollectionBeforeValidateHook = async ({ data, context, req }) => {
   if (!data) return data
 
   const domainValue = data?.domain
   if (typeof domainValue === 'string') {
-    const hookContext = context as BulkImportContext
+    const hookContext = getBulkImportContext(req)
 
     if (hookContext.skipBannedDomainsBulkImport) {
       data.domain = normalizeDomain(domainValue)
@@ -52,12 +53,43 @@ const normalizeDomainField: CollectionBeforeValidateHook = async ({ data, contex
         throw new APIError('All provided banned domains already exist', 409)
       }
 
-      hookContext.bannedDomainsBulk = importedDomains.filter(
+      const domainsToCreate = importedDomains.filter(
         (candidateDomain) => candidateDomain !== selectedDomain,
       )
+
+      for (const domain of domainsToCreate) {
+        const existing = await req.payload.find({
+          collection: 'banned-domains',
+          where: { domain: { equals: domain } },
+          limit: 1,
+          depth: 0,
+          overrideAccess: true,
+          req,
+        })
+
+        if (existing.totalDocs > 0) {
+          continue
+        }
+
+        try {
+          await req.payload.create({
+            collection: 'banned-domains',
+            data: { domain },
+            req,
+            overrideAccess: false,
+            context: { skipBannedDomainsBulkImport: true },
+          })
+        } catch (error) {
+          const message = error instanceof Error ? error.message.toLowerCase() : ''
+          if (message.includes('duplicate') || message.includes('unique')) {
+            continue
+          }
+
+          throw error
+        }
+      }
     } else {
       selectedDomain = importedDomains[0] ?? null
-      hookContext.bannedDomainsBulk = undefined
     }
 
     if (!selectedDomain) {
@@ -67,53 +99,6 @@ const normalizeDomainField: CollectionBeforeValidateHook = async ({ data, contex
     data.domain = selectedDomain
   }
   return data
-}
-
-const createBulkImportedDomains: CollectionAfterChangeHook = async ({
-  doc,
-  operation,
-  context,
-  req,
-}) => {
-  if (operation !== 'create') return doc
-
-  const hookContext = context as BulkImportContext
-  const bulkDomains = hookContext.bannedDomainsBulk ?? []
-  if (bulkDomains.length === 0) return doc
-
-  for (const domain of bulkDomains) {
-    const existing = await req.payload.find({
-      collection: 'banned-domains',
-      where: { domain: { equals: domain } },
-      limit: 1,
-      depth: 0,
-      overrideAccess: true,
-      req,
-    })
-
-    if (existing.totalDocs > 0) {
-      continue
-    }
-
-    try {
-      await req.payload.create({
-        collection: 'banned-domains',
-        data: { domain },
-        req,
-        overrideAccess: false,
-        context: { skipBannedDomainsBulkImport: true },
-      })
-    } catch (error) {
-      const message = error instanceof Error ? error.message.toLowerCase() : ''
-      if (message.includes('duplicate') || message.includes('unique')) {
-        continue
-      }
-
-      throw error
-    }
-  }
-
-  return doc
 }
 
 export const BannedDomains: CollectionConfig = {
@@ -132,7 +117,6 @@ export const BannedDomains: CollectionConfig = {
   },
   hooks: {
     beforeValidate: [normalizeDomainField],
-    afterChange: [createBulkImportedDomains],
   },
   fields: [
     {
