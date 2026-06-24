@@ -18,19 +18,32 @@ export async function POST(req: NextRequest) {
   }
 
   const { variantId, affiliateCode } = body as Record<string, unknown>
-  const targetVariantId = typeof variantId === 'number' ? variantId : Number(variantId)
+  const targetVariantKey =
+    typeof variantId === 'string' || typeof variantId === 'number' ? String(variantId).trim() : ''
 
-  if (!Number.isFinite(targetVariantId)) {
+  if (!targetVariantKey) {
     return NextResponse.json({ error: 'variantId is required' }, { status: 400 })
   }
 
   const payload = await getPayload({ config })
-  const targetVariant = await payload.findByID({
+
+  const targetVariantResult = await payload.find({
     collection: 'product-variants',
-    id: targetVariantId,
+    where: {
+      lemonSqueezyVariantId: {
+        equals: targetVariantKey,
+      },
+    },
     depth: 0,
+    limit: 1,
     overrideAccess: true,
   })
+
+  const targetVariant = targetVariantResult.docs[0]
+
+  if (!targetVariant) {
+    return NextResponse.json({ error: 'Target variant not found' }, { status: 404 })
+  }
 
   const targetLemonVariantId = Number(targetVariant.lemonSqueezyVariantId)
   if (!Number.isFinite(targetLemonVariantId)) {
@@ -65,7 +78,7 @@ export async function POST(req: NextRequest) {
           ...(email ? { email } : {}),
           custom: {
             flow: 'new_purchase',
-            target_variant_id: String(targetVariantId),
+            target_variant_id: targetVariantKey,
             ...(typeof affiliateCode === 'string' && affiliateCode.trim()
               ? { affiliate_code: affiliateCode.trim() }
               : {}),
@@ -116,5 +129,5 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to create Lemon checkout' }, { status: 502 })
   }
 
-  return NextResponse.json({ checkoutUrl, targetVariantId })
+  return NextResponse.json({ checkoutUrl, targetVariantId: targetVariantKey })
 }
