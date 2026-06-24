@@ -30,6 +30,7 @@ export function PricingActions({ loopsVariantId = '', beatsVariantId = '' }: Pri
   const [affiliateCode, setAffiliateCode] = useState<string | null>(null)
   const [isLoadingCheckout, setIsLoadingCheckout] = useState(false)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
+  const [email, setEmail] = useState('')
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -52,6 +53,7 @@ export function PricingActions({ loopsVariantId = '', beatsVariantId = '' }: Pri
   }, [selectedVariant])
 
   const modalMeta = selectedVariant ? variantMeta[selectedVariant] : null
+  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 
   const variantIds: Record<VariantKey, string> = {
     loops: loopsVariantId,
@@ -74,7 +76,11 @@ export function PricingActions({ loopsVariantId = '', beatsVariantId = '' }: Pri
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ variantId: selectedVariantId, affiliateCode }),
+        body: JSON.stringify({
+          variantId: selectedVariantId,
+          affiliateCode,
+          email: email || undefined,
+        }),
       })
 
       const data = await response.json().catch(() => ({}))
@@ -160,6 +166,20 @@ export function PricingActions({ loopsVariantId = '', beatsVariantId = '' }: Pri
                   the legal terms and tested the software on your system.
                 </p>
 
+                <div className="mt-5">
+                  <label className="block text-sm font-medium text-[#30363b] mb-2">
+                    Email Address (for portal login)
+                  </label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                    placeholder="your.email@example.com"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#3fbef2]"
+                  />
+                  {checkoutError && <p className="mt-1 text-sm text-red-700">{checkoutError}</p>}
+                </div>
+
                 <label className="mt-5 flex items-start gap-3 text-sm text-[#30363b]">
                   <input
                     type="checkbox"
@@ -198,9 +218,11 @@ export function PricingActions({ loopsVariantId = '', beatsVariantId = '' }: Pri
 
                   <button
                     type="button"
-                    disabled={!acceptedTerms || !selectedVariantId || isLoadingCheckout}
+                    disabled={
+                      !acceptedTerms || !selectedVariantId || isLoadingCheckout || !isEmailValid
+                    }
                     onClick={handleCheckout}
-                    className={`inline-block text-white px-5 py-2 text-sm tracking-wider uppercase transition-colors font-medium rounded text-center ${modalMeta.buttonClass} ${!acceptedTerms || !selectedVariantId || isLoadingCheckout ? 'pointer-events-none opacity-50' : ''}`}
+                    className={`inline-block text-white px-5 py-2 text-sm tracking-wider uppercase transition-colors font-medium rounded text-center ${modalMeta.buttonClass} ${!acceptedTerms || !selectedVariantId || isLoadingCheckout || !isEmailValid ? 'pointer-events-none opacity-50' : ''}`}
                   >
                     {isLoadingCheckout ? 'Preparing...' : 'Go to Checkout'}
                   </button>

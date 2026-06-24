@@ -135,6 +135,10 @@ export async function POST(req: Request) {
       : typeof customData?.userEmail === 'string'
         ? customData.userEmail
         : undefined
+  const intendedEmail =
+    typeof customData?.intended_email === 'string' && customData.intended_email.trim()
+      ? customData.intended_email.trim().toLowerCase()
+      : undefined
 
   if (eventName !== 'order_created') {
     console.info('[webhooks/lemon] Ignoring non-order event', {
@@ -287,9 +291,13 @@ export async function POST(req: Request) {
 
       userRecord = userById
     } else {
+      // For new_purchase, prefer intended_email (typed in our modal) over the Lemon payment email
+      const portalEmail =
+        flowFromCheckout === 'new_purchase' && intendedEmail ? intendedEmail : customerEmail
+
       const usersSearch = await payload.find({
         collection: 'users',
-        where: { email: { equals: customerEmail } },
+        where: { email: { equals: portalEmail } },
         limit: 1,
       })
 
@@ -301,17 +309,15 @@ export async function POST(req: Request) {
 
         userRecord = await payload.create({
           collection: 'users',
-          disableVerificationEmail: true, // Opcjonalnie: blokuje wysyłkę standardowego maila aktywacyjnego Payload, jeśli jest włączona
+          disableVerificationEmail: true,
           req: {
             ...req,
-            // Wstrzykujemy flagę do kontekstu, którą odczyta nasz hook w kolekcji Users -
-            //  zapobiegamy generowaniu darmowych licencji powitalnych przy zakupie
             context: {
               preventWelcomeLicenses: true,
             },
           } as any,
           data: {
-            email: customerEmail,
+            email: portalEmail,
             name: customerName,
             password: generatedPassword,
             _verified: true,

@@ -23,7 +23,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
 
-  const { variantId, affiliateCode } = body as Record<string, unknown>
+  const { variantId, affiliateCode, email } = body as Record<string, unknown>
+  const checkoutEmail = typeof email === 'string' ? email.trim().toLowerCase() : ''
   const targetVariantKey =
     typeof variantId === 'string' || typeof variantId === 'number' ? String(variantId).trim() : ''
 
@@ -66,17 +67,20 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Lemon Squeezy checkout is not configured' }, { status: 500 })
   }
 
-  const sessionUser = await getSessionUser().catch(() => null)
-  const email = sessionUser?.email
+  if (!checkoutEmail) {
+    return NextResponse.json({ error: 'Email address is required' }, { status: 400 })
+  }
 
-  if (email) {
-    const domain = getEmailDomain(email)
-    const blocked =
-      (await isBannedEmailAddress(payload, email)) ||
-      (domain ? await isBannedDomain(payload, domain) : false) ||
-      (await isBannedEmailDomain(payload, email))
+  const isEmailBanned = await isBannedEmailAddress(payload, checkoutEmail)
+  if (isEmailBanned) {
+    return NextResponse.json({ error: TEMP_EMAIL_REJECT_MESSAGE }, { status: 400 })
+  }
 
-    if (blocked) {
+  const domain = getEmailDomain(checkoutEmail)
+  if (domain) {
+    const isDomainBanned =
+      (await isBannedDomain(payload, domain)) || (await isBannedEmailDomain(payload, checkoutEmail))
+    if (isDomainBanned) {
       return NextResponse.json({ error: TEMP_EMAIL_REJECT_MESSAGE }, { status: 400 })
     }
   }
@@ -86,10 +90,11 @@ export async function POST(req: NextRequest) {
       type: 'checkouts',
       attributes: {
         checkout_data: {
-          ...(email ? { email } : {}),
+          email: checkoutEmail,
           custom: {
             flow: 'new_purchase',
             target_variant_id: targetVariantKey,
+            intended_email: checkoutEmail,
             ...(typeof affiliateCode === 'string' && affiliateCode.trim()
               ? { affiliate_code: affiliateCode.trim() }
               : {}),
