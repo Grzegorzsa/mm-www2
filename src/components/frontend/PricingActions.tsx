@@ -1,13 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type VariantKey = 'loops' | 'beats'
 
 type PricingActionsProps = {
-  loopsCheckoutUrl?: string
-  beatsCheckoutUrl?: string
+  loopsVariantId?: string
+  beatsVariantId?: string
 }
 
 const variantMeta: Record<VariantKey, { title: string; buttonClass: string; accentClass: string }> =
@@ -24,25 +24,12 @@ const variantMeta: Record<VariantKey, { title: string; buttonClass: string; acce
     },
   }
 
-function appendAffiliateCode(url: string, affiliateCode: string | null): string {
-  if (!url || !affiliateCode) return url
-
-  try {
-    const parsed = new URL(url)
-    parsed.searchParams.set('checkout[custom][affiliate_code]', affiliateCode)
-    return parsed.toString()
-  } catch {
-    return url
-  }
-}
-
-export function PricingActions({
-  loopsCheckoutUrl = '',
-  beatsCheckoutUrl = '',
-}: PricingActionsProps) {
+export function PricingActions({ loopsVariantId = '', beatsVariantId = '' }: PricingActionsProps) {
   const [selectedVariant, setSelectedVariant] = useState<VariantKey | null>(null)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [affiliateCode, setAffiliateCode] = useState<string | null>(null)
+  const [isLoadingCheckout, setIsLoadingCheckout] = useState(false)
+  const [checkoutError, setCheckoutError] = useState<string | null>(null)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -64,18 +51,50 @@ export function PricingActions({
     return () => document.removeEventListener('keydown', onEscape)
   }, [selectedVariant])
 
-  const variantCheckoutUrl = useMemo(() => {
-    const urls: Record<VariantKey, string> = {
-      loops: loopsCheckoutUrl,
-      beats: beatsCheckoutUrl,
-    }
-
-    if (!selectedVariant) return ''
-    return appendAffiliateCode(urls[selectedVariant], affiliateCode)
-  }, [affiliateCode, beatsCheckoutUrl, loopsCheckoutUrl, selectedVariant])
-
   const modalMeta = selectedVariant ? variantMeta[selectedVariant] : null
-  const checkoutEnabled = Boolean(variantCheckoutUrl)
+
+  const variantIds: Record<VariantKey, string> = {
+    loops: loopsVariantId,
+    beats: beatsVariantId,
+  }
+  const selectedVariantId = selectedVariant ? variantIds[selectedVariant] : ''
+
+  async function handleCheckout() {
+    if (!selectedVariant) return
+
+    setCheckoutError(null)
+    setIsLoadingCheckout(true)
+
+    try {
+      if (!selectedVariantId) {
+        throw new Error('Checkout is not configured yet for this variant.')
+      }
+
+      const response = await fetch('/api/checkout/purchase', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ variantId: selectedVariantId, affiliateCode }),
+      })
+
+      const data = await response.json().catch(() => ({}))
+      if (!response.ok) {
+        throw new Error(data?.error ?? 'Could not initialize checkout')
+      }
+
+      const checkoutUrl = data?.checkoutUrl
+      if (typeof checkoutUrl !== 'string' || !checkoutUrl) {
+        throw new Error('Checkout URL is missing')
+      }
+
+      window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
+    } catch (error: unknown) {
+      const message = error instanceof Error ? error.message : 'Could not start checkout'
+      setCheckoutError(message)
+    } finally {
+      setIsLoadingCheckout(false)
+    }
+  }
 
   return (
     <>
@@ -161,10 +180,10 @@ export function PricingActions({
                   </span>
                 </label>
 
-                {!checkoutEnabled ? (
+                {!selectedVariantId ? (
                   <p className="mt-4 text-sm text-red-700">
                     Checkout is not configured yet for this variant. Please set the Lemon Squeezy
-                    checkout URL in environment variables.
+                    variant ID in the CMS.
                   </p>
                 ) : null}
 
@@ -177,16 +196,19 @@ export function PricingActions({
                     Cancel
                   </button>
 
-                  <a
-                    href={variantCheckoutUrl || '#'}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={`inline-block text-white px-5 py-2 text-sm tracking-wider uppercase transition-colors font-medium rounded text-center ${modalMeta.buttonClass} ${!acceptedTerms || !checkoutEnabled ? 'pointer-events-none opacity-50' : ''}`}
-                    onClick={() => setSelectedVariant(null)}
+                  <button
+                    type="button"
+                    disabled={!acceptedTerms || !selectedVariantId || isLoadingCheckout}
+                    onClick={handleCheckout}
+                    className={`inline-block text-white px-5 py-2 text-sm tracking-wider uppercase transition-colors font-medium rounded text-center ${modalMeta.buttonClass} ${!acceptedTerms || !selectedVariantId || isLoadingCheckout ? 'pointer-events-none opacity-50' : ''}`}
                   >
-                    Go to Checkout
-                  </a>
+                    {isLoadingCheckout ? 'Preparing...' : 'Go to Checkout'}
+                  </button>
                 </div>
+
+                {checkoutError ? (
+                  <p className="mt-3 text-sm text-red-700">{checkoutError}</p>
+                ) : null}
               </div>
             </div>
           </td>

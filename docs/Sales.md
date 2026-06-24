@@ -19,7 +19,7 @@ Main behavior:
 - Elements: shows Register button and routes to sign-up
 - Loops and Beats: show Buy buttons
 - Buy opens a modal with required legal consent (Terms + Refund Policy)
-- Checkout URL is built from environment config
+- Checkout is created through a dedicated API route that locks Lemon checkout to one selected variant
 - Affiliate code from URL is propagated to Lemon checkout as custom field
 
 Implementation references:
@@ -29,7 +29,8 @@ Implementation references:
 
 Environment:
 
-- Required: NEXT_PUBLIC_LEMON_CHECKOUT_BASE_URL
+- Required: LEMON_SQUEEZY_API_KEY, LEMON_SQUEEZY_STORE_ID
+- Variant IDs must be configured on Product Variants in CMS for homepage products
 
 Validation checklist:
 
@@ -38,6 +39,7 @@ Validation checklist:
 3. Verify Buy for Loops/Beats opens modal.
 4. Verify checkout button is disabled until legal checkbox is accepted.
 5. Test URL with affiliate_code and confirm it appears in checkout custom data.
+6. Confirm checkout opens with only the selected variant enabled (no variant list).
 
 ## 2. Commerce Offers (Policy Engine)
 
@@ -301,6 +303,12 @@ Current entries:
 - Change: Crossgrade now honors variant allow/deny filters, uses explicit ProductVariant.isCommercial flag (with fallback), uses offer.referencePriceCents in checkout when provided, and no longer deactivates source license. Added dev-only eligibility debug panel.
 - Files: src/collections/ProductVariants.ts, src/app/(user-panel)/user-panel/purchases/Purchases.tsx, src/components/panel/UpgradeButton.tsx, src/app/api/checkout/upgrade/route.ts, src/app/api/webhooks/lemon/route.ts
 - Validation: pnpm payload generate:types, pnpm tsc --noEmit
+
+- Date: 2026-06-24
+- Scope: checkout, homepage
+- Change: Homepage buy buttons now create Lemon checkouts through a dedicated API route and force a single selected variant, preventing the variant list from appearing and ensuring the intended product is preselected.
+- Files: src/app/api/checkout/purchase/route.ts, src/components/frontend/PricingActions.tsx, src/app/(frontend)/HomePage.tsx
+- Validation: pnpm tsc --noEmit
 
 ## 9. Temporary Email Domain Policy
 

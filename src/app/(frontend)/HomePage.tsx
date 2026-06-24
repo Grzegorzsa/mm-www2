@@ -157,26 +157,6 @@ export default async function HomePage() {
 
   const imageUrl = (image: any) => (typeof image === 'object' && image?.url ? image.url : image)
 
-  const lemonBaseCheckoutUrl = process.env.NEXT_PUBLIC_LEMON_CHECKOUT_BASE_URL ?? ''
-  const explicitLoopsCheckoutUrl = process.env.NEXT_PUBLIC_LEMON_CHECKOUT_LOOPS_URL ?? ''
-  const explicitBeatsCheckoutUrl = process.env.NEXT_PUBLIC_LEMON_CHECKOUT_BEATS_URL ?? ''
-
-  const buildCheckoutUrl = (explicitUrl: string, variantId: string) => {
-    if (explicitUrl) return explicitUrl
-    if (!lemonBaseCheckoutUrl || !variantId) return ''
-
-    try {
-      const checkoutUrl = new URL(lemonBaseCheckoutUrl)
-      checkoutUrl.searchParams.set('variant', variantId)
-      return checkoutUrl.toString()
-    } catch {
-      return ''
-    }
-  }
-
-  const loopsCheckoutUrl = buildCheckoutUrl(explicitLoopsCheckoutUrl, loopsVariantId)
-  const beatsCheckoutUrl = buildCheckoutUrl(explicitBeatsCheckoutUrl, beatsVariantId)
-
   return (
     <>
       <HeroSection hero={hero} />
@@ -300,10 +280,7 @@ export default async function HomePage() {
                   </td>
                 </tr>
               ))}
-              <PricingActions
-                loopsCheckoutUrl={loopsCheckoutUrl}
-                beatsCheckoutUrl={beatsCheckoutUrl}
-              />
+              <PricingActions loopsVariantId={loopsVariantId} beatsVariantId={beatsVariantId} />
             </tbody>
           </table>
         </div>
