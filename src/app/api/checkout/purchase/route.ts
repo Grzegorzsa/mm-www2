@@ -24,12 +24,18 @@ export async function POST(req: NextRequest) {
   }
 
   const { variantId, affiliateCode, email } = body as Record<string, unknown>
-  const checkoutEmail = typeof email === 'string' ? email.trim().toLowerCase() : ''
+  let checkoutEmail = typeof email === 'string' ? email.trim().toLowerCase() : ''
   const targetVariantKey =
     typeof variantId === 'string' || typeof variantId === 'number' ? String(variantId).trim() : ''
 
   if (!targetVariantKey) {
     return NextResponse.json({ error: 'variantId is required' }, { status: 400 })
+  }
+
+  // If no email provided in body, fall back to session user
+  if (!checkoutEmail) {
+    const sessionUser = await getSessionUser().catch(() => null)
+    checkoutEmail = sessionUser?.email ?? ''
   }
 
   const payload = await getPayload({ config })

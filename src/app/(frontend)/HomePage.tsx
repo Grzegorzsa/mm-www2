@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { Check, X } from 'lucide-react'
 import fallbackContent from '@/seed/homepage.json'
 import { PricingActions } from '@/components/frontend/PricingActions'
+import { getSessionUser } from '@/lib/session'
 
 function BoolCell({ value }: { value: boolean }) {
   return value ? (
@@ -108,6 +109,14 @@ export default async function HomePage() {
   let homepageData: any = null
   let loopsVariantId = ''
   let beatsVariantId = ''
+  let sessionEmail = ''
+
+  try {
+    const sessionUser = await getSessionUser()
+    sessionEmail = sessionUser?.email ?? ''
+  } catch {
+    // not logged in
+  }
 
   try {
     const payload = await getPayload({ config: await config })
@@ -280,7 +289,11 @@ export default async function HomePage() {
                   </td>
                 </tr>
               ))}
-              <PricingActions loopsVariantId={loopsVariantId} beatsVariantId={beatsVariantId} />
+              <PricingActions
+                loopsVariantId={loopsVariantId}
+                beatsVariantId={beatsVariantId}
+                sessionEmail={sessionEmail}
+              />
             </tbody>
           </table>
         </div>

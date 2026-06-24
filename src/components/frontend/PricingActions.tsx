@@ -8,6 +8,7 @@ type VariantKey = 'loops' | 'beats'
 type PricingActionsProps = {
   loopsVariantId?: string
   beatsVariantId?: string
+  sessionEmail?: string
 }
 
 const variantMeta: Record<VariantKey, { title: string; buttonClass: string; accentClass: string }> =
@@ -24,13 +25,17 @@ const variantMeta: Record<VariantKey, { title: string; buttonClass: string; acce
     },
   }
 
-export function PricingActions({ loopsVariantId = '', beatsVariantId = '' }: PricingActionsProps) {
+export function PricingActions({
+  loopsVariantId = '',
+  beatsVariantId = '',
+  sessionEmail = '',
+}: PricingActionsProps) {
   const [selectedVariant, setSelectedVariant] = useState<VariantKey | null>(null)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [affiliateCode, setAffiliateCode] = useState<string | null>(null)
   const [isLoadingCheckout, setIsLoadingCheckout] = useState(false)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
-  const [email, setEmail] = useState('')
+  const [email, setEmail] = useState(sessionEmail)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -54,6 +59,7 @@ export function PricingActions({ loopsVariantId = '', beatsVariantId = '' }: Pri
 
   const modalMeta = selectedVariant ? variantMeta[selectedVariant] : null
   const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+  const isLoggedIn = Boolean(sessionEmail)
 
   const variantIds: Record<VariantKey, string> = {
     loops: loopsVariantId,
@@ -170,13 +176,19 @@ export function PricingActions({ loopsVariantId = '', beatsVariantId = '' }: Pri
                   <label className="block text-sm font-medium text-[#30363b] mb-2">
                     Email Address (for portal login)
                   </label>
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(event) => setEmail(event.target.value)}
-                    placeholder="your.email@example.com"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#3fbef2]"
-                  />
+                  {isLoggedIn ? (
+                    <p className="text-sm text-[#3c4349] bg-gray-50 border border-gray-200 rounded-md px-3 py-2">
+                      {sessionEmail}
+                    </p>
+                  ) : (
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                      placeholder="your.email@example.com"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#3fbef2]"
+                    />
+                  )}
                   {checkoutError && <p className="mt-1 text-sm text-red-700">{checkoutError}</p>}
                 </div>
 
