@@ -39,6 +39,15 @@ export function normalizeDomain(value: string): string {
   return value.trim().toLowerCase().replace(/^@+/, '')
 }
 
+export function parseBannedDomainsInput(value: string): string[] {
+  const domains = value
+    .split(/[,;\s]+/)
+    .map((domain) => normalizeDomain(domain))
+    .filter(Boolean)
+
+  return Array.from(new Set(domains))
+}
+
 export function getEmailDomain(email: string): string | null {
   const atIndex = email.lastIndexOf('@')
   if (atIndex <= 0 || atIndex === email.length - 1) return null

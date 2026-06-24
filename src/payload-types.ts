@@ -567,7 +567,7 @@ export interface CommerceOffer {
 export interface BannedDomain {
   id: number;
   /**
-   * Domain only, for example: 10minutemail.com
+   * Domain only, for example: 10minutemail.com. You can also paste multiple domains separated by commas, semicolons, spaces, or new lines.
    */
   domain: string;
   updatedAt: string;
