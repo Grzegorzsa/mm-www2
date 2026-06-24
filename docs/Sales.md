@@ -49,12 +49,13 @@ Collection:
 
 Key fields:
 
-- lemonSqueezyVariantId: incoming variant id from webhook
-- actionType: new_purchase | upgrade_replace | renewal
+- lemonSqueezyVariantId: incoming variant id from webhook (required for all types except upgrade_replace)
+- actionType: new_purchase | upgrade_replace | crossgrade | renewal
 - product + targetVariant: what entitlement should be created
 - versionFrom + versionTo: explicit major version range
-- allowedFromVariants: optional upgrade whitelist
-- denyFromVariants: optional upgrade blacklist
+- allowedFromVariants: optional upgrade whitelist (upgrade_replace only)
+- denyFromVariants: optional upgrade blacklist (upgrade_replace only)
+- allowedFromProducts: required for crossgrade — list of source products the user must own
 
 Critical version rule:
 
@@ -71,10 +72,18 @@ Suggested setup examples:
    - actionType: upgrade_replace
    - set allowedFromVariants to explicitly allowed source variants
    - use denyFromVariants to block discount paths (for example Elements)
+3. Crossgrade offer:
+   - actionType: crossgrade
+   - set allowedFromProducts to the source product(s) whose owners can crossgrade
+   - targetVariant must point to a variant of the destination product
+   - lemonSqueezyVariantId is required (use the Lemon Squeezy variant ID, not the product/app ID)
+   - user_id must be present in checkout custom_data (hard reject if missing)
 
-## 3. User Panel Upgrade Offers
+Note: Products without variants must still have at least one ProductVariant record (e.g. named "Standard"). This is required for license provisioning.
 
-User panel now computes available upgrades from active licenses and active upgrade_replace offers.
+## 3. User Panel Upgrade & Crossgrade Offers
+
+User panel now computes available offers from active licenses and active upgrade_replace/crossgrade offers.
 
 Implementation:
 
@@ -83,14 +92,19 @@ Implementation:
 Eligibility logic summary:
 
 - Uses only active user licenses
-- Reads active commerce offers where actionType is upgrade_replace
-- Matches source variants against allowedFromVariants/denyFromVariants
+- Reads active commerce offers where actionType is upgrade_replace or crossgrade
+- For upgrade_replace: matches source variants against allowedFromVariants/denyFromVariants
+- For crossgrade: requires allowedFromProducts + applies allowedFromVariants/denyFromVariants + commercial/non-commercial match
 - Excludes offers where target variant is already owned
+
+Dev troubleshooting:
+
+- In non-production environments, panel shows an expandable "Dev debug: offer eligibility" section explaining why each offer was accepted/rejected.
 
 Operational notes:
 
 - If no checkout base URL or target variant id is configured, user sees a configuration warning.
-- Reference price is display-only (does not enforce checkout price).
+- For crossgrade, checkout uses offer.referencePriceCents as custom checkout price when provided.
 
 ## 4. Email Templates
 
@@ -146,8 +160,8 @@ Operational note:
 
 Current model responsibilities:
 
-- Orders: billing-facing order record
-- License Transactions: immutable licensing audit operation
+- Orders: billing-facing order record and single source of truth for order identifiers
+- License Transactions: immutable licensing audit operation (no order identifiers — use order relation)
 - Licenses: final entitlement state
 
 Collections:
@@ -156,10 +170,15 @@ Collections:
 - src/collections/LicenseTransactions.ts
 - src/collections/Licenses.ts
 
+Order identifiers (stored only in Orders):
+
+- externalOrderId: Lemon order_number (human-readable, e.g. 36010719) — used for idempotency and support lookup
+- lemonOrderId: Lemon API resource id (e.g. 8783336) — used as fallback idempotency key
+
 Traceability links:
 
 - Order -> licenseTransaction (direct relation)
-- LicenseTransaction -> order (relation on transaction)
+- LicenseTransaction -> order (relation on transaction — access order identifiers via this)
 - License -> order
 - LicenseTransaction -> fromLicense/toLicense and fromVariant/toVariant
 
@@ -169,12 +188,15 @@ Webhook flow:
 
 Behavior summary:
 
-1. Idempotency check by external order id.
-2. Offer resolution from commerce-offers.
-3. Transaction created as pending.
-4. Order created and linked to transaction.
-5. License created (or upgrade applied according to policy).
-6. Transaction updated to completed or failed.
+1. Idempotency check by externalOrderId (order_number) OR lemonOrderId (API id) in Orders collection.
+2. User resolved by user_id from custom_data first, then email fallback.
+3. Offer resolution from commerce-offers by variant ID or explicit offer ID.
+4. For upgrade_replace: source license found by allowedFromVariants/denyFromVariants, then deactivated.
+5. For crossgrade: source license found by allowedFromProducts + allowedFromVariants/denyFromVariants (+ commercial flag match); source license remains active.
+6. Transaction created as pending.
+7. Order created and linked to transaction.
+8. License created with correct version range.
+9. Transaction updated to completed or failed.
 
 ## 6. Admin Debug Endpoint
 
@@ -232,6 +254,7 @@ Required validation after sales-related changes:
 3. End-to-end smoke test for:
    - new purchase
    - upgrade path
+   - crossgrade path
    - post-purchase email
    - user panel upgrade visibility
 
@@ -260,6 +283,24 @@ Current entries:
 - Change: Added admin order trace endpoint returning order + license transaction + licenses by order.
 - Files: src/app/api/admin/debug/order-trace/route.ts
 - Validation: pnpm tsc --noEmit
+
+- Date: 2026-06-24
+- Scope: offer-policy, webhook, data-model
+- Change: Added crossgrade offer type. Source products whitelist (allowedFromProducts) on CommerceOffers. crossgrade transaction type added to Orders and LicenseTransactions. Webhook handles source license deactivation across products.
+- Files: src/collections/CommerceOffers.ts, src/collections/Orders.ts, src/collections/LicenseTransactions.ts, src/app/api/webhooks/lemon/route.ts
+- Validation: pnpm payload generate:types, pnpm tsc --noEmit
+
+- Date: 2026-06-24
+- Scope: data-model
+- Change: Eliminated order identifier duplication. externalOrderId and lemonOrderId now stored only in Orders. LicenseTransactions references Orders via relation only. externalOrderId (order_number) is idempotency key; lemonOrderId (API id) is fallback.
+- Files: src/collections/Orders.ts, src/collections/LicenseTransactions.ts, src/app/api/webhooks/lemon/route.ts, src/app/api/admin/debug/order-trace/route.ts
+- Validation: pnpm payload generate:types, pnpm tsc --noEmit
+
+- Date: 2026-06-24
+- Scope: user-panel, checkout, webhook, offer-policy
+- Change: Crossgrade now honors variant allow/deny filters, uses explicit ProductVariant.isCommercial flag (with fallback), uses offer.referencePriceCents in checkout when provided, and no longer deactivates source license. Added dev-only eligibility debug panel.
+- Files: src/collections/ProductVariants.ts, src/app/(user-panel)/user-panel/purchases/Purchases.tsx, src/components/panel/UpgradeButton.tsx, src/app/api/checkout/upgrade/route.ts, src/app/api/webhooks/lemon/route.ts
+- Validation: pnpm payload generate:types, pnpm tsc --noEmit
 
 ## 9. Temporary Email Domain Policy
 

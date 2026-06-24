@@ -70,7 +70,7 @@ export const CommerceOffers: CollectionConfig = {
                 : undefined
 
             if (actionType !== 'upgrade_replace' && !value) {
-              return 'Lemon Squeezy variant_id is required for New Purchase and Renewal offers.'
+              return 'Lemon Squeezy variant_id is required for New Purchase, Renewal, and Crossgrade offers.'
             }
 
             return true
@@ -89,6 +89,7 @@ export const CommerceOffers: CollectionConfig = {
           options: [
             { label: 'New Purchase', value: 'new_purchase' },
             { label: 'Upgrade (Replace)', value: 'upgrade_replace' },
+            { label: 'Crossgrade', value: 'crossgrade' },
             { label: 'Renewal', value: 'renewal' },
           ],
           admin: { width: '50%' },
@@ -162,6 +163,22 @@ export const CommerceOffers: CollectionConfig = {
             width: '50%',
             description:
               'Optional blacklist for upgrade source variants. Useful to block Elements discount paths.',
+          },
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'allowedFromProducts',
+          type: 'relationship',
+          relationTo: 'products',
+          hasMany: true,
+          admin: {
+            width: '50%',
+            description:
+              'Optional whitelist for crossgrade source products. Used only with Crossgrade.',
           },
         },
       ],

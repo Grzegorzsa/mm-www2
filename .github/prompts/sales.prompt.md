@@ -37,9 +37,11 @@ Dokument definiuje architekturę dystrybucji oprogramowania "MX GRID" (dostępne
 - **Kolekcja `Affiliates`**: Zawiera pola: `name`, `affiliateCode` (unikalny string tekstowy), `active` (checkbox umożliwiający blokadę), `user` (relacja 1:1 do kolekcji `users` – konto wypłat partnera), `info` (textarea na notatki) oraz dwie niezależne strategie:
   - `linkStrategy`: grupa zawierająca `enabled` (checkbox), `isLifetime` (checkbox) oraz stawki: `firstPurchaseRate` (domyślnie 20%) i `subsequentPurchaseRate` (domyślnie 10%, aktywne gdy isLifetime=true).
   - `keyStrategy`: grupa zawierająca `enabled` (checkbox), `isLifetime` (checkbox) oraz `commissionRate` (procent prowizji).
-- **Kolekcja `Orders`**: Przechowuje `source` (`lemon_squeezy`, `plugin_boutique`), `externalOrderId`, integer `amount` (w centach), oraz zamrożone pola prowizji: `affiliatePartner` (relacja do `affiliates`) i `affiliateRate` (liczba, procent naliczony w locie).
+- **Kolekcja `Orders`**: Przechowuje `source` (`lemon_squeezy`, `plugin_boutique`), `externalOrderId` (Lemon `order_number` – czytelny numer zamówienia), `lemonOrderId` (techniczne API id zasobu Order w Lemon Squeezy), integer `amount` (w centach), `transactionType` (`new_purchase`, `upgrade`, `crossgrade`, `renewal`), oraz zamrożone pola prowizji: `affiliatePartner` (relacja do `affiliates`) i `affiliateRate` (liczba, procent naliczony w locie). Kolekcja `Orders` jest jedynym źródłem prawdy dla identyfikatorów zamówień.
 - **Kolekcja `Users`**: Reprezentuje standardowych klientów. Posiada wyłącznie pole relacji `referredBy` (celujące w kolekcję `affiliates`), wskazujące na stałego opiekuna konta.
-- **Kolekcja `ProductVariants`**: Zawiera logiczne pole `uid` (np. "beats", "loops_pro") oraz niezależne pole tekstowe `lemonSqueezyVariantId` mapujące wariant z zewnętrznym ID platformy płatniczej.
+- **Kolekcja `ProductVariants`**: Zawiera logiczne pole `uid` (np. "beats", "loops_pro") oraz niezależne pole tekstowe `lemonSqueezyVariantId` mapujące wariant z zewnętrznym ID platformy płatniczej. Każdy produkt musi mieć co najmniej jeden wariant – nawet produkty bez opcji powinny posiadać jeden wariant domyślny (np. "Standard").
+- **Kolekcja `CommerceOffers`**: Silnik reguł sprzedażowych. Obsługuje typy akcji: `new_purchase`, `upgrade_replace`, `crossgrade`, `renewal`. Dla crossgrade'ów wymagane jest pole `allowedFromProducts` (lista produktów, z których klient może przejść) oraz `targetVariant` (wariant docelowy). Pole `lemonSqueezyVariantId` jest wymagane dla wszystkich typów poza `upgrade_replace`.
+- **Kolekcja `LicenseTransactions`**: Niezmienny log operacji licencyjnych. Nie przechowuje identyfikatorów zamówień – pełne dane zamówienia dostępne przez relację `order` → `Orders`.
 
 ### Polityka Wersjonowania Licencji (Krytyczne)
 
@@ -59,13 +61,25 @@ Dokument definiuje architekturę dystrybucji oprogramowania "MX GRID" (dostępne
 
 Podczas uderzenia webhooka `order_created` w `/api/webhooks/lemon`:
 
-1. System szuka użytkownika po e-mailu. Jeśli nie istnieje – tworzy go automatycznie i generuje tymczasowe hasło.
+1. System szuka użytkownika najpierw po `user_id` z `custom_data`, a dopiero w fallbacku po e-mailu. Jeśli nie istnieje – tworzy go automatycznie i generuje tymczasowe hasło.
 2. Webhook pobiera ID wariantu z parametru `variant_id` i szuka rekordu w `product-variants` po polu `lemonSqueezyVariantId`.
-3. **Kalkulacja Prowizji Hybrydowej**:
+3. Idempotentność: sprawdzanie po `externalOrderId` (order_number) lub `lemonOrderId` (API id) – zamówienie nie zostanie przetworzone dwa razy.
+4. **Kalkulacja Prowizji Hybrydowej**:
    - Skrypt sprawdza, czy to jest pierwsze zamówienie tego użytkownika (tabela `orders` dla tego `user` jest pusta).
    - **Przypadek A (Płatność z linku)**: W `custom_data` przekazano `affiliate_code`. Jeśli afiliant jest `active`, system sprawdza `linkStrategy`. Za pierwszy zakup nalicza `firstPurchaseRate` (np. 20%), a za kolejne (jeśli włączone jest `isLifetime`) nalicza `subsequentPurchaseRate` (np. 10%). Przy pierwszym zakupie kod afilianta zostaje wpisany na stałe do profilu klienta (`Users.referredBy`).
    - **Przypadek B (Klient powracający z przypisanym opiekunem)**: W płatności brak kodu, ale klient ma w `Users.referredBy` przypisanego partnera. Jeśli partner jest `active`, system sprawdza strategię `keyStrategy` lub `linkStrategy` (zależnie od tego, skąd pierwotnie pochodzi przypisanie) i aplikuje odpowiednią stawkę dla kolejnych zakupów.
-4. Tworzony jest obiekt w `Orders`, a w kolekcji `Licenses` generowana jest aktywna licencja powiązana z tym zamówieniem.
+5. Tworzony jest obiekt w `Orders` (z `externalOrderId` i `lemonOrderId`), a w kolekcji `Licenses` generowana jest aktywna licencja powiązana z tym zamówieniem.
+6. Tworzony jest rekord `LicenseTransactions` jako immutable log operacji – powiązany z `Orders` przez relację `order`.
+
+### 4. Crossgrade (przejście między produktami)
+
+Crossgrade umożliwia użytkownikowi z licencją produktu A zakup produktu B po obniżonej cenie.
+
+1. Checkout crossgrade uruchamiany jest z `flow: crossgrade`, `user_id`, `commerce_offer_id`.
+2. Webhook weryfikuje, że użytkownik posiada aktywną licencję na produkt wymieniony w `allowedFromProducts` oferty.
+3. Stara licencja zostaje dezaktywowana (`deactivatedReason: 'Crossed over to ...'`).
+4. Nowa licencja dla docelowego produktu/wariantu jest tworzona.
+5. Wymaga: `user_id` w `custom_data` (hard reject jeśli brak), aktywnej oferty `crossgrade` z uzupełnionym `allowedFromProducts`.
 
 ### 2. Specjalna Logika dla MX GRID Player (Aktywacja przez klucz zewnętrzny)
 

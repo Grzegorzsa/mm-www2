@@ -17,6 +17,7 @@ type PopulatedLicense = Pick<
 type UpgradeOfferView = {
   id: number
   name: string
+  actionType: 'upgrade_replace' | 'crossgrade'
   fromVariantNames: string[]
   toVariantName: string
   targetVariantId: number
@@ -39,9 +40,21 @@ function formatPrice(cents?: number): string | null {
   }).format(cents / 100)
 }
 
+function isCommercialVariant(variant: ProductVariant): boolean {
+  if (typeof variant.isCommercial === 'boolean') return variant.isCommercial
+  return Boolean(variant.lemonSqueezyVariantId)
+}
+
+function isCommercialLicense(license: PopulatedLicense): boolean {
+  // Prefer explicit variant flag, fallback to Lemon mapping for backward compatibility.
+  return license.productVariants.some((variant) => isCommercialVariant(variant))
+}
+
 export async function Purchases() {
   const user = await getSessionUser()
   const payload = await getPayload({ config })
+  const showEligibilityDebug = process.env.NODE_ENV !== 'production'
+  const eligibilityDebug: string[] = []
 
   const rawLicenses = user ? await getUserLicenses(payload, user.id) : []
 
@@ -69,7 +82,15 @@ export async function Purchases() {
     ? await payload.find({
         collection: 'commerce-offers',
         where: {
-          and: [{ active: { equals: true } }, { actionType: { equals: 'upgrade_replace' } }],
+          and: [
+            { active: { equals: true } },
+            {
+              or: [
+                { actionType: { equals: 'upgrade_replace' } },
+                { actionType: { equals: 'crossgrade' } },
+              ],
+            },
+          ],
         },
         limit: 200,
         depth: 2,
@@ -78,38 +99,119 @@ export async function Purchases() {
     : { docs: [] as CommerceOffer[] }
 
   const upgrades = offersResult.docs.reduce<UpgradeOfferView[]>((acc, offer) => {
+    const actionType = offer.actionType
+    if (actionType !== 'upgrade_replace' && actionType !== 'crossgrade') return acc
+
     const targetVariant =
       typeof offer.targetVariant === 'object' && offer.targetVariant ? offer.targetVariant : null
 
     if (!targetVariant) return acc
 
-    if (activeVariantById.has(targetVariant.id)) return acc
+    if (activeVariantById.has(targetVariant.id)) {
+      if (showEligibilityDebug) {
+        eligibilityDebug.push(
+          `Offer ${offer.id} (${offer.name}) skipped: user already owns target variant ${targetVariant.id}.`,
+        )
+      }
+      return acc
+    }
 
-    const allowedFromVariants = (offer.allowedFromVariants ?? []).filter(
-      (v): v is ProductVariant => typeof v === 'object' && v !== null,
-    )
-    const denyFromVariantIds = new Set(
-      (offer.denyFromVariants ?? [])
-        .map((v) => getVariantId(v as ProductVariant | number | null | undefined))
-        .filter((id): id is number => id !== null),
-    )
+    let matchedFromVariants: ProductVariant[] = []
 
-    const candidateFromVariants =
-      allowedFromVariants.length > 0
-        ? allowedFromVariants
-        : Array.from(activeVariantById.values()).filter((variant) => {
-            return variant.id !== targetVariant.id
+    if (actionType === 'crossgrade') {
+      const allowedFromProductIds = new Set(
+        (offer.allowedFromProducts ?? [])
+          .map((product) => {
+            if (typeof product === 'number') return product
+            if (typeof product === 'object' && product && 'id' in product) {
+              return (product as { id?: number }).id ?? null
+            }
+            return null
           })
+          .filter((id): id is number => typeof id === 'number'),
+      )
 
-    const matchedFromVariants = candidateFromVariants.filter((variant) => {
-      return activeVariantById.has(variant.id) && !denyFromVariantIds.has(variant.id)
-    })
+      if (allowedFromProductIds.size === 0) {
+        if (showEligibilityDebug) {
+          eligibilityDebug.push(
+            `Offer ${offer.id} (${offer.name}) skipped: crossgrade has empty allowedFromProducts.`,
+          )
+        }
+        return acc
+      }
 
-    if (matchedFromVariants.length === 0) return acc
+      const allowedFromVariantIds = new Set(
+        (offer.allowedFromVariants ?? [])
+          .map((variant) => getVariantId(variant as ProductVariant | number | null | undefined))
+          .filter((id): id is number => id !== null),
+      )
+      const denyFromVariantIds = new Set(
+        (offer.denyFromVariants ?? [])
+          .map((variant) => getVariantId(variant as ProductVariant | number | null | undefined))
+          .filter((id): id is number => id !== null),
+      )
+
+      const offerIsCommercial = offer.isCommercial ?? true
+
+      matchedFromVariants = activeLicenses
+        .filter((license) => {
+          return (
+            allowedFromProductIds.has(license.product.id) &&
+            isCommercialLicense(license) === offerIsCommercial
+          )
+        })
+        .flatMap((license) => {
+          const licenseVariants = license.productVariants
+          const candidateVariants =
+            allowedFromVariantIds.size > 0
+              ? licenseVariants.filter((variant) => allowedFromVariantIds.has(variant.id))
+              : licenseVariants
+
+          return candidateVariants.filter((variant) => !denyFromVariantIds.has(variant.id))
+        })
+    } else {
+      const allowedFromVariants = (offer.allowedFromVariants ?? []).filter(
+        (v): v is ProductVariant => typeof v === 'object' && v !== null,
+      )
+      const denyFromVariantIds = new Set(
+        (offer.denyFromVariants ?? [])
+          .map((v) => getVariantId(v as ProductVariant | number | null | undefined))
+          .filter((id): id is number => id !== null),
+      )
+
+      const candidateFromVariants =
+        allowedFromVariants.length > 0
+          ? allowedFromVariants
+          : Array.from(activeVariantById.values()).filter((variant) => {
+              return variant.id !== targetVariant.id
+            })
+
+      matchedFromVariants = candidateFromVariants.filter((variant) => {
+        return activeVariantById.has(variant.id) && !denyFromVariantIds.has(variant.id)
+      })
+    }
+
+    if (matchedFromVariants.length === 0) {
+      if (showEligibilityDebug) {
+        eligibilityDebug.push(
+          `Offer ${offer.id} (${offer.name}) skipped: no matching source variants after allowed/deny/commercial filters.`,
+        )
+      }
+      return acc
+    }
+
+    if (showEligibilityDebug) {
+      eligibilityDebug.push(
+        `Offer ${offer.id} (${offer.name}) eligible with source variants: ${matchedFromVariants
+          .map((v) => `${v.id}:${v.name}`)
+          .join(', ')}.`,
+      )
+    }
 
     acc.push({
       id: offer.id,
       name: offer.name,
+      actionType,
       fromVariantNames: matchedFromVariants.map((v) => v.name),
       toVariantName: targetVariant.name,
       targetVariantId: targetVariant.id,
@@ -138,19 +240,22 @@ export async function Purchases() {
       )}
 
       <div className="mt-8">
-        <h2 className="text-lg font-semibold text-gray-900 mb-1">Available Upgrades</h2>
-        <p className="text-sm text-gray-500 mb-4">Upgrade from your current commercial license</p>
+        <h2 className="text-lg font-semibold text-gray-900 mb-1">Available Offers</h2>
+        <p className="text-sm text-gray-500 mb-4">
+          Upgrade or crossgrade from your current commercial license
+        </p>
 
         {upgrades.length === 0 ? (
           <div className="rounded-xl border border-gray-200 bg-white p-6">
             <p className="text-sm text-gray-500">
-              No upgrade offers are currently available for your account.
+              No upgrade or crossgrade offers are currently available for your account.
             </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
             {upgrades.map((upgrade) => {
               const priceLabel = formatPrice(upgrade.referencePriceCents)
+              const actionLabel = upgrade.actionType === 'crossgrade' ? 'Crossgrade' : 'Upgrade'
 
               return (
                 <div key={upgrade.id} className="rounded-xl border border-gray-200 bg-white p-5">
@@ -164,7 +269,7 @@ export async function Purchases() {
                   ) : null}
 
                   {upgrade.hasLemonVariantMapping ? (
-                    <UpgradeButton variantId={upgrade.targetVariantId} />
+                    <UpgradeButton variantId={upgrade.targetVariantId} label={actionLabel} />
                   ) : (
                     <p className="mt-4 text-xs text-amber-700">
                       Lemon variant mapping is not configured for this target variant yet.
@@ -175,6 +280,19 @@ export async function Purchases() {
             })}
           </div>
         )}
+
+        {showEligibilityDebug && eligibilityDebug.length > 0 ? (
+          <details className="mt-4 rounded-xl border border-gray-200 bg-white p-4">
+            <summary className="cursor-pointer text-xs font-medium text-gray-700">
+              Dev debug: offer eligibility
+            </summary>
+            <ul className="mt-2 space-y-1 text-xs text-gray-500">
+              {eligibilityDebug.map((line, index) => (
+                <li key={index}>{line}</li>
+              ))}
+            </ul>
+          </details>
+        ) : null}
       </div>
     </div>
   )

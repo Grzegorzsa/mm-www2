@@ -59,6 +59,7 @@ export const LicenseTransactions: CollectionConfig = {
           options: [
             { label: 'New Purchase', value: 'new_purchase' },
             { label: 'Upgrade', value: 'upgrade' },
+            { label: 'Crossgrade', value: 'crossgrade' },
             { label: 'Renewal', value: 'renewal' },
           ],
           admin: { width: '50%' },

@@ -12,7 +12,7 @@ import { sendPurchaseWelcomeEmail } from '@/lib/licenseHelper'
 import { isBannedEmailDomain, TEMP_EMAIL_REJECT_MESSAGE } from '@/lib/bannedDomains'
 
 type RelationValue = string | number | { id?: string | number } | null | undefined
-type OfferActionType = 'new_purchase' | 'upgrade_replace' | 'renewal'
+type OfferActionType = 'new_purchase' | 'upgrade_replace' | 'crossgrade' | 'renewal'
 
 function getRelationId(value: RelationValue): string | number | undefined {
   if (!value) return undefined
@@ -55,14 +55,17 @@ function getLicenseVariantIds(license: any): number[] {
   return getNumberRelationIds(license?.productVariants)
 }
 
-function mapActionToTransactionType(actionType: string): 'new_purchase' | 'upgrade' | 'renewal' {
+function mapActionToTransactionType(
+  actionType: string,
+): 'new_purchase' | 'upgrade' | 'crossgrade' | 'renewal' {
   if (actionType === 'upgrade_replace') return 'upgrade'
+  if (actionType === 'crossgrade') return 'crossgrade'
   if (actionType === 'renewal') return 'renewal'
   return 'new_purchase'
 }
 
 function normalizeOfferActionType(value: unknown): OfferActionType {
-  if (value === 'upgrade_replace' || value === 'renewal') return value
+  if (value === 'upgrade_replace' || value === 'crossgrade' || value === 'renewal') return value
   return 'new_purchase'
 }
 
@@ -241,8 +244,11 @@ export async function POST(req: Request) {
     // 3. Znajdź lub utwórz użytkownika (klienta) w systemie
     let userRecord: any = null
     let generatedPassword: string | null = null
-    if (flowFromCheckout === 'upgrade_replace' && !requestedUserId) {
-      return badRequest('Upgrade checkout is missing initiating user metadata', {
+    if (
+      (flowFromCheckout === 'upgrade_replace' || flowFromCheckout === 'crossgrade') &&
+      !requestedUserId
+    ) {
+      return badRequest('Upgrade/Crossgrade checkout is missing initiating user metadata', {
         eventName,
         externalOrderId,
         flowFromCheckout,
@@ -313,8 +319,12 @@ export async function POST(req: Request) {
     // 4. Resolve rule from commerce-offers (policy-driven), then fallback to legacy direct variant mapping.
     let offerRecord: any = null
 
-    if (flowFromCheckout === 'upgrade_replace' && !requestedOfferId && !requestedTargetVariantId) {
-      return badRequest('Upgrade checkout is missing required metadata', {
+    if (
+      (flowFromCheckout === 'upgrade_replace' || flowFromCheckout === 'crossgrade') &&
+      !requestedOfferId &&
+      !requestedTargetVariantId
+    ) {
+      return badRequest('Upgrade/Crossgrade checkout is missing required metadata', {
         externalOrderId,
         lemonVariantId,
         flowFromCheckout,
@@ -367,8 +377,11 @@ export async function POST(req: Request) {
       offerRecord = offerSearch.docs[0] ?? null
     }
 
-    if (!offerRecord && flowFromCheckout === 'upgrade_replace') {
-      return badRequest('Upgrade offer metadata did not match any active offer', {
+    if (
+      !offerRecord &&
+      (flowFromCheckout === 'upgrade_replace' || flowFromCheckout === 'crossgrade')
+    ) {
+      return badRequest('Upgrade/Crossgrade offer metadata did not match any active offer', {
         externalOrderId,
         lemonVariantId,
         flowFromCheckout,
@@ -544,6 +557,69 @@ export async function POST(req: Request) {
         },
         overrideAccess: true,
       })
+    }
+
+    if (offerRecord && offerActionType === 'crossgrade') {
+      const allowedFromProductIds = new Set(getNumberRelationIds(offerRecord.allowedFromProducts))
+      const allowedFromVariantIds = new Set(getNumberRelationIds(offerRecord.allowedFromVariants))
+      const denyFromVariantIds = new Set(getNumberRelationIds(offerRecord.denyFromVariants))
+
+      if (allowedFromProductIds.size === 0) {
+        return badRequest('Crossgrade offer has no source products configured', {
+          externalOrderId,
+          offerId: offerRecord?.id,
+        })
+      }
+
+      const activeLicenses = await payload.find({
+        collection: 'licenses',
+        where: {
+          and: [{ user: { equals: userRecord.id } }, { active: { equals: true } }],
+        },
+        sort: '-createdAt',
+        depth: 2,
+        limit: 100,
+        overrideAccess: true,
+      })
+
+      const eligibleSourceLicense = activeLicenses.docs.find((license) => {
+        const licenseProductId = asNumberId(getRelationId(license.product as RelationValue))
+        if (!licenseProductId || !allowedFromProductIds.has(licenseProductId)) return false
+
+        const licenseVariantIds = getLicenseVariantIds(license)
+        const allowedMatches =
+          allowedFromVariantIds.size === 0
+            ? licenseVariantIds
+            : licenseVariantIds.filter((variantId) => allowedFromVariantIds.has(variantId))
+        if (allowedMatches.length === 0) return false
+
+        const allowedAfterDeny = allowedMatches.filter(
+          (variantId) => !denyFromVariantIds.has(variantId),
+        )
+        return allowedAfterDeny.length > 0
+      })
+
+      if (!eligibleSourceLicense) {
+        return badRequest('No eligible source license for this crossgrade path', {
+          externalOrderId,
+          userId: userRecord?.id,
+          offerId: offerRecord?.id,
+          allowedFromProductIds: Array.from(allowedFromProductIds),
+        })
+      }
+
+      sourceLicense = eligibleSourceLicense
+      const sourceLicenseVariantIds = getLicenseVariantIds(sourceLicense)
+      const allowedMatches =
+        allowedFromVariantIds.size === 0
+          ? sourceLicenseVariantIds
+          : sourceLicenseVariantIds.filter((variantId) => allowedFromVariantIds.has(variantId))
+      const allowedAfterDeny = allowedMatches.filter(
+        (variantId) => !denyFromVariantIds.has(variantId),
+      )
+      sourceVariantId = allowedAfterDeny[0]
+
+      // Crossgrade keeps the source license active; this is a separate entitlement purchase.
     }
 
     const normalizedTransactionType = mapActionToTransactionType(offerActionType)

@@ -3,12 +3,13 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { getSessionUser } from '@/lib/session'
 import { getEmailDomain, isBannedDomain, TEMP_EMAIL_REJECT_MESSAGE } from '@/lib/bannedDomains'
-import type { CommerceOffer } from '@/payload-types'
+import type { CommerceOffer, ProductVariant } from '@/payload-types'
 
 type RelationValue = string | number | { id?: string | number } | null | undefined
 
 type ResolvedUpgrade = {
   offer: CommerceOffer
+  actionType: 'upgrade_replace' | 'crossgrade'
   sourceLicenseId: number
   sourceVariantId: number
 }
@@ -42,6 +43,31 @@ function getLicenseVariantIds(license: { productVariants?: unknown }): number[] 
   return getNumberRelationIds(license?.productVariants)
 }
 
+function getLicenseProductId(license: { product?: unknown }): number | undefined {
+  return asNumberId(getRelationId(license.product as RelationValue))
+}
+
+function asProductVariant(value: unknown): ProductVariant | null {
+  if (typeof value !== 'object' || value === null) return null
+  if (!('id' in value)) return null
+  return value as ProductVariant
+}
+
+function isCommercialVariant(variant: ProductVariant): boolean {
+  if (typeof variant.isCommercial === 'boolean') return variant.isCommercial
+  return Boolean(variant.lemonSqueezyVariantId)
+}
+
+function isCommercialLicense(license: { productVariants?: unknown }): boolean {
+  if (!Array.isArray(license.productVariants)) return false
+
+  return license.productVariants.some((variant) => {
+    const populatedVariant = asProductVariant(variant)
+    if (!populatedVariant) return false
+    return isCommercialVariant(populatedVariant)
+  })
+}
+
 async function getVariantReferencePriceCents(
   payload: Awaited<ReturnType<typeof getPayload>>,
   variantId: number,
@@ -62,9 +88,48 @@ async function getVariantReferencePriceCents(
 
 function resolveUpgradeForUser(
   offers: CommerceOffer[],
-  licenses: Array<{ id: number; productVariants?: unknown }>,
+  licenses: Array<{ id: number; product?: unknown; productVariants?: unknown }>,
 ): ResolvedUpgrade | null {
   for (const offer of offers) {
+    const actionType = offer.actionType
+
+    if (actionType === 'crossgrade') {
+      const allowedFromProductIds = new Set(getNumberRelationIds(offer.allowedFromProducts))
+      if (allowedFromProductIds.size === 0) continue
+      const allowedFromVariantIds = new Set(getNumberRelationIds(offer.allowedFromVariants))
+      const denyFromVariantIds = new Set(getNumberRelationIds(offer.denyFromVariants))
+      const offerIsCommercial = offer.isCommercial ?? true
+
+      for (const license of licenses) {
+        const licenseProductId = getLicenseProductId(license)
+        if (!licenseProductId || !allowedFromProductIds.has(licenseProductId)) continue
+        if (isCommercialLicense(license) !== offerIsCommercial) continue
+
+        const licenseVariantIds = getLicenseVariantIds(license)
+        const allowedMatches =
+          allowedFromVariantIds.size === 0
+            ? licenseVariantIds
+            : licenseVariantIds.filter((variantId) => allowedFromVariantIds.has(variantId))
+        if (allowedMatches.length === 0) continue
+
+        const allowedAfterDeny = allowedMatches.filter(
+          (variantId) => !denyFromVariantIds.has(variantId),
+        )
+        if (allowedAfterDeny.length === 0) continue
+
+        return {
+          offer,
+          actionType,
+          sourceLicenseId: license.id,
+          sourceVariantId: allowedAfterDeny[0],
+        }
+      }
+
+      continue
+    }
+
+    if (actionType !== 'upgrade_replace') continue
+
     const allowedFromVariantIds = new Set(getNumberRelationIds(offer.allowedFromVariants))
     const denyFromVariantIds = new Set(getNumberRelationIds(offer.denyFromVariants))
 
@@ -84,6 +149,7 @@ function resolveUpgradeForUser(
 
       return {
         offer,
+        actionType,
         sourceLicenseId: license.id,
         sourceVariantId: allowedAfterDeny[0],
       }
@@ -168,7 +234,7 @@ export async function POST(req: NextRequest) {
     },
     limit: 100,
     sort: '-createdAt',
-    depth: 0,
+    depth: 2,
     overrideAccess: true,
   })
 
@@ -193,7 +259,12 @@ export async function POST(req: NextRequest) {
     where: {
       and: [
         { active: { equals: true } },
-        { actionType: { equals: 'upgrade_replace' } },
+        {
+          or: [
+            { actionType: { equals: 'upgrade_replace' } },
+            { actionType: { equals: 'crossgrade' } },
+          ],
+        },
         { targetVariant: { equals: targetVariantId } },
       ],
     },
@@ -205,7 +276,7 @@ export async function POST(req: NextRequest) {
 
   if (offersResult.totalDocs === 0) {
     return NextResponse.json(
-      { error: 'No active upgrade offer configured for this variant' },
+      { error: 'No active upgrade/crossgrade offer configured for this variant' },
       { status: 400 },
     )
   }
@@ -213,27 +284,37 @@ export async function POST(req: NextRequest) {
   const resolvedUpgrade = resolveUpgradeForUser(offersResult.docs, activeLicensesResult.docs)
   if (!resolvedUpgrade) {
     return NextResponse.json(
-      { error: 'No eligible source license for this upgrade' },
+      { error: 'No eligible source license for this offer' },
       { status: 400 },
     )
   }
 
-  const targetPriceCents = await getVariantReferencePriceCents(payload, targetVariantId)
-  const sourcePriceCents = await getVariantReferencePriceCents(
-    payload,
-    resolvedUpgrade.sourceVariantId,
-  )
+  let customPriceCents = 0
 
-  if (typeof targetPriceCents !== 'number' || typeof sourcePriceCents !== 'number') {
-    return NextResponse.json(
-      {
-        error: 'Could not determine variant prices for upgrade',
-      },
-      { status: 400 },
+  if (
+    resolvedUpgrade.actionType === 'crossgrade' &&
+    typeof resolvedUpgrade.offer.referencePriceCents === 'number' &&
+    resolvedUpgrade.offer.referencePriceCents >= 0
+  ) {
+    customPriceCents = resolvedUpgrade.offer.referencePriceCents
+  } else {
+    const targetPriceCents = await getVariantReferencePriceCents(payload, targetVariantId)
+    const sourcePriceCents = await getVariantReferencePriceCents(
+      payload,
+      resolvedUpgrade.sourceVariantId,
     )
-  }
 
-  const customPriceCents = Math.max(targetPriceCents - sourcePriceCents, 0)
+    if (typeof targetPriceCents !== 'number' || typeof sourcePriceCents !== 'number') {
+      return NextResponse.json(
+        {
+          error: 'Could not determine variant prices for this offer',
+        },
+        { status: 400 },
+      )
+    }
+
+    customPriceCents = Math.max(targetPriceCents - sourcePriceCents, 0)
+  }
 
   try {
     const checkoutBody = {
@@ -244,7 +325,7 @@ export async function POST(req: NextRequest) {
           checkout_data: {
             email: user.email,
             custom: {
-              flow: 'upgrade_replace',
+              flow: resolvedUpgrade.actionType,
               user_id: String(user.id),
               user_email: user.email,
               current_license_id: String(resolvedUpgrade.sourceLicenseId),
@@ -284,6 +365,7 @@ export async function POST(req: NextRequest) {
       targetLemonVariantId,
       sourceVariantId: resolvedUpgrade.sourceVariantId,
       sourceLicenseId: resolvedUpgrade.sourceLicenseId,
+      actionType: resolvedUpgrade.actionType,
       commerceOfferId: resolvedUpgrade.offer.id,
       customPriceCents,
       enabledVariants: [targetLemonVariantId],
