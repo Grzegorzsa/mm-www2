@@ -112,6 +112,7 @@ export async function POST(req: Request) {
   const requestedOfferId = asNumberFromUnknown(
     customData?.commerceOfferId ?? customData?.commerce_offer_id,
   )
+  const requestedUserId = asNumberFromUnknown(customData?.userId ?? customData?.user_id)
   const requestedSourceLicenseId = asNumberFromUnknown(
     customData?.currentLicenseId ?? customData?.current_license_id,
   )
@@ -121,13 +122,16 @@ export async function POST(req: Request) {
   const requestedTargetVariantId = asNumberFromUnknown(
     customData?.targetVariantId ?? customData?.target_variant_id,
   )
-  const checkoutRequestId =
-    typeof customData?.checkout_request_id === 'string' ? customData.checkout_request_id : undefined
+  const expectedCheckoutEmail =
+    typeof customData?.user_email === 'string'
+      ? customData.user_email
+      : typeof customData?.userEmail === 'string'
+        ? customData.userEmail
+        : undefined
 
   if (eventName !== 'order_created') {
     console.info('[webhooks/lemon] Ignoring non-order event', {
       eventName,
-      checkoutRequestId,
       externalOrderId: event?.data?.id,
     })
     return NextResponse.json({ success: true, skipped: true, eventName })
@@ -137,7 +141,9 @@ export async function POST(req: Request) {
   const orderAttributes = event.data?.attributes
   const customerEmail = orderAttributes?.user_email
   const customerName = orderAttributes?.user_name || 'Client'
-  const externalOrderId = event.data?.id
+  const lemonOrderId = event.data?.id ? String(event.data.id) : undefined
+  const lemonOrderNumberRaw = orderAttributes?.order_number ?? orderAttributes?.number
+  const externalOrderId = lemonOrderNumberRaw ? String(lemonOrderNumberRaw) : lemonOrderId
   const totalAmountInCents = orderAttributes?.total
 
   // Wyciągamy cyfrowe variant_id z obiektu first_order_item
@@ -146,9 +152,9 @@ export async function POST(req: Request) {
     : undefined
 
   console.info('[webhooks/lemon] Received order_created', {
-    checkoutRequestId,
     eventName,
     externalOrderId,
+    lemonOrderId,
     lemonVariantId,
     customerEmail,
     totalAmountInCents,
@@ -157,17 +163,29 @@ export async function POST(req: Request) {
 
   if (!customerEmail) {
     return badRequest('Missing customer email in event data', {
-      checkoutRequestId,
       eventName,
       externalOrderId,
       lemonVariantId,
     })
   }
 
+  if (
+    expectedCheckoutEmail &&
+    customerEmail.toLowerCase().trim() !== expectedCheckoutEmail.toLowerCase().trim()
+  ) {
+    console.warn('[webhooks/lemon] Checkout email differs from expected user email', {
+      eventName,
+      externalOrderId,
+      lemonVariantId,
+      customerEmail,
+      expectedCheckoutEmail,
+      requestedUserId,
+    })
+  }
+
   const blockedDomain = await isBannedEmailDomain(payload, customerEmail)
   if (blockedDomain) {
     return badRequest(TEMP_EMAIL_REJECT_MESSAGE, {
-      checkoutRequestId,
       eventName,
       externalOrderId,
       customerEmail,
@@ -176,7 +194,6 @@ export async function POST(req: Request) {
 
   if (!externalOrderId) {
     return badRequest('Missing external order ID in event data', {
-      checkoutRequestId,
       eventName,
       customerEmail,
       lemonVariantId,
@@ -185,7 +202,6 @@ export async function POST(req: Request) {
 
   if (!lemonVariantId) {
     return badRequest('Missing variant ID in event data', {
-      checkoutRequestId,
       eventName,
       externalOrderId,
       customerEmail,
@@ -201,7 +217,12 @@ export async function POST(req: Request) {
       where: {
         and: [
           { source: { equals: 'lemon_squeezy' } },
-          { externalOrderId: { equals: String(externalOrderId) } },
+          {
+            or: [
+              { externalOrderId: { equals: String(externalOrderId) } },
+              ...(lemonOrderId ? [{ lemonOrderId: { equals: lemonOrderId } }] : []),
+            ],
+          },
         ],
       },
       limit: 1,
@@ -220,40 +241,85 @@ export async function POST(req: Request) {
     // 3. Znajdź lub utwórz użytkownika (klienta) w systemie
     let userRecord: any = null
     let generatedPassword: string | null = null
-    const usersSearch = await payload.find({
-      collection: 'users',
-      where: { email: { equals: customerEmail } },
-      limit: 1,
-    })
-
-    if (usersSearch.docs.length > 0) {
-      userRecord = usersSearch.docs[0]
-    } else {
-      // Jeśli użytkownik kupił produkt, a nie ma konta – tworzymy je automatycznie
-      generatedPassword = crypto.randomBytes(16).toString('hex')
-
-      userRecord = await payload.create({
-        collection: 'users',
-        disableVerificationEmail: true, // Opcjonalnie: blokuje wysyłkę standardowego maila aktywacyjnego Payload, jeśli jest włączona
-        req: {
-          ...req,
-          // Wstrzykujemy flagę do kontekstu, którą odczyta nasz hook w kolekcji Users -
-          //  zapobiegamy generowaniu darmowych licencji powitalnych przy zakupie
-          context: {
-            preventWelcomeLicenses: true,
-          },
-        } as any,
-        data: {
-          email: customerEmail,
-          name: customerName,
-          password: generatedPassword,
-          _verified: true,
-        } as any,
+    if (flowFromCheckout === 'upgrade_replace' && !requestedUserId) {
+      return badRequest('Upgrade checkout is missing initiating user metadata', {
+        eventName,
+        externalOrderId,
+        flowFromCheckout,
+        customerEmail,
       })
     }
 
+    if (requestedUserId) {
+      const userById = await payload.findByID({
+        collection: 'users',
+        id: requestedUserId,
+        depth: 0,
+        overrideAccess: true,
+      })
+
+      if (!userById) {
+        return badRequest('Initiating user from checkout metadata was not found', {
+          eventName,
+          externalOrderId,
+          requestedUserId,
+          customerEmail,
+        })
+      }
+
+      userRecord = userById
+    } else {
+      const usersSearch = await payload.find({
+        collection: 'users',
+        where: { email: { equals: customerEmail } },
+        limit: 1,
+      })
+
+      if (usersSearch.docs.length > 0) {
+        userRecord = usersSearch.docs[0]
+      } else {
+        // Jeśli użytkownik kupił produkt, a nie ma konta – tworzymy je automatycznie
+        generatedPassword = crypto.randomBytes(16).toString('hex')
+
+        userRecord = await payload.create({
+          collection: 'users',
+          disableVerificationEmail: true, // Opcjonalnie: blokuje wysyłkę standardowego maila aktywacyjnego Payload, jeśli jest włączona
+          req: {
+            ...req,
+            // Wstrzykujemy flagę do kontekstu, którą odczyta nasz hook w kolekcji Users -
+            //  zapobiegamy generowaniu darmowych licencji powitalnych przy zakupie
+            context: {
+              preventWelcomeLicenses: true,
+            },
+          } as any,
+          data: {
+            email: customerEmail,
+            name: customerName,
+            password: generatedPassword,
+            _verified: true,
+          } as any,
+        })
+      }
+    }
+
+    console.info('[webhooks/lemon] Resolved assignee user', {
+      externalOrderId,
+      requestedUserId,
+      assignedUserId: userRecord?.id,
+      assignedUserEmail: userRecord?.email,
+      payerEmail: customerEmail,
+    })
+
     // 4. Resolve rule from commerce-offers (policy-driven), then fallback to legacy direct variant mapping.
     let offerRecord: any = null
+
+    if (flowFromCheckout === 'upgrade_replace' && !requestedOfferId && !requestedTargetVariantId) {
+      return badRequest('Upgrade checkout is missing required metadata', {
+        externalOrderId,
+        lemonVariantId,
+        flowFromCheckout,
+      })
+    }
 
     if (requestedOfferId) {
       const offerById = await payload.findByID({
@@ -299,30 +365,10 @@ export async function POST(req: Request) {
       })
 
       offerRecord = offerSearch.docs[0] ?? null
-
-      if (!offerRecord && requestedTargetVariantId) {
-        const fallbackOfferSearch = await payload.find({
-          collection: 'commerce-offers',
-          where: {
-            and: [
-              { active: { equals: true } },
-              { lemonSqueezyVariantId: { equals: lemonVariantId } },
-              ...(flowFromCheckout ? [{ actionType: { equals: flowFromCheckout } }] : []),
-            ],
-          },
-          sort: '-createdAt',
-          limit: 1,
-          depth: 2,
-          overrideAccess: true,
-        })
-
-        offerRecord = fallbackOfferSearch.docs[0] ?? null
-      }
     }
 
     if (!offerRecord && flowFromCheckout === 'upgrade_replace') {
       return badRequest('Upgrade offer metadata did not match any active offer', {
-        checkoutRequestId,
         externalOrderId,
         lemonVariantId,
         flowFromCheckout,
@@ -359,7 +405,6 @@ export async function POST(req: Request) {
 
       if (!productVariantRecord) {
         return badRequest('Offer target variant not configured', {
-          checkoutRequestId,
           externalOrderId,
           offerId: offerRecord.id,
         })
@@ -374,7 +419,6 @@ export async function POST(req: Request) {
 
       if (!productId) {
         return badRequest('Offer product mapping not configured', {
-          checkoutRequestId,
           externalOrderId,
           offerId: offerRecord.id,
           targetVariantId: productVariantRecord?.id,
@@ -395,7 +439,6 @@ export async function POST(req: Request) {
       if (variantSearch.docs.length === 0) {
         console.error(`Product variant with UID/LemonID ${lemonVariantId} not found in database.`)
         return badRequest('Product variant not mapped', {
-          checkoutRequestId,
           externalOrderId,
           lemonVariantId,
         })
@@ -408,7 +451,6 @@ export async function POST(req: Request) {
 
       if (!productId) {
         return badRequest('Product mapping is invalid for variant', {
-          checkoutRequestId,
           externalOrderId,
           lemonVariantId,
           targetVariantId: productVariantRecord?.id,
@@ -476,7 +518,6 @@ export async function POST(req: Request) {
 
       if (!sourceLicense) {
         return badRequest('No eligible source license for this upgrade path', {
-          checkoutRequestId,
           externalOrderId,
           userId: userRecord?.id,
           offerId: offerRecord?.id,
@@ -591,7 +632,6 @@ export async function POST(req: Request) {
     licenseTransaction = await payload.create({
       collection: 'license-transactions',
       data: {
-        externalOrderId: String(externalOrderId),
         externalOrderTimestamp: orderAttributes?.created_at,
         user: userRecord.id,
         fromLicense: sourceLicense?.id,
@@ -613,6 +653,7 @@ export async function POST(req: Request) {
         user: userRecord.id,
         source: 'lemon_squeezy',
         externalOrderId: String(externalOrderId),
+        lemonOrderId,
         amount: totalAmountInCents,
         transactionType: normalizedTransactionType,
         licenseTransaction: licenseTransaction.id,
@@ -655,7 +696,7 @@ export async function POST(req: Request) {
     })
 
     await sendPurchaseWelcomeEmail(payload, {
-      email: customerEmail,
+      email: userRecord.email || customerEmail,
       generatedPassword,
       externalOrderId: String(externalOrderId),
       applicationName,
@@ -681,7 +722,6 @@ export async function POST(req: Request) {
     }
 
     console.error('Error processing Lemon Squeezy webhook:', {
-      checkoutRequestId,
       eventName,
       errorMessage: error?.message || 'Unknown error',
       fullError: JSON.stringify(error, null, 2),

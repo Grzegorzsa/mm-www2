@@ -359,9 +359,13 @@ export interface Order {
   user: number | User;
   source: 'lemon_squeezy' | 'plugin_boutique';
   /**
-   * The order identifier from the external system (e.g., Order Number)
+   * External order number visible in Lemon Squeezy (order_number).
    */
   externalOrderId: string;
+  /**
+   * Technical Lemon Squeezy Order resource id (event.data.id).
+   */
+  lemonOrderId?: string | null;
   /**
    * Transaction amount in cents/lowest currency unit (integer)
    */
@@ -388,7 +392,6 @@ export interface Order {
  */
 export interface LicenseTransaction {
   id: number;
-  externalOrderId: string;
   externalOrderTimestamp?: string | null;
   user: number | User;
   order?: (number | null) | Order;
@@ -835,6 +838,7 @@ export interface OrdersSelect<T extends boolean = true> {
   user?: T;
   source?: T;
   externalOrderId?: T;
+  lemonOrderId?: T;
   amount?: T;
   transactionType?: T;
   licenseTransaction?: T;
@@ -942,7 +946,6 @@ export interface LicensesSelect<T extends boolean = true> {
  * via the `definition` "license-transactions_select".
  */
 export interface LicenseTransactionsSelect<T extends boolean = true> {
-  externalOrderId?: T;
   externalOrderTimestamp?: T;
   user?: T;
   order?: T;

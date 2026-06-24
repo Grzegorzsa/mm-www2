@@ -94,11 +94,6 @@ function resolveUpgradeForUser(
 }
 
 export async function POST(req: NextRequest) {
-  const checkoutRequestId =
-    typeof globalThis.crypto?.randomUUID === 'function'
-      ? globalThis.crypto.randomUUID()
-      : `checkout-${Date.now()}`
-
   let body: unknown
 
   try {
@@ -250,7 +245,6 @@ export async function POST(req: NextRequest) {
             email: user.email,
             custom: {
               flow: 'upgrade_replace',
-              checkout_request_id: checkoutRequestId,
               user_id: String(user.id),
               user_email: user.email,
               current_license_id: String(resolvedUpgrade.sourceLicenseId),
@@ -284,7 +278,6 @@ export async function POST(req: NextRequest) {
     }
 
     console.info('[checkout/upgrade] Creating Lemon checkout', {
-      checkoutRequestId,
       userId: user.id,
       userEmail: user.email,
       targetVariantId,
@@ -309,7 +302,6 @@ export async function POST(req: NextRequest) {
     const checkoutResult = await checkoutResponse.json().catch(() => null)
 
     console.info('[checkout/upgrade] Lemon checkout response', {
-      checkoutRequestId,
       status: checkoutResponse.status,
       statusText: checkoutResponse.statusText,
       responseData: JSON.stringify(checkoutResult, null, 2),
@@ -317,7 +309,6 @@ export async function POST(req: NextRequest) {
 
     if (!checkoutResponse.ok) {
       console.error('Lemon checkout API error:', {
-        checkoutRequestId,
         status: checkoutResponse.status,
         statusText: checkoutResponse.statusText,
         body: JSON.stringify(checkoutResult, null, 2),
@@ -336,7 +327,6 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       checkoutUrl,
-      checkoutRequestId,
       customPriceCents,
       sourceVariantId: resolvedUpgrade.sourceVariantId,
       targetVariantId,

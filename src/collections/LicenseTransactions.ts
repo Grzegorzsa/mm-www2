@@ -3,15 +3,8 @@ import type { CollectionConfig } from 'payload'
 export const LicenseTransactions: CollectionConfig = {
   slug: 'license-transactions',
   admin: {
-    useAsTitle: 'externalOrderId',
-    defaultColumns: [
-      'externalOrderId',
-      'transactionType',
-      'status',
-      'user',
-      'product',
-      'createdAt',
-    ],
+    useAsTitle: 'transactionType',
+    defaultColumns: ['transactionType', 'status', 'user', 'order', 'product', 'createdAt'],
     description: 'Immutable audit log for purchase, renewal, and upgrade license operations.',
   },
   access: {
@@ -24,13 +17,6 @@ export const LicenseTransactions: CollectionConfig = {
     {
       type: 'row',
       fields: [
-        {
-          name: 'externalOrderId',
-          type: 'text',
-          required: true,
-          unique: true,
-          admin: { width: '50%' },
-        },
         {
           name: 'externalOrderTimestamp',
           type: 'date',

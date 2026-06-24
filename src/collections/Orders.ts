@@ -6,7 +6,14 @@ export const Orders: CollectionConfig = {
   slug: 'orders',
   admin: {
     useAsTitle: 'externalOrderId',
-    defaultColumns: ['externalOrderId', 'source', 'transactionType', 'amount', 'createdAt'],
+    defaultColumns: [
+      'externalOrderId',
+      'lemonOrderId',
+      'source',
+      'transactionType',
+      'amount',
+      'createdAt',
+    ],
   },
   access: {
     // Użytkownik widzi swoje zamówienia (szukane po polu 'user'), admin widzi wszystkie
@@ -40,7 +47,14 @@ export const Orders: CollectionConfig = {
       type: 'text',
       required: true,
       admin: {
-        description: 'The order identifier from the external system (e.g., Order Number)',
+        description: 'External order number visible in Lemon Squeezy (order_number).',
+      },
+    },
+    {
+      name: 'lemonOrderId',
+      type: 'text',
+      admin: {
+        description: 'Technical Lemon Squeezy Order resource id (event.data.id).',
       },
     },
     {

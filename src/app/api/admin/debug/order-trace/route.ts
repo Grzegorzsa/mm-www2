@@ -28,7 +28,12 @@ export async function GET(req: NextRequest) {
 
   const ordersResult = await payload.find({
     collection: 'orders',
-    where: { externalOrderId: { equals: externalOrderId } },
+    where: {
+      or: [
+        { externalOrderId: { equals: externalOrderId } },
+        { lemonOrderId: { equals: externalOrderId } },
+      ],
+    },
     sort: '-createdAt',
     limit: 5,
     depth: 2,
@@ -62,7 +67,9 @@ export async function GET(req: NextRequest) {
   if (!transaction) {
     const fallbackTransactions = await payload.find({
       collection: 'license-transactions',
-      where: { externalOrderId: { equals: externalOrderId } },
+      where: {
+        order: { equals: order.id },
+      },
       sort: '-createdAt',
       limit: 5,
       depth: 2,
