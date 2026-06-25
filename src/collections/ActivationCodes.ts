@@ -4,13 +4,21 @@ function normalizeActivationCode(value: string): string {
   return value.trim().toUpperCase().replace(/\s+/g, '')
 }
 
+function hasValidActivationCodeFormat(value: string): boolean {
+  return /^MGX-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(value)
+}
+
 const normalizeCodeField: CollectionBeforeValidateHook = async ({ data }) => {
   if (!data || typeof data !== 'object') return data
 
   const mutableData = data as Record<string, unknown>
   const rawCode = mutableData.code
   if (typeof rawCode === 'string') {
-    mutableData.code = normalizeActivationCode(rawCode)
+    const normalizedCode = normalizeActivationCode(rawCode)
+    if (!hasValidActivationCodeFormat(normalizedCode)) {
+      throw new Error('Activation code must match format MGX-XXXX-XXXX-XXXX-XXXX')
+    }
+    mutableData.code = normalizedCode
   }
 
   return mutableData
@@ -53,7 +61,8 @@ export const ActivationCodes: CollectionConfig = {
           index: true,
           admin: {
             width: '40%',
-            description: 'Activation code, stored uppercase and without spaces.',
+            description:
+              'Activation code in format MGX-XXXX-XXXX-XXXX-XXXX (X = uppercase letter or digit).',
           },
         },
         {
@@ -111,6 +120,16 @@ export const ActivationCodes: CollectionConfig = {
       type: 'row',
       fields: [
         {
+          name: 'trial',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: {
+            width: '25%',
+            description:
+              'Marks this code as trial. User can redeem only one trial per product + variant.',
+          },
+        },
+        {
           name: 'maxInstallations',
           type: 'number',
           required: true,
@@ -118,6 +137,16 @@ export const ActivationCodes: CollectionConfig = {
           min: 1,
           admin: {
             width: '25%',
+          },
+        },
+        {
+          name: 'validDays',
+          type: 'number',
+          min: 1,
+          admin: {
+            width: '25%',
+            description:
+              'Optional license validity in days from redeem date. Leave empty for unlimited validity.',
           },
         },
         {

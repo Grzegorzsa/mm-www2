@@ -7,9 +7,11 @@ export type ActivationCodeRecord = {
   code: string
   product: RelationValue
   productVariant: RelationValue
+  trial?: boolean | null
   versionFrom: number
   versionTo: number
   maxInstallations?: number | null
+  validDays?: number | null
   expiresAt?: string | null
   seller?: RelationValue
   assignSellerAsLifetime?: boolean | null
@@ -19,6 +21,10 @@ export type ActivationCodeRecord = {
 
 export function normalizeActivationCodeInput(value: string): string {
   return value.trim().toUpperCase().replace(/\s+/g, '')
+}
+
+export function isActivationCodeFormatValid(value: string): boolean {
+  return /^MGX-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4}$/.test(value)
 }
 
 function relationToNumber(value: RelationValue): number | null {
@@ -38,6 +44,12 @@ function isExpired(expiresAt: string | null | undefined, now = new Date()): bool
   const expiry = new Date(expiresAt).getTime()
   if (!Number.isFinite(expiry)) return false
   return expiry < now.getTime()
+}
+
+function getValidTillDate(validDays: number, now = new Date()): string {
+  const validTill = new Date(now)
+  validTill.setDate(validTill.getDate() + validDays)
+  return validTill.toISOString()
 }
 
 export async function getValidActivationCode(
@@ -113,6 +125,40 @@ export async function redeemActivationCodeForUser(
     return { success: false, error: 'Activation code has expired' }
   }
 
+  const isTrial = Boolean(latestCode.trial)
+
+  if (isTrial) {
+    const previousTrialResult = await payload.find({
+      collection: 'activation-codes',
+      where: {
+        and: [
+          { trial: { equals: true } },
+          { redeemedBy: { equals: userId } },
+          { product: { equals: productId } },
+          { productVariant: { equals: variantId } },
+          { redeemedAt: { exists: true } },
+        ],
+      },
+      limit: 1,
+      depth: 0,
+      overrideAccess: true,
+    })
+
+    if (previousTrialResult.totalDocs > 0) {
+      return {
+        success: false,
+        error: 'Trial for this product and variant has already been activated on your account',
+      }
+    }
+  }
+
+  const parsedValidDays =
+    typeof latestCode.validDays === 'number' &&
+    Number.isInteger(latestCode.validDays) &&
+    latestCode.validDays > 0
+      ? latestCode.validDays
+      : null
+
   await payload.create({
     collection: 'licenses',
     data: {
@@ -122,6 +168,7 @@ export async function redeemActivationCodeForUser(
       versionFrom: latestCode.versionFrom,
       versionTo: latestCode.versionTo,
       maxInstallations: latestCode.maxInstallations ?? 2,
+      ...(parsedValidDays ? { validTill: getValidTillDate(parsedValidDays) } : {}),
       active: true,
       info: `Activated from code ${latestCode.code}`,
     },
@@ -142,12 +189,12 @@ export async function redeemActivationCodeForUser(
   return { success: true }
 }
 
-export function generateActivationCode(prefix = 'MX'): string {
-  const alphabet = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'
+export function generateActivationCode(): string {
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
   const randomChunk = (len: number) =>
     Array.from({ length: len }, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join(
       '',
     )
 
-  return `${prefix.toUpperCase()}-${randomChunk(4)}-${randomChunk(4)}-${randomChunk(4)}`
+  return `MGX-${randomChunk(4)}-${randomChunk(4)}-${randomChunk(4)}-${randomChunk(4)}`
 }

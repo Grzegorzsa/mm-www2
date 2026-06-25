@@ -146,5 +146,7 @@ Każda aktywna licencja w `Licenses` pozwala na jednoczesne powiązanie z maksym
   - publiczny (`/redeem`) dla nowego klienta (podgląd kodu -> utworzenie konta -> redeem),
   - panel użytkownika (`/user-panel/redeem`) dla istniejącego konta.
 - Publiczny kanał ma walidację e-maila/hasła i ochronę rate-limit.
+- Pole `validDays` (domyślnie puste/null) pozwala ustawić datę wygaśnięcia licencji od momentu redeem.
+- Pole `trial` blokuje kolejne triale dla tego samego `product` + `productVariant` u tego samego użytkownika.
 - Kod może opcjonalnie wskazywać partnera (`seller`) i flagę lifetime; przypisanie lifetime wykonujemy tylko w ścieżce nowego konta.
 - Raport admina zwraca agregację aktywacji po product/variant oraz obsługuje filtry dat i sellera.

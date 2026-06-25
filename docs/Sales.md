@@ -27,6 +27,8 @@ Rules:
 - A code can be redeemed only once.
 - Expired or inactive codes are rejected.
 - Redeem creates a license with the version and installation limits configured on the code.
+- Optional `validDays` sets license `validTill` from the redeem date (for example 14-day trials).
+- Optional `trial` prevents redeem if user already redeemed any previous trial code for the same product + variant.
 - If `assignSellerAsLifetime` is enabled and the code is redeemed in public flow, seller is assigned as lifetime affiliate only for the newly created user account.
 
 Operational endpoints:

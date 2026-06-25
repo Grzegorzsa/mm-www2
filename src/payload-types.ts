@@ -645,7 +645,7 @@ export interface CommerceOffer {
 export interface ActivationCode {
   id: number;
   /**
-   * Activation code, stored uppercase and without spaces.
+   * Activation code in format MGX-XXXX-XXXX-XXXX-XXXX (X = uppercase letter or digit).
    */
   code: string;
   /**
@@ -660,7 +660,15 @@ export interface ActivationCode {
   productVariant: number | ProductVariant;
   versionFrom: number;
   versionTo: number;
+  /**
+   * Marks this code as trial. User can redeem only one trial per product + variant.
+   */
+  trial?: boolean | null;
   maxInstallations: number;
+  /**
+   * Optional license validity in days from redeem date. Leave empty for unlimited validity.
+   */
+  validDays?: number | null;
   /**
    * Optional expiration date for redeeming this code.
    */
@@ -1106,7 +1114,9 @@ export interface ActivationCodesSelect<T extends boolean = true> {
   productVariant?: T;
   versionFrom?: T;
   versionTo?: T;
+  trial?: T;
   maxInstallations?: T;
+  validDays?: T;
   expiresAt?: T;
   seller?: T;
   assignSellerAsLifetime?: T;

@@ -41,7 +41,10 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     components: {
-      afterNavLinks: ['@/components/admin/LogoutButton#LogoutButton'],
+      afterNavLinks: [
+        '@/components/admin/ActivationCodesToolsLink#ActivationCodesToolsLink',
+        '@/components/admin/LogoutButton#LogoutButton',
+      ],
     },
   },
   collections: [
