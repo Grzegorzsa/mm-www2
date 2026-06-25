@@ -3,6 +3,7 @@ import { getPayload } from 'payload'
 import config from '@/payload.config'
 import fallbackContent from '@/seed/downloads.json'
 import { Download } from 'lucide-react'
+import { getSessionUser } from '@/lib/session'
 
 type DownloadFile = {
   description: string
@@ -10,6 +11,7 @@ type DownloadFile = {
   fileName: string
   size: string
   url: string
+  loggedUser?: boolean
 }
 
 type DownloadGroup = {
@@ -20,6 +22,9 @@ type DownloadGroup = {
 
 export default async function DownloadsPage() {
   let downloadsData: any = null
+  const sessionUser = await getSessionUser()
+  const isLoggedIn = Boolean(sessionUser)
+
   try {
     const payload = await getPayload({ config: await config })
     downloadsData = await payload.findGlobal({ slug: 'downloads' })
@@ -28,10 +33,16 @@ export default async function DownloadsPage() {
   }
 
   const introText: string = downloadsData?.intro?.text ?? fallbackContent.intro.text
-  const introNote: string = downloadsData?.intro?.note ?? fallbackContent.intro.note
   const downloads: DownloadGroup[] = downloadsData?.downloads?.length
     ? downloadsData.downloads
     : fallbackContent.downloads
+
+  const visibleDownloads = downloads
+    .map((group) => ({
+      ...group,
+      files: group.files.filter((file) => !file.loggedUser || isLoggedIn),
+    }))
+    .filter((group) => group.files.length > 0)
 
   return (
     <div className="bg-[#f3f3f3] min-h-[calc(100vh-320px)] flex items-center justify-center py-8">
@@ -41,7 +52,7 @@ export default async function DownloadsPage() {
         <p className="mb-6 text-gray-600">{introText}</p>
 
         <div className="space-y-6">
-          {downloads.map((group, groupIndex) => (
+          {visibleDownloads.map((group, groupIndex) => (
             <div key={group.id ?? groupIndex} className="border border-gray-200 rounded-lg p-5">
               <h2 className="text-lg font-semibold mb-3">{group.title}</h2>
               <div className="space-y-3">
@@ -71,10 +82,6 @@ export default async function DownloadsPage() {
               </div>
             </div>
           ))}
-        </div>
-
-        <div className="mt-8 p-4 bg-blue-50 border border-blue-100 rounded text-sm text-blue-800">
-          <strong>Note:</strong> {introNote}
         </div>
       </div>
     </div>

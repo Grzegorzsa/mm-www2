@@ -9,6 +9,7 @@ type DownloadFile = {
   fileName: string
   size: string
   url: string
+  loggedUser?: boolean
 }
 
 type DownloadGroup = {

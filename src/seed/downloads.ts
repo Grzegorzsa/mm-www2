@@ -10,7 +10,6 @@ async function seed() {
     data: {
       intro: {
         text: downloadsData.intro.text,
-        note: downloadsData.intro.note,
       },
       downloads: downloadsData.downloads.map((group) => ({
         title: group.title,
@@ -20,6 +19,7 @@ async function seed() {
           fileName: file.fileName,
           size: file.size,
           url: file.url,
+          loggedUser: file.loggedUser ?? false,
         })),
       })),
       meta: {

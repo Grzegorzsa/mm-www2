@@ -1395,10 +1395,6 @@ export interface Download {
      * Introductory paragraph shown above the download list
      */
     text: string;
-    /**
-     * Note shown at the bottom of the page (e.g. registration requirement)
-     */
-    note: string;
   };
   /**
    * Download groups (e.g. Windows, macOS)
@@ -1420,6 +1416,10 @@ export interface Download {
       fileName: string;
       size: string;
       url: string;
+      /**
+       * Show this download link only to logged-in users.
+       */
+      loggedUser?: boolean | null;
       id?: string | null;
     }[];
     id?: string | null;
@@ -1569,7 +1569,6 @@ export interface DownloadsSelect<T extends boolean = true> {
     | T
     | {
         text?: T;
-        note?: T;
       };
   downloads?:
     | T
@@ -1583,6 +1582,7 @@ export interface DownloadsSelect<T extends boolean = true> {
               fileName?: T;
               size?: T;
               url?: T;
+              loggedUser?: T;
               id?: T;
             };
         id?: T;

@@ -29,14 +29,6 @@ export const Downloads: GlobalConfig = {
                 description: 'Introductory paragraph shown above the download list',
               },
             },
-            {
-              name: 'note',
-              type: 'textarea',
-              required: true,
-              admin: {
-                description: 'Note shown at the bottom of the page (e.g. registration requirement)',
-              },
-            },
           ],
         },
       ],
@@ -93,6 +85,14 @@ export const Downloads: GlobalConfig = {
               name: 'url',
               type: 'text',
               required: true,
+            },
+            {
+              name: 'loggedUser',
+              type: 'checkbox',
+              defaultValue: false,
+              admin: {
+                description: 'Show this download link only to logged-in users.',
+              },
             },
           ],
         },
