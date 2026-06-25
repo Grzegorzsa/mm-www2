@@ -5,7 +5,10 @@ import Link from 'next/link'
 import { Check, X } from 'lucide-react'
 import fallbackContent from '@/seed/homepage.json'
 import { PricingActions } from '@/components/frontend/PricingActions'
+import type { VariantOffer } from '@/components/frontend/PricingActions'
 import { getSessionUser } from '@/lib/session'
+import { getAvailableOffersForUser } from '@/lib/offersHelper'
+import { expandOwnedVariantIds } from '@/lib/variantOwnership'
 
 function BoolCell({ value }: { value: boolean }) {
   return value ? (
@@ -110,10 +113,16 @@ export default async function HomePage() {
   let loopsVariantId = ''
   let beatsVariantId = ''
   let sessionEmail = ''
+  let loopsOwned = false
+  let beatsOwned = false
+  let loopsOffer: VariantOffer | undefined
+  let beatsOffer: VariantOffer | undefined
+  let sessionUserId: number | undefined
 
   try {
     const sessionUser = await getSessionUser()
     sessionEmail = sessionUser?.email ?? ''
+    sessionUserId = sessionUser?.id
   } catch {
     // not logged in
   }
@@ -149,6 +158,61 @@ export default async function HomePage() {
 
     loopsVariantId = String(loopsVariant?.lemonSqueezyVariantId ?? '')
     beatsVariantId = String(beatsVariant?.lemonSqueezyVariantId ?? '')
+
+    if (sessionUserId && loopsVariant && beatsVariant) {
+      const [userOffers, userLicenses] = await Promise.all([
+        getAvailableOffersForUser(payload, sessionUserId),
+        payload.find({
+          collection: 'licenses',
+          where: { and: [{ user: { equals: sessionUserId } }, { active: { equals: true } }] },
+          depth: 1,
+          limit: 100,
+          overrideAccess: true,
+        }),
+      ])
+
+      const directOwnedVariantIds = new Set<number>()
+      for (const license of userLicenses.docs) {
+        const productVariants = license.productVariants as any[]
+        if (!Array.isArray(productVariants)) continue
+
+        for (const variant of productVariants) {
+          const variantId = typeof variant === 'object' ? variant?.id : variant
+          if (typeof variantId === 'number') directOwnedVariantIds.add(variantId)
+        }
+      }
+
+      const ownedVariantIds = expandOwnedVariantIds(directOwnedVariantIds, variants.docs)
+
+      loopsOwned = ownedVariantIds.has(loopsVariant.id as number)
+      beatsOwned = ownedVariantIds.has(beatsVariant.id as number)
+
+      for (const offer of userOffers) {
+        const offerView: VariantOffer = {
+          targetVariantId: offer.targetVariantId,
+          referencePriceCents: offer.referencePriceCents,
+          actionLabel: offer.actionType === 'crossgrade' ? 'Crossgrade' : 'Upgrade',
+        }
+
+        if (
+          offer.targetVariantId === (loopsVariant.id as number) &&
+          (!loopsOffer ||
+            (offerView.referencePriceCents ?? Infinity) <
+              (loopsOffer.referencePriceCents ?? Infinity))
+        ) {
+          loopsOffer = offerView
+        }
+
+        if (
+          offer.targetVariantId === (beatsVariant.id as number) &&
+          (!beatsOffer ||
+            (offerView.referencePriceCents ?? Infinity) <
+              (beatsOffer.referencePriceCents ?? Infinity))
+        ) {
+          beatsOffer = offerView
+        }
+      }
+    }
   } catch (err) {
     console.error('[HomePage] Failed to load CMS data, using fallback content:', err)
   }
@@ -293,6 +357,10 @@ export default async function HomePage() {
                 loopsVariantId={loopsVariantId}
                 beatsVariantId={beatsVariantId}
                 sessionEmail={sessionEmail}
+                loopsOwned={loopsOwned}
+                beatsOwned={beatsOwned}
+                loopsOffer={loopsOffer}
+                beatsOffer={beatsOffer}
               />
             </tbody>
           </table>

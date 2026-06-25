@@ -5,10 +5,20 @@ import { useEffect, useState } from 'react'
 
 type VariantKey = 'loops' | 'beats'
 
+export type VariantOffer = {
+  targetVariantId: number
+  referencePriceCents?: number
+  actionLabel: string
+}
+
 type PricingActionsProps = {
   loopsVariantId?: string
   beatsVariantId?: string
   sessionEmail?: string
+  loopsOwned?: boolean
+  beatsOwned?: boolean
+  loopsOffer?: VariantOffer
+  beatsOffer?: VariantOffer
 }
 
 const variantMeta: Record<VariantKey, { title: string; buttonClass: string; accentClass: string }> =
@@ -29,6 +39,10 @@ export function PricingActions({
   loopsVariantId = '',
   beatsVariantId = '',
   sessionEmail = '',
+  loopsOwned = false,
+  beatsOwned = false,
+  loopsOffer,
+  beatsOffer,
 }: PricingActionsProps) {
   const [selectedVariant, setSelectedVariant] = useState<VariantKey | null>(null)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
@@ -65,7 +79,28 @@ export function PricingActions({
     loops: loopsVariantId,
     beats: beatsVariantId,
   }
+  const owned: Record<VariantKey, boolean> = {
+    loops: loopsOwned,
+    beats: beatsOwned,
+  }
+  const offers: Record<VariantKey, VariantOffer | undefined> = {
+    loops: loopsOffer,
+    beats: beatsOffer,
+  }
   const selectedVariantId = selectedVariant ? variantIds[selectedVariant] : ''
+  const selectedOffer = selectedVariant ? offers[selectedVariant] : undefined
+
+  function formatPrice(cents: number) {
+    return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(
+      cents / 100,
+    )
+  }
+
+  function openModal(key: VariantKey) {
+    setSelectedVariant(key)
+    setAcceptedTerms(false)
+    setCheckoutError(null)
+  }
 
   async function handleCheckout() {
     if (!selectedVariant) return
@@ -78,16 +113,24 @@ export function PricingActions({
         throw new Error('Checkout is not configured yet for this variant.')
       }
 
-      const response = await fetch('/api/checkout/purchase', {
-        method: 'POST',
-        credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          variantId: selectedVariantId,
-          affiliateCode,
-          email: email || undefined,
-        }),
-      })
+      const isOfferCheckout = Boolean(selectedOffer)
+      const response = await fetch(
+        isOfferCheckout ? '/api/checkout/upgrade' : '/api/checkout/purchase',
+        {
+          method: 'POST',
+          credentials: 'include',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(
+            isOfferCheckout
+              ? { variantId: selectedOffer?.targetVariantId }
+              : {
+                  variantId: selectedVariantId,
+                  affiliateCode,
+                  email: email || undefined,
+                },
+          ),
+        },
+      )
 
       const data = await response.json().catch(() => ({}))
       if (!response.ok) {
@@ -99,7 +142,7 @@ export function PricingActions({
         throw new Error('Checkout URL is missing')
       }
 
-      window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
+      window.location.assign(checkoutUrl)
     } catch (error: unknown) {
       const message = error instanceof Error ? error.message : 'Could not start checkout'
       setCheckoutError(message)
@@ -113,37 +156,59 @@ export function PricingActions({
       <tr>
         <th className="bg-[#fafafa] border border-white border-b-4 px-6 py-4" />
         <td className="bg-white border border-white border-b-4 text-center px-6 py-4">
-          <Link
-            href="/sign-up"
-            className="inline-block bg-[#72cd78] text-white px-6 py-2 text-sm tracking-widest uppercase hover:bg-[#5ab360] transition-colors font-medium rounded"
-          >
-            Register
-          </Link>
+          {isLoggedIn ? (
+            <button
+              type="button"
+              disabled
+              className="inline-block bg-gray-300 text-gray-500 px-6 py-2 text-sm tracking-widest uppercase font-medium rounded cursor-not-allowed"
+            >
+              Included
+            </button>
+          ) : (
+            <Link
+              href="/sign-up"
+              className="inline-block bg-[#72cd78] text-white px-6 py-2 text-sm tracking-widest uppercase hover:bg-[#5ab360] transition-colors font-medium rounded"
+            >
+              Register
+            </Link>
+          )}
         </td>
-        <td className="bg-white border border-white border-b-4 text-center px-6 py-4">
-          <button
-            type="button"
-            onClick={() => {
-              setSelectedVariant('loops')
-              setAcceptedTerms(false)
-            }}
-            className="inline-block bg-[#3fbef2] text-white px-6 py-2 text-sm tracking-widest uppercase hover:bg-[#2da8d8] transition-colors font-medium rounded"
-          >
-            Buy
-          </button>
-        </td>
-        <td className="bg-white border border-white border-b-4 text-center px-6 py-4">
-          <button
-            type="button"
-            onClick={() => {
-              setSelectedVariant('beats')
-              setAcceptedTerms(false)
-            }}
-            className="inline-block bg-[#d800d0] text-white px-6 py-2 text-sm tracking-widest uppercase hover:bg-[#b200ab] transition-colors font-medium rounded"
-          >
-            Buy
-          </button>
-        </td>
+        {(['loops', 'beats'] as VariantKey[]).map((key) => {
+          const meta = variantMeta[key]
+          const offer = offers[key]
+          const isOwned = owned[key]
+
+          return (
+            <td key={key} className="bg-white border border-white border-b-4 text-center px-6 py-4">
+              {isOwned ? (
+                <span className="inline-block text-sm text-gray-500 font-medium tracking-wide uppercase">
+                  Owned
+                </span>
+              ) : offer ? (
+                <div className="flex flex-col items-center gap-1">
+                  <span className="text-xs text-gray-500 tracking-wide">
+                    {offer.actionLabel} from {formatPrice(offer.referencePriceCents ?? 0)}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => openModal(key)}
+                    className={`inline-block ${meta.buttonClass} text-white px-6 py-2 text-sm tracking-widest uppercase transition-colors font-medium rounded`}
+                  >
+                    {offer.actionLabel}
+                  </button>
+                </div>
+              ) : (
+                <button
+                  type="button"
+                  onClick={() => openModal(key)}
+                  className={`inline-block ${meta.buttonClass} text-white px-6 py-2 text-sm tracking-widest uppercase transition-colors font-medium rounded`}
+                >
+                  Buy
+                </button>
+              )}
+            </td>
+          )
+        })}
       </tr>
 
       {selectedVariant && modalMeta ? (
