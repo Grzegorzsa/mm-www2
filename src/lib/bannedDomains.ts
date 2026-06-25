@@ -49,7 +49,17 @@ export function parseBannedDomainsInput(value: string): string[] {
 }
 
 export function normalizeEmailAddress(value: string): string {
-  return value.trim().toLowerCase()
+  const normalized = value.trim().toLowerCase()
+  const atIndex = normalized.lastIndexOf('@')
+
+  if (atIndex <= 0 || atIndex === normalized.length - 1) {
+    return normalized
+  }
+
+  const localPart = normalized.slice(0, atIndex).replace(/\./g, '')
+  const domainPart = normalized.slice(atIndex + 1)
+
+  return `${localPart}@${domainPart}`
 }
 
 export function parseBannedEmailsInput(value: string): string[] {
@@ -94,6 +104,27 @@ export async function isBannedEmailDomain(payload: Payload, email: string): Prom
 export async function isBannedEmailAddress(payload: Payload, email: string): Promise<boolean> {
   const normalized = normalizeEmailAddress(email)
   if (!normalized) return false
+
+  const domain = getEmailDomain(normalized)
+
+  // Keep compatibility with legacy records that may have been stored with dots
+  // in the local part before normalization rules were introduced.
+  if (domain) {
+    const sameDomainResult = await payload.find({
+      collection: 'banned-emails',
+      where: { email: { contains: `@${domain}` } },
+      limit: 200,
+      depth: 0,
+      overrideAccess: true,
+    })
+
+    const matched = sameDomainResult.docs.some((doc) => {
+      const blockedEmail = typeof doc.email === 'string' ? doc.email : ''
+      return normalizeEmailAddress(blockedEmail) === normalized
+    })
+
+    if (matched) return true
+  }
 
   const result = await payload.find({
     collection: 'banned-emails',
