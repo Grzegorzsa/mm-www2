@@ -51,9 +51,10 @@ export function UpgradeButton({ variantId, label = 'Upgrade', className }: Upgra
         <button
           type="button"
           onClick={() => setShowPromoCode(true)}
-          className="mb-3 text-xs text-gray-500 underline underline-offset-2 hover:text-gray-700 transition-colors"
+          className="mb-3 flex w-fit items-center gap-1 text-xs font-medium text-gray-500 hover:text-gray-700 transition-colors"
         >
-          Have a promo code?
+          <span aria-hidden="true">+</span>
+          <span>Add promo code</span>
         </button>
       ) : (
         <div className="mb-3 rounded-md border border-gray-200 bg-gray-50 p-3">
@@ -67,17 +68,19 @@ export function UpgradeButton({ variantId, label = 'Upgrade', className }: Upgra
           />
         </div>
       )}
-      <button
-        type="button"
-        disabled={isLoading}
-        onClick={handleUpgrade}
-        className={
-          className ||
-          'inline-block bg-black text-white px-4 py-2 text-xs tracking-widest uppercase hover:bg-gray-800 transition-colors font-medium rounded-lg disabled:opacity-60 disabled:cursor-not-allowed'
-        }
-      >
-        {isLoading ? 'Preparing...' : label}
-      </button>
+      <div className="mt-1">
+        <button
+          type="button"
+          disabled={isLoading}
+          onClick={handleUpgrade}
+          className={
+            className ||
+            'inline-block bg-black text-white px-4 py-2 text-xs tracking-widest uppercase hover:bg-gray-800 transition-colors font-medium rounded-lg disabled:opacity-60 disabled:cursor-not-allowed'
+          }
+        >
+          {isLoading ? 'Preparing...' : label}
+        </button>
+      </div>
 
       {error ? <p className="mt-2 text-xs text-red-700">{error}</p> : null}
     </div>

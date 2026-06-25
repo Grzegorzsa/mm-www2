@@ -275,9 +275,10 @@ export function PricingActions({
                     <button
                       type="button"
                       onClick={() => setShowPromoCode(true)}
-                      className="text-xs text-[#5f6770] underline underline-offset-2 hover:text-[#30363b] transition-colors"
+                      className="inline-flex items-center gap-1 text-xs font-medium text-[#6b737c] hover:text-[#3c4349] transition-colors"
                     >
-                      Have a promo code?
+                      <span aria-hidden="true">+</span>
+                      <span>Add promo code</span>
                     </button>
                   ) : (
                     <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
