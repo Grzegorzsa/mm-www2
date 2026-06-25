@@ -24,7 +24,7 @@ description: Opisuje proces sprzedaży, licencjonowania oraz hybrydowe strategie
 - `src\app\api\redeem\user\route.ts` - Redeem kodu dla zalogowanego użytkownika
 - `src\app\api\admin\activation-codes\generate\route.ts` - Endpoint admina do generowania paczek kodów aktywacyjnych
 - `src\app\api\admin\activation-codes\report\route.ts` - Raport użycia kodów aktywacyjnych z filtrami dat/sellera
-- `src\lib\variantOwnership.ts` - Dziedziczenie ownership między tierami (Composer/Beats/Loops)
+- `src\lib\variantOwnership.ts` - Dziedziczenie ownership oparte o poziom `product-variants.hierarchy` (bez hardkodu Composer/Beats/Loops)
 - `src\lib\bannedDomains.ts` - Normalizacja i walidacja blokad domen/emaili (w tym aliasy z kropkami)
 
 ## Słownik pojęć
@@ -46,9 +46,10 @@ Dokument definiuje architekturę dystrybucji oprogramowania "MX GRID" (dostępne
 
 ### Dziedziczenie Uprawnień Wariantów (Krytyczne dla UI i logiki licencji)
 
-- Posiadanie wyższego tieru implikuje posiadanie niższych:
-  - `Composer` => `Beats` i `Loops Pro`
-  - `Beats` => `Loops Pro`
+- Dziedziczenie opiera się na integerze `hierarchy` w kolekcji `product-variants`.
+- Rekomendowana bazowa skala: `Elements=1`, `Player=2`, `Loops=3`, `Beats=4`, `Composer=5`.
+- Posiadanie wariantu o wyższym `hierarchy` implikuje ownership wariantów z niższym `hierarchy`.
+- Oferta upgrade/crossgrade nie może być pokazywana na wariant o `hierarchy` mniejszym lub równym temu, który użytkownik już efektywnie posiada.
 - W cenniku (homepage) przyciski muszą respektować dziedziczenie:
   - Jeśli użytkownik efektywnie posiada wariant (bezpośrednio lub przez wyższy tier), pokazujemy `Owned` zamiast `Buy`.
   - Jeśli użytkownik nie posiada wariantu, ale ma aktywną ofertę (`upgrade_replace`/`crossgrade`), pokazujemy `Upgrade`/`Crossgrade` zamiast `Buy`.

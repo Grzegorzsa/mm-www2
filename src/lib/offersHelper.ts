@@ -1,6 +1,7 @@
 import type { Payload } from 'payload'
 import type { CommerceOffer, Product, ProductVariant } from '@/payload-types'
 import { getUserLicenses } from '@/lib/licenseHelper'
+import { getVariantHierarchy } from '@/lib/variantOwnership'
 
 type PopulatedLicense = {
   id: number
@@ -60,6 +61,15 @@ export async function getAvailableOffersForUser(
     }
   }
 
+  let maxOwnedHierarchy: number | null = null
+  for (const ownedVariant of activeVariantById.values()) {
+    const hierarchy = getVariantHierarchy(ownedVariant)
+    if (!hierarchy) continue
+    if (maxOwnedHierarchy === null || hierarchy > maxOwnedHierarchy) {
+      maxOwnedHierarchy = hierarchy
+    }
+  }
+
   const offersResult = await payload.find({
     collection: 'commerce-offers',
     where: {
@@ -86,6 +96,15 @@ export async function getAvailableOffersForUser(
       typeof offer.targetVariant === 'object' && offer.targetVariant ? offer.targetVariant : null
     if (!targetVariant) return acc
     if (activeVariantById.has(targetVariant.id)) return acc
+
+    const targetHierarchy = getVariantHierarchy(targetVariant)
+    if (
+      maxOwnedHierarchy !== null &&
+      targetHierarchy !== null &&
+      targetHierarchy <= maxOwnedHierarchy
+    ) {
+      return acc
+    }
 
     let matchedFromVariants: ProductVariant[] = []
 

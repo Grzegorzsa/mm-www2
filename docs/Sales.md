@@ -56,9 +56,10 @@ Main behavior:
   - Owned: show `Owned`
   - Offer available: show `Upgrade`/`Crossgrade` + offer price
   - No ownership/offer: show `Buy`
-- Effective ownership uses tier inheritance
-  - Composer => Beats + Loops Pro
-  - Beats => Loops Pro
+- Effective ownership is computed from Product Variant hierarchy levels (`product-variants.hierarchy`)
+  - Example baseline: Elements=1, Player=2, Loops=3, Beats=4, Composer=5
+  - Owning a higher hierarchy variant implies effective ownership of lower hierarchy variants
+  - Offer visibility is filtered to prevent showing upgrades/crossgrades to a variant at or below current max owned hierarchy
 - Buy opens a modal with required legal consent (Terms + Refund Policy)
 - Checkout is created through a dedicated API route that locks Lemon checkout to one selected variant
 - Affiliate code from URL is propagated to Lemon checkout as custom field
@@ -81,6 +82,7 @@ Implementation references:
 - Frontend pricing actions: src/components/frontend/PricingActions.tsx
 - Homepage integration: src/app/(frontend)/HomePage.tsx
 - Discount code schema/helper: src/collections/DiscountCodes.ts, src/lib/discountCodes.ts
+- Ownership hierarchy helper: src/lib/variantOwnership.ts
 
 Environment:
 

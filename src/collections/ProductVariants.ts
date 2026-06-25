@@ -59,6 +59,16 @@ export const ProductVariants: CollectionConfig = {
       ],
     },
     {
+      name: 'hierarchy',
+      type: 'number',
+      min: 1,
+      admin: {
+        description:
+          'Variant hierarchy level in app (e.g. Elements=1, Player=2, Loops=3, Beats=4, Composer=5).',
+        width: '50%',
+      },
+    },
+    {
       name: 'lemonSqueezyVariantId',
       type: 'text',
       admin: {
