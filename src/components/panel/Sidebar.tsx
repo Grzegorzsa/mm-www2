@@ -2,12 +2,13 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { ShoppingBag, Monitor, Download, User, BadgePercent } from 'lucide-react'
+import { ShoppingBag, Monitor, Download, User, BadgePercent, KeyRound } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const navItems = [
   { href: '/user-panel/purchases', label: 'Purchases', icon: ShoppingBag },
   { href: '/user-panel/offers', label: 'Offers', icon: BadgePercent },
+  { href: '/user-panel/redeem', label: 'Redeem', icon: KeyRound },
   { href: '/user-panel/installations', label: 'Installations', icon: Monitor },
   { href: '/user-panel/downloads', label: 'Downloads', icon: Download },
   { href: '/user-panel/account', label: 'My Account', icon: User },

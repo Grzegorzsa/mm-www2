@@ -17,6 +17,13 @@ description: Opisuje proces sprzedaży, licencjonowania oraz hybrydowe strategie
 - `src\app\(frontend)\checkout-success\page.tsx` - Strona powrotu po opłaceniu checkoutu Lemon Squeezy
 - `src\collections\DiscountCodes.ts` - Definicja kodów zniżkowych (percentage/fixed amount, limity użyć, daty, affiliate/lifetime)
 - `src\lib\discountCodes.ts` - Walidacja i wyliczanie zniżek do checkoutu oraz metadanych do webhooka
+- `src\collections\ActivationCodes.ts` - Definicja jednorazowych kodów aktywacyjnych (produkty, warianty, zakres wersji, limity instalacji)
+- `src\lib\activationCodes.ts` - Walidacja, generowanie oraz finalizacja redeem kodów aktywacyjnych
+- `src\app\api\redeem\preview\route.ts` - Publiczny podgląd poprawności kodu aktywacyjnego
+- `src\app\api\redeem\public\route.ts` - Publiczny redeem kodu + zakładanie nowego konta
+- `src\app\api\redeem\user\route.ts` - Redeem kodu dla zalogowanego użytkownika
+- `src\app\api\admin\activation-codes\generate\route.ts` - Endpoint admina do generowania paczek kodów aktywacyjnych
+- `src\app\api\admin\activation-codes\report\route.ts` - Raport użycia kodów aktywacyjnych z filtrami dat/sellera
 - `src\lib\variantOwnership.ts` - Dziedziczenie ownership między tierami (Composer/Beats/Loops)
 - `src\lib\bannedDomains.ts` - Normalizacja i walidacja blokad domen/emaili (w tym aliasy z kropkami)
 
@@ -130,3 +137,14 @@ Każda aktywna licencja w `Licenses` pozwala na jednoczesne powiązanie z maksym
   - przykład: `first.last@gmail.com` => `firstlast@gmail.com`
 - Weryfikacja blokady musi porównywać adresy po tej normalizacji, aby uniemożliwić obchodzenie blokady aliasami (`fi.rstlast@gmail.com`, itp.).
 - Kompatybilność wsteczna: porównanie powinno uwzględniać także starsze rekordy zapisane przed normalizacją.
+
+### 6. Kody aktywacyjne (jednorazowe) i dwa kanały redeem
+
+- Kody aktywacyjne służą do nadawania licencji poza procesem checkout Lemon.
+- Każdy kod może zostać użyty tylko raz i po redeem otrzymuje znacznik użytkownika, datę oraz źródło aktywacji.
+- Wspierane są dwa kanały:
+  - publiczny (`/redeem`) dla nowego klienta (podgląd kodu -> utworzenie konta -> redeem),
+  - panel użytkownika (`/user-panel/redeem`) dla istniejącego konta.
+- Publiczny kanał ma walidację e-maila/hasła i ochronę rate-limit.
+- Kod może opcjonalnie wskazywać partnera (`seller`) i flagę lifetime; przypisanie lifetime wykonujemy tylko w ścieżce nowego konta.
+- Raport admina zwraca agregację aktywacji po product/variant oraz obsługuje filtry dat i sellera.

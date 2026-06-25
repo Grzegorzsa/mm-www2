@@ -9,8 +9,41 @@ This document explains how to use and maintain the current sales flow implementa
 - Audit model: Orders + License Transactions + Licenses
 - Admin debug endpoint for order trace by external order id
 - Temporary email domain blocking for registration and webhook
+- Activation codes (single-use) with public and authenticated redeem paths
 
 Use this file as the source of truth for support and operations.
+
+## Activation Codes (Single-Use)
+
+Purpose:
+
+- Activation codes are one-time keys used to grant a license without Lemon checkout.
+- They support two redemption paths:
+  - Public redeem (new customer creates account while redeeming)
+  - User panel redeem (existing authenticated user)
+
+Rules:
+
+- A code can be redeemed only once.
+- Expired or inactive codes are rejected.
+- Redeem creates a license with the version and installation limits configured on the code.
+- If `assignSellerAsLifetime` is enabled and the code is redeemed in public flow, seller is assigned as lifetime affiliate only for the newly created user account.
+
+Operational endpoints:
+
+- Public preview: `POST /api/redeem/preview`
+- Public redeem: `POST /api/redeem/public`
+- Authenticated redeem: `POST /api/redeem/user`
+- Admin generate: `POST /api/admin/activation-codes/generate`
+- Admin report: `GET /api/admin/activation-codes/report`
+
+Implementation references:
+
+- Collection: src/collections/ActivationCodes.ts
+- Helper: src/lib/activationCodes.ts
+- Public page: src/app/(frontend)/(auth)/redeem/page.tsx
+- Panel page: src/app/(user-panel)/user-panel/redeem/page.tsx
+- Panel navigation: src/components/panel/Sidebar.tsx
 
 ## 1. Checkout Flow on Homepage
 

@@ -78,6 +78,7 @@ export interface Config {
     'product-variants': ProductVariant;
     'commerce-offers': CommerceOffer;
     'discount-codes': DiscountCode;
+    'activation-codes': ActivationCode;
     'banned-domains': BannedDomain;
     'banned-emails': BannedEmail;
     licenses: License;
@@ -102,6 +103,7 @@ export interface Config {
     'product-variants': ProductVariantsSelect<false> | ProductVariantsSelect<true>;
     'commerce-offers': CommerceOffersSelect<false> | CommerceOffersSelect<true>;
     'discount-codes': DiscountCodesSelect<false> | DiscountCodesSelect<true>;
+    'activation-codes': ActivationCodesSelect<false> | ActivationCodesSelect<true>;
     'banned-domains': BannedDomainsSelect<false> | BannedDomainsSelect<true>;
     'banned-emails': BannedEmailsSelect<false> | BannedEmailsSelect<true>;
     licenses: LicensesSelect<false> | LicensesSelect<true>;
@@ -635,6 +637,53 @@ export interface CommerceOffer {
   createdAt: string;
 }
 /**
+ * Single-use activation codes for direct license assignment. Supports seller attribution and optional lifetime referral assignment for new users.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "activation-codes".
+ */
+export interface ActivationCode {
+  id: number;
+  /**
+   * Activation code, stored uppercase and without spaces.
+   */
+  code: string;
+  /**
+   * Optional generated batch identifier for reporting.
+   */
+  batchId?: string | null;
+  /**
+   * Admin user that generated this code.
+   */
+  generatedBy?: (number | null) | AdminUser;
+  product: number | Product;
+  productVariant: number | ProductVariant;
+  versionFrom: number;
+  versionTo: number;
+  maxInstallations: number;
+  /**
+   * Optional expiration date for redeeming this code.
+   */
+  expiresAt?: string | null;
+  /**
+   * Optional seller/affiliate attached to this code.
+   */
+  seller?: (number | null) | Affiliate;
+  /**
+   * For public redeem only: assign seller as permanent referral for newly created users.
+   */
+  assignSellerAsLifetime?: boolean | null;
+  redeemedBy?: (number | null) | User;
+  redeemedAt?: string | null;
+  redeemSource?: ('public_redeem' | 'panel_redeem') | null;
+  /**
+   * Optional internal note for this activation code.
+   */
+  info?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * Disposable and temporary email domains blocked in registration and Lemon webhook.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -770,6 +819,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'discount-codes';
         value: number | DiscountCode;
+      } | null)
+    | ({
+        relationTo: 'activation-codes';
+        value: number | ActivationCode;
       } | null)
     | ({
         relationTo: 'banned-domains';
@@ -1037,6 +1090,29 @@ export interface DiscountCodesSelect<T extends boolean = true> {
   endsAt?: T;
   affiliatePartner?: T;
   affiliateLifetime?: T;
+  info?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "activation-codes_select".
+ */
+export interface ActivationCodesSelect<T extends boolean = true> {
+  code?: T;
+  batchId?: T;
+  generatedBy?: T;
+  product?: T;
+  productVariant?: T;
+  versionFrom?: T;
+  versionTo?: T;
+  maxInstallations?: T;
+  expiresAt?: T;
+  seller?: T;
+  assignSellerAsLifetime?: T;
+  redeemedBy?: T;
+  redeemedAt?: T;
+  redeemSource?: T;
   info?: T;
   updatedAt?: T;
   createdAt?: T;
