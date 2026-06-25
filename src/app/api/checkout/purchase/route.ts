@@ -10,6 +10,12 @@ import {
   TEMP_EMAIL_REJECT_MESSAGE,
 } from '@/lib/bannedDomains'
 
+function getAppBaseUrl(req: NextRequest) {
+  const raw =
+    process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin
+  return raw.endsWith('/') ? raw.slice(0, -1) : raw
+}
+
 export async function POST(req: NextRequest) {
   let body: unknown
 
@@ -91,6 +97,8 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  const appBaseUrl = getAppBaseUrl(req)
+
   const checkoutBody = {
     data: {
       type: 'checkouts',
@@ -108,6 +116,9 @@ export async function POST(req: NextRequest) {
         },
         product_options: {
           enabled_variants: [targetLemonVariantId],
+          redirect_url: `${appBaseUrl}/checkout-success?source=lemon&flow=purchase`,
+          receipt_button_text: 'Go to MX GRID',
+          receipt_link_url: `${appBaseUrl}/sign-in`,
         },
         checkout_options: {
           embed: false,

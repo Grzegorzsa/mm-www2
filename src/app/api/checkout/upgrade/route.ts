@@ -20,6 +20,12 @@ type ResolvedUpgrade = {
   sourceVariantId: number
 }
 
+function getAppBaseUrl(req: NextRequest) {
+  const raw =
+    process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin
+  return raw.endsWith('/') ? raw.slice(0, -1) : raw
+}
+
 function getRelationId(value: RelationValue): string | number | undefined {
   if (!value) return undefined
   if (typeof value === 'string' || typeof value === 'number') return value
@@ -328,6 +334,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    const appBaseUrl = getAppBaseUrl(req)
+
     const checkoutBody = {
       data: {
         type: 'checkouts',
@@ -347,6 +355,9 @@ export async function POST(req: NextRequest) {
           },
           product_options: {
             enabled_variants: [targetLemonVariantId],
+            redirect_url: `${appBaseUrl}/checkout-success?source=lemon&flow=upgrade`,
+            receipt_button_text: 'Go to MX GRID',
+            receipt_link_url: `${appBaseUrl}/user-panel/purchases`,
           },
           checkout_options: {
             embed: false,
