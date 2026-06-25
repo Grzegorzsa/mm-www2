@@ -17,10 +17,18 @@ Use this file as the source of truth for support and operations.
 Main behavior:
 
 - Elements: shows Register button and routes to sign-up
-- Loops and Beats: show Buy buttons
+- Loops and Beats: show dynamic CTA based on effective ownership and available offers
+  - Owned: show `Owned`
+  - Offer available: show `Upgrade`/`Crossgrade` + offer price
+  - No ownership/offer: show `Buy`
+- Effective ownership uses tier inheritance
+  - Composer => Beats + Loops Pro
+  - Beats => Loops Pro
 - Buy opens a modal with required legal consent (Terms + Refund Policy)
 - Checkout is created through a dedicated API route that locks Lemon checkout to one selected variant
 - Affiliate code from URL is propagated to Lemon checkout as custom field
+- Checkout navigation is same-tab (no new tab)
+- Lemon checkout includes post-payment redirect to `/checkout-success`
 
 Implementation references:
 
@@ -40,6 +48,8 @@ Validation checklist:
 4. Verify checkout button is disabled until legal checkbox is accepted.
 5. Test URL with affiliate_code and confirm it appears in checkout custom data.
 6. Confirm checkout opens with only the selected variant enabled (no variant list).
+7. Confirm successful payment redirects to `/checkout-success?source=lemon&flow=...`.
+8. Confirm logged-in user with Composer sees `Owned` for Loops and Beats.
 
 ## 2. Commerce Offers (Policy Engine)
 
@@ -107,6 +117,7 @@ Operational notes:
 
 - If no checkout base URL or target variant id is configured, user sees a configuration warning.
 - For crossgrade, checkout uses offer.referencePriceCents as custom checkout price when provided.
+- Upgrade/Crossgrade checkout from panel uses same-tab navigation.
 
 ## 4. Email Templates
 
@@ -274,6 +285,24 @@ Template:
 
 Current entries:
 
+- Date: 2026-06-25
+- Scope: checkout, homepage, user-panel
+- Change: Added Lemon post-payment redirect (`redirect_url`) to `/checkout-success` with `source=lemon`, receipt button URL/text, and same-tab checkout navigation on homepage and in user-panel offers.
+- Files: src/app/api/checkout/purchase/route.ts, src/app/api/checkout/upgrade/route.ts, src/app/(frontend)/checkout-success/page.tsx, src/components/frontend/PricingActions.tsx, src/components/panel/UpgradeButton.tsx
+- Validation: pnpm tsc --noEmit
+
+- Date: 2026-06-25
+- Scope: homepage, offer-policy
+- Change: Restored dynamic homepage CTA logic (`Owned`/`Upgrade`/`Crossgrade`/`Buy`) and added tier inheritance for effective ownership (`Composer => Beats + Loops`, `Beats => Loops`).
+- Files: src/app/(frontend)/HomePage.tsx, src/components/frontend/PricingActions.tsx, src/lib/variantOwnership.ts
+- Validation: pnpm tsc --noEmit
+
+- Date: 2026-06-25
+- Scope: checkout, security
+- Change: Added canonical blocked-email matching by removing dots from local-part to prevent alias bypass (`first.last@...` equals `firstlast@...`) with compatibility for legacy stored records.
+- Files: src/lib/bannedDomains.ts, src/collections/BannedEmails.ts
+- Validation: pnpm tsc --noEmit
+
 - Date: 2026-06-23
 - Scope: webhook, checkout
 - Change: Added banned temporary email domain validation in registration flow and Lemon webhook.
@@ -319,6 +348,12 @@ Collection:
 Helpers:
 
 - src/lib/bannedDomains.ts
+
+Blocked email canonicalization:
+
+- Local-part (before `@`) is normalized by removing dots before storing and comparing.
+- Example: `first.last@gmail.com` and `fi.rstlast@gmail.com` are treated as the same canonical address.
+- Canonical matching is used in banned-email checks to prevent alias-based bypass.
 
 Validation points:
 

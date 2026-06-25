@@ -12,6 +12,11 @@ description: Opisuje proces sprzedaży, licencjonowania oraz hybrydowe strategie
 - `src\app\api\user\licenses\route.ts` - API sprawdzające status licencji dla aplikacji desktopowej
 - `src\app\api\user\installations\route.ts` - Śledzenie urządzeń (Hardware ID / HWID) - MAX 2 INSTALACJE na licencję
 - `src\app\api\webhooks\lemon\route.ts` - Webhook Lemon Squeezy - automatyczne tworzenie kont, zamówień, wyliczanie prowizji i generowanie licencji
+- `src\app\api\checkout\purchase\route.ts` - Tworzenie checkoutu dla zakupu bezpośredniego (single variant, redirect_url, receipt link)
+- `src\app\api\checkout\upgrade\route.ts` - Tworzenie checkoutu dla upgrade/crossgrade (custom_price, redirect_url, receipt link)
+- `src\app\(frontend)\checkout-success\page.tsx` - Strona powrotu po opłaceniu checkoutu Lemon Squeezy
+- `src\lib\variantOwnership.ts` - Dziedziczenie ownership między tierami (Composer/Beats/Loops)
+- `src\lib\bannedDomains.ts` - Normalizacja i walidacja blokad domen/emaili (w tym aliasy z kropkami)
 
 ## Słownik pojęć
 
@@ -29,6 +34,16 @@ Dokument definiuje architekturę dystrybucji oprogramowania "MX GRID" (dostępne
 3. **MX GRID Loops Pro** - Wersja komercyjna. Pełne VST/AU, brak możliwości edycji struktury Beats. Sprzedawana przez Lemon Squeezy.
 4. **MX GRID Beats** - Wersja komercyjna. Wszystko to co Loops Pro + pełna edycja i tworzenie własnych sekwencji Beats. Sprzedawana przez Lemon Squeezy.
 5. **MX GRID Composer** - Wersja flagowa (w przygotowaniu). Pełna aranżacja, sekwencery, tworzenie utworów od podstaw.
+
+### Dziedziczenie Uprawnień Wariantów (Krytyczne dla UI i logiki licencji)
+
+- Posiadanie wyższego tieru implikuje posiadanie niższych:
+  - `Composer` => `Beats` i `Loops Pro`
+  - `Beats` => `Loops Pro`
+- W cenniku (homepage) przyciski muszą respektować dziedziczenie:
+  - Jeśli użytkownik efektywnie posiada wariant (bezpośrednio lub przez wyższy tier), pokazujemy `Owned` zamiast `Buy`.
+  - Jeśli użytkownik nie posiada wariantu, ale ma aktywną ofertę (`upgrade_replace`/`crossgrade`), pokazujemy `Upgrade`/`Crossgrade` zamiast `Buy`.
+- Źródło prawdy dla tej logiki w kodzie: helper rozszerzający ownership po tierach (`variantOwnership`).
 
 ---
 
@@ -56,6 +71,16 @@ Dokument definiuje architekturę dystrybucji oprogramowania "MX GRID" (dostępne
 ---
 
 ## Scenariusze Sprzedażowe i Logika Biznesowa
+
+### 0. Powrót z Lemon Squeezy po opłaceniu zamówienia
+
+- Checkout musi być tworzony z `product_options.redirect_url`, aby klient automatycznie wracał na stronę aplikacji po udanej płatności.
+- Dodatkowo należy ustawiać:
+  - `product_options.receipt_button_text`
+  - `product_options.receipt_link_url`
+- Docelowy landing page po zakupie to strona sukcesu (np. `/checkout-success`) z parametrami kontekstowymi (`flow`, `source`).
+- Dla analityki i supportu wymagany jest query param `source=lemon` w redirect URL.
+- Zarówno homepage checkout, jak i checkout z panelu ofert powinny działać w tej samej karcie (brak nowego taba).
 
 ### 1. Zakup przez sklep i logowanie zaawansowanej afiliacji (Lemon Squeezy)
 
@@ -94,3 +119,12 @@ Podczas wywołania aktywacji klucza Player przez aplikację desktopową:
 ### 3. Blokada Urządzeń (Hardware Lock)
 
 Każda aktywna licencja w `Licenses` pozwala na jednoczesne powiązanie z maksymalnie 2 unikalnymi identyfikatorami sprzętowymi komputera (HWID) w celu zabezpieczenia przed piractwem.
+
+### 5. Blokada Emaili i Aliasów z Kropkami
+
+- Przy zapisie i walidacji zablokowanych emaili stosujemy kanoniczną normalizację:
+  - lowercase + trim
+  - usuwanie kropek z local-part (część przed `@`)
+  - przykład: `first.last@gmail.com` => `firstlast@gmail.com`
+- Weryfikacja blokady musi porównywać adresy po tej normalizacji, aby uniemożliwić obchodzenie blokady aliasami (`fi.rstlast@gmail.com`, itp.).
+- Kompatybilność wsteczna: porównanie powinno uwzględniać także starsze rekordy zapisane przed normalizacją.
