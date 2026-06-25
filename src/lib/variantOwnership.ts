@@ -27,6 +27,10 @@ function isBeatsVariant(variant: VariantRecord) {
   return matchesVariant(variant, 'beats')
 }
 
+function isComposerVariant(variant: VariantRecord) {
+  return matchesVariant(variant, 'composer')
+}
+
 export function expandOwnedVariantIds(
   directOwnedVariantIds: Set<number>,
   variants: VariantRecord[],
@@ -35,6 +39,15 @@ export function expandOwnedVariantIds(
 
   const loopsProVariant = variants.find(isLoopsProVariant)
   const beatsVariant = variants.find(isBeatsVariant)
+  const composerVariant = variants.find(isComposerVariant)
+
+  if (composerVariant?.id && beatsVariant?.id && directOwnedVariantIds.has(composerVariant.id)) {
+    expandedOwnedVariantIds.add(beatsVariant.id)
+  }
+
+  if (composerVariant?.id && loopsProVariant?.id && directOwnedVariantIds.has(composerVariant.id)) {
+    expandedOwnedVariantIds.add(loopsProVariant.id)
+  }
 
   if (loopsProVariant?.id && beatsVariant?.id && directOwnedVariantIds.has(beatsVariant.id)) {
     expandedOwnedVariantIds.add(loopsProVariant.id)
