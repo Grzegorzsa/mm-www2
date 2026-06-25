@@ -15,6 +15,8 @@ description: Opisuje proces sprzedaży, licencjonowania oraz hybrydowe strategie
 - `src\app\api\checkout\purchase\route.ts` - Tworzenie checkoutu dla zakupu bezpośredniego (single variant, redirect_url, receipt link)
 - `src\app\api\checkout\upgrade\route.ts` - Tworzenie checkoutu dla upgrade/crossgrade (custom_price, redirect_url, receipt link)
 - `src\app\(frontend)\checkout-success\page.tsx` - Strona powrotu po opłaceniu checkoutu Lemon Squeezy
+- `src\collections\DiscountCodes.ts` - Definicja kodów zniżkowych (percentage/fixed amount, limity użyć, daty, affiliate/lifetime)
+- `src\lib\discountCodes.ts` - Walidacja i wyliczanie zniżek do checkoutu oraz metadanych do webhooka
 - `src\lib\variantOwnership.ts` - Dziedziczenie ownership między tierami (Composer/Beats/Loops)
 - `src\lib\bannedDomains.ts` - Normalizacja i walidacja blokad domen/emaili (w tym aliasy z kropkami)
 

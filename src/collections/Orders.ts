@@ -85,6 +85,28 @@ export const Orders: CollectionConfig = {
       },
     },
     {
+      name: 'discountCode',
+      type: 'relationship',
+      relationTo: 'discount-codes',
+      admin: {
+        description: 'Discount code used to create this order, if any.',
+      },
+    },
+    {
+      name: 'discountBaseAmountCents',
+      type: 'number',
+      admin: {
+        description: 'Checkout subtotal before applying the discount code.',
+      },
+    },
+    {
+      name: 'discountAmountCents',
+      type: 'number',
+      admin: {
+        description: 'Amount discounted from the checkout subtotal, in cents.',
+      },
+    },
+    {
       name: 'affiliatePartner',
       type: 'relationship',
       relationTo: 'affiliates',

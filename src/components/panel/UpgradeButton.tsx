@@ -11,6 +11,8 @@ type UpgradeButtonProps = {
 export function UpgradeButton({ variantId, label = 'Upgrade', className }: UpgradeButtonProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [showPromoCode, setShowPromoCode] = useState(false)
+  const [discountCode, setDiscountCode] = useState('')
 
   async function handleUpgrade() {
     setError(null)
@@ -21,7 +23,7 @@ export function UpgradeButton({ variantId, label = 'Upgrade', className }: Upgra
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ variantId }),
+        body: JSON.stringify({ variantId, discountCode: discountCode.trim() || undefined }),
       })
 
       const data = await response.json().catch(() => ({}))
@@ -45,6 +47,26 @@ export function UpgradeButton({ variantId, label = 'Upgrade', className }: Upgra
 
   return (
     <div className="mt-4">
+      {!showPromoCode ? (
+        <button
+          type="button"
+          onClick={() => setShowPromoCode(true)}
+          className="mb-3 text-xs text-gray-500 underline underline-offset-2 hover:text-gray-700 transition-colors"
+        >
+          Have a promo code?
+        </button>
+      ) : (
+        <div className="mb-3 rounded-md border border-gray-200 bg-gray-50 p-3">
+          <label className="block text-xs font-medium text-gray-600 mb-1">Promo Code</label>
+          <input
+            type="text"
+            value={discountCode}
+            onChange={(event) => setDiscountCode(event.target.value)}
+            placeholder="Enter promo code"
+            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-gray-500 focus:outline-none"
+          />
+        </div>
+      )}
       <button
         type="button"
         disabled={isLoading}

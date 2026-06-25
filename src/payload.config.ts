@@ -18,6 +18,7 @@ import { Licenses } from './collections/Licenses'
 import { Installations } from './collections/Installations'
 import { WelcomeLicenses } from './collections/WelcomeLicenses'
 import { CommerceOffers } from './collections/CommerceOffers'
+import { DiscountCodes } from './collections/DiscountCodes'
 import { LicenseTransactions } from './collections/LicenseTransactions'
 import { BannedDomains } from './collections/BannedDomains'
 import { BannedEmails } from './collections/BannedEmails'
@@ -52,6 +53,7 @@ export default buildConfig({
     Products,
     ProductVariants,
     CommerceOffers,
+    DiscountCodes,
     BannedDomains,
     BannedEmails,
     Licenses,

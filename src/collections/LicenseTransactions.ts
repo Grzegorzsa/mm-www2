@@ -125,6 +125,37 @@ export const LicenseTransactions: CollectionConfig = {
       ],
     },
     {
+      type: 'row',
+      fields: [
+        {
+          name: 'discountCode',
+          type: 'relationship',
+          relationTo: 'discount-codes',
+          admin: { width: '50%' },
+        },
+        {
+          name: 'discountAmountCents',
+          type: 'number',
+          admin: { width: '50%' },
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'discountBaseAmountCents',
+          type: 'number',
+          admin: { width: '50%' },
+        },
+        {
+          name: 'discountCodeValue',
+          type: 'text',
+          admin: { width: '50%', description: 'Normalized discount code used at checkout.' },
+        },
+      ],
+    },
+    {
       name: 'errorMessage',
       type: 'textarea',
     },

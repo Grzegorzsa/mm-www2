@@ -77,6 +77,7 @@ export interface Config {
     products: Product;
     'product-variants': ProductVariant;
     'commerce-offers': CommerceOffer;
+    'discount-codes': DiscountCode;
     'banned-domains': BannedDomain;
     'banned-emails': BannedEmail;
     licenses: License;
@@ -100,6 +101,7 @@ export interface Config {
     products: ProductsSelect<false> | ProductsSelect<true>;
     'product-variants': ProductVariantsSelect<false> | ProductVariantsSelect<true>;
     'commerce-offers': CommerceOffersSelect<false> | CommerceOffersSelect<true>;
+    'discount-codes': DiscountCodesSelect<false> | DiscountCodesSelect<true>;
     'banned-domains': BannedDomainsSelect<false> | BannedDomainsSelect<true>;
     'banned-emails': BannedEmailsSelect<false> | BannedEmailsSelect<true>;
     licenses: LicensesSelect<false> | LicensesSelect<true>;
@@ -377,6 +379,18 @@ export interface Order {
    * Audit record of the licensing operation triggered by this order.
    */
   licenseTransaction?: (number | null) | LicenseTransaction;
+  /**
+   * Discount code used to create this order, if any.
+   */
+  discountCode?: (number | null) | DiscountCode;
+  /**
+   * Checkout subtotal before applying the discount code.
+   */
+  discountBaseAmountCents?: number | null;
+  /**
+   * Amount discounted from the checkout subtotal, in cents.
+   */
+  discountAmountCents?: number | null;
   affiliatePartner?: (number | null) | Affiliate;
   /**
    * Commission percentage granted for this specific order (e.g., 10 or 20)
@@ -405,6 +419,13 @@ export interface LicenseTransaction {
   toVariant: number | ProductVariant;
   amountPaidInCents: number;
   status: 'pending' | 'completed' | 'failed';
+  discountCode?: (number | null) | DiscountCode;
+  discountAmountCents?: number | null;
+  discountBaseAmountCents?: number | null;
+  /**
+   * Normalized discount code used at checkout.
+   */
+  discountCodeValue?: string | null;
   errorMessage?: string | null;
   info?: string | null;
   updatedAt: string;
@@ -490,9 +511,62 @@ export interface ProductVariant {
    */
   lemonSqueezyVariantId?: string | null;
   /**
+   * Base direct purchase price in cents. Used for discount code validation.
+   */
+  priceCents?: number | null;
+  /**
    * Marks this variant as commercial (paid). Leave unchecked for free/community variants.
    */
   isCommercial?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Discount codes for checkout pricing, affiliate attribution, and lifetime referral rules.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discount-codes".
+ */
+export interface DiscountCode {
+  id: number;
+  /**
+   * Case-insensitive discount code, stored normalized to lowercase.
+   */
+  code: string;
+  active?: boolean | null;
+  discountType: 'percentage' | 'fixed_amount';
+  /**
+   * Percentage value (e.g. 10) or fixed amount in cents (e.g. 1000 for 10 USD).
+   */
+  discountValue: number;
+  /**
+   * Minimum checkout subtotal after discount. Default: 1000 cents (10 USD).
+   */
+  minimumSubtotalCents?: number | null;
+  /**
+   * Optional usage cap. Leave empty for unlimited redemptions.
+   */
+  maxUses?: number | null;
+  /**
+   * Optional start date/time. Leave empty for immediate activation.
+   */
+  startsAt?: string | null;
+  /**
+   * Optional end date/time. Leave empty for no expiration.
+   */
+  endsAt?: string | null;
+  /**
+   * Optional affiliate partner to assign to matching transactions.
+   */
+  affiliatePartner?: (number | null) | Affiliate;
+  /**
+   * If enabled, assign the affiliate to the user as lifetime referral for first-time customers only.
+   */
+  affiliateLifetime?: boolean | null;
+  /**
+   * Optional internal notes about the promotion or partner agreement.
+   */
+  info?: string | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -694,6 +768,10 @@ export interface PayloadLockedDocument {
         value: number | CommerceOffer;
       } | null)
     | ({
+        relationTo: 'discount-codes';
+        value: number | DiscountCode;
+      } | null)
+    | ({
         relationTo: 'banned-domains';
         value: number | BannedDomain;
       } | null)
@@ -871,6 +949,9 @@ export interface OrdersSelect<T extends boolean = true> {
   amount?: T;
   transactionType?: T;
   licenseTransaction?: T;
+  discountCode?: T;
+  discountBaseAmountCents?: T;
+  discountAmountCents?: T;
   affiliatePartner?: T;
   affiliateRate?: T;
   affiliatePayoutStatus?: T;
@@ -914,6 +995,7 @@ export interface ProductVariantsSelect<T extends boolean = true> {
   description?: T;
   product?: T;
   lemonSqueezyVariantId?: T;
+  priceCents?: T;
   isCommercial?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -936,6 +1018,25 @@ export interface CommerceOffersSelect<T extends boolean = true> {
   allowedFromProducts?: T;
   isCommercial?: T;
   referencePriceCents?: T;
+  info?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "discount-codes_select".
+ */
+export interface DiscountCodesSelect<T extends boolean = true> {
+  code?: T;
+  active?: T;
+  discountType?: T;
+  discountValue?: T;
+  minimumSubtotalCents?: T;
+  maxUses?: T;
+  startsAt?: T;
+  endsAt?: T;
+  affiliatePartner?: T;
+  affiliateLifetime?: T;
   info?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -997,6 +1098,10 @@ export interface LicenseTransactionsSelect<T extends boolean = true> {
   toVariant?: T;
   amountPaidInCents?: T;
   status?: T;
+  discountCode?: T;
+  discountAmountCents?: T;
+  discountBaseAmountCents?: T;
+  discountCodeValue?: T;
   errorMessage?: T;
   info?: T;
   updatedAt?: T;

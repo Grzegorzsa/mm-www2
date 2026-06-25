@@ -35,6 +35,7 @@ async function seed() {
       uid: 'mx-grid-loops',
       description: 'Loops Pro',
       product: mxGridId,
+      priceCents: 7900,
     },
     {
       name: 'Loops SE',

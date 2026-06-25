@@ -30,10 +30,22 @@ Main behavior:
 - Checkout navigation is same-tab (no new tab)
 - Lemon checkout includes post-payment redirect to `/checkout-success`
 
+Discount codes:
+
+- Supported code types:
+  - percentage discount, e.g. `10` for 10%
+  - fixed amount, stored in cents, e.g. `1000` for 10 USD
+- Each code can be active/inactive, date-bound, and limited by max uses.
+- Default minimum subtotal after discount is 1000 cents (10 USD).
+- Discount codes can also attach an affiliate partner to the order.
+- If `affiliateLifetime` is enabled, the affiliate is copied to the user profile only for first-time customers.
+- Direct-purchase variants need `priceCents` configured so percentage/fixed discounts can be validated before redirecting to Lemon.
+
 Implementation references:
 
 - Frontend pricing actions: src/components/frontend/PricingActions.tsx
 - Homepage integration: src/app/(frontend)/HomePage.tsx
+- Discount code schema/helper: src/collections/DiscountCodes.ts, src/lib/discountCodes.ts
 
 Environment:
 
@@ -50,6 +62,8 @@ Validation checklist:
 6. Confirm checkout opens with only the selected variant enabled (no variant list).
 7. Confirm successful payment redirects to `/checkout-success?source=lemon&flow=...`.
 8. Confirm logged-in user with Composer sees `Owned` for Loops and Beats.
+9. Confirm a valid discount code reduces checkout price and persists on the order.
+10. Confirm a discount code with affiliate settings attaches the affiliate to the order and only creates lifetime referral for first-time customers.
 
 ## 2. Commerce Offers (Policy Engine)
 
@@ -174,7 +188,8 @@ Operational note:
 Current model responsibilities:
 
 - Orders: billing-facing order record and single source of truth for order identifiers
-- License Transactions: immutable licensing audit operation (no order identifiers — use order relation)
+- Orders: billing-facing order record, single source of truth for order identifiers, and discount code usage metadata
+- License Transactions: immutable licensing audit operation with discount code metadata (no order identifiers — use order relation)
 - Licenses: final entitlement state
 
 Collections:
@@ -207,7 +222,7 @@ Behavior summary:
 4. For upgrade_replace: source license found by allowedFromVariants/denyFromVariants, then deactivated.
 5. For crossgrade: source license found by allowedFromProducts + allowedFromVariants/denyFromVariants (+ commercial flag match); source license remains active.
 6. Transaction created as pending.
-7. Order created and linked to transaction.
+7. Order created and linked to transaction, including any applied discount metadata.
 8. License created with correct version range.
 9. Transaction updated to completed or failed.
 
@@ -284,6 +299,12 @@ Template:
 - Validation: types, manual test, automated test
 
 Current entries:
+
+- Date: 2026-06-25
+- Scope: discount-codes, checkout, webhook
+- Change: Added discount code workflow with percentage/fixed-amount discounts, min subtotal guard, active/date/usage limits, and optional affiliate/lifetime attribution.
+- Files: src/collections/DiscountCodes.ts, src/lib/discountCodes.ts, src/app/api/checkout/purchase/route.ts, src/app/api/checkout/upgrade/route.ts, src/app/api/webhooks/lemon/route.ts, src/collections/Orders.ts, src/collections/LicenseTransactions.ts, src/collections/ProductVariants.ts
+- Validation: pnpm generate:types; pnpm tsc --noEmit
 
 - Date: 2026-06-25
 - Scope: checkout, homepage, user-panel

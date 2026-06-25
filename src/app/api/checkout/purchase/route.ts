@@ -9,6 +9,7 @@ import {
   isBannedDomain,
   TEMP_EMAIL_REJECT_MESSAGE,
 } from '@/lib/bannedDomains'
+import { resolveDiscountCodeForAmount } from '@/lib/discountCodes'
 
 function getAppBaseUrl(req: NextRequest) {
   const raw =
@@ -29,10 +30,19 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
 
-  const { variantId, affiliateCode, email } = body as Record<string, unknown>
+  const { variantId, affiliateCode, discountCode, discount_code, email } = body as Record<
+    string,
+    unknown
+  >
   let checkoutEmail = typeof email === 'string' ? email.trim().toLowerCase() : ''
   const targetVariantKey =
     typeof variantId === 'string' || typeof variantId === 'number' ? String(variantId).trim() : ''
+  const requestedDiscountCode =
+    typeof discountCode === 'string'
+      ? discountCode
+      : typeof discount_code === 'string'
+        ? discount_code
+        : ''
 
   if (!targetVariantKey) {
     return NextResponse.json({ error: 'variantId is required' }, { status: 400 })
@@ -98,11 +108,22 @@ export async function POST(req: NextRequest) {
   }
 
   const appBaseUrl = getAppBaseUrl(req)
+  const basePriceCents = typeof targetVariant.priceCents === 'number' ? targetVariant.priceCents : 0
+  const discountResolution = requestedDiscountCode.trim()
+    ? await resolveDiscountCodeForAmount(payload, requestedDiscountCode, basePriceCents)
+    : { resolution: null, error: null }
+
+  if (discountResolution.error) {
+    return NextResponse.json({ error: discountResolution.error }, { status: 400 })
+  }
+
+  const discount = discountResolution.resolution
 
   const checkoutBody = {
     data: {
       type: 'checkouts',
       attributes: {
+        ...(discount ? { custom_price: discount.finalAmountCents } : {}),
         checkout_data: {
           email: checkoutEmail,
           custom: {
@@ -111,6 +132,16 @@ export async function POST(req: NextRequest) {
             intended_email: checkoutEmail,
             ...(typeof affiliateCode === 'string' && affiliateCode.trim()
               ? { affiliate_code: affiliateCode.trim() }
+              : {}),
+            ...(discount
+              ? {
+                  discount_code_id: String(discount.discountCode.id),
+                  discount_code_value: discount.normalizedCode,
+                  discount_type: discount.discountCode.discountType ?? 'percentage',
+                  discount_amount_cents: String(discount.discountAmountCents),
+                  discount_base_amount_cents: String(basePriceCents),
+                  discount_final_amount_cents: String(discount.finalAmountCents),
+                }
               : {}),
           },
         },
@@ -122,6 +153,7 @@ export async function POST(req: NextRequest) {
         },
         checkout_options: {
           embed: false,
+          discount: false,
         },
       },
       relationships: {
@@ -154,7 +186,19 @@ export async function POST(req: NextRequest) {
   const checkoutResult = await checkoutResponse.json().catch(() => null)
 
   if (!checkoutResponse.ok) {
-    return NextResponse.json({ error: 'Failed to create Lemon checkout' }, { status: 502 })
+    const lemonError =
+      checkoutResult?.errors?.[0]?.detail ||
+      checkoutResult?.errors?.[0]?.title ||
+      checkoutResult?.error ||
+      'Failed to create Lemon checkout'
+
+    console.error('[checkout/purchase] Lemon checkout API error', {
+      status: checkoutResponse.status,
+      statusText: checkoutResponse.statusText,
+      response: checkoutResult,
+    })
+
+    return NextResponse.json({ error: lemonError }, { status: 502 })
   }
 
   const checkoutUrl = checkoutResult?.data?.attributes?.url
@@ -162,5 +206,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to create Lemon checkout' }, { status: 502 })
   }
 
-  return NextResponse.json({ checkoutUrl, targetVariantId: targetVariantKey })
+  return NextResponse.json({
+    checkoutUrl,
+    targetVariantId: targetVariantKey,
+    discountCode: discount?.normalizedCode ?? null,
+    discountAmountCents: discount?.discountAmountCents ?? 0,
+  })
 }

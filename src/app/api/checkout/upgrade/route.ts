@@ -9,6 +9,7 @@ import {
   isBannedDomain,
   TEMP_EMAIL_REJECT_MESSAGE,
 } from '@/lib/bannedDomains'
+import { resolveDiscountCodeForAmount } from '@/lib/discountCodes'
 import type { CommerceOffer, ProductVariant } from '@/payload-types'
 
 type RelationValue = string | number | { id?: string | number } | null | undefined
@@ -184,8 +185,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
 
-  const { variantId } = body as Record<string, unknown>
+  const { variantId, discountCode, discount_code } = body as Record<string, unknown>
   const targetVariantId = typeof variantId === 'number' ? variantId : Number(variantId)
+  const requestedDiscountCode =
+    typeof discountCode === 'string'
+      ? discountCode
+      : typeof discount_code === 'string'
+        ? discount_code
+        : ''
 
   if (!Number.isFinite(targetVariantId)) {
     return NextResponse.json({ error: 'variantId is required' }, { status: 400 })
@@ -333,6 +340,17 @@ export async function POST(req: NextRequest) {
     customPriceCents = Math.max(targetPriceCents - sourcePriceCents, 0)
   }
 
+  const discountResolution = requestedDiscountCode.trim()
+    ? await resolveDiscountCodeForAmount(payload, requestedDiscountCode, customPriceCents)
+    : { resolution: null, error: null }
+
+  if (discountResolution.error) {
+    return NextResponse.json({ error: discountResolution.error }, { status: 400 })
+  }
+
+  const discount = discountResolution.resolution
+  const finalPriceCents = discount ? discount.finalAmountCents : customPriceCents
+
   try {
     const appBaseUrl = getAppBaseUrl(req)
 
@@ -340,7 +358,7 @@ export async function POST(req: NextRequest) {
       data: {
         type: 'checkouts',
         attributes: {
-          ...(customPriceCents > 0 ? { custom_price: customPriceCents } : {}),
+          ...(finalPriceCents > 0 ? { custom_price: finalPriceCents } : {}),
           checkout_data: {
             email: user.email,
             custom: {
@@ -351,6 +369,16 @@ export async function POST(req: NextRequest) {
               source_variant_id: String(resolvedUpgrade.sourceVariantId),
               target_variant_id: String(targetVariantId),
               commerce_offer_id: String(resolvedUpgrade.offer.id),
+              ...(discount
+                ? {
+                    discount_code_id: String(discount.discountCode.id),
+                    discount_code_value: discount.normalizedCode,
+                    discount_type: discount.discountCode.discountType ?? 'percentage',
+                    discount_amount_cents: String(discount.discountAmountCents),
+                    discount_base_amount_cents: String(customPriceCents),
+                    discount_final_amount_cents: String(finalPriceCents),
+                  }
+                : {}),
             },
           },
           product_options: {
@@ -361,6 +389,7 @@ export async function POST(req: NextRequest) {
           },
           checkout_options: {
             embed: false,
+            discount: false,
           },
         },
         relationships: {
@@ -389,7 +418,9 @@ export async function POST(req: NextRequest) {
       sourceLicenseId: resolvedUpgrade.sourceLicenseId,
       actionType: resolvedUpgrade.actionType,
       commerceOfferId: resolvedUpgrade.offer.id,
-      customPriceCents,
+      customPriceCents: finalPriceCents,
+      discountCode: discount?.normalizedCode ?? null,
+      discountAmountCents: discount?.discountAmountCents ?? 0,
       enabledVariants: [targetLemonVariantId],
     })
 
@@ -412,12 +443,18 @@ export async function POST(req: NextRequest) {
     })
 
     if (!checkoutResponse.ok) {
+      const lemonError =
+        checkoutResult?.errors?.[0]?.detail ||
+        checkoutResult?.errors?.[0]?.title ||
+        checkoutResult?.error ||
+        'Failed to create Lemon checkout'
+
       console.error('Lemon checkout API error:', {
         status: checkoutResponse.status,
         statusText: checkoutResponse.statusText,
         body: JSON.stringify(checkoutResult, null, 2),
       })
-      return NextResponse.json({ error: 'Failed to create Lemon checkout' }, { status: 502 })
+      return NextResponse.json({ error: lemonError }, { status: 502 })
     }
 
     const checkoutUrl = checkoutResult?.data?.attributes?.url
@@ -431,7 +468,9 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       checkoutUrl,
-      customPriceCents,
+      customPriceCents: finalPriceCents,
+      discountCode: discount?.normalizedCode ?? null,
+      discountAmountCents: discount?.discountAmountCents ?? 0,
       sourceVariantId: resolvedUpgrade.sourceVariantId,
       targetVariantId,
     })

@@ -67,6 +67,13 @@ export const ProductVariants: CollectionConfig = {
       },
     },
     {
+      name: 'priceCents',
+      type: 'number',
+      admin: {
+        description: 'Base direct purchase price in cents. Used for discount code validation.',
+      },
+    },
+    {
       name: 'isCommercial',
       type: 'checkbox',
       admin: {

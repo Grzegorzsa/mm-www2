@@ -14,6 +14,7 @@ import {
   isBannedEmailDomain,
   TEMP_EMAIL_REJECT_MESSAGE,
 } from '@/lib/bannedDomains'
+import { normalizeDiscountCodeInput } from '@/lib/discountCodes'
 
 type RelationValue = string | number | { id?: string | number } | null | undefined
 type OfferActionType = 'new_purchase' | 'upgrade_replace' | 'crossgrade' | 'renewal'
@@ -35,6 +36,15 @@ function getRelationIds(values: unknown): Array<string | number> {
 function asNumberId(value: string | number | undefined): number | undefined {
   if (typeof value === 'number' && Number.isFinite(value)) return value
   if (typeof value === 'string') {
+    const parsed = Number(value)
+    return Number.isFinite(parsed) ? parsed : undefined
+  }
+  return undefined
+}
+
+function asNumberValue(value: unknown): number | undefined {
+  if (typeof value === 'number' && Number.isFinite(value)) return value
+  if (typeof value === 'string' && value.trim()) {
     const parsed = Number(value)
     return Number.isFinite(parsed) ? parsed : undefined
   }
@@ -646,12 +656,61 @@ export async function POST(req: Request) {
     let finalAffiliateRecord: any = null
     let calculatedRate = 0
     let payoutStatus: 'none' | 'pending' = 'none'
+    let discountCodeRecord: any = null
 
     // Sprawdzamy najpierw czy w płatności przekazano kod (np. z linku)
     let affiliateCode = customData.affiliate_code || customData.affiliateCode
+    const rawDiscountCode =
+      customData.discount_code || customData.discountCode || customData.discount_code_value
+    const discountCodeId = customData.discount_code_id || customData.discountCodeId
+
+    if (discountCodeId) {
+      try {
+        discountCodeRecord = await payload.findByID({
+          collection: 'discount-codes',
+          id: discountCodeId,
+          depth: 1,
+          overrideAccess: true,
+        })
+      } catch {
+        discountCodeRecord = null
+      }
+    } else if (typeof rawDiscountCode === 'string' && rawDiscountCode.trim()) {
+      const normalizedDiscountCode = normalizeDiscountCodeInput(rawDiscountCode)
+      const discountCodeSearch = await payload.find({
+        collection: 'discount-codes',
+        where: { code: { equals: normalizedDiscountCode } },
+        limit: 1,
+        depth: 1,
+        overrideAccess: true,
+      })
+      discountCodeRecord = discountCodeSearch.docs[0] ?? null
+    }
+
+    const previousOrders = await payload.find({
+      collection: 'orders',
+      where: { user: { equals: userRecord.id } },
+      limit: 1,
+    })
+
+    const isFirstPurchase = previousOrders.docs.length === 0
 
     // Jeśli nie ma w linku, sprawdzamy czy użytkownik ma przypisanego opiekuna "na stałe"
-    if (!affiliateCode && userRecord.referredBy) {
+    if (!affiliateCode && discountCodeRecord?.affiliatePartner) {
+      const discountAffiliate =
+        typeof discountCodeRecord.affiliatePartner === 'object'
+          ? discountCodeRecord.affiliatePartner
+          : await payload.findByID({
+              collection: 'affiliates',
+              id: discountCodeRecord.affiliatePartner,
+            })
+
+      if (discountAffiliate && discountAffiliate.active) {
+        finalAffiliateRecord = discountAffiliate
+      }
+    }
+
+    if (!finalAffiliateRecord && !affiliateCode && userRecord.referredBy) {
       const parentAffiliate =
         typeof userRecord.referredBy === 'object'
           ? userRecord.referredBy
@@ -676,15 +735,6 @@ export async function POST(req: Request) {
 
     // Jeśli znaleźliśmy aktywnego partnera, kalkulujemy stawkę %
     if (finalAffiliateRecord) {
-      // Sprawdzamy, czy to jest PIERWSZE zamówienie tego klienta w naszym systemie
-      const previousOrders = await payload.find({
-        collection: 'orders',
-        where: { user: { equals: userRecord.id } },
-        limit: 1,
-      })
-
-      const isFirstPurchase = previousOrders.docs.length === 0
-
       if (affiliateCode) {
         // --- KLIENT PRZYSZEDŁ Z LINKU ---
         if (finalAffiliateRecord.linkStrategy?.enabled) {
@@ -695,6 +745,15 @@ export async function POST(req: Request) {
             calculatedRate = finalAffiliateRecord.linkStrategy.subsequentPurchaseRate
             payoutStatus = 'pending'
           }
+        }
+      } else if (discountCodeRecord?.affiliatePartner) {
+        // --- KLIENT PRZYSZEDŁ Z KODEM ZNIŻKOWYM POWIĄZANYM Z PARTNEREM ---
+        if (finalAffiliateRecord.linkStrategy?.enabled) {
+          calculatedRate = finalAffiliateRecord.linkStrategy.firstPurchaseRate
+          payoutStatus = 'pending'
+        } else if (finalAffiliateRecord.keyStrategy?.enabled) {
+          calculatedRate = finalAffiliateRecord.keyStrategy.commissionRate
+          payoutStatus = 'pending'
         }
       } else {
         // --- KLIENT KUPIŁ BEZ LINKU, ALE MA PODPIĘTEGO OPIEKUNA (np. z klucza Player / Trial) ---
@@ -711,7 +770,7 @@ export async function POST(req: Request) {
 
       // Zabezpieczenie: Jeśli użytkownik przyszedł z linku po raz pierwszy,
       // przypisujemy tego afilianta na stałe do profilu użytkownika do przyszłych zakupów
-      if (isFirstPurchase && affiliateCode) {
+      if (isFirstPurchase && (affiliateCode || discountCodeRecord?.affiliateLifetime)) {
         await payload.update({
           collection: 'users',
           id: userRecord.id,
@@ -734,6 +793,13 @@ export async function POST(req: Request) {
         product: productId,
         transactionType: normalizedTransactionType,
         amountPaidInCents: Number(totalAmountInCents ?? 0),
+        discountCode: discountCodeRecord ? discountCodeRecord.id : undefined,
+        discountAmountCents: asNumberValue(customData.discount_amount_cents),
+        discountBaseAmountCents: asNumberValue(customData.discount_base_amount_cents),
+        discountCodeValue:
+          typeof rawDiscountCode === 'string' && rawDiscountCode.trim()
+            ? normalizeDiscountCodeInput(rawDiscountCode)
+            : undefined,
         status: 'pending',
         info: `Lemon variant ID: ${lemonVariantId}`,
       },
@@ -751,6 +817,9 @@ export async function POST(req: Request) {
         amount: totalAmountInCents,
         transactionType: normalizedTransactionType,
         licenseTransaction: licenseTransaction.id,
+        discountCode: discountCodeRecord ? discountCodeRecord.id : undefined,
+        discountAmountCents: asNumberValue(customData.discount_amount_cents),
+        discountBaseAmountCents: asNumberValue(customData.discount_base_amount_cents),
         affiliatePartner: finalAffiliateRecord ? finalAffiliateRecord.id : undefined,
         affiliateRate: calculatedRate > 0 ? calculatedRate : undefined,
         affiliatePayoutStatus: payoutStatus,

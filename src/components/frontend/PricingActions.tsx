@@ -47,6 +47,8 @@ export function PricingActions({
   const [selectedVariant, setSelectedVariant] = useState<VariantKey | null>(null)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [affiliateCode, setAffiliateCode] = useState<string | null>(null)
+  const [showPromoCode, setShowPromoCode] = useState(false)
+  const [discountCode, setDiscountCode] = useState('')
   const [isLoadingCheckout, setIsLoadingCheckout] = useState(false)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
   const [email, setEmail] = useState(sessionEmail)
@@ -100,6 +102,8 @@ export function PricingActions({
     setSelectedVariant(key)
     setAcceptedTerms(false)
     setCheckoutError(null)
+    setShowPromoCode(false)
+    setDiscountCode('')
   }
 
   async function handleCheckout() {
@@ -122,10 +126,14 @@ export function PricingActions({
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(
             isOfferCheckout
-              ? { variantId: selectedOffer?.targetVariantId }
+              ? {
+                  variantId: selectedOffer?.targetVariantId,
+                  discountCode: discountCode.trim() || undefined,
+                }
               : {
                   variantId: selectedVariantId,
                   affiliateCode,
+                  discountCode: discountCode.trim() || undefined,
                   email: email || undefined,
                 },
           ),
@@ -237,6 +245,12 @@ export function PricingActions({
                   the legal terms and tested the software on your system.
                 </p>
 
+                {checkoutError && (
+                  <p className="mt-4 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
+                    {checkoutError}
+                  </p>
+                )}
+
                 <div className="mt-5">
                   <label className="block text-sm font-medium text-[#30363b] mb-2">
                     Email Address (for portal login)
@@ -254,7 +268,31 @@ export function PricingActions({
                       className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#3fbef2]"
                     />
                   )}
-                  {checkoutError && <p className="mt-1 text-sm text-red-700">{checkoutError}</p>}
+                </div>
+
+                <div className="mt-4">
+                  {!showPromoCode ? (
+                    <button
+                      type="button"
+                      onClick={() => setShowPromoCode(true)}
+                      className="text-xs text-[#5f6770] underline underline-offset-2 hover:text-[#30363b] transition-colors"
+                    >
+                      Have a promo code?
+                    </button>
+                  ) : (
+                    <div className="rounded-md border border-gray-200 bg-gray-50 p-3">
+                      <label className="block text-sm font-medium text-[#30363b] mb-2">
+                        Promo Code
+                      </label>
+                      <input
+                        type="text"
+                        value={discountCode}
+                        onChange={(event) => setDiscountCode(event.target.value)}
+                        placeholder="Enter promo code"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#3fbef2]"
+                      />
+                    </div>
+                  )}
                 </div>
 
                 <label className="mt-5 flex items-start gap-3 text-sm text-[#30363b]">
