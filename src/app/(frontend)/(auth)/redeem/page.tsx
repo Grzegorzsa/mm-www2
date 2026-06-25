@@ -1,5 +1,7 @@
 import type { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 import ClientOnly from '@/components/ClientOnly'
+import { getSessionUser } from '@/lib/session'
 import { RedeemForm } from './RedeemForm'
 
 export const metadata: Metadata = {
@@ -7,7 +9,13 @@ export const metadata: Metadata = {
   description: 'Redeem your activation code and create an MXbeats account',
 }
 
-export default function RedeemPage() {
+export default async function RedeemPage() {
+  const user = await getSessionUser()
+
+  if (user) {
+    redirect('/user-panel/redeem')
+  }
+
   return (
     <>
       <h1 className="text-2xl font-bold text-gray-900 mb-2">Redeem Activation Code</h1>
