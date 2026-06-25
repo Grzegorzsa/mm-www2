@@ -173,6 +173,8 @@ export default async function HomePage() {
 
       const directOwnedVariantIds = new Set<number>()
       for (const license of userLicenses.docs) {
+        if (license.validTill) continue
+
         const productVariants = license.productVariants as any[]
         if (!Array.isArray(productVariants)) continue
 

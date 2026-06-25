@@ -8,6 +8,7 @@ type PopulatedLicense = {
   product: Product
   productVariants: ProductVariant[]
   active?: boolean | null
+  validTill?: string | null
 }
 
 export type AvailableOfferView = {
@@ -36,6 +37,10 @@ function isCommercialLicense(license: PopulatedLicense): boolean {
   return license.productVariants.some((variant) => isCommercialVariant(variant))
 }
 
+function isOfferEligibleLicense(license: PopulatedLicense): boolean {
+  return Boolean(license.active) && !license.validTill
+}
+
 export async function getAvailableOffersForUser(
   payload: Payload,
   userId: number,
@@ -52,7 +57,7 @@ export async function getAvailableOffersForUser(
       ),
     })) as PopulatedLicense[]
 
-  const activeLicenses = licenses.filter((license) => license.active)
+  const activeLicenses = licenses.filter(isOfferEligibleLicense)
   const activeVariantById = new Map<number, ProductVariant>()
 
   for (const license of activeLicenses) {
