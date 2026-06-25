@@ -304,10 +304,6 @@ export function PricingActions({
                     {isLoadingCheckout ? 'Preparing...' : 'Go to Checkout'}
                   </button>
                 </div>
-
-                {checkoutError ? (
-                  <p className="mt-3 text-sm text-red-700">{checkoutError}</p>
-                ) : null}
               </div>
             </div>
           </td>
