@@ -34,7 +34,7 @@ export function UpgradeButton({ variantId, label = 'Upgrade', className }: Upgra
         throw new Error('Checkout URL is missing')
       }
 
-      window.open(checkoutUrl, '_blank', 'noopener,noreferrer')
+      window.location.assign(checkoutUrl)
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Could not start upgrade checkout'
       setError(message)
