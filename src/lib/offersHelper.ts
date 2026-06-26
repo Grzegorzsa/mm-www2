@@ -1,5 +1,5 @@
 import type { Payload } from 'payload'
-import type { CommerceOffer, Product, ProductVariant } from '@/payload-types'
+import type { Product, ProductVariant } from '@/payload-types'
 import { getUserLicenses } from '@/lib/licenseHelper'
 import { getVariantHierarchy } from '@/lib/variantOwnership'
 
@@ -9,17 +9,33 @@ type PopulatedLicense = {
   productVariants: ProductVariant[]
   active?: boolean | null
   validTill?: string | null
+  trial?: boolean | null
 }
 
 export type AvailableOfferView = {
   id: number
   name: string
-  actionType: 'upgrade_replace' | 'crossgrade'
+  actionType: 'upgrade_replace' | 'crossgrade' | 'trial'
   fromVariantNames: string[]
   toVariantName: string
   targetVariantId: number
   hasLemonVariantMapping: boolean
   referencePriceCents: number | undefined
+  validDays?: number | null
+}
+
+export type OfferDebugEntry = {
+  offerId: number
+  offerName: string
+  actionType: string
+  targetVariantName: string
+  accepted: boolean
+  reason: string
+}
+
+type GetOffersResult = {
+  offers: AvailableOfferView[]
+  debug: OfferDebugEntry[]
 }
 
 function getVariantId(value: ProductVariant | number | null | undefined): number | null {
@@ -41,10 +57,10 @@ function isOfferEligibleLicense(license: PopulatedLicense): boolean {
   return Boolean(license.active) && !license.validTill
 }
 
-export async function getAvailableOffersForUser(
+async function getAvailableOffersForUserInternal(
   payload: Payload,
   userId: number,
-): Promise<AvailableOfferView[]> {
+): Promise<GetOffersResult> {
   const rawLicenses = await getUserLicenses(payload, userId)
 
   const licenses = rawLicenses
@@ -66,6 +82,16 @@ export async function getAvailableOffersForUser(
     }
   }
 
+  // Collect variant IDs from active trial licenses to block duplicate trials
+  const activeTrialVariantIds = new Set<number>()
+  for (const license of licenses) {
+    if (license.trial && license.active) {
+      for (const variant of license.productVariants) {
+        activeTrialVariantIds.add(variant.id)
+      }
+    }
+  }
+
   let maxOwnedHierarchy: number | null = null
   for (const ownedVariant of activeVariantById.values()) {
     const hierarchy = getVariantHierarchy(ownedVariant)
@@ -84,6 +110,7 @@ export async function getAvailableOffersForUser(
           or: [
             { actionType: { equals: 'upgrade_replace' } },
             { actionType: { equals: 'crossgrade' } },
+            { actionType: { equals: 'trial' } },
           ],
         },
       ],
@@ -93,14 +120,37 @@ export async function getAvailableOffersForUser(
     overrideAccess: true,
   })
 
-  return offersResult.docs.reduce<AvailableOfferView[]>((acc, offer) => {
-    const actionType = offer.actionType
-    if (actionType !== 'upgrade_replace' && actionType !== 'crossgrade') return acc
+  const debugEntries: OfferDebugEntry[] = []
 
+  const offers = offersResult.docs.reduce<AvailableOfferView[]>((acc, offer) => {
+    const actionType = offer.actionType
     const targetVariant =
       typeof offer.targetVariant === 'object' && offer.targetVariant ? offer.targetVariant : null
-    if (!targetVariant) return acc
-    if (activeVariantById.has(targetVariant.id)) return acc
+    const targetVariantName = targetVariant?.name ?? `variant#${String(offer.targetVariant)}`
+
+    function reject(reason: string): AvailableOfferView[] {
+      debugEntries.push({
+        offerId: offer.id,
+        offerName: offer.name,
+        actionType,
+        targetVariantName,
+        accepted: false,
+        reason,
+      })
+      return acc
+    }
+
+    if (actionType !== 'upgrade_replace' && actionType !== 'crossgrade' && actionType !== 'trial') {
+      return reject(`actionType '${actionType}' is not handled`)
+    }
+
+    if (!targetVariant) {
+      return reject('targetVariant is not populated')
+    }
+
+    if (activeVariantById.has(targetVariant.id)) {
+      return reject(`user already owns target variant '${targetVariantName}'`)
+    }
 
     const targetHierarchy = getVariantHierarchy(targetVariant)
     if (
@@ -108,7 +158,14 @@ export async function getAvailableOffersForUser(
       targetHierarchy !== null &&
       targetHierarchy <= maxOwnedHierarchy
     ) {
-      return acc
+      return reject(
+        `target hierarchy ${String(targetHierarchy)} ≤ max owned hierarchy ${String(maxOwnedHierarchy)}`,
+      )
+    }
+
+    // For trial: block if user already has an active trial for this variant
+    if (actionType === 'trial' && activeTrialVariantIds.has(targetVariant.id)) {
+      return reject(`user already has an active trial for variant '${targetVariantName}'`)
     }
 
     let matchedFromVariants: ProductVariant[] = []
@@ -126,7 +183,9 @@ export async function getAvailableOffersForUser(
           .filter((id): id is number => typeof id === 'number'),
       )
 
-      if (allowedFromProductIds.size === 0) return acc
+      if (allowedFromProductIds.size === 0) {
+        return reject('crossgrade has no allowedFromProducts configured')
+      }
 
       const allowedFromVariantIds = new Set(
         (offer.allowedFromVariants ?? [])
@@ -157,6 +216,7 @@ export async function getAvailableOffersForUser(
           return candidateVariants.filter((variant) => !denyFromVariantIds.has(variant.id))
         })
     } else {
+      // upgrade_replace and trial: match source variants from user's active licenses
       const allowedFromVariants = (offer.allowedFromVariants ?? []).filter(
         (variant): variant is ProductVariant => typeof variant === 'object' && variant !== null,
       )
@@ -178,19 +238,48 @@ export async function getAvailableOffersForUser(
       )
     }
 
-    if (matchedFromVariants.length === 0) return acc
+    if (matchedFromVariants.length === 0) {
+      return reject('no matching source license/variant found')
+    }
+
+    debugEntries.push({
+      offerId: offer.id,
+      offerName: offer.name,
+      actionType,
+      targetVariantName,
+      accepted: true,
+      reason: `matched from: ${matchedFromVariants.map((v) => v.name).join(', ')}`,
+    })
 
     acc.push({
       id: offer.id,
       name: offer.name,
-      actionType,
+      actionType: actionType as 'upgrade_replace' | 'crossgrade' | 'trial',
       fromVariantNames: matchedFromVariants.map((variant) => variant.name),
       toVariantName: targetVariant.name,
       targetVariantId: targetVariant.id,
       hasLemonVariantMapping: Boolean(targetVariant.lemonSqueezyVariantId),
       referencePriceCents: offer.referencePriceCents ?? undefined,
+      validDays: offer.validDays ?? null,
     })
 
     return acc
   }, [])
+
+  return { offers, debug: debugEntries }
+}
+
+export async function getAvailableOffersForUser(
+  payload: Payload,
+  userId: number,
+): Promise<AvailableOfferView[]> {
+  const { offers } = await getAvailableOffersForUserInternal(payload, userId)
+  return offers
+}
+
+export async function getAvailableOffersForUserWithDebug(
+  payload: Payload,
+  userId: number,
+): Promise<GetOffersResult> {
+  return getAvailableOffersForUserInternal(payload, userId)
 }

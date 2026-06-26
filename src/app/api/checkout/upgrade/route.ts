@@ -16,7 +16,7 @@ type RelationValue = string | number | { id?: string | number } | null | undefin
 
 type ResolvedUpgrade = {
   offer: CommerceOffer
-  actionType: 'upgrade_replace' | 'crossgrade'
+  actionType: 'upgrade_replace' | 'crossgrade' | 'trial'
   sourceLicenseId: number
   sourceVariantId: number
 }
@@ -141,7 +141,7 @@ function resolveUpgradeForUser(
       continue
     }
 
-    if (actionType !== 'upgrade_replace') continue
+    if (actionType !== 'upgrade_replace' && actionType !== 'trial') continue
 
     const allowedFromVariantIds = new Set(getNumberRelationIds(offer.allowedFromVariants))
     const denyFromVariantIds = new Set(getNumberRelationIds(offer.denyFromVariants))
@@ -271,7 +271,9 @@ export async function POST(req: NextRequest) {
 
   const alreadyHasTarget = activeLicensesResult.docs.some((license) => {
     const variantIds = getLicenseVariantIds(license)
-    return variantIds.includes(targetVariantId)
+    // Ignore trial licenses — they are checked separately below
+    const isTrial = Boolean((license as { trial?: boolean | null }).trial)
+    return !isTrial && variantIds.includes(targetVariantId)
   })
 
   if (alreadyHasTarget) {
@@ -287,6 +289,7 @@ export async function POST(req: NextRequest) {
           or: [
             { actionType: { equals: 'upgrade_replace' } },
             { actionType: { equals: 'crossgrade' } },
+            { actionType: { equals: 'trial' } },
           ],
         },
         { targetVariant: { equals: targetVariantId } },
@@ -312,6 +315,89 @@ export async function POST(req: NextRequest) {
       { status: 400 },
     )
   }
+
+  // --- Trial offer: skip Lemon Squeezy, create license directly ---
+  if (resolvedUpgrade.actionType === 'trial') {
+    const validDays =
+      typeof resolvedUpgrade.offer.validDays === 'number' && resolvedUpgrade.offer.validDays > 0
+        ? resolvedUpgrade.offer.validDays
+        : null
+
+    if (!validDays) {
+      return NextResponse.json(
+        { error: 'Trial offer is misconfigured: validDays is required' },
+        { status: 400 },
+      )
+    }
+
+    const productId = asNumberId(getRelationId(targetVariant.product as RelationValue))
+    if (!productId) {
+      return NextResponse.json(
+        { error: 'Target variant product mapping is invalid' },
+        { status: 400 },
+      )
+    }
+
+    // Check for existing trial on this product + variant for this user
+    const existingTrialResult = await payload.find({
+      collection: 'licenses',
+      where: {
+        and: [
+          { user: { equals: user.id } },
+          { product: { equals: productId } },
+          { trial: { equals: true } },
+          { productVariants: { equals: targetVariantId } },
+        ],
+      },
+      limit: 1,
+      depth: 0,
+      overrideAccess: true,
+    })
+
+    if (existingTrialResult.totalDocs > 0) {
+      return NextResponse.json(
+        { error: 'Trial for this product variant has already been activated on your account' },
+        { status: 409 },
+      )
+    }
+
+    const versionFrom = resolvedUpgrade.offer.versionFrom ?? 1
+    const versionTo = resolvedUpgrade.offer.versionTo ?? 1
+
+    const validTill = new Date()
+    validTill.setDate(validTill.getDate() + validDays)
+
+    await payload.create({
+      collection: 'licenses',
+      data: {
+        user: user.id,
+        product: productId,
+        productVariants: [targetVariantId],
+        versionFrom,
+        versionTo,
+        maxInstallations: 2,
+        validTill: validTill.toISOString(),
+        trial: true,
+        active: true,
+        info: `Trial activated from commerce offer #${resolvedUpgrade.offer.id}`,
+      },
+      overrideAccess: true,
+    })
+
+    console.info('[checkout/upgrade] Trial license created', {
+      userId: user.id,
+      targetVariantId,
+      commerceOfferId: resolvedUpgrade.offer.id,
+      validDays,
+      validTill: validTill.toISOString(),
+    })
+
+    return NextResponse.json({
+      trial: true,
+      targetVariantId,
+    })
+  }
+  // --- End trial offer handling ---
 
   let customPriceCents = 0
 

@@ -47,6 +47,7 @@ async function getUserLicenses(payload: Payload, userId: number) {
       versionFrom: true,
       versionTo: true,
       active: true,
+      trial: true,
       createdAt: true,
       info: true,
     },

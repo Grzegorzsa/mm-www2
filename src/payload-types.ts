@@ -471,6 +471,10 @@ export interface License {
    */
   validTill?: string | null;
   active?: boolean | null;
+  /**
+   * Marks this license as a time-limited trial.
+   */
+  trial?: boolean | null;
   deactivatedReason?: string | null;
   versionFrom: number;
   versionTo: number;
@@ -599,10 +603,10 @@ export interface CommerceOffer {
   name: string;
   active?: boolean | null;
   /**
-   * Lemon Squeezy variant_id that triggers this offer rule. Optional for Upgrade (Replace).
+   * Lemon Squeezy variant_id that triggers this offer rule. Optional for Upgrade (Replace) and Trial offers.
    */
   lemonSqueezyVariantId?: string | null;
-  actionType: 'new_purchase' | 'upgrade_replace' | 'crossgrade' | 'renewal';
+  actionType: 'new_purchase' | 'upgrade_replace' | 'crossgrade' | 'renewal' | 'trial';
   product: number | Product;
   /**
    * Variant entitlement created by this purchase/upgrade.
@@ -633,6 +637,10 @@ export interface CommerceOffer {
    * Optional reference list price in cents (for reporting only).
    */
   referencePriceCents?: number | null;
+  /**
+   * Required for Trial offers. Number of days the trial license will be valid from activation.
+   */
+  validDays?: number | null;
   /**
    * Optional notes describing business intent for this rule.
    */
@@ -1084,6 +1092,7 @@ export interface CommerceOffersSelect<T extends boolean = true> {
   allowedFromProducts?: T;
   isCommercial?: T;
   referencePriceCents?: T;
+  validDays?: T;
   info?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -1161,6 +1170,7 @@ export interface LicensesSelect<T extends boolean = true> {
   productVariants?: T;
   validTill?: T;
   active?: T;
+  trial?: T;
   deactivatedReason?: T;
   versionFrom?: T;
   versionTo?: T;

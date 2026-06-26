@@ -64,12 +64,14 @@ export const CommerceOffers: CollectionConfig = {
           required: false,
           unique: true,
           validate: (value: unknown, { siblingData }: { siblingData?: unknown }) => {
-            const actionType =
+            const data =
               typeof siblingData === 'object' && siblingData
-                ? (siblingData as { actionType?: string }).actionType
+                ? (siblingData as { actionType?: string })
                 : undefined
 
-            if (actionType !== 'upgrade_replace' && !value) {
+            const actionType = data?.actionType
+
+            if (actionType !== 'upgrade_replace' && actionType !== 'trial' && !value) {
               return 'Lemon Squeezy variant_id is required for New Purchase, Renewal, and Crossgrade offers.'
             }
 
@@ -78,7 +80,7 @@ export const CommerceOffers: CollectionConfig = {
           admin: {
             width: '50%',
             description:
-              'Lemon Squeezy variant_id that triggers this offer rule. Optional for Upgrade (Replace).',
+              'Lemon Squeezy variant_id that triggers this offer rule. Optional for Upgrade (Replace) and Trial offers.',
           },
         },
         {
@@ -91,6 +93,7 @@ export const CommerceOffers: CollectionConfig = {
             { label: 'Upgrade (Replace)', value: 'upgrade_replace' },
             { label: 'Crossgrade', value: 'crossgrade' },
             { label: 'Renewal', value: 'renewal' },
+            { label: 'Trial (Free)', value: 'trial' },
           ],
           admin: { width: '50%' },
         },
@@ -202,6 +205,33 @@ export const CommerceOffers: CollectionConfig = {
           admin: {
             width: '50%',
             description: 'Optional reference list price in cents (for reporting only).',
+          },
+        },
+      ],
+    },
+    {
+      type: 'row',
+      fields: [
+        {
+          name: 'validDays',
+          type: 'number',
+          min: 1,
+          validate: (value: unknown, { siblingData }: { siblingData?: unknown }) => {
+            const actionType =
+              typeof siblingData === 'object' && siblingData
+                ? (siblingData as { actionType?: string }).actionType
+                : undefined
+
+            if (actionType === 'trial' && !value) {
+              return 'Valid Days is required for Trial offers.'
+            }
+
+            return true
+          },
+          admin: {
+            width: '50%',
+            description:
+              'Required for Trial offers. Number of days the trial license will be valid from activation.',
           },
         },
       ],

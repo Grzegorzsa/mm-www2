@@ -1,14 +1,22 @@
 'use client'
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 type UpgradeButtonProps = {
   variantId: number
   label?: string
   className?: string
+  isTrial?: boolean
 }
 
-export function UpgradeButton({ variantId, label = 'Upgrade', className }: UpgradeButtonProps) {
+export function UpgradeButton({
+  variantId,
+  label = 'Upgrade',
+  className,
+  isTrial = false,
+}: UpgradeButtonProps) {
+  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showPromoCode, setShowPromoCode] = useState(false)
@@ -31,6 +39,11 @@ export function UpgradeButton({ variantId, label = 'Upgrade', className }: Upgra
         throw new Error(data?.error ?? 'Could not initialize checkout')
       }
 
+      if (data?.trial) {
+        router.refresh()
+        return
+      }
+
       const checkoutUrl = data?.checkoutUrl
       if (typeof checkoutUrl !== 'string' || !checkoutUrl) {
         throw new Error('Checkout URL is missing')
@@ -47,26 +60,30 @@ export function UpgradeButton({ variantId, label = 'Upgrade', className }: Upgra
 
   return (
     <div className="mt-4">
-      {!showPromoCode ? (
-        <button
-          type="button"
-          onClick={() => setShowPromoCode(true)}
-          className="mb-3 flex w-fit items-center gap-1 text-xs font-medium text-gray-500 hover:text-gray-700 transition-colors"
-        >
-          <span aria-hidden="true">+</span>
-          <span>Add promo code</span>
-        </button>
-      ) : (
-        <div className="mb-3 rounded-md border border-gray-200 bg-gray-50 p-3">
-          <label className="block text-xs font-medium text-gray-600 mb-1">Promo Code</label>
-          <input
-            type="text"
-            value={discountCode}
-            onChange={(event) => setDiscountCode(event.target.value)}
-            placeholder="Enter promo code"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-gray-500 focus:outline-none"
-          />
-        </div>
+      {!isTrial && (
+        <>
+          {!showPromoCode ? (
+            <button
+              type="button"
+              onClick={() => setShowPromoCode(true)}
+              className="mb-3 flex w-fit items-center gap-1 text-xs font-medium text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              <span aria-hidden="true">+</span>
+              <span>Add promo code</span>
+            </button>
+          ) : (
+            <div className="mb-3 rounded-md border border-gray-200 bg-gray-50 p-3">
+              <label className="block text-xs font-medium text-gray-600 mb-1">Promo Code</label>
+              <input
+                type="text"
+                value={discountCode}
+                onChange={(event) => setDiscountCode(event.target.value)}
+                placeholder="Enter promo code"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-gray-500 focus:outline-none"
+              />
+            </div>
+          )}
+        </>
       )}
       <div className="mt-1">
         <button
@@ -78,7 +95,7 @@ export function UpgradeButton({ variantId, label = 'Upgrade', className }: Upgra
             'inline-block bg-black text-white px-4 py-2 text-xs tracking-widest uppercase hover:bg-gray-800 transition-colors font-medium rounded-lg disabled:opacity-60 disabled:cursor-not-allowed'
           }
         >
-          {isLoading ? 'Preparing...' : label}
+          {isLoading ? 'Activating...' : label}
         </button>
       </div>
 

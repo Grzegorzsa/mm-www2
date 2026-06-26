@@ -112,10 +112,11 @@ Collection:
 
 Key fields:
 
-- lemonSqueezyVariantId: incoming variant id from webhook (required for all types except upgrade_replace)
-- actionType: new_purchase | upgrade_replace | crossgrade | renewal
+- lemonSqueezyVariantId: incoming variant id from webhook (required for all types except upgrade_replace and trial)
+- actionType: new_purchase | upgrade_replace | crossgrade | renewal | trial
 - product + targetVariant: what entitlement should be created
 - versionFrom + versionTo: explicit major version range
+- validDays: required for trial, specifies trial license duration in days
 - allowedFromVariants: optional upgrade whitelist (upgrade_replace only)
 - denyFromVariants: optional upgrade blacklist (upgrade_replace only)
 - allowedFromProducts: required for crossgrade — list of source products the user must own
@@ -141,24 +142,65 @@ Suggested setup examples:
    - targetVariant must point to a variant of the destination product
    - lemonSqueezyVariantId is required (use the Lemon Squeezy variant ID, not the product/app ID)
    - user_id must be present in checkout custom_data (hard reject if missing)
+4. Trial offer:
+   - actionType: trial
+   - validDays is required and must be > 0 (e.g. 14 for a 14-day trial)
+   - lemonSqueezyVariantId is NOT required
+   - targetVariant must point to the trial variant
+   - lemonSqueezyVariantId is NOT used; checkout bypasses Lemon
 
 Note: Products without variants must still have at least one ProductVariant record (e.g. named "Standard"). This is required for license provisioning.
 
-## 3. User Panel Upgrade & Crossgrade Offers
+## 2.1 Trial Offers
 
-User panel now computes available offers from active licenses and active upgrade_replace/crossgrade offers.
+Trial offers enable time-limited free access to a product variant for users who own an active license.
+
+Key fields:
+
+- actionType: trial
+- validDays: number of days the trial license is valid (required, must be > 0)
+- targetVariant: the variant to trial
+- lemonSqueezyVariantId: NOT required for trial (checkout bypasses Lemon)
+
+Behavior:
+
+- Checkout does not redirect to Lemon Squeezy; instead, license is created directly in the backend
+- License is created with `validTill` set to `now + validDays`
+- Duplicate prevention: user cannot activate a trial for the same product + variant twice (blocks both active and expired trials)
+- Response is `{ trial: true, targetVariantId }` instead of `{ checkoutUrl }`
+- Button text in UI: "Start Free Trial"
+- Trial duration is displayed in days
+
+## 2.2 License Status Display
+
+License status in the user panel is determined by the following priority:
+
+1. If `validTill` is in the past → status is "Expired" (amber color, warning)
+2. If `active: true` → status is "Active" (green color)
+3. If `active: false` → status is "Inactive" (red color)
+
+This ensures expired trial licenses are clearly marked with expiration status even if the active flag is still true.
 
 Implementation:
 
-- src/app/(user-panel)/user-panel/purchases/Purchases.tsx
+- src/components/panel/LicenseCard.tsx
+
+## 3. User Panel Upgrade & Crossgrade & Trial Offers
+
+User panel now computes available offers from active licenses and active upgrade_replace/crossgrade/trial offers.
+
+Implementation:
+
+- src/app/(user-panel)/user-panel/offers/Offers.tsx
 
 Eligibility logic summary:
 
 - Uses only active user licenses
-- Reads active commerce offers where actionType is upgrade_replace or crossgrade
+- Reads active commerce offers where actionType is upgrade_replace, crossgrade, or trial
 - For upgrade_replace: matches source variants against allowedFromVariants/denyFromVariants
 - For crossgrade: requires allowedFromProducts + applies allowedFromVariants/denyFromVariants + commercial/non-commercial match
-- Excludes offers where target variant is already owned
+- For trial: checks validDays requirement and prevents duplicate trials per product+variant
+- Excludes offers where target variant is already owned (except trial, which has its own duplicate check)
 
 Dev troubleshooting:
 
@@ -168,7 +210,9 @@ Operational notes:
 
 - If no checkout base URL or target variant id is configured, user sees a configuration warning.
 - For crossgrade, checkout uses offer.referencePriceCents as custom checkout price when provided.
-- Upgrade/Crossgrade checkout from panel uses same-tab navigation.
+- For trial, button text is "Start Free Trial" and no Lemon checkout occurs.
+- For trial, if user already has an active or expired trial for the product+variant, offer is hidden with debug reason.
+- Upgrade/Crossgrade/Trial checkout from panel uses same-tab navigation.
 
 ## 4. Email Templates
 
@@ -320,8 +364,9 @@ Required validation after sales-related changes:
    - new purchase
    - upgrade path
    - crossgrade path
+   - trial path (if applicable)
    - post-purchase email
-   - user panel upgrade visibility
+   - user panel offer visibility
 
 ## 8. Change Log (Keep Updated)
 
@@ -396,6 +441,12 @@ Current entries:
 - Change: Homepage buy buttons now create Lemon checkouts through a dedicated API route and force a single selected variant, preventing the variant list from appearing and ensuring the intended product is preselected.
 - Files: src/app/api/checkout/purchase/route.ts, src/components/frontend/PricingActions.tsx, src/app/(frontend)/HomePage.tsx
 - Validation: pnpm tsc --noEmit
+
+- Date: 2026-06-26
+- Scope: offer-policy, checkout, user-panel, debug
+- Change: Added trial actionType to commerce offers. Trial offers skip Lemon checkout and create licenses directly with validDays expiration. Prevents duplicate trials per product+variant. Added dev-only eligibility debug panel in offers section. Fixed LicenseCard to show "Expired" status when validTill has passed.
+- Files: src/collections/CommerceOffers.ts, src/lib/offersHelper.ts, src/app/api/checkout/upgrade/route.ts, src/app/(user-panel)/user-panel/offers/Offers.tsx, src/app/(user-panel)/user-panel/offers/OffersDebug.tsx, src/components/panel/UpgradeButton.tsx, src/components/panel/LicenseCard.tsx, src/lib/licenseHelper.ts
+- Validation: pnpm payload generate:types; pnpm tsc --noEmit
 
 ## 9. Temporary Email Domain Policy
 

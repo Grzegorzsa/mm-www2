@@ -18,9 +18,22 @@ function formatDate(iso: string | null | undefined): string {
   })
 }
 
+function isLicenseExpired(validTill: string | null | undefined): boolean {
+  if (!validTill) return false
+  return new Date(validTill) < new Date()
+}
+
 export function LicenseCard({ license }: { license: PopulatedLicense }) {
   const { product, productVariants, validTill, versionFrom, versionTo, active, createdAt, info } =
     license
+
+  const expired = isLicenseExpired(validTill)
+  const status = expired ? 'Expired' : active ? 'Active' : 'Inactive'
+  const statusColor = expired
+    ? 'bg-amber-100 text-amber-700'
+    : active
+      ? 'bg-green-100 text-green-700'
+      : 'bg-red-100 text-red-600'
 
   const thumb = product.thumb && typeof product.thumb === 'object' ? product.thumb : null
 
@@ -42,12 +55,8 @@ export function LicenseCard({ license }: { license: PopulatedLicense }) {
       <div className="p-5">
         <div className="flex items-start justify-between gap-5 mb-3">
           <h2 className="text-base font-semibold text-gray-900">{product.name}</h2>
-          <span
-            className={`text-xs font-medium px-2 py-0.5 rounded-full ${
-              active ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-600'
-            }`}
-          >
-            {active ? 'Active' : 'Inactive'}
+          <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${statusColor}`}>
+            {status}
           </span>
         </div>
 

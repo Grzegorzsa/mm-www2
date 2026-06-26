@@ -65,7 +65,7 @@ Dokument definiuje architekturę dystrybucji oprogramowania "MX GRID" (dostępne
 - **Kolekcja `Orders`**: Przechowuje `source` (`lemon_squeezy`, `plugin_boutique`), `externalOrderId` (Lemon `order_number` – czytelny numer zamówienia), `lemonOrderId` (techniczne API id zasobu Order w Lemon Squeezy), integer `amount` (w centach), `transactionType` (`new_purchase`, `upgrade`, `crossgrade`, `renewal`), oraz zamrożone pola prowizji: `affiliatePartner` (relacja do `affiliates`) i `affiliateRate` (liczba, procent naliczony w locie). Kolekcja `Orders` jest jedynym źródłem prawdy dla identyfikatorów zamówień.
 - **Kolekcja `Users`**: Reprezentuje standardowych klientów. Posiada wyłącznie pole relacji `referredBy` (celujące w kolekcję `affiliates`), wskazujące na stałego opiekuna konta.
 - **Kolekcja `ProductVariants`**: Zawiera logiczne pole `uid` (np. "beats", "loops_pro") oraz niezależne pole tekstowe `lemonSqueezyVariantId` mapujące wariant z zewnętrznym ID platformy płatniczej. Każdy produkt musi mieć co najmniej jeden wariant – nawet produkty bez opcji powinny posiadać jeden wariant domyślny (np. "Standard").
-- **Kolekcja `CommerceOffers`**: Silnik reguł sprzedażowych. Obsługuje typy akcji: `new_purchase`, `upgrade_replace`, `crossgrade`, `renewal`. Dla crossgrade'ów wymagane jest pole `allowedFromProducts` (lista produktów, z których klient może przejść) oraz `targetVariant` (wariant docelowy). Pole `lemonSqueezyVariantId` jest wymagane dla wszystkich typów poza `upgrade_replace`.
+- **Kolekcja `CommerceOffers`**: Silnik reguł sprzedażowych. Obsługuje typy akcji: `new_purchase`, `upgrade_replace`, `crossgrade`, `renewal`, `trial`. Dla crossgrade'ów wymagane jest pole `allowedFromProducts` (lista produktów, z których klient może przejść) oraz `targetVariant` (wariant docelowy). Dla trial wymagane jest pole `validDays` (liczba dni ważności licencji od aktywacji). Pole `lemonSqueezyVariantId` jest wymagane dla wszystkich typów poza `upgrade_replace` i `trial`.
 - **Kolekcja `LicenseTransactions`**: Niezmienny log operacji licencyjnych. Nie przechowuje identyfikatorów zamówień – pełne dane zamówienia dostępne przez relację `order` → `Orders`.
 
 ### Polityka Wersjonowania Licencji (Krytyczne)
@@ -78,9 +78,37 @@ Dokument definiuje architekturę dystrybucji oprogramowania "MX GRID" (dostępne
 - **Nigdy przenigdy nie przyznajemy domyślnie nielimitowanego zakresu wersji** (np. automatyczne `1..999` dla zwykłego zakupu).
 - Jeśli kod nie ma pewności co do wersji, bezpieczny fallback to `versionFrom = product.versionNo` oraz `versionTo = product.versionNo`.
 
+### Status Licencji (Active vs Expired)
+
+Licencja wyświetlana w panelu użytkownika może mieć następujące statusy:
+
+- **Active**: `active: true` i `validTill` jest null lub w przyszłości
+- **Expired**: `validTill` jest w przeszłości (niezależnie od flagi `active`)
+- **Inactive**: `active: false`
+
+W wariancie zabarwienia:
+
+- Expired — amber (ostrzeżenie)
+- Active — zielony
+- Inactive — czerwony
+
+Ustalanie statusu musi najpierw sprawdzić datę wygaśnięcia, a dopiero wtedy flagę `active`.
+
 ---
 
 ## Scenariusze Sprzedażowe i Logika Biznesowa
+
+### -1. Trial Offers (Bezpłatne czasowe licencje)
+
+Trial offer to specjalny typ akcji pozwalający użytkownikowi z licencją produktu A aktywować czasowo ograniczoną bezpłatną licencję produktu B.
+
+1. Checkout **nie przechodzi przez Lemon Squeezy** — licencja jest tworzona bezpośrednio w backendzie.
+2. Użytkownik nie może aktywować trial dwa razy dla tego samego `product` + `variant` — system blokuje duplikaty i zwraca komunikat o poprzedniej aktywacji.
+3. Trial licencja ma ustawioną datę wygaśnięcia (`validTill`) na podstawie pola `validDays` z oferty.
+4. Pole `validDays` jest **wymagane** dla trial offers i musi być większe od 0.
+5. Endpoint checkout (`/api/checkout/upgrade`) zwraca zamiast `checkoutUrl` flagę `{ trial: true }`, co powoduje reload strony.
+6. W panelu użytkownika trial oferę oznacza się etykietą "Trial" oraz wyświetla czas ważności w dniach.
+7. **Debug panel** (niedostępny w production): tabelka pokazująca każdą ofertę, czy jest wyświetlana, oraz powód (np. "user already has an active trial for variant 'Loops Pro'").
 
 ### 0. Powrót z Lemon Squeezy po opłaceniu zamówienia
 

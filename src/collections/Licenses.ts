@@ -115,6 +115,15 @@ export const Licenses: CollectionConfig = {
           },
         },
         {
+          name: 'trial',
+          type: 'checkbox',
+          defaultValue: false,
+          admin: {
+            width: '25%',
+            description: 'Marks this license as a time-limited trial.',
+          },
+        },
+        {
           name: 'deactivatedReason',
           type: 'text',
           admin: {
