@@ -17,13 +17,17 @@ description: Opisuje proces sprzedaży, licencjonowania oraz hybrydowe strategie
 - `src\app\(frontend)\checkout-success\page.tsx` - Strona powrotu po opłaceniu checkoutu Lemon Squeezy
 - `src\collections\DiscountCodes.ts` - Definicja kodów zniżkowych (percentage/fixed amount, limity użyć, daty, affiliate/lifetime)
 - `src\lib\discountCodes.ts` - Walidacja i wyliczanie zniżek do checkoutu oraz metadanych do webhooka
-- `src\collections\ActivationCodes.ts` - Definicja jednorazowych kodów aktywacyjnych (produkty, warianty, zakres wersji, limity instalacji)
+- `src\collections\ActivationCodeDefinitions.ts` - Definicja szablonów kodów aktywacyjnych (docelowy produkt/wariant, zakres wersji, trial, upgrade/new_purchase)
+- `src\collections\ActivationCodes.ts` - Definicja instancji jednorazowych kodów aktywacyjnych powiązanych z definicją
 - `src\lib\activationCodes.ts` - Walidacja, generowanie oraz finalizacja redeem kodów aktywacyjnych
 - `src\app\api\redeem\preview\route.ts` - Publiczny podgląd poprawności kodu aktywacyjnego
 - `src\app\api\redeem\public\route.ts` - Publiczny redeem kodu + zakładanie nowego konta
 - `src\app\api\redeem\user\route.ts` - Redeem kodu dla zalogowanego użytkownika
 - `src\app\api\admin\activation-codes\generate\route.ts` - Endpoint admina do generowania paczek kodów aktywacyjnych
 - `src\app\api\admin\activation-codes\report\route.ts` - Raport użycia kodów aktywacyjnych z filtrami dat/sellera
+- `src\app\api\admin\activation-codes\export\route.ts` - Eksport CSV aktywacji kodów
+- `src\app\(payload)\admin\tools\activation-codes\page.tsx` - Strona narzędzia admina do generowania kodów z definicji
+- `src\app\(payload)\admin\tools\activation-codes\ActivationCodesGeneratorForm.tsx` - Formularz wyboru definicji i generowania batchy kodów
 - `src\lib\variantOwnership.ts` - Dziedziczenie ownership oparte o poziom `product-variants.hierarchy` (bez hardkodu Composer/Beats/Loops)
 - `src\lib\bannedDomains.ts` - Normalizacja i walidacja blokad domen/emaili (w tym aliasy z kropkami)
 
@@ -67,6 +71,8 @@ Dokument definiuje architekturę dystrybucji oprogramowania "MX GRID" (dostępne
 - **Kolekcja `ProductVariants`**: Zawiera logiczne pole `uid` (np. "beats", "loops_pro") oraz niezależne pole tekstowe `lemonSqueezyVariantId` mapujące wariant z zewnętrznym ID platformy płatniczej. Każdy produkt musi mieć co najmniej jeden wariant – nawet produkty bez opcji powinny posiadać jeden wariant domyślny (np. "Standard").
 - **Kolekcja `CommerceOffers`**: Silnik reguł sprzedażowych. Obsługuje typy akcji: `new_purchase`, `upgrade_replace`, `crossgrade`, `renewal`, `trial`. Dla crossgrade'ów wymagane jest pole `allowedFromProducts` (lista produktów, z których klient może przejść) oraz `targetVariant` (wariant docelowy). Dla trial wymagane jest pole `validDays` (liczba dni ważności licencji od aktywacji). Pole `lemonSqueezyVariantId` jest wymagane dla wszystkich typów poza `upgrade_replace` i `trial`. Pole `referencePriceCents` jest kanoniczną ceną oferty dla `upgrade_replace` i `crossgrade`; jeśli jest ustawione, checkout i UI muszą użyć tej kwoty. Dopiero gdy `referencePriceCents` jest puste, wolno wyliczyć cenę jako różnicę między ceną wariantu docelowego i źródłowego.
 - **Kolekcja `LicenseTransactions`**: Niezmienny log operacji licencyjnych. Nie przechowuje identyfikatorów zamówień – pełne dane zamówienia dostępne przez relację `order` → `Orders`.
+- **Kolekcja `ActivationCodeDefinitions`**: Szablony zachowania kodów aktywacyjnych. Definiuje m.in. `actionType` (`new_purchase` / `upgrade_replace`), docelowy product/variant, zakres wersji, trial, validDays oraz opcjonalne `allowedFromVariants`.
+- **Kolekcja `ActivationCodes`**: Instancje pojedynczych kodów (single-use) powiązane relacją `definition`. To ta kolekcja przechowuje stan użycia (`redeemedBy`, `redeemedAt`, `redeemSource`).
 
 ### Polityka Wersjonowania Licencji (Krytyczne)
 
@@ -171,6 +177,8 @@ Każda aktywna licencja w `Licenses` pozwala na jednoczesne powiązanie z maksym
 ### 6. Kody aktywacyjne (jednorazowe) i dwa kanały redeem
 
 - Kody aktywacyjne służą do nadawania licencji poza procesem checkout Lemon.
+- Model jest dwuwarstwowy: definicja (`activation-code-definitions`) + instancja kodu (`activation-codes`).
+- Generowanie batchy kodów powinno bazować na `definitionId` (admin tool/API).
 - Każdy kod może zostać użyty tylko raz i po redeem otrzymuje znacznik użytkownika, datę oraz źródło aktywacji.
 - Wspierane są dwa kanały:
   - publiczny (`/redeem`) dla nowego klienta (podgląd kodu -> utworzenie konta -> redeem),
@@ -178,5 +186,12 @@ Każda aktywna licencja w `Licenses` pozwala na jednoczesne powiązanie z maksym
 - Publiczny kanał ma walidację e-maila/hasła i ochronę rate-limit.
 - Pole `validDays` (domyślnie puste/null) pozwala ustawić datę wygaśnięcia licencji od momentu redeem.
 - Pole `trial` blokuje kolejne triale dla tego samego `product` + `productVariant` u tego samego użytkownika.
+- Pole `actionType` steruje trybem redeem:
+  - `new_purchase`: tworzy nową licencję docelową,
+  - `upgrade_replace`: wymaga kwalifikującej licencji źródłowej zgodnej z `allowedFromVariants`.
+- Dla `upgrade_replace` obowiązują reguły:
+  - `allowedFromVariants` jest wymagane,
+  - redeem jest odrzucany, jeśli user już posiada docelowy wariant,
+  - po sukcesie licencja źródłowa jest dezaktywowana (`deactivatedReason`), a tworzona jest licencja docelowa.
 - Kod może opcjonalnie wskazywać partnera (`seller`) i flagę lifetime; przypisanie lifetime wykonujemy tylko w ścieżce nowego konta.
 - Raport admina zwraca agregację aktywacji po product/variant oraz obsługuje filtry dat i sellera.

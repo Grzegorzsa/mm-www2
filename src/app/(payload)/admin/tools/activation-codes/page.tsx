@@ -7,8 +7,10 @@ import { ActivationCodesGeneratorForm } from './ActivationCodesGeneratorForm'
 type DefinitionOption = {
   id: number
   name: string
+  actionType?: 'new_purchase' | 'upgrade_replace' | null
   product?: { name?: string } | number | null
   productVariant?: { name?: string } | number | null
+  allowedFromVariants?: Array<{ name?: string } | number> | null
   versionFrom?: number | null
   versionTo?: number | null
   trial?: boolean | null
@@ -22,8 +24,10 @@ type DefinitionOption = {
 type FormDefinitionOption = {
   id: number
   name: string
+  actionType: 'new_purchase' | 'upgrade_replace'
   productName: string
   variantName: string
+  allowedFromVariantNames: string[]
   versionFrom: number
   versionTo: number
   trial: boolean
@@ -54,6 +58,7 @@ export default async function ActivationCodesToolPage() {
     (definition) => ({
       id: definition.id,
       name: definition.name,
+      actionType: definition.actionType === 'upgrade_replace' ? 'upgrade_replace' : 'new_purchase',
       productName:
         typeof definition.product === 'object' && definition.product?.name
           ? definition.product.name
@@ -62,6 +67,17 @@ export default async function ActivationCodesToolPage() {
         typeof definition.productVariant === 'object' && definition.productVariant?.name
           ? definition.productVariant.name
           : 'Unknown variant',
+      allowedFromVariantNames: Array.isArray(definition.allowedFromVariants)
+        ? definition.allowedFromVariants
+            .map((variant) =>
+              typeof variant === 'object' && variant?.name
+                ? variant.name
+                : typeof variant === 'number'
+                  ? String(variant)
+                  : null,
+            )
+            .filter((name): name is string => Boolean(name))
+        : [],
       versionFrom:
         typeof definition.versionFrom === 'number' && Number.isFinite(definition.versionFrom)
           ? definition.versionFrom

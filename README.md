@@ -227,3 +227,15 @@ server {
     }
 }
 ```
+
+## Testy integracji
+
+```bash
+# Jak uruchomić:
+
+# Tylko nowe testy:
+pnpm exec vitest run activation-codes-upgrade.int.spec.ts --config vitest.config.mts
+
+# Całe testy integracyjne z konfiguracji projektu:
+pnpm run test:int
+```

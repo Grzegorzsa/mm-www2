@@ -9,7 +9,7 @@ This document explains how to use and maintain the current sales flow implementa
 - Audit model: Orders + License Transactions + Licenses
 - Admin debug endpoint for order trace by external order id
 - Temporary email domain blocking for registration and webhook
-- Activation codes (single-use) with public and authenticated redeem paths
+- Activation codes (single-use), definition templates, and upgrade code paths
 
 Use this file as the source of truth for support and operations.
 
@@ -17,6 +17,8 @@ Use this file as the source of truth for support and operations.
 
 Purpose:
 
+- Activation code behavior is defined in reusable templates (`activation-code-definitions`).
+- Generated records in `activation-codes` are single-use instances linked to a definition.
 - Activation codes are one-time keys used to grant a license without Lemon checkout.
 - They support two redemption paths:
   - Public redeem (new customer creates account while redeeming)
@@ -29,6 +31,11 @@ Rules:
 - Redeem creates a license with the version and installation limits configured on the code.
 - Optional `validDays` sets license `validTill` from the redeem date (for example 14-day trials).
 - Optional `trial` prevents redeem if user already redeemed any previous trial code for the same product + variant.
+- `actionType: new_purchase` creates a target license directly.
+- `actionType: upgrade_replace` requires a qualifying active source license and then replaces it:
+  - definition must provide `allowedFromVariants`
+  - redeem is rejected if user already owns the target variant
+  - on success, target license is created and source license is deactivated with a reason
 - If `assignSellerAsLifetime` is enabled and the code is redeemed in public flow, seller is assigned as lifetime affiliate only for the newly created user account.
 
 Operational endpoints:
@@ -38,14 +45,26 @@ Operational endpoints:
 - Authenticated redeem: `POST /api/redeem/user`
 - Admin generate: `POST /api/admin/activation-codes/generate`
 - Admin report: `GET /api/admin/activation-codes/report`
+- Admin export: `GET /api/admin/activation-codes/export`
 
 Implementation references:
 
-- Collection: src/collections/ActivationCodes.ts
+- Definition collection: src/collections/ActivationCodeDefinitions.ts
+- Instance collection: src/collections/ActivationCodes.ts
 - Helper: src/lib/activationCodes.ts
+- Admin tool page: src/app/(payload)/admin/tools/activation-codes/page.tsx
+- Admin tool form: src/app/(payload)/admin/tools/activation-codes/ActivationCodesGeneratorForm.tsx
 - Public page: src/app/(frontend)/(auth)/redeem/page.tsx
 - Panel page: src/app/(user-panel)/user-panel/redeem/page.tsx
 - Panel navigation: src/components/panel/Sidebar.tsx
+
+Definition setup checklist (admin):
+
+1. Create/update `activation-code-definitions` record with target product/variant and version range.
+2. For upgrade code templates set `actionType = upgrade_replace`.
+3. For upgrade templates configure `allowedFromVariants` (required).
+4. Generate code batch using `definitionId` in admin tool/API.
+5. Validate redeem path on user with and without matching source license.
 
 ## 1. Checkout Flow on Homepage
 
@@ -346,6 +365,31 @@ Support usage:
 3. Verify order, transaction status, and generated licenses.
 4. If mismatch exists, inspect info/errorMessage in license-transactions and webhook logs.
 
+## 6.1 Support FAQ (Activation Codes)
+
+Use these replies for first-line support triage.
+
+1. Q: Why does customer see "Activation code has already been used"?
+   Answer: The code instance is single-use and already has `redeemedBy`/`redeemedAt`. Ask customer for account email and redeem timestamp, then verify in admin report/export.
+
+2. Q: Why does customer see "Activation code has expired"?
+   Answer: The code-level `expiresAt` is in the past. Expired codes cannot be reactivated. Generate a new code batch from the same definition if replacement is approved.
+
+3. Q: Why does customer see "No eligible source license found for this upgrade code"?
+   Answer: The definition is `actionType = upgrade_replace` and requires an active source license matching `allowedFromVariants`. Confirm customer currently has an active qualifying variant.
+
+4. Q: Why does customer see "You already own this target variant"?
+   Answer: Upgrade-replace codes are blocked when user already owns the target variant license. Recommend standard reactivation/support path instead of upgrade code redeem.
+
+5. Q: Why does customer see "Activation code upgrade definition is misconfigured"?
+   Answer: The selected definition for `upgrade_replace` is missing `allowedFromVariants` (or has an empty list). Fix definition configuration, then generate a new code.
+
+6. Q: Why does customer see "Trial for this product and variant has already been activated on your account"?
+   Answer: Trial redeem is one-time per user + product + variant, including expired historical trials. Issue a non-trial code or full purchase/upgrade path.
+
+7. Q: What should support collect before escalation?
+   Answer: Customer email, code value, redeem channel (public/user-panel), exact error message, UTC timestamp, and expected source/target variant.
+
 ## 7. Ongoing Update Procedure
 
 When you change sales behavior, update this document in the same PR.
@@ -385,6 +429,18 @@ Template:
 - Validation: types, manual test, automated test
 
 Current entries:
+
+- Date: 2026-06-29
+- Scope: activation-codes, admin-tools
+- Change: Split activation codes into reusable definitions (`activation-code-definitions`) and single-use instances (`activation-codes`), and switched admin generator to definition-based flow (`definitionId`) with backward-compatible fallback.
+- Files: src/collections/ActivationCodeDefinitions.ts, src/collections/ActivationCodes.ts, src/app/api/admin/activation-codes/generate/route.ts, src/app/api/admin/activation-codes/report/route.ts, src/app/api/admin/activation-codes/export/route.ts, src/app/(payload)/admin/tools/activation-codes/page.tsx, src/app/(payload)/admin/tools/activation-codes/ActivationCodesGeneratorForm.tsx, src/lib/activationCodes.ts
+- Validation: pnpm payload generate:types; pnpm tsc --noEmit
+
+- Date: 2026-06-29
+- Scope: activation-codes
+- Change: Added upgrade activation code mode (`upgrade_replace`) with required `allowedFromVariants`, source-license eligibility checks, target-ownership guard, and source-license deactivation on successful redeem.
+- Files: src/collections/ActivationCodeDefinitions.ts, src/lib/activationCodes.ts, tests/int/activation-codes-upgrade.int.spec.ts
+- Validation: pnpm exec vitest run tests/int/activation-codes-upgrade.int.spec.ts --config ./vitest.config.mts; pnpm tsc --noEmit
 
 - Date: 2026-06-25
 - Scope: discount-codes, checkout, webhook

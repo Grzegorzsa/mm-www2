@@ -6,8 +6,10 @@ export const ActivationCodeDefinitions: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: [
       'name',
+      'actionType',
       'product',
       'productVariant',
+      'allowedFromVariants',
       'trial',
       'versionFrom',
       'versionTo',
@@ -35,6 +37,26 @@ export const ActivationCodeDefinitions: CollectionConfig = {
       },
     },
     {
+      name: 'actionType',
+      type: 'select',
+      required: true,
+      defaultValue: 'new_purchase',
+      options: [
+        {
+          label: 'New Purchase',
+          value: 'new_purchase',
+        },
+        {
+          label: 'Upgrade (Replace)',
+          value: 'upgrade_replace',
+        },
+      ],
+      admin: {
+        description:
+          'New Purchase creates a license directly. Upgrade (Replace) requires an existing source license and replaces it.',
+      },
+    },
+    {
       name: 'product',
       type: 'relationship',
       relationTo: 'products',
@@ -47,6 +69,31 @@ export const ActivationCodeDefinitions: CollectionConfig = {
       relationTo: 'product-variants',
       required: true,
       admin: { width: '25%' },
+    },
+    {
+      name: 'allowedFromVariants',
+      type: 'relationship',
+      relationTo: 'product-variants',
+      hasMany: true,
+      validate: (value: unknown, { siblingData }: { siblingData?: unknown }) => {
+        const actionType =
+          typeof siblingData === 'object' && siblingData
+            ? (siblingData as { actionType?: string }).actionType
+            : undefined
+
+        if (actionType === 'upgrade_replace') {
+          if (!Array.isArray(value) || value.length === 0) {
+            return 'Allowed From Variants is required for Upgrade definitions.'
+          }
+        }
+
+        return true
+      },
+      admin: {
+        description:
+          'For Upgrade (Replace): source variants that qualify user license for this code.',
+        condition: (_, siblingData) => siblingData?.actionType === 'upgrade_replace',
+      },
     },
     {
       name: 'versionFrom',

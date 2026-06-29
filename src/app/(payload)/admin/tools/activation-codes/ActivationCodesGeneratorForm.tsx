@@ -12,8 +12,10 @@ type GenerateResponse = {
 type DefinitionOption = {
   id: number
   name: string
+  actionType: 'new_purchase' | 'upgrade_replace'
   productName: string
   variantName: string
+  allowedFromVariantNames: string[]
   versionFrom: number
   versionTo: number
   trial: boolean
@@ -193,6 +195,20 @@ export function ActivationCodesGeneratorForm({ definitions }: Props) {
               <strong>Selected:</strong> {selectedDefinition.productName} /{' '}
               {selectedDefinition.variantName}
             </p>
+            <p style={{ margin: '6px 0 0 0' }}>
+              <strong>Mode:</strong>{' '}
+              {selectedDefinition.actionType === 'upgrade_replace'
+                ? 'Upgrade (Replace)'
+                : 'New Purchase'}
+            </p>
+            {selectedDefinition.actionType === 'upgrade_replace' ? (
+              <p style={{ margin: '6px 0 0 0' }}>
+                <strong>Allowed From Variants:</strong>{' '}
+                {selectedDefinition.allowedFromVariantNames.length > 0
+                  ? selectedDefinition.allowedFromVariantNames.join(', ')
+                  : 'None configured'}
+              </p>
+            ) : null}
             <p style={{ margin: '6px 0 0 0' }}>
               <strong>Versions:</strong> {selectedDefinition.versionFrom} -{' '}
               {selectedDefinition.versionTo}

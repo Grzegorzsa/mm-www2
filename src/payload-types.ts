@@ -662,8 +662,16 @@ export interface ActivationCodeDefinition {
    * Internal definition label used in admin and reports.
    */
   name: string;
+  /**
+   * New Purchase creates a license directly. Upgrade (Replace) requires an existing source license and replaces it.
+   */
+  actionType: 'new_purchase' | 'upgrade_replace';
   product: number | Product;
   productVariant: number | ProductVariant;
+  /**
+   * For Upgrade (Replace): source variants that qualify user license for this code.
+   */
+  allowedFromVariants?: (number | ProductVariant)[] | null;
   versionFrom: number;
   versionTo: number;
   /**
@@ -1151,8 +1159,10 @@ export interface DiscountCodesSelect<T extends boolean = true> {
  */
 export interface ActivationCodeDefinitionsSelect<T extends boolean = true> {
   name?: T;
+  actionType?: T;
   product?: T;
   productVariant?: T;
+  allowedFromVariants?: T;
   versionFrom?: T;
   versionTo?: T;
   trial?: T;

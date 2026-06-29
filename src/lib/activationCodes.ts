@@ -4,8 +4,10 @@ type RelationValue = number | string | { id?: number | string } | null | undefin
 
 type ActivationCodeDefinitionShape = {
   id: number
+  actionType?: 'new_purchase' | 'upgrade_replace' | null
   product?: RelationValue
   productVariant?: RelationValue
+  allowedFromVariants?: RelationValue[] | null
   trial?: boolean | null
   versionFrom?: number | null
   versionTo?: number | null
@@ -39,8 +41,10 @@ type ActivationCodeRawRecord = {
 export type ActivationCodeRecord = {
   id: number
   code: string
+  actionType?: 'new_purchase' | 'upgrade_replace'
   product: RelationValue
   productVariant: RelationValue
+  allowedFromVariants?: RelationValue[]
   trial?: boolean | null
   versionFrom: number
   versionTo: number
@@ -80,6 +84,14 @@ function isExpired(expiresAt: string | null | undefined, now = new Date()): bool
   return expiry < now.getTime()
 }
 
+function relationValuesToNumbers(values: unknown): number[] {
+  if (!Array.isArray(values)) return []
+
+  return values
+    .map((value) => relationToNumber(value as RelationValue))
+    .filter((value): value is number => value !== null)
+}
+
 function getValidTillDate(validDays: number, now = new Date()): string {
   const validTill = new Date(now)
   validTill.setDate(validTill.getDate() + validDays)
@@ -102,8 +114,13 @@ function resolveActivationCodeRecord(code: ActivationCodeRawRecord): ActivationC
   return {
     id: code.id,
     code: code.code,
+    actionType: definition?.actionType === 'upgrade_replace' ? 'upgrade_replace' : 'new_purchase',
     product,
     productVariant,
+    allowedFromVariants:
+      Array.isArray(definition?.allowedFromVariants) && definition?.allowedFromVariants.length > 0
+        ? definition.allowedFromVariants
+        : [],
     trial: definition?.trial ?? code.trial ?? false,
     versionFrom: Number(definition?.versionFrom ?? code.versionFrom ?? 0),
     versionTo: Number(definition?.versionTo ?? code.versionTo ?? 0),
@@ -162,6 +179,13 @@ export async function getValidActivationCode(
     return { code: null, error: 'Activation code is misconfigured' }
   }
 
+  if (code.actionType === 'upgrade_replace') {
+    const allowedFromVariantIds = relationValuesToNumbers(code.allowedFromVariants)
+    if (allowedFromVariantIds.length === 0) {
+      return { code: null, error: 'Activation code upgrade definition is misconfigured' }
+    }
+  }
+
   return { code, error: null }
 }
 
@@ -196,6 +220,52 @@ export async function redeemActivationCodeForUser(
   }
 
   const isTrial = Boolean(latestCode.trial)
+  const actionType =
+    latestCode.actionType === 'upgrade_replace' ? 'upgrade_replace' : 'new_purchase'
+
+  let sourceLicenseId: number | null = null
+
+  if (actionType === 'upgrade_replace') {
+    const allowedFromVariantIds = relationValuesToNumbers(latestCode.allowedFromVariants)
+    if (allowedFromVariantIds.length === 0) {
+      return { success: false, error: 'Activation code upgrade definition is misconfigured' }
+    }
+
+    const activeLicensesResult = await payload.find({
+      collection: 'licenses',
+      where: {
+        and: [{ user: { equals: userId } }, { active: { equals: true } }],
+      },
+      limit: 300,
+      depth: 0,
+      overrideAccess: true,
+    })
+
+    const alreadyHasTarget = activeLicensesResult.docs.some((license) => {
+      const variantIds = relationValuesToNumbers(
+        (license as { productVariants?: unknown }).productVariants,
+      )
+      const isLicenseTrial = Boolean((license as { trial?: boolean | null }).trial)
+      return !isLicenseTrial && variantIds.includes(variantId)
+    })
+
+    if (alreadyHasTarget) {
+      return { success: false, error: 'You already own this target variant' }
+    }
+
+    const sourceLicense = activeLicensesResult.docs.find((license) => {
+      const variantIds = relationValuesToNumbers(
+        (license as { productVariants?: unknown }).productVariants,
+      )
+      return variantIds.some((variant) => allowedFromVariantIds.includes(variant))
+    })
+
+    if (!sourceLicense || !Number.isFinite(sourceLicense.id)) {
+      return { success: false, error: 'No eligible source license found for this upgrade code' }
+    }
+
+    sourceLicenseId = sourceLicense.id
+  }
 
   if (isTrial) {
     const previousTrialLicenseResult = await payload.find({
@@ -269,10 +339,25 @@ export async function redeemActivationCodeForUser(
       ...(parsedValidDays ? { validTill: getValidTillDate(parsedValidDays) } : {}),
       trial: isTrial,
       active: true,
-      info: `Activated from code ${latestCode.code}`,
+      info:
+        actionType === 'upgrade_replace'
+          ? `Upgraded from code ${latestCode.code}`
+          : `Activated from code ${latestCode.code}`,
     },
     overrideAccess: true,
   })
+
+  if (actionType === 'upgrade_replace' && sourceLicenseId) {
+    await payload.update({
+      collection: 'licenses',
+      id: sourceLicenseId,
+      data: {
+        active: false,
+        deactivatedReason: `Upgraded via activation code ${latestCode.code}`,
+      },
+      overrideAccess: true,
+    })
+  }
 
   await payload.update({
     collection: 'activation-codes',
