@@ -23,6 +23,32 @@ function isLicenseExpired(validTill: string | null | undefined): boolean {
   return new Date(validTill) < new Date()
 }
 
+function formatVersionDisplay(
+  versionFrom: number,
+  versionTo: number,
+): { label: string; value: string } {
+  if (versionFrom === versionTo) {
+    return {
+      label: 'Version',
+      value: String(versionFrom),
+    }
+  }
+
+  const versionCount = versionTo - versionFrom + 1
+  if (versionCount <= 3) {
+    const versions = Array.from({ length: versionCount }, (_, index) => versionFrom + index)
+    return {
+      label: 'Versions',
+      value: versions.join(', '),
+    }
+  }
+
+  return {
+    label: 'Versions',
+    value: `${versionFrom} - ${versionTo}`,
+  }
+}
+
 export function LicenseCard({ license }: { license: PopulatedLicense }) {
   const { product, productVariants, validTill, versionFrom, versionTo, active, createdAt, info } =
     license
@@ -34,6 +60,7 @@ export function LicenseCard({ license }: { license: PopulatedLicense }) {
     : active
       ? 'bg-green-100 text-green-700'
       : 'bg-red-100 text-red-600'
+  const versionDisplay = formatVersionDisplay(versionFrom, versionTo)
 
   const thumb = product.thumb && typeof product.thumb === 'object' ? product.thumb : null
 
@@ -74,10 +101,8 @@ export function LicenseCard({ license }: { license: PopulatedLicense }) {
             <dd>{product.versionNo}</dd>
           </div>
           <div className="flex gap-1">
-            <dt className="text-gray-400">Versions:</dt>
-            <dd>
-              {versionFrom} – {versionTo >= 999 ? '∞' : versionTo}
-            </dd>
+            <dt className="text-gray-400">{versionDisplay.label}:</dt>
+            <dd>{versionDisplay.value}</dd>
           </div>
           {productVariants && productVariants.length > 0 && (
             <div className="flex gap-1">
