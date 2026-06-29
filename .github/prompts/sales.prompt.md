@@ -13,7 +13,7 @@ description: Opisuje proces sprzedaży, licencjonowania oraz hybrydowe strategie
 - `src\app\api\user\installations\route.ts` - Śledzenie urządzeń (Hardware ID / HWID) - MAX 2 INSTALACJE na licencję
 - `src\app\api\webhooks\lemon\route.ts` - Webhook Lemon Squeezy - automatyczne tworzenie kont, zamówień, wyliczanie prowizji i generowanie licencji
 - `src\app\api\checkout\purchase\route.ts` - Tworzenie checkoutu dla zakupu bezpośredniego (single variant, redirect_url, receipt link)
-- `src\app\api\checkout\upgrade\route.ts` - Tworzenie checkoutu dla upgrade/crossgrade (custom_price, redirect_url, receipt link)
+- `src\app\api\checkout\upgrade\route.ts` - Tworzenie checkoutu dla upgrade/crossgrade/trial (custom_price, redirect_url, receipt link; upgrade korzysta z `referencePriceCents`, jeśli jest ustawione)
 - `src\app\(frontend)\checkout-success\page.tsx` - Strona powrotu po opłaceniu checkoutu Lemon Squeezy
 - `src\collections\DiscountCodes.ts` - Definicja kodów zniżkowych (percentage/fixed amount, limity użyć, daty, affiliate/lifetime)
 - `src\lib\discountCodes.ts` - Walidacja i wyliczanie zniżek do checkoutu oraz metadanych do webhooka
@@ -65,7 +65,7 @@ Dokument definiuje architekturę dystrybucji oprogramowania "MX GRID" (dostępne
 - **Kolekcja `Orders`**: Przechowuje `source` (`lemon_squeezy`, `plugin_boutique`), `externalOrderId` (Lemon `order_number` – czytelny numer zamówienia), `lemonOrderId` (techniczne API id zasobu Order w Lemon Squeezy), integer `amount` (w centach), `transactionType` (`new_purchase`, `upgrade`, `crossgrade`, `renewal`), oraz zamrożone pola prowizji: `affiliatePartner` (relacja do `affiliates`) i `affiliateRate` (liczba, procent naliczony w locie). Kolekcja `Orders` jest jedynym źródłem prawdy dla identyfikatorów zamówień.
 - **Kolekcja `Users`**: Reprezentuje standardowych klientów. Posiada wyłącznie pole relacji `referredBy` (celujące w kolekcję `affiliates`), wskazujące na stałego opiekuna konta.
 - **Kolekcja `ProductVariants`**: Zawiera logiczne pole `uid` (np. "beats", "loops_pro") oraz niezależne pole tekstowe `lemonSqueezyVariantId` mapujące wariant z zewnętrznym ID platformy płatniczej. Każdy produkt musi mieć co najmniej jeden wariant – nawet produkty bez opcji powinny posiadać jeden wariant domyślny (np. "Standard").
-- **Kolekcja `CommerceOffers`**: Silnik reguł sprzedażowych. Obsługuje typy akcji: `new_purchase`, `upgrade_replace`, `crossgrade`, `renewal`, `trial`. Dla crossgrade'ów wymagane jest pole `allowedFromProducts` (lista produktów, z których klient może przejść) oraz `targetVariant` (wariant docelowy). Dla trial wymagane jest pole `validDays` (liczba dni ważności licencji od aktywacji). Pole `lemonSqueezyVariantId` jest wymagane dla wszystkich typów poza `upgrade_replace` i `trial`.
+- **Kolekcja `CommerceOffers`**: Silnik reguł sprzedażowych. Obsługuje typy akcji: `new_purchase`, `upgrade_replace`, `crossgrade`, `renewal`, `trial`. Dla crossgrade'ów wymagane jest pole `allowedFromProducts` (lista produktów, z których klient może przejść) oraz `targetVariant` (wariant docelowy). Dla trial wymagane jest pole `validDays` (liczba dni ważności licencji od aktywacji). Pole `lemonSqueezyVariantId` jest wymagane dla wszystkich typów poza `upgrade_replace` i `trial`. Pole `referencePriceCents` jest kanoniczną ceną oferty dla `upgrade_replace` i `crossgrade`; jeśli jest ustawione, checkout i UI muszą użyć tej kwoty. Dopiero gdy `referencePriceCents` jest puste, wolno wyliczyć cenę jako różnicę między ceną wariantu docelowego i źródłowego.
 - **Kolekcja `LicenseTransactions`**: Niezmienny log operacji licencyjnych. Nie przechowuje identyfikatorów zamówień – pełne dane zamówienia dostępne przez relację `order` → `Orders`.
 
 ### Polityka Wersjonowania Licencji (Krytyczne)
@@ -104,11 +104,12 @@ Trial offer to specjalny typ akcji pozwalający użytkownikowi z licencją produ
 
 1. Checkout **nie przechodzi przez Lemon Squeezy** — licencja jest tworzona bezpośrednio w backendzie.
 2. Użytkownik nie może aktywować trial dwa razy dla tego samego `product` + `variant` — system blokuje duplikaty i zwraca komunikat o poprzedniej aktywacji.
-3. Trial licencja ma ustawioną datę wygaśnięcia (`validTill`) na podstawie pola `validDays` z oferty.
-4. Pole `validDays` jest **wymagane** dla trial offers i musi być większe od 0.
-5. Endpoint checkout (`/api/checkout/upgrade`) zwraca zamiast `checkoutUrl` flagę `{ trial: true }`, co powoduje reload strony.
-6. W panelu użytkownika trial oferę oznacza się etykietą "Trial" oraz wyświetla czas ważności w dniach.
-7. **Debug panel** (niedostępny w production): tabelka pokazująca każdą ofertę, czy jest wyświetlana, oraz powód (np. "user already has an active trial for variant 'Loops Pro'").
+3. Trial licencja nie blokuje późniejszego zakupu pełnej licencji ani upgrade'u tego samego wariantu; ścieżka trial i ścieżka pełnej licencji są rozdzielone.
+4. Trial licencja ma ustawioną datę wygaśnięcia (`validTill`) na podstawie pola `validDays` z oferty.
+5. Pole `validDays` jest **wymagane** dla trial offers i musi być większe od 0.
+6. Endpoint checkout (`/api/checkout/upgrade`) zwraca zamiast `checkoutUrl` flagę `{ trial: true }`, co powoduje reload strony.
+7. W panelu użytkownika trial oferę oznacza się etykietą "Trial" oraz wyświetla czas ważności w dniach.
+8. **Debug panel** (niedostępny w production): tabelka pokazująca każdą ofertę, czy jest wyświetlana, oraz powód (np. "user already has an active trial for variant 'Loops Pro'").
 
 ### 0. Powrót z Lemon Squeezy po opłaceniu zamówienia
 

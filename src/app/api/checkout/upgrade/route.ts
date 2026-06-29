@@ -81,22 +81,18 @@ function isCommercialLicense(license: { productVariants?: unknown }): boolean {
   })
 }
 
-async function getVariantReferencePriceCents(
+async function getVariantPriceCents(
   payload: Awaited<ReturnType<typeof getPayload>>,
   variantId: number,
 ) {
-  const offerResult = await payload.find({
-    collection: 'commerce-offers',
-    where: {
-      and: [{ active: { equals: true } }, { targetVariant: { equals: variantId } }],
-    },
-    limit: 1,
+  const variant = await payload.findByID({
+    collection: 'product-variants',
+    id: variantId,
     depth: 0,
     overrideAccess: true,
   })
 
-  const referencePrice = offerResult.docs[0]?.referencePriceCents
-  return typeof referencePrice === 'number' && referencePrice >= 0 ? referencePrice : 0
+  return typeof variant.priceCents === 'number' && variant.priceCents >= 0 ? variant.priceCents : 0
 }
 
 function resolveUpgradeForUser(
@@ -185,7 +181,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
 
-  const { variantId, discountCode, discount_code } = body as Record<string, unknown>
+  const { variantId, discountCode, discount_code, actionType } = body as Record<string, unknown>
   const targetVariantId = typeof variantId === 'number' ? variantId : Number(variantId)
   const requestedDiscountCode =
     typeof discountCode === 'string'
@@ -193,6 +189,10 @@ export async function POST(req: NextRequest) {
       : typeof discount_code === 'string'
         ? discount_code
         : ''
+  const requestedActionType =
+    actionType === 'upgrade_replace' || actionType === 'crossgrade' || actionType === 'trial'
+      ? actionType
+      : null
 
   if (!Number.isFinite(targetVariantId)) {
     return NextResponse.json({ error: 'variantId is required' }, { status: 400 })
@@ -285,14 +285,18 @@ export async function POST(req: NextRequest) {
     where: {
       and: [
         { active: { equals: true } },
-        {
-          or: [
-            { actionType: { equals: 'upgrade_replace' } },
-            { actionType: { equals: 'crossgrade' } },
-            { actionType: { equals: 'trial' } },
-          ],
-        },
         { targetVariant: { equals: targetVariantId } },
+        ...(requestedActionType
+          ? [{ actionType: { equals: requestedActionType } }]
+          : [
+              {
+                or: [
+                  { actionType: { equals: 'upgrade_replace' } },
+                  { actionType: { equals: 'crossgrade' } },
+                  { actionType: { equals: 'trial' } },
+                ],
+              },
+            ]),
       ],
     },
     sort: '-createdAt',
@@ -402,17 +406,15 @@ export async function POST(req: NextRequest) {
   let customPriceCents = 0
 
   if (
-    resolvedUpgrade.actionType === 'crossgrade' &&
+    (resolvedUpgrade.actionType === 'crossgrade' ||
+      resolvedUpgrade.actionType === 'upgrade_replace') &&
     typeof resolvedUpgrade.offer.referencePriceCents === 'number' &&
     resolvedUpgrade.offer.referencePriceCents >= 0
   ) {
     customPriceCents = resolvedUpgrade.offer.referencePriceCents
   } else {
-    const targetPriceCents = await getVariantReferencePriceCents(payload, targetVariantId)
-    const sourcePriceCents = await getVariantReferencePriceCents(
-      payload,
-      resolvedUpgrade.sourceVariantId,
-    )
+    const targetPriceCents = await getVariantPriceCents(payload, targetVariantId)
+    const sourcePriceCents = await getVariantPriceCents(payload, resolvedUpgrade.sourceVariantId)
 
     if (typeof targetPriceCents !== 'number' || typeof sourcePriceCents !== 'number') {
       return NextResponse.json(

@@ -69,9 +69,18 @@ export async function Offers() {
                 ) : null}
 
                 {isTrial ? (
-                  <UpgradeButton variantId={offer.targetVariantId} label={actionLabel} isTrial />
+                  <UpgradeButton
+                    variantId={offer.targetVariantId}
+                    label={actionLabel}
+                    isTrial
+                    offerActionType="trial"
+                  />
                 ) : offer.hasLemonVariantMapping ? (
-                  <UpgradeButton variantId={offer.targetVariantId} label={actionLabel} />
+                  <UpgradeButton
+                    variantId={offer.targetVariantId}
+                    label={actionLabel}
+                    offerActionType={offer.actionType}
+                  />
                 ) : (
                   <p className="mt-4 text-xs text-amber-700">
                     Lemon variant mapping is not configured for this target variant yet.

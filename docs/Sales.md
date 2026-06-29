@@ -120,6 +120,7 @@ Key fields:
 - allowedFromVariants: optional upgrade whitelist (upgrade_replace only)
 - denyFromVariants: optional upgrade blacklist (upgrade_replace only)
 - allowedFromProducts: required for crossgrade — list of source products the user must own
+- referencePriceCents: canonical offer price for upgrade_replace and crossgrade; if set, checkout and UI must use it directly instead of deriving a price from variant full prices
 
 Critical version rule:
 
@@ -136,6 +137,8 @@ Suggested setup examples:
    - actionType: upgrade_replace
    - set allowedFromVariants to explicitly allowed source variants
    - use denyFromVariants to block discount paths (for example Elements)
+   - set referencePriceCents to the exact upgrade price shown to the user
+   - do not let the backend fall back to the target variant full price when referencePriceCents is present
 3. Crossgrade offer:
    - actionType: crossgrade
    - set allowedFromProducts to the source product(s) whose owners can crossgrade
@@ -167,6 +170,7 @@ Behavior:
 - Checkout does not redirect to Lemon Squeezy; instead, license is created directly in the backend
 - License is created with `validTill` set to `now + validDays`
 - Duplicate prevention: user cannot activate a trial for the same product + variant twice (blocks both active and expired trials)
+- A trial license does not block a later full purchase or upgrade of the same variant; the full-license path is resolved separately
 - Response is `{ trial: true, targetVariantId }` instead of `{ checkoutUrl }`
 - Button text in UI: "Start Free Trial"
 - Trial duration is displayed in days
@@ -447,6 +451,18 @@ Current entries:
 - Change: Added trial actionType to commerce offers. Trial offers skip Lemon checkout and create licenses directly with validDays expiration. Prevents duplicate trials per product+variant. Added dev-only eligibility debug panel in offers section. Fixed LicenseCard to show "Expired" status when validTill has passed.
 - Files: src/collections/CommerceOffers.ts, src/lib/offersHelper.ts, src/app/api/checkout/upgrade/route.ts, src/app/(user-panel)/user-panel/offers/Offers.tsx, src/app/(user-panel)/user-panel/offers/OffersDebug.tsx, src/components/panel/UpgradeButton.tsx, src/components/panel/LicenseCard.tsx, src/lib/licenseHelper.ts
 - Validation: pnpm payload generate:types; pnpm tsc --noEmit
+
+- Date: 2026-06-29
+- Scope: offer-policy, checkout, user-panel
+- Change: Clarified that trial licenses do not block later full purchases or upgrades for the same variant; the checkout flow now resolves trial and full-license paths independently.
+- Files: src/app/api/checkout/upgrade/route.ts, src/app/(user-panel)/user-panel/offers/Offers.tsx, src/components/panel/UpgradeButton.tsx, docs/Sales.md
+- Validation: pnpm tsc --noEmit
+
+- Date: 2026-06-29
+- Scope: offer-policy, checkout
+- Change: Documented referencePriceCents as the canonical price for upgrade_replace and crossgrade so the backend does not fall back to full target-variant pricing when an explicit offer price exists.
+- Files: src/app/api/checkout/upgrade/route.ts, src/collections/CommerceOffers.ts, docs/Sales.md
+- Validation: pnpm tsc --noEmit
 
 ## 9. Temporary Email Domain Policy
 

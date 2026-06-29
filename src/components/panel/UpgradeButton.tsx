@@ -8,6 +8,7 @@ type UpgradeButtonProps = {
   label?: string
   className?: string
   isTrial?: boolean
+  offerActionType?: 'upgrade_replace' | 'crossgrade' | 'trial'
 }
 
 export function UpgradeButton({
@@ -15,6 +16,7 @@ export function UpgradeButton({
   label = 'Upgrade',
   className,
   isTrial = false,
+  offerActionType,
 }: UpgradeButtonProps) {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
@@ -31,7 +33,11 @@ export function UpgradeButton({
         method: 'POST',
         credentials: 'include',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ variantId, discountCode: discountCode.trim() || undefined }),
+        body: JSON.stringify({
+          variantId,
+          discountCode: discountCode.trim() || undefined,
+          actionType: offerActionType,
+        }),
       })
 
       const data = await response.json().catch(() => ({}))
