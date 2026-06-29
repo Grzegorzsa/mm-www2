@@ -88,6 +88,56 @@ export async function POST(req: NextRequest) {
 
   const batchId = `AC-${new Date().toISOString().slice(0, 19).replace(/[T:]/g, '')}`
 
+  const definitionWhere = {
+    and: [
+      { product: { equals: parsedProductId } },
+      { productVariant: { equals: parsedVariantId } },
+      { versionFrom: { equals: parsedVersionFrom } },
+      { versionTo: { equals: parsedVersionTo } },
+      { trial: { equals: Boolean(trial) } },
+      {
+        maxInstallations: {
+          equals: Number.isFinite(parsedMaxInstallations) ? parsedMaxInstallations : 2,
+        },
+      },
+      ...(parsedValidDays !== null
+        ? [{ validDays: { equals: parsedValidDays } }]
+        : [{ validDays: { exists: false } }]),
+      ...(parsedSellerId && Number.isFinite(parsedSellerId)
+        ? [{ seller: { equals: parsedSellerId } }]
+        : [{ seller: { exists: false } }]),
+      { assignSellerAsLifetime: { equals: Boolean(assignSellerAsLifetime) } },
+    ],
+  }
+
+  const existingDefinitionResult = await payload.find({
+    collection: 'activation-code-definitions',
+    where: definitionWhere as never,
+    limit: 1,
+    depth: 0,
+    overrideAccess: true,
+  })
+
+  const definition =
+    existingDefinitionResult.docs[0] ??
+    (await payload.create({
+      collection: 'activation-code-definitions',
+      data: {
+        name: `Definition ${parsedProductId}-${parsedVariantId} v${parsedVersionFrom}-${parsedVersionTo}${Boolean(trial) ? ' TRIAL' : ''}`,
+        product: parsedProductId,
+        productVariant: parsedVariantId,
+        versionFrom: parsedVersionFrom,
+        versionTo: parsedVersionTo,
+        trial: Boolean(trial),
+        maxInstallations: Number.isFinite(parsedMaxInstallations) ? parsedMaxInstallations : 2,
+        validDays: parsedValidDays,
+        seller: parsedSellerId && Number.isFinite(parsedSellerId) ? parsedSellerId : undefined,
+        assignSellerAsLifetime: Boolean(assignSellerAsLifetime),
+        info: typeof info === 'string' && info.trim() ? info.trim() : undefined,
+      },
+      overrideAccess: true,
+    }))
+
   const createdCodes: string[] = []
 
   for (let i = 0; i < count; i++) {
@@ -114,19 +164,11 @@ export async function POST(req: NextRequest) {
         await payload.create({
           collection: 'activation-codes',
           data: {
+            definition: definition.id,
             code: generated,
             batchId,
             generatedBy: user.id,
-            product: parsedProductId,
-            productVariant: parsedVariantId,
-            versionFrom: parsedVersionFrom,
-            versionTo: parsedVersionTo,
-            trial: Boolean(trial),
-            maxInstallations: Number.isFinite(parsedMaxInstallations) ? parsedMaxInstallations : 2,
-            validDays: parsedValidDays,
             expiresAt: typeof expiresAt === 'string' && expiresAt.trim() ? expiresAt : undefined,
-            seller: parsedSellerId && Number.isFinite(parsedSellerId) ? parsedSellerId : undefined,
-            assignSellerAsLifetime: Boolean(assignSellerAsLifetime),
             info: typeof info === 'string' && info.trim() ? info.trim() : undefined,
           },
           overrideAccess: true,

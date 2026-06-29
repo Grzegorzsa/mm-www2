@@ -78,6 +78,7 @@ export interface Config {
     'product-variants': ProductVariant;
     'commerce-offers': CommerceOffer;
     'discount-codes': DiscountCode;
+    'activation-code-definitions': ActivationCodeDefinition;
     'activation-codes': ActivationCode;
     'banned-domains': BannedDomain;
     'banned-emails': BannedEmail;
@@ -103,6 +104,7 @@ export interface Config {
     'product-variants': ProductVariantsSelect<false> | ProductVariantsSelect<true>;
     'commerce-offers': CommerceOffersSelect<false> | CommerceOffersSelect<true>;
     'discount-codes': DiscountCodesSelect<false> | DiscountCodesSelect<true>;
+    'activation-code-definitions': ActivationCodeDefinitionsSelect<false> | ActivationCodeDefinitionsSelect<true>;
     'activation-codes': ActivationCodesSelect<false> | ActivationCodesSelect<true>;
     'banned-domains': BannedDomainsSelect<false> | BannedDomainsSelect<true>;
     'banned-emails': BannedEmailsSelect<false> | BannedEmailsSelect<true>;
@@ -649,13 +651,57 @@ export interface CommerceOffer {
   createdAt: string;
 }
 /**
- * Single-use activation codes for direct license assignment. Supports seller attribution and optional lifetime referral assignment for new users.
+ * Reusable activation code definitions. Separate static configuration from generated one-time code instances.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "activation-code-definitions".
+ */
+export interface ActivationCodeDefinition {
+  id: number;
+  /**
+   * Internal definition label used in admin and reports.
+   */
+  name: string;
+  product: number | Product;
+  productVariant: number | ProductVariant;
+  versionFrom: number;
+  versionTo: number;
+  /**
+   * Marks this definition as trial. User can redeem only one trial per product + variant.
+   */
+  trial?: boolean | null;
+  maxInstallations: number;
+  /**
+   * Optional license validity in days from redeem date. Leave empty for unlimited validity.
+   */
+  validDays?: number | null;
+  /**
+   * Optional seller/affiliate attached to this definition.
+   */
+  seller?: (number | null) | Affiliate;
+  /**
+   * For public redeem only: assign seller as permanent referral for newly created users.
+   */
+  assignSellerAsLifetime?: boolean | null;
+  /**
+   * Optional internal note for this definition.
+   */
+  info?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Single-use activation code instances linked to reusable activation code definitions.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "activation-codes".
  */
 export interface ActivationCode {
   id: number;
+  /**
+   * Reusable activation code definition referenced by this code instance.
+   */
+  definition: number | ActivationCodeDefinition;
   /**
    * Activation code in format MGX-XXXX-XXXX-XXXX-XXXX (X = uppercase letter or digit).
    */
@@ -668,36 +714,15 @@ export interface ActivationCode {
    * Admin user that generated this code.
    */
   generatedBy?: (number | null) | AdminUser;
-  product: number | Product;
-  productVariant: number | ProductVariant;
-  versionFrom: number;
-  versionTo: number;
   /**
-   * Marks this code as trial. User can redeem only one trial per product + variant.
-   */
-  trial?: boolean | null;
-  maxInstallations: number;
-  /**
-   * Optional license validity in days from redeem date. Leave empty for unlimited validity.
-   */
-  validDays?: number | null;
-  /**
-   * Optional expiration date for redeeming this code.
+   * Optional expiration date for redeeming this specific code instance.
    */
   expiresAt?: string | null;
-  /**
-   * Optional seller/affiliate attached to this code.
-   */
-  seller?: (number | null) | Affiliate;
-  /**
-   * For public redeem only: assign seller as permanent referral for newly created users.
-   */
-  assignSellerAsLifetime?: boolean | null;
   redeemedBy?: (number | null) | User;
   redeemedAt?: string | null;
   redeemSource?: ('public_redeem' | 'panel_redeem') | null;
   /**
-   * Optional internal note for this activation code.
+   * Optional internal note for this code instance.
    */
   info?: string | null;
   updatedAt: string;
@@ -839,6 +864,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'discount-codes';
         value: number | DiscountCode;
+      } | null)
+    | ({
+        relationTo: 'activation-code-definitions';
+        value: number | ActivationCodeDefinition;
       } | null)
     | ({
         relationTo: 'activation-codes';
@@ -1118,12 +1147,10 @@ export interface DiscountCodesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "activation-codes_select".
+ * via the `definition` "activation-code-definitions_select".
  */
-export interface ActivationCodesSelect<T extends boolean = true> {
-  code?: T;
-  batchId?: T;
-  generatedBy?: T;
+export interface ActivationCodeDefinitionsSelect<T extends boolean = true> {
+  name?: T;
   product?: T;
   productVariant?: T;
   versionFrom?: T;
@@ -1131,9 +1158,22 @@ export interface ActivationCodesSelect<T extends boolean = true> {
   trial?: T;
   maxInstallations?: T;
   validDays?: T;
-  expiresAt?: T;
   seller?: T;
   assignSellerAsLifetime?: T;
+  info?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "activation-codes_select".
+ */
+export interface ActivationCodesSelect<T extends boolean = true> {
+  definition?: T;
+  code?: T;
+  batchId?: T;
+  generatedBy?: T;
+  expiresAt?: T;
   redeemedBy?: T;
   redeemedAt?: T;
   redeemSource?: T;

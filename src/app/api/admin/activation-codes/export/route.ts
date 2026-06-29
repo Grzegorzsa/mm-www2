@@ -6,6 +6,16 @@ import config from '@payload-config'
 type CsvCodeDoc = {
   code: string
   batchId?: string | null
+  definition?: {
+    product?: { id?: number; name?: string } | number | null
+    productVariant?: { id?: number; name?: string } | number | null
+    trial?: boolean | null
+    validDays?: number | null
+    versionFrom?: number | null
+    versionTo?: number | null
+    maxInstallations?: number | null
+    info?: string | null
+  } | null
   product?: { id?: number; name?: string } | number | null
   productVariant?: { id?: number; name?: string } | number | null
   trial?: boolean | null
@@ -50,7 +60,7 @@ export async function GET(req: NextRequest) {
     where: { batchId: { equals: batchId } },
     sort: 'code',
     limit: 2000,
-    depth: 1,
+    depth: 2,
     overrideAccess: true,
   })
 
@@ -80,15 +90,15 @@ export async function GET(req: NextRequest) {
       [
         doc.code,
         doc.batchId ?? '',
-        relationLabel(doc.product),
-        relationLabel(doc.productVariant),
-        doc.trial ? 'true' : 'false',
-        doc.validDays ?? '',
-        doc.versionFrom ?? '',
-        doc.versionTo ?? '',
-        doc.maxInstallations ?? '',
+        relationLabel(doc.definition?.product ?? doc.product),
+        relationLabel(doc.definition?.productVariant ?? doc.productVariant),
+        (doc.definition?.trial ?? doc.trial) ? 'true' : 'false',
+        doc.definition?.validDays ?? doc.validDays ?? '',
+        doc.definition?.versionFrom ?? doc.versionFrom ?? '',
+        doc.definition?.versionTo ?? doc.versionTo ?? '',
+        doc.definition?.maxInstallations ?? doc.maxInstallations ?? '',
         doc.expiresAt ?? '',
-        doc.info ?? '',
+        doc.info ?? doc.definition?.info ?? '',
         doc.createdAt ?? '',
       ]
         .map(csvEscape)

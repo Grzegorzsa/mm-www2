@@ -7,6 +7,10 @@ type ActivationCodeReportDoc = {
   id: number
   code: string
   redeemedAt?: string | null
+  definition?: {
+    product?: { id?: number; name?: string } | number | null
+    productVariant?: { id?: number; name?: string } | number | null
+  } | null
   product?: { id?: number; name?: string } | number | null
   productVariant?: { id?: number; name?: string } | number | null
 }
@@ -38,7 +42,24 @@ export async function GET(req: NextRequest) {
     if (!Number.isFinite(sellerId)) {
       return NextResponse.json({ error: 'Invalid sellerId' }, { status: 400 })
     }
-    filters.push({ seller: { equals: sellerId } })
+
+    const definitionsWithSeller = await payload.find({
+      collection: 'activation-code-definitions',
+      where: { seller: { equals: sellerId } },
+      limit: 1000,
+      depth: 0,
+      overrideAccess: true,
+    })
+
+    const definitionIds = definitionsWithSeller.docs.map((doc) => doc.id)
+
+    if (definitionIds.length === 0) {
+      filters.push({ seller: { equals: sellerId } })
+    } else {
+      filters.push({
+        or: [{ definition: { in: definitionIds } }, { seller: { equals: sellerId } }],
+      })
+    }
   }
 
   if (from && from.trim()) {
@@ -54,15 +75,15 @@ export async function GET(req: NextRequest) {
     where: { and: filters as any },
     sort: '-redeemedAt',
     limit: 1000,
-    depth: 1,
+    depth: 2,
     overrideAccess: true,
   })
 
   const breakdown = new Map<string, { product: string; variant: string; count: number }>()
 
   for (const doc of result.docs as ActivationCodeReportDoc[]) {
-    const product = relationKey(doc.product ?? null)
-    const variant = relationKey(doc.productVariant ?? null)
+    const product = relationKey(doc.definition?.product ?? doc.product ?? null)
+    const variant = relationKey(doc.definition?.productVariant ?? doc.productVariant ?? null)
     const key = `${product?.id ?? 'unknown'}:${variant?.id ?? 'unknown'}`
     const current = breakdown.get(key)
 

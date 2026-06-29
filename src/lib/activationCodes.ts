@@ -2,6 +2,40 @@ import type { Payload } from 'payload'
 
 type RelationValue = number | string | { id?: number | string } | null | undefined
 
+type ActivationCodeDefinitionShape = {
+  id: number
+  product?: RelationValue
+  productVariant?: RelationValue
+  trial?: boolean | null
+  versionFrom?: number | null
+  versionTo?: number | null
+  maxInstallations?: number | null
+  validDays?: number | null
+  seller?: RelationValue
+  assignSellerAsLifetime?: boolean | null
+  info?: string | null
+}
+
+type ActivationCodeRawRecord = {
+  id: number
+  code: string
+  definition?: RelationValue | ActivationCodeDefinitionShape
+  // Legacy fields kept for backward compatibility with existing DB data
+  product?: RelationValue
+  productVariant?: RelationValue
+  trial?: boolean | null
+  versionFrom?: number | null
+  versionTo?: number | null
+  maxInstallations?: number | null
+  validDays?: number | null
+  seller?: RelationValue
+  assignSellerAsLifetime?: boolean | null
+  info?: string | null
+  expiresAt?: string | null
+  redeemedBy?: RelationValue
+  redeemedAt?: string | null
+}
+
 export type ActivationCodeRecord = {
   id: number
   code: string
@@ -52,6 +86,38 @@ function getValidTillDate(validDays: number, now = new Date()): string {
   return validTill.toISOString()
 }
 
+function getDefinitionSource(
+  code: ActivationCodeRawRecord,
+): ActivationCodeDefinitionShape | undefined {
+  if (!code.definition || typeof code.definition !== 'object') return undefined
+  return code.definition as ActivationCodeDefinitionShape
+}
+
+function resolveActivationCodeRecord(code: ActivationCodeRawRecord): ActivationCodeRecord {
+  const definition = getDefinitionSource(code)
+
+  const product = definition?.product ?? code.product ?? null
+  const productVariant = definition?.productVariant ?? code.productVariant ?? null
+
+  return {
+    id: code.id,
+    code: code.code,
+    product,
+    productVariant,
+    trial: definition?.trial ?? code.trial ?? false,
+    versionFrom: Number(definition?.versionFrom ?? code.versionFrom ?? 0),
+    versionTo: Number(definition?.versionTo ?? code.versionTo ?? 0),
+    maxInstallations: definition?.maxInstallations ?? code.maxInstallations ?? 2,
+    validDays: definition?.validDays ?? code.validDays ?? null,
+    expiresAt: code.expiresAt ?? null,
+    seller: definition?.seller ?? code.seller ?? null,
+    assignSellerAsLifetime:
+      definition?.assignSellerAsLifetime ?? code.assignSellerAsLifetime ?? false,
+    redeemedBy: code.redeemedBy,
+    redeemedAt: code.redeemedAt,
+  }
+}
+
 export async function getValidActivationCode(
   payload: Payload,
   rawCode: string,
@@ -65,14 +131,16 @@ export async function getValidActivationCode(
     collection: 'activation-codes',
     where: { code: { equals: normalizedCode } },
     limit: 1,
-    depth: 1,
+    depth: 2,
     overrideAccess: true,
   })
 
-  const code = result.docs[0] as ActivationCodeRecord | undefined
-  if (!code) {
+  const rawCodeDoc = result.docs[0] as ActivationCodeRawRecord | undefined
+  if (!rawCodeDoc) {
     return { code: null, error: 'Activation code is invalid' }
   }
+
+  const code = resolveActivationCodeRecord(rawCodeDoc)
 
   if (code.redeemedBy || code.redeemedAt) {
     return { code: null, error: 'Activation code has already been used' }
@@ -110,12 +178,14 @@ export async function redeemActivationCodeForUser(
     return { success: false, error: 'Activation code is misconfigured' }
   }
 
-  const latestCode = await payload.findByID({
+  const latestRawCode = (await payload.findByID({
     collection: 'activation-codes',
     id: activationCode.id,
-    depth: 0,
+    depth: 2,
     overrideAccess: true,
-  })
+  })) as ActivationCodeRawRecord
+
+  const latestCode = resolveActivationCodeRecord(latestRawCode)
 
   if (latestCode.redeemedBy || latestCode.redeemedAt) {
     return { success: false, error: 'Activation code has already been used' }
@@ -128,15 +198,14 @@ export async function redeemActivationCodeForUser(
   const isTrial = Boolean(latestCode.trial)
 
   if (isTrial) {
-    const previousTrialResult = await payload.find({
-      collection: 'activation-codes',
+    const previousTrialLicenseResult = await payload.find({
+      collection: 'licenses',
       where: {
         and: [
-          { trial: { equals: true } },
-          { redeemedBy: { equals: userId } },
+          { user: { equals: userId } },
           { product: { equals: productId } },
-          { productVariant: { equals: variantId } },
-          { redeemedAt: { exists: true } },
+          { productVariants: { equals: variantId } },
+          { trial: { equals: true } },
         ],
       },
       limit: 1,
@@ -144,7 +213,36 @@ export async function redeemActivationCodeForUser(
       overrideAccess: true,
     })
 
-    if (previousTrialResult.totalDocs > 0) {
+    if (previousTrialLicenseResult.totalDocs > 0) {
+      return {
+        success: false,
+        error: 'Trial for this product and variant has already been activated on your account',
+      }
+    }
+
+    // Legacy safety net for old redeemed trial codes created before trial license flag was enforced.
+    const previousTrialCodeResult = await payload.find({
+      collection: 'activation-codes',
+      where: {
+        and: [{ redeemedBy: { equals: userId } }, { redeemedAt: { exists: true } }],
+      },
+      limit: 3000,
+      depth: 2,
+      overrideAccess: true,
+    })
+
+    const hasLegacyTrial = (previousTrialCodeResult.docs as ActivationCodeRawRecord[]).some(
+      (doc) => {
+        const resolved = resolveActivationCodeRecord(doc)
+        if (!resolved.trial) return false
+        return (
+          relationToNumber(resolved.product) === productId &&
+          relationToNumber(resolved.productVariant) === variantId
+        )
+      },
+    )
+
+    if (hasLegacyTrial) {
       return {
         success: false,
         error: 'Trial for this product and variant has already been activated on your account',
@@ -169,6 +267,7 @@ export async function redeemActivationCodeForUser(
       versionTo: latestCode.versionTo,
       maxInstallations: latestCode.maxInstallations ?? 2,
       ...(parsedValidDays ? { validTill: getValidTillDate(parsedValidDays) } : {}),
+      trial: isTrial,
       active: true,
       info: `Activated from code ${latestCode.code}`,
     },

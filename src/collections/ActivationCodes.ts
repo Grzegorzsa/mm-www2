@@ -28,17 +28,9 @@ export const ActivationCodes: CollectionConfig = {
   slug: 'activation-codes',
   admin: {
     useAsTitle: 'code',
-    defaultColumns: [
-      'code',
-      'product',
-      'productVariant',
-      'expiresAt',
-      'seller',
-      'redeemedBy',
-      'redeemedAt',
-    ],
+    defaultColumns: ['code', 'definition', 'expiresAt', 'redeemedBy', 'redeemedAt'],
     description:
-      'Single-use activation codes for direct license assignment. Supports seller attribution and optional lifetime referral assignment for new users.',
+      'Single-use activation code instances linked to reusable activation code definitions.',
   },
   access: {
     read: ({ req: { user } }) => user?.collection === 'admin-users',
@@ -54,13 +46,24 @@ export const ActivationCodes: CollectionConfig = {
       type: 'row',
       fields: [
         {
+          name: 'definition',
+          type: 'relationship',
+          relationTo: 'activation-code-definitions',
+          required: true,
+          index: true,
+          admin: {
+            width: '30%',
+            description: 'Reusable activation code definition referenced by this code instance.',
+          },
+        },
+        {
           name: 'code',
           type: 'text',
           required: true,
           unique: true,
           index: true,
           admin: {
-            width: '40%',
+            width: '35%',
             description:
               'Activation code in format MGX-XXXX-XXXX-XXXX-XXXX (X = uppercase letter or digit).',
           },
@@ -79,104 +82,18 @@ export const ActivationCodes: CollectionConfig = {
           type: 'relationship',
           relationTo: 'admin-users',
           admin: {
-            width: '30%',
+            width: '35%',
             description: 'Admin user that generated this code.',
           },
         },
       ],
     },
     {
-      type: 'row',
-      fields: [
-        {
-          name: 'product',
-          type: 'relationship',
-          relationTo: 'products',
-          required: true,
-          admin: { width: '25%' },
-        },
-        {
-          name: 'productVariant',
-          type: 'relationship',
-          relationTo: 'product-variants',
-          required: true,
-          admin: { width: '25%' },
-        },
-        {
-          name: 'versionFrom',
-          type: 'number',
-          required: true,
-          admin: { width: '25%' },
-        },
-        {
-          name: 'versionTo',
-          type: 'number',
-          required: true,
-          admin: { width: '25%' },
-        },
-      ],
-    },
-    {
-      type: 'row',
-      fields: [
-        {
-          name: 'trial',
-          type: 'checkbox',
-          defaultValue: false,
-          admin: {
-            width: '25%',
-            description:
-              'Marks this code as trial. User can redeem only one trial per product + variant.',
-          },
-        },
-        {
-          name: 'maxInstallations',
-          type: 'number',
-          required: true,
-          defaultValue: 2,
-          min: 1,
-          admin: {
-            width: '25%',
-          },
-        },
-        {
-          name: 'validDays',
-          type: 'number',
-          min: 1,
-          admin: {
-            width: '25%',
-            description:
-              'Optional license validity in days from redeem date. Leave empty for unlimited validity.',
-          },
-        },
-        {
-          name: 'expiresAt',
-          type: 'date',
-          admin: {
-            width: '25%',
-            description: 'Optional expiration date for redeeming this code.',
-          },
-        },
-        {
-          name: 'seller',
-          type: 'relationship',
-          relationTo: 'affiliates',
-          admin: {
-            width: '25%',
-            description: 'Optional seller/affiliate attached to this code.',
-          },
-        },
-        {
-          name: 'assignSellerAsLifetime',
-          type: 'checkbox',
-          defaultValue: false,
-          admin: {
-            width: '25%',
-            description:
-              'For public redeem only: assign seller as permanent referral for newly created users.',
-          },
-        },
-      ],
+      name: 'expiresAt',
+      type: 'date',
+      admin: {
+        description: 'Optional expiration date for redeeming this specific code instance.',
+      },
     },
     {
       type: 'row',
@@ -215,7 +132,7 @@ export const ActivationCodes: CollectionConfig = {
       name: 'info',
       type: 'textarea',
       admin: {
-        description: 'Optional internal note for this activation code.',
+        description: 'Optional internal note for this code instance.',
       },
     },
   ],

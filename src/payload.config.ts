@@ -19,6 +19,7 @@ import { Installations } from './collections/Installations'
 import { WelcomeLicenses } from './collections/WelcomeLicenses'
 import { CommerceOffers } from './collections/CommerceOffers'
 import { DiscountCodes } from './collections/DiscountCodes'
+import { ActivationCodeDefinitions } from './collections/ActivationCodeDefinitions'
 import { ActivationCodes } from './collections/ActivationCodes'
 import { LicenseTransactions } from './collections/LicenseTransactions'
 import { BannedDomains } from './collections/BannedDomains'
@@ -58,6 +59,7 @@ export default buildConfig({
     ProductVariants,
     CommerceOffers,
     DiscountCodes,
+    ActivationCodeDefinitions,
     ActivationCodes,
     BannedDomains,
     BannedEmails,
