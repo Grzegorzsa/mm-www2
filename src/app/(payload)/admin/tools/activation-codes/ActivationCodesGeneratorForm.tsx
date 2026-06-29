@@ -9,59 +9,37 @@ type GenerateResponse = {
   codes: string[]
 }
 
-type ProductOption = {
+type DefinitionOption = {
   id: number
   name: string
-  versionNo?: number | null
-}
-
-type VariantOption = {
-  id: number
-  name: string
-  productId: number
-}
-
-type AffiliateOption = {
-  id: number
-  name: string
-  affiliateCode?: string
-  active: boolean
+  productName: string
+  variantName: string
+  versionFrom: number
+  versionTo: number
+  trial: boolean
+  maxInstallations: number
+  validDays: number | null
+  sellerName: string | null
+  assignSellerAsLifetime: boolean
+  info: string | null
 }
 
 type Props = {
-  products: ProductOption[]
-  variants: VariantOption[]
-  affiliates: AffiliateOption[]
+  definitions: DefinitionOption[]
 }
 
 type FormState = {
   quantity: string
-  productId: string
-  productVariantId: string
-  versionFrom: string
-  versionTo: string
-  maxInstallations: string
-  validDays: string
+  definitionId: string
   expiresAt: string
-  sellerId: string
   info: string
-  trial: boolean
-  assignSellerAsLifetime: boolean
 }
 
 const initialState: FormState = {
   quantity: '100',
-  productId: '',
-  productVariantId: '',
-  versionFrom: '1',
-  versionTo: '1',
-  maxInstallations: '2',
-  validDays: '',
+  definitionId: '',
   expiresAt: '',
-  sellerId: '',
   info: '',
-  trial: false,
-  assignSellerAsLifetime: false,
 }
 
 function fieldStyle(): CSSProperties {
@@ -76,9 +54,8 @@ function fieldStyle(): CSSProperties {
   }
 }
 
-export function ActivationCodesGeneratorForm({ products, variants, affiliates }: Props) {
+export function ActivationCodesGeneratorForm({ definitions }: Props) {
   const [form, setForm] = useState<FormState>(initialState)
-  const [onlyActiveAffiliates, setOnlyActiveAffiliates] = useState(true)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [result, setResult] = useState<GenerateResponse | null>(null)
@@ -88,57 +65,10 @@ export function ActivationCodesGeneratorForm({ products, variants, affiliates }:
     setForm((prev) => ({ ...prev, [key]: value }))
   }
 
-  const filteredVariants = useMemo(() => {
-    const selectedProductId = Number(form.productId)
-    if (!Number.isFinite(selectedProductId)) return []
-    return variants.filter((variant) => variant.productId === selectedProductId)
-  }, [form.productId, variants])
-
-  const selectedProduct = useMemo(
-    () => products.find((product) => String(product.id) === form.productId) ?? null,
-    [form.productId, products],
+  const selectedDefinition = useMemo(
+    () => definitions.find((definition) => String(definition.id) === form.definitionId) ?? null,
+    [definitions, form.definitionId],
   )
-
-  const availableAffiliates = useMemo(
-    () => affiliates.filter((affiliate) => (onlyActiveAffiliates ? affiliate.active : true)),
-    [affiliates, onlyActiveAffiliates],
-  )
-
-  function handleOnlyActiveAffiliatesChange(event: ChangeEvent<HTMLInputElement>) {
-    const nextValue = event.target.checked
-    setOnlyActiveAffiliates(nextValue)
-
-    if (nextValue) {
-      const selectedAffiliate = affiliates.find(
-        (affiliate) => String(affiliate.id) === form.sellerId,
-      )
-      if (selectedAffiliate && !selectedAffiliate.active) {
-        updateField('sellerId', '')
-      }
-    }
-  }
-
-  function handleProductChange(event: ChangeEvent<HTMLSelectElement>) {
-    const nextProductId = event.target.value
-    const nextProduct = products.find((product) => String(product.id) === nextProductId) ?? null
-
-    const hasCurrentVariantForProduct = variants.some(
-      (variant) =>
-        String(variant.id) === form.productVariantId && String(variant.productId) === nextProductId,
-    )
-
-    setForm((prev) => ({
-      ...prev,
-      productId: nextProductId,
-      productVariantId: hasCurrentVariantForProduct ? prev.productVariantId : '',
-      ...(nextProduct && typeof nextProduct.versionNo === 'number'
-        ? {
-            versionFrom: String(nextProduct.versionNo),
-            versionTo: String(nextProduct.versionNo),
-          }
-        : {}),
-    }))
-  }
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
@@ -150,16 +80,8 @@ export function ActivationCodesGeneratorForm({ products, variants, affiliates }:
     try {
       const payload = {
         quantity: Number(form.quantity),
-        productId: Number(form.productId),
-        productVariantId: Number(form.productVariantId),
-        versionFrom: Number(form.versionFrom),
-        versionTo: Number(form.versionTo),
-        maxInstallations: Number(form.maxInstallations || '2'),
-        validDays: form.validDays.trim() ? Number(form.validDays) : null,
+        definitionId: Number(form.definitionId),
         expiresAt: form.expiresAt.trim() || null,
-        sellerId: form.sellerId.trim() ? Number(form.sellerId) : null,
-        trial: form.trial,
-        assignSellerAsLifetime: form.assignSellerAsLifetime,
         info: form.info.trim() || null,
       }
 
@@ -199,13 +121,8 @@ export function ActivationCodesGeneratorForm({ products, variants, affiliates }:
     <div style={{ padding: 24, maxWidth: 980 }}>
       <h1 style={{ margin: 0, fontSize: 28 }}>Activation Codes Tool</h1>
       <p style={{ marginTop: 8, color: 'var(--theme-elevation-700)' }}>
-        Generate activation code batches and export them to CSV by batch ID.
+        Generate activation code batches from reusable definitions.
       </p>
-      {selectedProduct && typeof selectedProduct.versionNo === 'number' ? (
-        <p style={{ marginTop: 4, color: 'var(--theme-elevation-700)' }}>
-          Selected product major version: {selectedProduct.versionNo}
-        </p>
-      ) : null}
 
       <form onSubmit={handleSubmit} style={{ marginTop: 16 }}>
         <div
@@ -230,97 +147,23 @@ export function ActivationCodesGeneratorForm({ products, variants, affiliates }:
             />
           </label>
 
-          <label>
-            Product
+          <label style={{ gridColumn: 'span 2' }}>
+            Definition
             <select
               style={fieldStyle()}
-              value={form.productId}
-              onChange={handleProductChange}
-              required
-            >
-              <option value="">Select product...</option>
-              {products.map((product) => (
-                <option key={product.id} value={product.id}>
-                  {product.name}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <label>
-            Variant
-            <select
-              style={fieldStyle()}
-              value={form.productVariantId}
+              value={form.definitionId}
               onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                updateField('productVariantId', e.target.value)
+                updateField('definitionId', e.target.value)
               }
               required
-              disabled={!form.productId}
             >
-              <option value="">Select variant...</option>
-              {filteredVariants.map((variant) => (
-                <option key={variant.id} value={variant.id}>
-                  {variant.name}
+              <option value="">Select definition...</option>
+              {definitions.map((definition) => (
+                <option key={definition.id} value={definition.id}>
+                  {definition.name} - {definition.productName} / {definition.variantName}
                 </option>
               ))}
             </select>
-          </label>
-
-          <label>
-            Version From
-            <input
-              style={fieldStyle()}
-              type="number"
-              min={1}
-              value={form.versionFrom}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                updateField('versionFrom', e.target.value)
-              }
-              required
-            />
-          </label>
-
-          <label>
-            Version To
-            <input
-              style={fieldStyle()}
-              type="number"
-              min={1}
-              value={form.versionTo}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                updateField('versionTo', e.target.value)
-              }
-              required
-            />
-          </label>
-
-          <label>
-            Max Installations
-            <input
-              style={fieldStyle()}
-              type="number"
-              min={1}
-              value={form.maxInstallations}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                updateField('maxInstallations', e.target.value)
-              }
-              required
-            />
-          </label>
-
-          <label>
-            Valid Days (optional)
-            <input
-              style={fieldStyle()}
-              type="number"
-              min={1}
-              value={form.validDays}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                updateField('validDays', e.target.value)
-              }
-              placeholder="e.g. 14"
-            />
           </label>
 
           <label>
@@ -334,70 +177,54 @@ export function ActivationCodesGeneratorForm({ products, variants, affiliates }:
               }
             />
           </label>
-
-          <div>
-            <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-              <input
-                type="checkbox"
-                checked={onlyActiveAffiliates}
-                onChange={handleOnlyActiveAffiliatesChange}
-              />
-              Only active affiliates
-            </label>
-            <label>
-              Seller (optional)
-              <select
-                style={fieldStyle()}
-                value={form.sellerId}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                  updateField('sellerId', e.target.value)
-                }
-              >
-                <option value="">No seller</option>
-                {availableAffiliates.map((affiliate) => (
-                  <option key={affiliate.id} value={affiliate.id}>
-                    {affiliate.name}
-                    {affiliate.affiliateCode ? ` (${affiliate.affiliateCode})` : ''}
-                    {affiliate.active ? '' : ' [inactive]'}
-                  </option>
-                ))}
-              </select>
-            </label>
-          </div>
         </div>
 
+        {selectedDefinition ? (
+          <div
+            style={{
+              marginTop: 12,
+              border: '1px solid var(--theme-elevation-250)',
+              borderRadius: 8,
+              padding: 12,
+              background: 'var(--theme-elevation-0)',
+            }}
+          >
+            <p style={{ margin: 0 }}>
+              <strong>Selected:</strong> {selectedDefinition.productName} /{' '}
+              {selectedDefinition.variantName}
+            </p>
+            <p style={{ margin: '6px 0 0 0' }}>
+              <strong>Versions:</strong> {selectedDefinition.versionFrom} -{' '}
+              {selectedDefinition.versionTo}
+            </p>
+            <p style={{ margin: '6px 0 0 0' }}>
+              <strong>Trial:</strong> {selectedDefinition.trial ? 'Yes' : 'No'}
+            </p>
+            <p style={{ margin: '6px 0 0 0' }}>
+              <strong>Max Installations:</strong> {selectedDefinition.maxInstallations}
+            </p>
+            <p style={{ margin: '6px 0 0 0' }}>
+              <strong>Valid Days:</strong>{' '}
+              {selectedDefinition.validDays ? selectedDefinition.validDays : 'Unlimited'}
+            </p>
+            <p style={{ margin: '6px 0 0 0' }}>
+              <strong>Seller:</strong> {selectedDefinition.sellerName ?? 'None'}
+            </p>
+            <p style={{ margin: '6px 0 0 0' }}>
+              <strong>Lifetime Assign:</strong>{' '}
+              {selectedDefinition.assignSellerAsLifetime ? 'Yes' : 'No'}
+            </p>
+          </div>
+        ) : null}
+
         <label style={{ display: 'block', marginTop: 12 }}>
-          Internal info (optional)
+          Internal info (optional, batch/code note)
           <textarea
             style={{ ...fieldStyle(), minHeight: 80 }}
             value={form.info}
             onChange={(e: ChangeEvent<HTMLTextAreaElement>) => updateField('info', e.target.value)}
           />
         </label>
-
-        <div style={{ display: 'flex', gap: 16, marginTop: 12 }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <input
-              type="checkbox"
-              checked={form.trial}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                updateField('trial', e.target.checked)
-              }
-            />
-            Trial
-          </label>
-
-          <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <input
-              type="checkbox"
-              checked={form.assignSellerAsLifetime}
-              onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                updateField('assignSellerAsLifetime', e.target.checked)
-              }
-            />
-            Assign seller as lifetime (public redeem only)
-          </label>
-        </div>
 
         <button
           type="submit"

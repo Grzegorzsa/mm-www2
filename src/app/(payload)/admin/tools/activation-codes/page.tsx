@@ -4,29 +4,34 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { ActivationCodesGeneratorForm } from './ActivationCodesGeneratorForm'
 
-type ProductOption = {
+type DefinitionOption = {
   id: number
   name: string
-  versionNo?: number | null
+  product?: { name?: string } | number | null
+  productVariant?: { name?: string } | number | null
+  versionFrom?: number | null
+  versionTo?: number | null
+  trial?: boolean | null
+  maxInstallations?: number | null
+  validDays?: number | null
+  seller?: { name?: string } | number | null
+  assignSellerAsLifetime?: boolean | null
+  info?: string | null
 }
 
-type VariantOption = {
+type FormDefinitionOption = {
   id: number
   name: string
-  product: number | { id?: number } | null
-}
-
-type AffiliateOption = {
-  id: number
-  name: string
-  affiliateCode?: string | null
-  active?: boolean | null
-}
-
-function resolveProductId(value: VariantOption['product']): number | null {
-  if (typeof value === 'number' && Number.isFinite(value)) return value
-  if (value && typeof value === 'object' && typeof value.id === 'number') return value.id
-  return null
+  productName: string
+  variantName: string
+  versionFrom: number
+  versionTo: number
+  trial: boolean
+  maxInstallations: number
+  validDays: number | null
+  sellerName: string | null
+  assignSellerAsLifetime: boolean
+  info: string | null
 }
 
 export default async function ActivationCodesToolPage() {
@@ -37,54 +42,55 @@ export default async function ActivationCodesToolPage() {
     redirect('/admin/login')
   }
 
-  const [productsResult, variantsResult, affiliatesResult] = await Promise.all([
-    payload.find({
-      collection: 'products',
-      depth: 0,
-      limit: 1000,
-      sort: 'name',
-      overrideAccess: true,
+  const definitionsResult = await payload.find({
+    collection: 'activation-code-definitions',
+    depth: 2,
+    limit: 2000,
+    sort: 'name',
+    overrideAccess: true,
+  })
+
+  const definitions = (definitionsResult.docs as DefinitionOption[]).map<FormDefinitionOption>(
+    (definition) => ({
+      id: definition.id,
+      name: definition.name,
+      productName:
+        typeof definition.product === 'object' && definition.product?.name
+          ? definition.product.name
+          : 'Unknown product',
+      variantName:
+        typeof definition.productVariant === 'object' && definition.productVariant?.name
+          ? definition.productVariant.name
+          : 'Unknown variant',
+      versionFrom:
+        typeof definition.versionFrom === 'number' && Number.isFinite(definition.versionFrom)
+          ? definition.versionFrom
+          : 1,
+      versionTo:
+        typeof definition.versionTo === 'number' && Number.isFinite(definition.versionTo)
+          ? definition.versionTo
+          : 1,
+      trial: Boolean(definition.trial),
+      maxInstallations:
+        typeof definition.maxInstallations === 'number' &&
+        Number.isFinite(definition.maxInstallations)
+          ? definition.maxInstallations
+          : 2,
+      validDays:
+        typeof definition.validDays === 'number' && Number.isFinite(definition.validDays)
+          ? definition.validDays
+          : null,
+      sellerName:
+        typeof definition.seller === 'object' && definition.seller?.name
+          ? definition.seller.name
+          : null,
+      assignSellerAsLifetime: Boolean(definition.assignSellerAsLifetime),
+      info:
+        typeof definition.info === 'string' && definition.info.trim()
+          ? definition.info.trim()
+          : null,
     }),
-    payload.find({
-      collection: 'product-variants',
-      depth: 0,
-      limit: 2000,
-      sort: 'name',
-      overrideAccess: true,
-    }),
-    payload.find({
-      collection: 'affiliates',
-      depth: 0,
-      limit: 2000,
-      sort: 'name',
-      overrideAccess: true,
-    }),
-  ])
-
-  const products = (productsResult.docs as ProductOption[]).map((product) => ({
-    id: product.id,
-    name: product.name,
-    versionNo: typeof product.versionNo === 'number' ? product.versionNo : null,
-  }))
-
-  const variants = (variantsResult.docs as VariantOption[])
-    .map((variant) => ({
-      id: variant.id,
-      name: variant.name,
-      productId: resolveProductId(variant.product),
-    }))
-    .filter((variant): variant is { id: number; name: string; productId: number } =>
-      Number.isFinite(variant.productId),
-    )
-
-  const affiliates = (affiliatesResult.docs as AffiliateOption[]).map((affiliate) => ({
-    id: affiliate.id,
-    name: affiliate.name,
-    affiliateCode: affiliate.affiliateCode ?? '',
-    active: Boolean(affiliate.active ?? true),
-  }))
-
-  return (
-    <ActivationCodesGeneratorForm products={products} variants={variants} affiliates={affiliates} />
   )
+
+  return <ActivationCodesGeneratorForm definitions={definitions} />
 }

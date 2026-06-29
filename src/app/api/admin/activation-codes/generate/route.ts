@@ -25,6 +25,7 @@ export async function POST(req: NextRequest) {
 
   const {
     quantity,
+    definitionId,
     productId,
     productVariantId,
     versionFrom,
@@ -39,6 +40,7 @@ export async function POST(req: NextRequest) {
   } = body as Record<string, unknown>
 
   const count = typeof quantity === 'number' ? quantity : Number(quantity)
+  const parsedDefinitionId = typeof definitionId === 'number' ? definitionId : Number(definitionId)
   const parsedProductId = typeof productId === 'number' ? productId : Number(productId)
   const parsedVariantId =
     typeof productVariantId === 'number' ? productVariantId : Number(productVariantId)
@@ -61,18 +63,6 @@ export async function POST(req: NextRequest) {
   }
 
   if (
-    !Number.isFinite(parsedProductId) ||
-    !Number.isFinite(parsedVariantId) ||
-    !Number.isFinite(parsedVersionFrom) ||
-    !Number.isFinite(parsedVersionTo)
-  ) {
-    return NextResponse.json(
-      { error: 'Invalid product/variant/version configuration' },
-      { status: 400 },
-    )
-  }
-
-  if (
     parsedValidDays !== null &&
     (!Number.isFinite(parsedValidDays) || !Number.isInteger(parsedValidDays) || parsedValidDays < 1)
   ) {
@@ -88,55 +78,92 @@ export async function POST(req: NextRequest) {
 
   const batchId = `AC-${new Date().toISOString().slice(0, 19).replace(/[T:]/g, '')}`
 
-  const definitionWhere = {
-    and: [
-      { product: { equals: parsedProductId } },
-      { productVariant: { equals: parsedVariantId } },
-      { versionFrom: { equals: parsedVersionFrom } },
-      { versionTo: { equals: parsedVersionTo } },
-      { trial: { equals: Boolean(trial) } },
-      {
-        maxInstallations: {
-          equals: Number.isFinite(parsedMaxInstallations) ? parsedMaxInstallations : 2,
-        },
-      },
-      ...(parsedValidDays !== null
-        ? [{ validDays: { equals: parsedValidDays } }]
-        : [{ validDays: { exists: false } }]),
-      ...(parsedSellerId && Number.isFinite(parsedSellerId)
-        ? [{ seller: { equals: parsedSellerId } }]
-        : [{ seller: { exists: false } }]),
-      { assignSellerAsLifetime: { equals: Boolean(assignSellerAsLifetime) } },
-    ],
+  let definition:
+    | {
+        id: number
+      }
+    | undefined
+
+  if (Number.isFinite(parsedDefinitionId)) {
+    const foundDefinition = await payload.findByID({
+      collection: 'activation-code-definitions',
+      id: parsedDefinitionId,
+      depth: 0,
+      overrideAccess: true,
+    })
+
+    if (!foundDefinition || !Number.isFinite(foundDefinition.id)) {
+      return NextResponse.json({ error: 'Activation code definition not found' }, { status: 404 })
+    }
+
+    definition = { id: foundDefinition.id }
   }
 
-  const existingDefinitionResult = await payload.find({
-    collection: 'activation-code-definitions',
-    where: definitionWhere as never,
-    limit: 1,
-    depth: 0,
-    overrideAccess: true,
-  })
+  if (!definition) {
+    if (
+      !Number.isFinite(parsedProductId) ||
+      !Number.isFinite(parsedVariantId) ||
+      !Number.isFinite(parsedVersionFrom) ||
+      !Number.isFinite(parsedVersionTo)
+    ) {
+      return NextResponse.json(
+        { error: 'Invalid definitionId or product/variant/version configuration' },
+        { status: 400 },
+      )
+    }
 
-  const definition =
-    existingDefinitionResult.docs[0] ??
-    (await payload.create({
+    const definitionWhere = {
+      and: [
+        { product: { equals: parsedProductId } },
+        { productVariant: { equals: parsedVariantId } },
+        { versionFrom: { equals: parsedVersionFrom } },
+        { versionTo: { equals: parsedVersionTo } },
+        { trial: { equals: Boolean(trial) } },
+        {
+          maxInstallations: {
+            equals: Number.isFinite(parsedMaxInstallations) ? parsedMaxInstallations : 2,
+          },
+        },
+        ...(parsedValidDays !== null
+          ? [{ validDays: { equals: parsedValidDays } }]
+          : [{ validDays: { exists: false } }]),
+        ...(parsedSellerId && Number.isFinite(parsedSellerId)
+          ? [{ seller: { equals: parsedSellerId } }]
+          : [{ seller: { exists: false } }]),
+        { assignSellerAsLifetime: { equals: Boolean(assignSellerAsLifetime) } },
+      ],
+    }
+
+    const existingDefinitionResult = await payload.find({
       collection: 'activation-code-definitions',
-      data: {
-        name: `Definition ${parsedProductId}-${parsedVariantId} v${parsedVersionFrom}-${parsedVersionTo}${Boolean(trial) ? ' TRIAL' : ''}`,
-        product: parsedProductId,
-        productVariant: parsedVariantId,
-        versionFrom: parsedVersionFrom,
-        versionTo: parsedVersionTo,
-        trial: Boolean(trial),
-        maxInstallations: Number.isFinite(parsedMaxInstallations) ? parsedMaxInstallations : 2,
-        validDays: parsedValidDays,
-        seller: parsedSellerId && Number.isFinite(parsedSellerId) ? parsedSellerId : undefined,
-        assignSellerAsLifetime: Boolean(assignSellerAsLifetime),
-        info: typeof info === 'string' && info.trim() ? info.trim() : undefined,
-      },
+      where: definitionWhere as never,
+      limit: 1,
+      depth: 0,
       overrideAccess: true,
-    }))
+    })
+
+    const createdOrExistingDefinition =
+      existingDefinitionResult.docs[0] ??
+      (await payload.create({
+        collection: 'activation-code-definitions',
+        data: {
+          name: `Definition ${parsedProductId}-${parsedVariantId} v${parsedVersionFrom}-${parsedVersionTo}${Boolean(trial) ? ' TRIAL' : ''}`,
+          product: parsedProductId,
+          productVariant: parsedVariantId,
+          versionFrom: parsedVersionFrom,
+          versionTo: parsedVersionTo,
+          trial: Boolean(trial),
+          maxInstallations: Number.isFinite(parsedMaxInstallations) ? parsedMaxInstallations : 2,
+          validDays: parsedValidDays,
+          seller: parsedSellerId && Number.isFinite(parsedSellerId) ? parsedSellerId : undefined,
+          assignSellerAsLifetime: Boolean(assignSellerAsLifetime),
+          info: typeof info === 'string' && info.trim() ? info.trim() : undefined,
+        },
+        overrideAccess: true,
+      }))
+
+    definition = { id: createdOrExistingDefinition.id }
+  }
 
   const createdCodes: string[] = []
 
