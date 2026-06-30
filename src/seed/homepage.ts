@@ -64,7 +64,7 @@ async function seed() {
         {
           heading: 'Live Performance at Your Fingertips',
           description:
-            'Play live using your mouse, computer keyboard, or MIDI controller. Express yourself in real-time performance.',
+            'Play live using your mouse or MIDI controller. Express yourself in real-time performance.',
           image: ids['home-features-1.jpg'],
         },
         {
