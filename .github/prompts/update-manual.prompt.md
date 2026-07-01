@@ -1,6 +1,6 @@
 ---
 description: Updates the MXGrid Manual based on notes in AppDescription.md
-model: Claude Sonnet 4.6 (copilot)
+# model: Claude Sonnet 4.6 (copilot)
 ---
 
 You are an expert in technical documentation, UX Writing, and Payload CMS. Your task is to synchronize changes from `AppDescription.md` with the rest of the project — specifically the seed data.
