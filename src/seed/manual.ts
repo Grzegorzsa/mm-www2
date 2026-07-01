@@ -20,6 +20,9 @@ const aside = `<h2>Manual</h2>
       <li><a href="#edit-samples">Edit Samples</a></li>
       <li><a href="#edit-loops">Edit Loops</a></li>
       <li><a href="#dsp-effects">DSP Effects</a></li>
+      <li><a href="#edit-note">Edit Notes</a></li>
+      <li><a href="#edit-beat">Edit Beats</a></li>
+      <li><a href="#step-sequencer">Step Sequencer</a></li>
     </ul>
   </li>
   <li><a href="#edit-page">Page Editor</a></li>
@@ -43,6 +46,9 @@ const mobileToc = `<details>
     <li class="sub"><a href="#edit-samples">Edit Samples</a></li>
     <li class="sub"><a href="#edit-loops">Edit Loops</a></li>
     <li class="sub"><a href="#dsp-effects">DSP Effects</a></li>
+    <li class="sub"><a href="#edit-note">Edit Notes</a></li>
+    <li class="sub"><a href="#edit-beat">Edit Beats</a></li>
+    <li class="sub"><a href="#step-sequencer">Step Sequencer</a></li>
     <li><a href="#edit-page">Page Editor</a></li>
     <li><a href="#edit-timeline">Arranger</a></li>
     <li><a href="#media-explorer">Media Explorer</a></li>
@@ -61,7 +67,7 @@ const sections = [
     </video>
   </div>
   <div>
-    <p><strong>MX GRID</strong> by MXbeats is a versatile music production tool designed for both live performers and studio musicians. Available as a standalone application and DAW plugin (VST/AU), it provides 32 outputs for flexible routing and 512 slots for loops, one-shots, and audio clips.</p>
+    <p><strong>MX GRID</strong> by MXbeats is a versatile music production tool designed for both live performers and studio musicians. Available as a standalone application and DAW plugin (VST/AU), it provides 32 outputs for flexible routing and 512 slots for four clip types: <strong>Loops</strong>, <strong>Samples</strong>, <strong>MIDI Notes</strong>, and <strong>Beats</strong>.</p>
     <p>MX GRID supports two playback modes: <strong>Session</strong> for real-time triggering of clips using a mouse or MIDI controller (e.g., Launchpad), and <strong>Arranger</strong> for composing complete songs on a timeline. Seamless integration with grid controllers and effortless media management provide a distinctive experience for music creators.</p>
     <p>Simply drag audio files (WAV, AIFF, MP3, OGG) or entire folders onto the grid \u2014 the application automatically detects whether each file is a sample or loop and assigns parameters like tempo, color, icon, and instrument group. You can drag files from any file explorer on your computer, or use the built-in Media Explorer to browse and import directly from your library.</p>
   </div>
@@ -110,7 +116,7 @@ const sections = [
   <li><strong>Media Explorer</strong> \u2014 <a href="#media-explorer">browse and import audio files from your file system</a>.</li>
   <li><strong>Box Editor</strong> \u2014 <a href="#edit-box">open the editor panel</a>.</li>
   <li><strong>Page Editor</strong> \u2014 <a href="#edit-page">rearrange boxes and batch operations</a>.</li>
-  <li><strong>Timeline Editor</strong> \u2014 <a href="#edit-timeline">open the Arranger to compose songs</a>.</li>
+  <li><strong>Arranger</strong> \u2014 <a href="#edit-timeline">open the Arranger to compose songs</a>.</li>
   <li><strong>Zoom In / Zoom Out</strong> \u2014 adjust the application size for different screen resolutions.</li>
   <li><strong>Light Mode / Dark Mode</strong> \u2014 switch the color theme.</li>
 </ul>
@@ -148,7 +154,7 @@ const sections = [
 
   // 4 — Media Grid
   `<h3 id="media-grid">Media Grid</h3>
-<p>The <strong>Media Grid</strong> is the central area of the application \u2014 a virtual controller consisting of 64 square buttons (8\u00D78) spread across 8 pages, providing a total of <strong>512 slots</strong> for loops or samples.</p>
+<p>The <strong>Media Grid</strong> is the central area of the application \u2014 a virtual controller consisting of 64 square buttons (8\u00D78) spread across 8 pages, providing a total of <strong>512 slots</strong> for Loops, Samples, MIDI Notes, and Beats.</p>
 
 <h4>Samples</h4>
 <img src="/images/manual/sample-boxes.png" alt="sample boxes" style="width:200px" />
@@ -185,7 +191,8 @@ const sections = [
 
   // 7 — Box Editor
   `<h3 id="edit-box">Box Editor</h3>
-<p><img src="/images/manual/edit-box-icon.png" alt="edit box" class="ico" /> The <strong>Box Editor</strong> opens a right-side panel for editing individual clip parameters. Activate it from the <a href="#toolbar"><strong>toolbar</strong></a> or the menu (View \u2192 Box Editor), then click any box on the grid to edit it. Clicking an empty slot lets you create a new sample or loop.</p>
+<p><img src="/images/manual/edit-box-icon.png" alt="edit box" class="ico" /> The <strong>Box Editor</strong> opens a right-side panel for editing individual clip parameters. Activate it from the <a href="#toolbar"><strong>toolbar</strong></a> or the menu (View \u2192 Box Editor), then click any box on the grid to edit it. Clicking an empty slot lets you create a new <strong>Note</strong>, <strong>Sample</strong>, <strong>Loop</strong>, or <strong>Beat</strong>.</p>
+<p><strong>Tip:</strong> In Box Edit, Page Edit, or Arranger mode, hold <strong>Alt</strong> and click any box to trigger that clip \u2014 no need to switch modes first.</p>
 <video autoplay muted loop playsinline poster="/images/manual/box-edit.png">
   <source src="/images/manual/box-edit.mp4" type="video/mp4" />
 </video>
@@ -250,7 +257,97 @@ const sections = [
   <li><strong>Fine Tune</strong> \u2014 fine pitch adjustment (works with the Pitch knob)</li>
 </ol>
 <p>Each of the first four knobs has an enable/disable toggle. Fine Tune activates automatically with Pitch. A small frequency spectrum display shows the filtered result. Combining Lo Pass and Hi Pass creates band-pass or band-reject filtering.</p>
-<p>Click <strong>Apply</strong> to cache the processed audio for better performance, or <strong>Cancel</strong> to discard changes.</p>`,
+<p>Click <strong>Apply</strong> to cache the processed audio for better performance, or <strong>Cancel</strong> to discard changes.</p>
+
+<h4 id="edit-note">Edit Notes</h4>
+<p>A <strong>MIDI Note</strong> box maps to a specific MIDI note number, letting you trigger external MIDI instruments or DAW percussion plugins \u2014 not just audio samples. Notes are the building blocks of <a href="#edit-beat">Beat</a> patterns.</p>
+<div class="two-col">
+  <div>
+    <img src="/images/manual/edit-note-panel.png" alt="edit note panel" />
+  </div>
+  <div>
+    <ol>
+      <li>Toolbar: <strong>Save</strong>, <strong>Open</strong>, <strong>Open Folder</strong>, <strong>Delete</strong> \u2014 save or load note definitions from disk.</li>
+      <li><strong>MIDI Note Number</strong> \u2014 select the MIDI note to trigger. Use the <strong>Prev / Next</strong> arrows to step through notes, or click <strong>Play</strong> to audition the selected note.</li>
+      <li><strong>Name</strong> \u2014 text label for the clip (max 12 characters).</li>
+      <li><strong>Color &amp; Icon</strong> \u2014 visual appearance on the grid.</li>
+      <li><strong>Type</strong> \u2014 instrument category (e.g., Kick, Snare).</li>
+      <li><strong>Key</strong> \u2014 musical pitch of the note (e.g., C#, Dm).</li>
+      <li><strong>Preset</strong> \u2014 MIDI preset (e.g., General MIDI 2). Choose the preset that matches your connected instrument or plugin.</li>
+      <li><strong>Auto-fill Notes</strong> \u2014 fills the grid automatically with all notes from the selected preset. Perfect for quickly setting up a full drum kit.</li>
+    </ol>
+  </div>
+</div>
+
+<h4 id="edit-beat">Edit Beats</h4>
+<p>A <strong>Beat</strong> is a looping percussion pattern built from audio <a href="#edit-samples">Samples</a> or <a href="#edit-note">MIDI Notes</a>. Use imported samples for a classic drum machine feel, or connect MIDI Notes to a hardware drum module or DAW plugin. Over <strong>1,000 factory presets</strong> from various genres are included to get you started.</p>
+<div class="two-col">
+  <div>
+    <img src="/images/manual/edit-beat-panel.png" alt="edit beat panel" />
+  </div>
+  <div>
+    <ol>
+      <li>Toolbar: <strong>Save</strong>, <strong>Open</strong>, <strong>Open Folder</strong>, <strong>Delete</strong>.</li>
+      <li><strong>Play</strong> \u2014 preview the beat.</li>
+      <li><strong>Thumbnail</strong> \u2014 visual overview of the step pattern.</li>
+      <li><strong>Name</strong> \u2014 beat name (max 12 characters).</li>
+      <li><strong>Color &amp; Icon</strong> \u2014 visual appearance on the grid.</li>
+      <li><strong>Original Tempo</strong> \u2014 the tempo at which this beat sounds best. Does not affect playback speed; used for filtering saved beats in the Media Explorer.</li>
+      <li><strong>Group No</strong> \u2014 instrument group (1\u20138).</li>
+      <li><strong>Loop</strong> \u2014 when enabled, the beat repeats indefinitely; when disabled, it plays once and stops.</li>
+      <li><strong>Vel</strong> \u2014 velocity scaling for all notes [%]. Affects MIDI velocity, not sample volume \u2014 use with care.</li>
+      <li><strong>Open Step Sequencer</strong> \u2014 open the pattern editor. <a href="#step-sequencer">See below.</a></li>
+      <li><strong>Load Factory Preset</strong> \u2014 browse and load a built-in preset.</li>
+    </ol>
+  </div>
+</div>
+
+<h4 id="step-sequencer">Step Sequencer</h4>
+<p>The Step Sequencer is where you compose the beat. Each Beat can have up to <strong>16 tracks</strong> and a pattern length of up to <strong>4 bars</strong>.</p>
+
+<h5>Toolbar</h5>
+<ul>
+  <li><strong>New Beat</strong> \u2014 clear the current pattern and start fresh.</li>
+  <li><strong>Open / Save</strong> \u2014 load or save a beat pattern from/to disk.</li>
+  <li><strong>Undo / Redo</strong></li>
+  <li><strong>Copy / Cut / Paste / Delete</strong> \u2014 operate on selected notes.</li>
+  <li><strong>+ / \u2212</strong> \u2014 add or remove a track.</li>
+  <li><strong>Panic</strong> \u2014 silence all sounds immediately.</li>
+  <li><strong>Play</strong> \u2014 preview the pattern.</li>
+  <li><strong>Volume</strong> \u2014 master volume knob for the beat preview.</li>
+</ul>
+
+<h5>Global Beat Options</h5>
+<ul>
+  <li><strong>Tempo</strong> \u2014 defaults to project tempo. Adjust here to hear the beat at a different BPM.</li>
+  <li><strong>Swing</strong> \u2014 global swing for the entire pattern.</li>
+  <li><strong>Bars</strong> \u2014 pattern length: 1, 2, or 4 bars.</li>
+</ul>
+
+<h5>Track Options</h5>
+<p>Select a track to reveal its options panel. Use the <strong>Options</strong>, <strong>Velocity</strong>, and <strong>Time-Shift</strong> tabs:</p>
+<ul>
+  <li><strong>Steps/bar</strong> \u2014 number of steps per bar for this track: 4, 8, or 16.</li>
+  <li><strong>Gain</strong> \u2014 velocity offset for all notes in the track.</li>
+  <li><strong>Swing</strong> \u2014 per-track swing (stacks with global swing).</li>
+  <li><strong>Time Shift</strong> \u2014 offset all notes in the track: \u221250% to +50%.</li>
+  <li><strong>Velocity Humanization</strong> \u2014 add subtle velocity variation for a more natural feel.</li>
+  <li><strong>Time Humanization</strong> \u2014 add subtle timing variation.</li>
+  <li><strong>Probability</strong> \u2014 chance that each note plays. Great for adding organic variation.</li>
+</ul>
+
+<h5>Tracks</h5>
+<p>Each track consists of:</p>
+<ul>
+  <li><strong>Drag handle</strong> \u2014 reorder tracks by dragging up or down.</li>
+  <li><strong>Select checkbox</strong> \u2014 select the track to view its options.</li>
+  <li><strong>Box icon &amp; name</strong> \u2014 shows the Sample or Note assigned to this track. Click the icon to audition it.</li>
+  <li><strong>Left / Right arrows</strong> \u2014 cycle through boxes within the same instrument category.</li>
+  <li><strong>Instrument type selector</strong> \u2014 choose the category (Kick, Snare, Hi-Hat, etc.).</li>
+  <li><strong>Solo / Mute</strong> \u2014 isolate or silence the track during preview.</li>
+  <li><strong>Step grid</strong> \u2014 click an empty step to place a note; click a filled step to remove it. Drag <strong>up/down</strong> to adjust velocity; drag <strong>left/right</strong> to shift timing. Default velocity is <strong>100</strong>.</li>
+</ul>
+<p>When done, click <strong>Save</strong> to apply changes, or <strong>Cancel</strong> to discard them.</p>`,
 
   // 8 — Page Editor
   `<h3 id="edit-page">Page Editor</h3>
@@ -279,6 +376,7 @@ const sections = [
   // 9 — Timeline Editor
   `<h3 id="edit-timeline">Arranger (Timeline Editor)</h3>
 <p><img src="/images/manual/edit-timeline-icon.png" alt="show arranger" class="ico" /> The Arranger lets you compose a song by dragging and dropping clips onto a timeline grid.</p>
+<p><strong>Quick Edit:</strong> Right-click any clip on the timeline to instantly edit its basic properties \u2014 no need to open the full Box Editor.</p>
 <video autoplay muted loop playsinline poster="/images/manual/timeline-edit.png">
   <source src="/images/manual/timeline-edit.mp4" type="video/mp4" />
 </video>
@@ -385,11 +483,12 @@ const sections = [
   <div>
     <ul>
       <li><strong>Controller</strong> \u2014 select a MIDI controller (None, Launchpad X).</li>
+      <li><strong>MIDI In / MIDI Out</strong> \u2014 select the MIDI ports for your Launchpad controller. Visible when a controller other than None is selected.</li>
       <li><strong>Zoom</strong> \u2014 adjust the application zoom level for different screen sizes.</li>
-      <li><strong>Theme</strong> \u2014 switch between Light and Dark mode.</li>
       <li><strong>Latency Compensation</strong> \u2014 used in <strong>VST mode</strong> to compensate for sound card latency and ensure accurate timing.</li>
       <li><strong>Use Relative Paths</strong> \u2014 stores file paths relative to the project location. Makes it easy to <strong>move or share</strong> projects between computers.</li>
       <li><strong>Auto-Convert Tempo</strong> \u2014 when enabled, all imported loops are automatically converted to the current project tempo.</li>
+      <li><strong>Beats MIDI Channel</strong> \u2014 MIDI channel used by the Beat sequencer when sending notes to external instruments and plugins.</li>
       <li><strong>Clear Cache</strong> \u2014 clears cached DSP-processed audio files. The current cache size is shown next to the button.</li>
       <li><strong>Clear Media DB</strong> \u2014 clears all data stored in the Media Explorer database. The current database size is displayed next to the button.</li>
     </ul>

@@ -1,44 +1,46 @@
 ---
-description: Updates the MXGrid Manual based on Polish notes in AppDescription.md
+description: Updates the MXGrid Manual based on notes in AppDescription.md
 model: Claude Sonnet 4.6 (copilot)
 ---
 
-Jesteś ekspertem od dokumentacji technicznej, UX Writingu oraz Payload CMS. Twoim zadaniem jest zsynchronizowanie zmian z `AppDescription.md` z resztą projektu, w szczególności z danymi seeda.
+You are an expert in technical documentation, UX Writing, and Payload CMS. Your task is to synchronize changes from `AppDescription.md` with the rest of the project — specifically the seed data.
 
-### Kontekst i Pliki:
+### Context & Files:
 
-- **Źródło:** #file:docs/AppDescription.md
-- **Seed Data:** #file:src/seed/manual.ts <-- TO JEST KLUCZOWE
+- **Source:** #file:docs/AppDescription.md
+- **Seed Data:** #file:src/seed/manual.ts <-- THIS IS CRITICAL
 - **CMS Global:** #file:src/globals/pages/Manual.ts
 - **Frontend Code:** #file:src/app/(frontend)/manual/ManualPage.tsx
 - **Styling:** #file:src/app/(frontend)/manual/manual.css
 
-### Zasady aktualizacji (Styl i Treść):
+### Clip Types (as of current version):
 
-...
+There are **4 clip types** in MX GRID: **Note** (MIDI Note), **Sample**, **Loop**, and **Beat**. All documentation must reflect this. The Note and Beat types are documented in sections 12 and 13 of `AppDescription.md`.
 
-### Zasady aktualizacji (Styl i Treść):
+### Update Rules (Style & Content):
 
-0. **Think step-by-step:** Przeanalizuj zmiany. Rozróżnij "opis systemu dla AI" od "instrukcji dla użytkownika".
-1. **User-Centric Writing:** Pisząc Manual, używaj języka prostego, aktywnego i bezpośredniego. Unikaj sztywnego, instruktażowego tonu na rzecz przyjaznego poradnika.
-2. **NO Visual Descriptions:** Absolutny zakaz opisywania wyglądu ikon (np. "magnifying glass"). Użytkownik widzi interfejs, potrzebuje tylko nazwy funkcji.
-3. **Image Assets:** - Zamiast opisów wizualnych, wstawiaj tagi `<img />` lub komponenty graficzne.
-   - **Base Path:** Wszystkie grafiki manuala znajdują się w `public/images/manual/`.
-   - W kodzie HTML używaj ścieżek relatywnych do `/public`, np.: `<img src="/images/manual/nazwa-pliku.png" class="manual-img" />`.
-   - Jeśli nie znasz nazwy pliku, stwórz logiczną nazwę na podstawie funkcji (np. `media-explorer-icon.png`).
-4. **AppDescription vs Manual:** - `docs/AppDescription.md` = Techniczna specyfikacja dla AI (detale, ikony, współrzędne).
-   - `ManualPage.tsx` / `Manual.ts` = Przystępny podręcznik dla człowieka (korzyści, szybkie akcje).
-5. **Technical Restraints:** Czysty HTML, atrybuty `id` dla kotwic, zero Tailwind utility classes wewnątrz treści manuala.
+0. **Think step-by-step:** Analyze changes. Distinguish "AI system description" from "user instructions".
+1. **User-Centric Writing:** Write the Manual in simple, active, direct language. Avoid stiff instructional tone — aim for a friendly guide.
+2. **NO Visual Descriptions:** Never describe icon appearances (e.g., "magnifying glass"). The user sees the interface; they only need the feature name.
+3. **Image Assets:**
+   - Instead of visual descriptions, insert `<img />` tags.
+   - **Base Path:** All manual images are in `public/images/manual/`.
+   - In HTML, use paths relative to `/public`, e.g.: `<img src="/images/manual/filename.png" class="manual-img" />`.
+   - If the filename is unknown, create a logical name based on the feature (e.g., `beat-editor-panel.png`).
+4. **AppDescription vs Manual:**
+   - `docs/AppDescription.md` = Technical specification for AI (details, coordinates, internal names).
+   - `ManualPage.tsx` / `Manual.ts` = Accessible guide for humans (benefits, quick actions).
+5. **Technical Constraints:** Clean HTML, `id` attributes for anchors, zero Tailwind utility classes inside manual content.
 
-### Logika zmian:
+### Change Logic:
 
-- **Seed Update (PRIORYTET):** Zaktualizuj obiekt z treścią w `src/seed/manual.ts`. To jest najważniejszy krok, aby dane trafiły do bazy danych po uruchomieniu `pnpm run seed:manual`.
-- **Tłumaczenie:** Polskie notatki z `## Updates` zamień na naturalny angielski (nie dosłowne tłumaczenie).
-- **Bezpieczeństwo:** Edytuj TYLKO sekcje manuala. Nie resetuj innych danych.
-- **Cleanup:** Usuń przetworzone wpisy z sekcji `## Updates`.
+- **Seed Update (PRIORITY):** Update the content object in `src/seed/manual.ts`. This is the most important step — data reaches the database after running `pnpm run seed:manual`.
+- **Translation:** Convert any Polish notes from `## Updates` into natural English (not word-for-word translation).
+- **Safety:** Edit ONLY manual sections. Do not reset other data.
+- **Cleanup:** Remove processed entries from the `## Updates` section.
 
-### Instrukcja wyjściowa:
+### Output Instructions:
 
-Zaproponuj precyzyjne diffy. Zacznij od krótkiego planu, jak zamierzasz przeredagować nudny opis techniczny na ciekawy podręcznik.
+Propose precise diffs. Start with a brief plan explaining how you will turn the dry technical description into an engaging guide.
 
 Start your response with the codeword: [MXGRID-SYNC-ACTIVE]

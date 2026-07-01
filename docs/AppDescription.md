@@ -32,6 +32,8 @@ MX GRID by MXbeats is a music production tool designed to simplify the music cre
 
 ## 2. Clip Types
 
+MX GRID supports four clip types: **Single-Shot Sample**, **Loop**, **MIDI Note**, and **Beat**.
+
 ### 2.1 Single-Shot Samples
 
 Single-shot samples can be triggered at any time with variable velocity (loudness depending on how hard the MIDI pad is pressed).
@@ -44,6 +46,14 @@ Loops always play at a fixed volume. When triggered, the application waits until
 - Only **one loop per group** can play at a time. Triggering a new loop in a group automatically stops the previously playing loop in that group (after waiting for the bar boundary).
 - Loops **repeat by default** after finishing playback. This can be disabled so that the loop stops automatically after one cycle.
 - Each instrument group has a dedicated **Stop button** (8 total) to manually stop playback.
+
+### 2.3 MIDI Note
+
+A MIDI Note box maps to a specific MIDI note number. It enables triggering external MIDI instruments and DAW percussion plugins — not only audio samples. MIDI Notes serve as the building blocks for Beat patterns.
+
+### 2.4 Beat
+
+A Beat is a percussion loop pattern built from audio Samples or MIDI Notes using the built-in Step Sequencer. Beats behave like loops (triggered synchronously at bar boundaries, belonging to an instrument group) but their content is programmed in the sequencer rather than read from an audio file. Over 1,000 factory presets are included across various genres.
 
 ---
 
@@ -105,7 +115,7 @@ View
 ├── ─────────────
 ├── Box Editor
 ├── Page Editor
-├── Timeline Editor
+├── Arranger
 ├── ─────────────
 ├── Zoom In
 ├── Zoom Out
@@ -136,13 +146,17 @@ Help
 - **Audio Settings** — standard audio/MIDI hardware settings dialog (provided by the JUCE library). Allows configuration of: audio device type (ASIO, Windows Audio, etc.), sound card, output channels, sample rate, sound card control panel, and MIDI devices.
 - **Project Settings** — project-specific settings dialog with Close and Save buttons:
   - **Controller** — MIDI controller selection (None, Launchpad X).
+  - **MIDI In / MIDI Out** — select the MIDI input and output ports for the connected Launchpad controller. These widgets appear below the Controller selector and are visible only when a controller other than None is selected.
   - **Zoom** — application zoom level.
-  - **Theme** — Light or Dark.
   - **Latency Compensation** — checkbox, used in VST mode for better clip synchronization and latency reduction.
   - **Use Relative Paths** — stores file paths relative to the project location, allowing the project folder to be moved or shared with others.
   - **Auto-Convert Tempo** — when enabled, all imported loops are automatically converted to the current project tempo.
+  - **Beats MIDI Channel** — selects the MIDI channel used by the Beat sequencer when sending notes to external instruments and DAW plugins.
   - **Clear Cache** — clears cached audio files generated when applying DSP filters. The current cache size is displayed next to the button.
   - **Clear Media DB** — clears all data stored in the Media Explorer database. The current database size is displayed next to the button.
+
+  > **Note:** The Theme setting (Light/Dark) has been removed from Project Settings and is now accessible exclusively via the View menu.
+
 - **Turn off All Sounds** — immediately silences all playing clips.
 
 ### 5.3 View
@@ -150,7 +164,7 @@ Help
 - **Media Explorer** — opens the Media Explorer panel for browsing and importing audio files from your file system.
 - **Box Editor** — opens the right-side panel for editing individual clip settings. Clicking a box on the grid in this mode opens its parameters for editing.
 - **Page Editor** — enables rearranging boxes and performing batch modifications (tempo, color, volume, icon, etc.).
-- **Timeline Editor** — opens the Arranger for composing songs from available clips.
+- **Arranger** — opens the Arranger for composing songs from available clips.
 - **Zoom In / Zoom Out** — adjusts the application size to accommodate different screen resolutions and user preferences.
 - **Light Mode / Dark Mode** — switches the application color theme.
 
@@ -230,7 +244,9 @@ There are two ways to load clips:
 
 1. **Drag and drop from the file explorer** — drag audio files (WAV, AIF, AIFF, MP3, OGG) or entire folders onto the grid. If multiple files are dragged, they fill consecutive empty slots. The application automatically detects whether each file is a sample or loop and assigns parameters (tempo, instrument type, color, icon, group number, name). This is the fastest way to load clips.
 
-2. **Via the Box Editor** — activate Box Edit mode and click an empty slot. A prompt asks whether to create a sample or loop. The new clip is initialized as a copy of the last edited clip (or with default values if no clip has been edited yet). Audio files can then be loaded via the editor toolbar.
+2. **Via the Box Editor** — activate Box Edit mode and click an empty slot. A prompt asks which clip type to create: **Note**, **Sample**, **Loop**, or **Beat**. The new clip is initialized as a copy of the last edited clip of the same type (or with default values). Audio files or note definitions can then be loaded via the editor toolbar.
+
+**Alt+Click shortcut** — in Box Edit, Page Edit, and Arranger modes, holding **Alt** while clicking a box triggers the clip immediately without switching modes.
 
 ---
 
@@ -238,7 +254,7 @@ There are two ways to load clips:
 
 The Box Editor is the right-side panel for editing individual clip parameters. It is activated from the main menu (View → Box Editor) or the toolbar (Edit Box button).
 
-**Workflow:** activate Box Edit mode, then click a box on the grid to edit it. Clicking an empty slot prompts you to create a new sample or loop. If no slot is selected, the panel displays "Nothing Selected".
+**Workflow:** activate Box Edit mode, then click a box on the grid to edit it. Clicking an empty slot prompts you to choose a clip type: **Note**, **Sample**, **Loop**, or **Beat**. If no slot is selected, the panel displays "Nothing Selected".
 
 Most editing options are shared between samples and loops. Differences are noted in each subsection below.
 
@@ -393,6 +409,8 @@ Below the track numbers are **Solo (S)** and **Mute (M)** buttons for each track
 - **Click left edge at the bottom** — sets a temporary song end point (does not apply when playback is controlled by a DAW host).
 - Inactive (excluded) parts of the song are grayed out.
 
+**Right-click on a clip** — right-clicking any clip on the timeline opens a quick-edit dialog for modifying its basic properties (e.g., velocity, color, group). This avoids the need to open the full Box Editor for minor adjustments.
+
 ### 10.4 Working with Loops on the Timeline
 
 - Loops can only be placed on the 8 loop tracks (columns 2–9).
@@ -450,18 +468,130 @@ The application **periodically checks** with the server to verify whether the li
 
 ---
 
-## 13. Media Explorer
+## 12. MIDI Note (Note)
+
+A MIDI Note box maps to a single MIDI note number and is used to trigger external MIDI instruments or DAW percussion plugins. It is not an audio file — it is a MIDI event definition that acts as a reusable clip on the grid.
+
+### Creating a Note
+
+Activate Box Edit mode and click an empty slot, then select **Note** from the clip-type prompt.
+
+### Note Editor Properties
+
+- **MIDI Note Number** — the MIDI note (0–127) to send when the clip is triggered. Prev/Next arrow buttons step through values. A **Play** button (note icon) auditions the selected note.
+- **Name** — display name on the grid box (max 12 characters).
+- **Color** — one of 16 available colors.
+- **Icon** — visual icon displayed on the grid box.
+- **Type** — instrument category (e.g., Kick, Snare, Guitar).
+- **Key** — musical pitch of the note (e.g., C#, Dm).
+- **Preset** — MIDI preset to use (e.g., General MIDI 2). Selects which preset context the note belongs to.
+- **Auto-fill Notes** — scans all configured notes in the selected preset and fills consecutive empty grid slots with them. Useful for quickly populating a full drum kit mapping.
+
+### Note Toolbar
+
+- **Save** — save the note definition as a file on disk.
+- **Open** — load a note definition from disk into the current slot.
+- **Open Folder** — load multiple note definitions from a folder at once, filling consecutive slots.
+- **Delete** — clear the slot.
+
+---
+
+## 13. Beat
+
+A Beat is a programmable percussion loop built using the built-in Step Sequencer. It behaves like a Loop on the grid (synchronized playback, instrument group assignment) but its audio content is generated from a sequenced pattern of Samples and/or MIDI Notes rather than a single audio file.
+
+Over **1,000 factory presets** across various genres are provided. Beats can also use external hardware drum modules or DAW percussion plugins via MIDI Notes.
+
+### Beat Editor Properties
+
+- **Play** — preview the beat.
+- **Thumbnail** — visual overview of the step pattern.
+- **Name** — beat name (max 12 characters).
+- **Color** — one of 16 available colors.
+- **Icon** — visual icon displayed on the grid box.
+- **Original Tempo** — the tempo at which this beat sounds best. Does not affect playback speed; used for filtering and display in the Media Explorer.
+- **Group No** — instrument group (1–8). Only one beat/loop per group plays at a time.
+- **Loop** — when enabled, the beat repeats indefinitely; when disabled, it plays once and stops.
+- **Vel** — global velocity correction for all notes in the beat [%]. This is MIDI velocity, not audio volume — adjust with care.
+- **Open Step Sequencer** — opens the Step Sequencer for composing the beat pattern.
+- **Load Factory Preset** — opens a preset browser to load one of the built-in presets.
+
+### Beat Toolbar
+
+- **Save** — save the beat definition to disk.
+- **Open** — load a beat definition from disk.
+- **Open Folder** — load multiple beat definitions from a folder.
+- **Delete** — clear the slot.
+
+### Step Sequencer
+
+The Step Sequencer is a pattern editor for composing the beat. Maximum **16 tracks**, maximum **4 bars** per pattern.
+
+#### Sequencer Toolbar
+
+- **New Beat** — clear the current pattern and start a new one.
+- **Open / Save** — load or save a beat pattern from/to disk.
+- **Undo / Redo**
+- **Copy / Cut / Paste / Delete** — operations on selected notes.
+- **+ / −** — add or remove a track.
+- **Panic** — silence all sounds immediately.
+- **Play** — preview the pattern.
+- **Volume** — master volume knob for the beat preview.
+
+#### Global Beat Options
+
+- **Tempo** — defaults to project tempo. Change to preview the beat at a different BPM.
+- **Swing** — global swing amount for the entire pattern.
+- **Bars** — pattern length: 1, 2, or 4 bars.
+
+#### Track Options
+
+Select a track to reveal its options panel. The panel has three tabs: **Options**, **Velocity**, and **Time-Shift**.
+
+**Options tab:**
+
+- **Steps/bar** — number of steps per bar for this track: 4, 8, or 16.
+- **Gain** — velocity modifier applied to all notes in this track.
+- **Swing** — per-track swing (additive with global swing).
+- **Time Shift** — time offset applied to all notes: −50% to +50%.
+- **Velocity Humanization** — adds random velocity variation per step for a more human feel.
+- **Time Humanization** — adds random timing variation per step.
+- **Probability** — probability that each note will trigger. Enables generative and probabilistic patterns.
+
+**Velocity tab** — shows and allows editing of per-note velocity values for the selected track.
+
+**Time-Shift tab** — shows and allows editing of per-note time-shift values for the selected track.
+
+#### Track Layout (per track)
+
+- **Drag handle** — drag up or down to reorder tracks.
+- **Select checkbox** — select the track to show its options.
+- **Box icon** — icon of the Sample or MIDI Note assigned to this track. Clicking it plays a preview.
+- **Box name** — name of the assigned box.
+- **Left / Right navigation arrows** — cycle through available boxes within the same instrument category. Allows different samples or notes to be used on the same track.
+- **Instrument type selector** — choose the instrument category (Kick, Snare, Hi-Hat, etc.).
+- **Solo / Mute buttons** — isolate or silence the track during preview.
+- **Step grid** — click an empty cell to place a note; click a placed note to remove it. Drag **up/down** on a note to adjust its velocity (the note icon shrinks). Drag **left/right** on a note to adjust its time-shift. Default velocity is **100**.
+
+#### Action Buttons (bottom-right)
+
+- **Cancel** — close the Step Sequencer without saving changes.
+- **Save** — close the Step Sequencer and save changes to the beat.
+
+---
+
+## 14. Media Explorer
 
 The Media Explorer is a built-in tool designed for cataloguing, quickly finding, and previewing audio files on your computer. Open it from the toolbar (computer with magnifying glass icon — third icon from the left) or via **View → Media Explorer**. It appears docked to the right side of the main window, alongside the Box Editor, Page Editor, and Arranger panels.
 
-### 13.1 Toolbar
+### 14.1 Toolbar
 
 - **Add Media Folder** — add a folder to your media library.
 - **Remove Selected Folder** — remove the currently selected folder from the library.
 - **Stop Parsing** — stop the ongoing file-analysis process for the selected folder.
 - **Auto Preview One-Shot on Hover** — when enabled, moving the cursor over a file's icon automatically plays a preview of that one-shot sample without requiring a click. This option applies to one-shots only; loop preview on hover is intentionally disabled due to the conversion and synchronization overhead during playback.
 
-### 13.2 Folders Panel
+### 14.2 Folders Panel
 
 A collapsible panel displaying the folder tree. Toggle visibility using the chevron icon on the right side of the panel header. The header also displays the name of the currently selected folder, so it remains visible even when the tree is collapsed.
 
@@ -473,7 +603,7 @@ An entire folder can be imported into the project by dragging it onto the grid. 
 
 When the Media Explorer is opened and a folder is selected, a quick rescan is performed to detect any files that have changed since the last session.
 
-### 13.3 Files Panel
+### 14.3 Files Panel
 
 A collapsible panel listing the audio files in the selected folder. The panel header shows the total file count and a **Search** text field for filtering by filename or instrument category. An advanced filter button reveals additional options: BPM min/max range, Key, loop checkbox, and one-shot checkbox. When any filter is active, an indicator displays the number of active filters along with a **Clear Filters** button.
 
@@ -485,140 +615,10 @@ Audio files can be placed on the grid using **drag and drop**. Use **Ctrl+Click*
 
 Hovering over a file reveals an **info** icon on the right. Clicking it opens a detail window showing the full path, file size, type, BPM, key, and duration.
 
-### 13.4 Transport Control
+### 14.4 Transport Control
 
 When a file is being previewed, a transport bar appears at the bottom of the Files panel containing a **Play/Stop** button, a colour-coded waveform, the filename, and a **Volume** knob. The volume knob controls preview playback level. The bar remains visible even when scrolling through the file list. Clicking on the waveform scrubs the playhead to that position (not available in synchronized loop mode).
 
 ## Updates
 
-- Main Menu > View - timeline editor - zamiast 'Timeline editor' jest teraz 'Arranger', więc tekst "Timeline Editor — open the Arranger to compose songs." powinien zostać poprawiony
-- W trybach "Edit Page", "Edit Box" i "Arranger" klikając na box podczas gdy wciśnięty jest Alt powoduje uruchomienie klipu
-- W trybie "Arranger" kliknięcie prawym przyciskiem myszki na klip umożliwia edycję podstawowych właściwości klipu, bez konieczności uruchamiania Box Edytora
-- Dodano 2 nowe typy klipu: Note i Beat - zostaną one dokładnie opisane poniżej
-
-### MIDI Note (w skrócie Note)
-
-MIDI Note umożliwia mapowanie różnych instrumentów perkusyjnych do różnych nut midi, co umożliwia używanie używanie w Beats nie tylko sampli, ale i zewnętrznych instrumentów MIDI i wtyczek perkusyjnych w DAW.
-
-Po kliknięciu na puste pole w gridzie i zaznaczeniu edycji box'a w toolbarze zobaczymy wszystkie obecnie dostępne opcje klipów: Note, Sample, Loop i Beat.
-
-#### Note Toolbar
-
-- Save - zapisuje definicję box'a na dysk
-- Open - umożliwia odtworzenie box'a z dysku
-- Open Folder - załadowanie wielu box'ów na raz
-- Delete - usunięcie box'a
-
-#### Note - ustawienia
-
-- Numer nuty midi
-- Przyciski/strzałki poprzedni i następny do szybkiego wybierania poprzedniego lub następnego numeru midi
-- Przycisk Play (ikonka nutki) do podglądu/odgrywania nutki
-- Name (max 12 znaków)
-- Color
-- Icon
-- Type - typ instrumentu
-- Key - wysokość np C#
-- Preset - MIDI preset, np: General MIDI2
-- Auto-fill Notes - po kliknięciu wstawiamy do grida wszystkie skonfigurowane nuty z danego presetu
-
-### Beat
-
-Beats umożliwia tworzenie loopów perkusyjnych. Do tworzenia perkusji możemy używać zaimportowanych sampli jak również zewnętrznych syntezatorów
-i modułów perkusyjnych zawierających wejście MIDI, jak również wtyczek DAW (wersja plugin - nie standalone).
-Mamy możliwość skorzystania z ponad 1000 gotowych presetów z różnych gatunków muzycznych oraz skorzystania z zaawansowanego
-sekwencera MIDI.
-
-#### Beats Toolbar
-
-- Save - zapisuje definicję box'a na dysk
-- Open - umożliwia odtworzenie box'a z dysku
-- Open Folder - załadowanie wielu box'ów na raz
-- Delete - usunięcie box'a
-
-#### Beats - Panel ustawień
-
-- Przycisk "Play" - odgrywanie beat'u
-- Thumbnail - wizualny podgląd beat'u
-- Name - nazwa beatu (max 12 znaków)
-- Color - kolor box'a
-- Icon - ikona box'a
-- Original Tempo - oryginalne tempo beat'u przy jakim brzmi najlepiej. Ustawienie to nie ma wpływu na odtwarzanie, ale ułatwia filtrowanie
-  zapisanych box'ów z poziomu Media Explorer'a
-- Group No - numer grupy instrumentów
-- Loop - określa czy beat ma się zatrzymać na końcu, czy się zapętlać
-- Vel - korekcja velocyty dla wszystkich nut [%]. Nie jest to to samo co volume dla sampli i należy używać tego ustawienia ostrożnie.
-- Open Step Sequencer - otwarcie sekwencera perkusyjnego
-- Load Factory Preset - podgląd i załadowanie presetów
-
-#### Step Sequencer
-
-Sekwencer umożliwia tworzenie beat'ów składający się maksymalnie z 16 ścieżek i długości do 4 barów.
-
-##### Toolbar
-
-Toolbar zawiera przyciski - ikonki
-
-- New Beat - wyczyszczenie obecnego beat'u i rozpoczęcie tworzenia nowego
-- Open - zapisanego wcześniej beat'u
-- Save - sapisanie beat'u na dysk
-- Undo i Redo
-- Copy, Cut, Paste i Delete - operacje na zaznaczonych nutach
-- - / - - dodanie lub usunięcie ścieźki
-- Panic - wyciszenie wszystkich dźwięków
-- Play - podgląd beat'u
-- Volume - knob, w którym można ustawić głośność beat'u
-
-##### Beat Options
-
-Operacje na globalnych ustawieniach beat'u
-
-- Tempo - domyślnie tempo projektu. Jeśli chcemy zobaczyć jak dany beat brzmiał by w innym tempie możemy tutaj to ustawić
-- Swing - globalny swing
-- Bars - liczba barów [1, 2, 4]
-
-##### Track Options
-
-Żeby zobaczyć track options musimy zaznaczyć ścieżkę. W menu na górze opcji mamy: Options, Velocity i Time-Shift. W zakładkach
-Velocity i Time-Shift możemy modyfikować parametry velocity/time-shift dla poszczególnych nut. W przypadku Options mamy:
-
-- Steps/bar - w każdej ścieżce możemy osobno ustawić liczbę kroków [4, 8, 14]
-- Gain - modyfikacja velocity dla wszystkich nut w danej ścieżce
-- Swing - swing dla wybanej ścieżki. Swing dla ścieżki i globalny się sumują.
-- Time Shift - przesunięcie czasowe wszystkich nut w ścieżce [-50% do +50%]
-- Velocyty Humanization - humanizacja velocity dla całej ścieżki
-- Time Humanization - humanizacja czasu dla wszsystkich nut w ścieżce
-- Probability - prawdopodobność pojawienia się nutki
-
-##### Track
-
-Ścieżki składają się z kilku elementów:
-
-- Drag and drop handle - pozycję danej ścieżki możemy zmienić chwytają za handle i przeciągając góra/dół.
-- Select checkbox - checkbox służący do zaznaczania ścieżki
-- Box Icon - ikonka przypisana do box'u, który jest przypisany do ścieżki. Kliknięcie na nią powoduje podgląd sampla
-- Box Name - nazwa przypisanego do ścieżki box'u
-- Left/Right icons - ikonki/przyciski do nawigowania pomiędzy różnymi box'ami z danej kategorii instrumentu. Możemy w danej ścieżce używać
-  różnych box'ów z samplami lub nutami przypisanymi do danej kategorii np.: Kick, Snare itp.
-- Sampe Type - wybór typu sampla/nuty np.: Kick, Snare ...
-- Solo and Mute buttons - solo i mute dla danej ścieżki
-- grid - siatka umożliwiająca stawianie/usuwanie nutek. Kliknięcie na puste pole stawia nutkę, natomiast kliknięcie na nutkę usuwa ją.
-  Jeśli klikniemy na nutkę i przesuwamy ją góra/dół - modyfikujemy jej velocity. Nutka jest staje się niższa. Domyślne velocity dla
-  nut to 100. Jeśli klikniemy na nutkę i zaczniemy przeciągać prawo/lewo - modyfikujemy jej time-shift
-
-##### Action Buttons
-
-Na dole ekranu po prawej stronie mamy 2 przyciski:
-
-- Cancel - zamknięcie edycji beat'u bez zapisywania zmian
-- Save - zamknięcie edycji beat'u z zapisaniem zmian
-
-### Project Settings
-
-Zmienił się project settings za sprawą dodania konfituracji beats, ale również konfiguracji kontrolera. Poprzednio wybierało się typ kontrolera MIDI i
-obsługiwało za pomocą urządzenia midi znajdującego się w ustawieniach audio. Obecnie urządzenie MIDI w audio służy wyłącznie do podłączenia
-zewnętrznego syntezatora a ustawienia kontrolera MIDI grid przechodzą do Project Settings.
-
-- Pod polem Select Controller mamy jeszcze 2 widżety typu select: "MIDI In" i "MIDI Out". Wybieramy tam odpowiednie porty dla kontrolera typu Launchpad.
-- Uzunięta została opcja wyboru Theme - teraz jest dostępna wyłącznie z poziomu górnego menu.
-- Dodano Beats MIDI Channel - wybór kanału midi dla beats czyli perkusji.
+_All changes from this section have been integrated into the main documentation above._
