@@ -281,6 +281,7 @@ const sections = [
 
 <h4 id="edit-beat">Edit Beats</h4>
 <p>A <strong>Beat</strong> is a looping percussion pattern built from audio <a href="#edit-samples">Samples</a> or <a href="#edit-note">MIDI Notes</a>. Use imported samples for a classic drum machine feel, or connect MIDI Notes to a hardware drum module or DAW plugin. Over <strong>1,000 factory presets</strong> from various genres are included to get you started.</p>
+<p><strong>Important:</strong> Beats need matching source boxes (for example Kick, Snare, Hi-Hat) to play correctly. If your project has no suitable Sample or MIDI Note boxes assigned to those instrument types, the beat may play partially or remain silent.</p>
 <div class="two-col">
   <div>
     <img src="/images/manual/edit-beat-panel.png" alt="edit beat panel" />
@@ -297,10 +298,23 @@ const sections = [
       <li><strong>Loop</strong> \u2014 when enabled, the beat repeats indefinitely; when disabled, it plays once and stops.</li>
       <li><strong>Vel</strong> \u2014 velocity scaling for all notes [%]. Affects MIDI velocity, not sample volume \u2014 use with care.</li>
       <li><strong>Open Step Sequencer</strong> \u2014 open the pattern editor. <a href="#step-sequencer">See below.</a></li>
-      <li><strong>Load Factory Preset</strong> \u2014 browse and load a built-in preset.</li>
+      <li><strong>Load Factory Preset</strong> \u2014 open the preset browser to preview and load built-in patterns.</li>
     </ol>
   </div>
 </div>
+
+<h5>Load Factory Preset</h5>
+<p>Click <strong>Load Factory Preset</strong> in the Beat editor to open the preset browser.</p>
+<ul>
+  <li><strong>Search</strong> \u2014 filter presets by name or genre.</li>
+  <li><strong>Genre panel</strong> \u2014 pick a style category on the left side.</li>
+  <li><strong>Preset panel</strong> \u2014 choose an available preset for the selected genre.</li>
+  <li><strong>Info panel</strong> \u2014 review preset details and remap default track instruments.</li>
+  <li><strong>Preview</strong> \u2014 audition the selected preset with your current instrument mappings.</li>
+  <li><strong>Use Project Tempo</strong> \u2014 switch preview between the preset tempo and your current project tempo.</li>
+  <li><strong>Cancel</strong> \u2014 close without applying changes.</li>
+  <li><strong>Load</strong> \u2014 apply the selected preset to the current Beat.</li>
+</ul>
 
 <h4 id="step-sequencer">Step Sequencer</h4>
 <p>The Step Sequencer is where you compose the beat. Each Beat can have up to <strong>16 tracks</strong> and a pattern length of up to <strong>4 bars</strong>.</p>

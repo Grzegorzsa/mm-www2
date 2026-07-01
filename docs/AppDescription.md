@@ -502,6 +502,8 @@ A Beat is a programmable percussion loop built using the built-in Step Sequencer
 
 Over **1,000 factory presets** across various genres are provided. Beats can also use external hardware drum modules or DAW percussion plugins via MIDI Notes.
 
+To play back correctly, a Beat needs source boxes assigned to instrument categories (for example Kick, Snare, Hi-Hat). These sources can be audio Sample boxes or MIDI Note boxes. If no matching samples or notes are configured in the project, Beat playback will be incomplete or silent.
+
 ### Beat Editor Properties
 
 - **Play** — preview the beat.
@@ -515,6 +517,21 @@ Over **1,000 factory presets** across various genres are provided. Beats can als
 - **Vel** — global velocity correction for all notes in the beat [%]. This is MIDI velocity, not audio volume — adjust with care.
 - **Open Step Sequencer** — opens the Step Sequencer for composing the beat pattern.
 - **Load Factory Preset** — opens a preset browser to load one of the built-in presets.
+
+### Load Factory Preset Dialog
+
+The **Load Factory Preset** button opens a dialog for browsing, previewing, and loading preset beat patterns.
+
+- **Search field** — at the top of the dialog. Filters presets by name or genre.
+- **Genre panel** — on the left side. Selecting a genre updates the preset list.
+- **Preset panel** — in the center. Shows all presets available for the selected genre.
+- **Info panel** — on the right side. Displays core preset details and allows replacing default track instruments.
+  - You can set each track to a different instrument type.
+  - You can also choose a Sample or MIDI Note source using selectors or arrow controls.
+- **Preview** — plays the selected preset with the currently selected instrument sources.
+- **Use Project Tempo** — toggles preview between the preset's recommended tempo and the current project tempo.
+- **Cancel** — closes the dialog without applying changes.
+- **Load** — loads the selected preset into the current Beat.
 
 ### Beat Toolbar
 
