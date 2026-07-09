@@ -69,7 +69,7 @@ const sections = [
   <div>
     <p><strong>MX GRID</strong> by MXbeats is a versatile music production tool designed for both live performers and studio musicians. Available as a standalone application and DAW plugin (VST/AU), it provides 32 outputs for flexible routing and 512 slots for four clip types: <strong>Loops</strong>, <strong>Samples</strong>, <strong>MIDI Notes</strong>, and <strong>Beats</strong>.</p>
     <p>MX GRID supports two playback modes: <strong>Session</strong> for real-time triggering of clips using a mouse or MIDI controller (e.g., Launchpad), and <strong>Arranger</strong> for composing complete songs on a timeline. Seamless integration with grid controllers and effortless media management provide a distinctive experience for music creators.</p>
-    <p>Simply drag audio files (WAV, AIFF, MP3, OGG) or entire folders onto the grid \u2014 the application automatically detects whether each file is a sample or loop and assigns parameters like tempo, color, icon, and instrument group. You can drag files from any file explorer on your computer, or use the built-in Media Explorer to browse and import directly from your library.</p>
+    <p>Simply drag audio files (WAV, AIFF, MP3, OGG), MIDI drum files (MID, MIDI), or entire folders onto the grid \u2014 the application automatically detects whether each file is a sample, loop, or MIDI drum file for Beat conversion, then assigns parameters like tempo, color, icon, and instrument group. You can drag files from any file explorer on your computer, or use the built-in Media Explorer to browse and import directly from your library.</p>
   </div>
 </div>`,
 
@@ -113,11 +113,11 @@ const sections = [
 
 <h4>View</h4>
 <ul>
-  <li><strong>Media Explorer</strong> \u2014 <a href="#media-explorer">browse and import audio files from your file system</a>.</li>
+  <li><strong>Media Explorer</strong> \u2014 <a href="#media-explorer">browse and import audio and MIDI drum files from your file system</a>.</li>
   <li><strong>Box Editor</strong> \u2014 <a href="#edit-box">open the editor panel</a>.</li>
   <li><strong>Page Editor</strong> \u2014 <a href="#edit-page">rearrange boxes and batch operations</a>.</li>
   <li><strong>Arranger</strong> \u2014 <a href="#edit-timeline">open the Arranger to compose songs</a>.</li>
-  <li><strong>Zoom In / Zoom Out</strong> \u2014 adjust the application size for different screen resolutions.</li>
+  <li><strong>Zoom In / Zoom Out / Zoom 100%</strong> \u2014 scale the interface up or down, or instantly return to default zoom.</li>
   <li><strong>Light Mode / Dark Mode</strong> \u2014 switch the color theme.</li>
 </ul>
 
@@ -137,7 +137,7 @@ const sections = [
 <p><a href="#edit-box"><img src="/images/manual/edit-box-icon.png" alt="edit box" class="ico" /></a> <strong>Box Editor</strong> \u2014 Edit individual clip parameters</p>
 <p><a href="#edit-page"><img src="/images/manual/edit-page-icon.png" alt="edit page" class="ico" /></a> <strong>Page Editor</strong> \u2014 Rearrange clips and batch operations</p>
 <p><a href="#edit-timeline"><img src="/images/manual/edit-timeline-icon.png" alt="show arranger" class="ico" /></a> <strong>Show Arranger</strong> \u2014 Switch to arrangement mode</p>
-<p><img src="/images/manual/media-explorer-icon.png" alt="media explorer" class="ico" /> <strong>Media Explorer</strong> \u2014 Browse and import audio files from your file system</p>
+<p><img src="/images/manual/media-explorer-icon.png" alt="media explorer" class="ico" /> <strong>Media Explorer</strong> \u2014 Browse and import audio and MIDI drum files from your file system</p>
 
 <h4>Transport Control</h4>
 <img src="/images/manual/transport-control-main.png" alt="transport control" class="toolbar-widget" />
@@ -174,7 +174,7 @@ const sections = [
 <p>During playback of any clip (loop or sample), hovering over the box reveals a <strong>Stop button</strong> in the top-left corner. Clicking it immediately stops playback of that individual clip \u2014 no need to use the Stop Group buttons or the All Sounds Off (panic) button.</p>
 
 <h4>Loading Clips</h4>
-<p><strong>Drag and drop</strong> audio files (WAV, AIF, AIFF, MP3, OGG) or entire folders from your file explorer onto the grid. The application automatically detects clip type and assigns tempo, color, icon, instrument group, and name. You can also load clips via the <a href="#edit-box"><strong>Box Editor</strong></a>.</p>`,
+<p><strong>Drag and drop</strong> audio files (WAV, AIF, AIFF, MP3, OGG), MIDI drum files (MID, MIDI), or entire folders from your file explorer onto the grid. The application automatically detects clip type, converts MIDI drum files to Beats, and assigns tempo, color, icon, instrument group, and name. You can also load clips via the <a href="#edit-box"><strong>Box Editor</strong></a>.</p>`,
 
   // 5 — Stop Group Buttons
   `<h3 id="stop-group">Stop Group Buttons</h3>
@@ -317,7 +317,7 @@ const sections = [
 </ul>
 
 <h4 id="step-sequencer">Step Sequencer</h4>
-<p>The Step Sequencer is where you compose the beat. Each Beat can have up to <strong>16 tracks</strong> and a pattern length of up to <strong>4 bars</strong>.</p>
+<p>The Step Sequencer is where you compose the beat. Each Beat can have up to <strong>16 tracks</strong> and a pattern length of up to <strong>8 bars</strong>.</p>
 
 <h5>Toolbar</h5>
 <ul>
@@ -335,7 +335,7 @@ const sections = [
 <ul>
   <li><strong>Tempo</strong> \u2014 defaults to project tempo. Adjust here to hear the beat at a different BPM.</li>
   <li><strong>Swing</strong> \u2014 global swing for the entire pattern.</li>
-  <li><strong>Bars</strong> \u2014 pattern length: 1, 2, or 4 bars.</li>
+  <li><strong>Bars</strong> \u2014 pattern length: 1, 2, 4, or 8 bars.</li>
 </ul>
 
 <h5>Track Options</h5>
@@ -421,6 +421,7 @@ const sections = [
 <h4 id="edit-timeline-buttons">2) Edit Buttons</h4>
 <p><img src="/images/manual/drag-buttons-icon.png" alt="drag button" class="ico" /> <strong>Drag and Drop</strong> \u2014 enabled by default. Drag clips from the Media Grid onto the timeline. Dragging a clip back to the grid removes it from the timeline. The target track is highlighted while dragging.</p>
 <p>Additional buttons: <strong>Copy</strong>, <strong>Paste</strong>, <strong>Cut</strong>, <strong>Delete</strong>, <strong>Undo</strong>, and <strong>Redo</strong>.</p>
+<p>On the right side of the toolbar, three DAW integration buttons are available: <strong>Export</strong> (export selected content to WAV or MIDI), <strong>Drag WAV</strong>, and <strong>Drag MIDI</strong> for direct drag-and-drop into DAW tracks. Use <strong>Solo</strong>/<strong>Mute</strong> to choose which tracks are included in export.</p>
 <p>Use <strong>Shift+Click</strong> to select all cells between two clicked positions, or <strong>Ctrl+Click</strong> to add individual cells to the current selection.</p>
 
 <h4 id="timeline-duration">3) Song Length</h4>
@@ -460,7 +461,7 @@ const sections = [
 
   // 10 — Media Explorer
   `<h3 id="media-explorer">Media Explorer</h3>
-<p><img src="/images/manual/media-explorer-icon.png" alt="Media Explorer" class="ico" /> The <strong>Media Explorer</strong> is a built-in tool designed for cataloguing, quickly finding, and previewing audio files on your computer. Open it from the toolbar or via <strong>View \u2192 Media Explorer</strong>.</p>
+<p><img src="/images/manual/media-explorer-icon.png" alt="Media Explorer" class="ico" /> The <strong>Media Explorer</strong> is a built-in tool designed for cataloguing, quickly finding, and previewing media files on your computer. It supports audio files and MIDI drum files. Open it from the toolbar or via <strong>View \u2192 Media Explorer</strong>.</p>
 
 <video autoplay muted loop playsinline poster="/images/manual/media-explorer.png">
   <source src="/images/manual/media-explorer.mp4" type="video/mp4" />
@@ -475,14 +476,14 @@ const sections = [
 </ul>
 
 <h4>Folders</h4>
-<p>Shows your media folders as a collapsible tree. When you add a folder, MX GRID scans it automatically \u2014 detecting each file\u2019s type, BPM, key, instrument, and generating a waveform thumbnail for fast browsing.</p>
+<p>Shows your media folders as a collapsible tree. When you add a folder, MX GRID scans it automatically \u2014 detecting whether each file is a loop, one-shot sample, or MIDI drum file. Audio files receive metadata such as BPM, key, instrument, and waveform thumbnail. MIDI drum files are prepared for Beat conversion with instrument mapping.</p>
 <p>Select <strong>All Folders</strong> at the top to browse your entire library at once. The file count for each folder is shown in parentheses.</p>
 <p>Drag an entire folder onto the grid to import all its files. Reopening the Explorer triggers a quick rescan to pick up any new or changed files.</p>
 
 <h4>Files</h4>
-<p>Lists all audio files in the selected folder. Use the <strong>Search</strong> field to filter by name or instrument. Click the filter button to narrow results by BPM range, key, or clip type.</p>
+<p>Lists media files in the selected folder. Use the <strong>Search</strong> field to filter by name or instrument. Click the filter button to narrow results by BPM range, key, or clip type.</p>
 <p>Click <strong>Play</strong> to preview a file. When your project is playing, previewing a loop syncs it to the current tempo and the next bar \u2014 the button flashes while it waits to start.</p>
-<p>Drag files onto the grid, or use <strong>Ctrl+Click</strong> / <strong>Shift+Click</strong> to select multiple files first. Press <strong>Shift+A</strong> to select all files in the current folder.</p>
+<p>Drag files onto the grid. MIDI drum files are automatically converted to Beats during import. Use <strong>Ctrl+Click</strong> / <strong>Shift+Click</strong> to select multiple files first. Press <strong>Shift+A</strong> to select all files in the current folder.</p>
 <p>Click the info button on any file to see its full path, size, type, BPM, key, and duration.</p>
 
 <h4>Transport Bar</h4>
@@ -498,14 +499,17 @@ const sections = [
     <ul>
       <li><strong>Controller</strong> \u2014 select a MIDI controller (None, Launchpad X).</li>
       <li><strong>MIDI In / MIDI Out</strong> \u2014 select the MIDI ports for your Launchpad controller. Visible when a controller other than None is selected.</li>
-      <li><strong>Zoom</strong> \u2014 adjust the application zoom level for different screen sizes.</li>
+      <li><strong>Default MIDI Map</strong> \u2014 choose the MIDI preset used when importing MIDI drum files so instruments map correctly to Beat tracks.</li>
+      <li><strong>Sample Latency</strong> \u2014 set extra delay for sample playback (in samples) when you need tighter sync.</li>
+      <li><strong>MIDI Latency</strong> \u2014 set extra delay for MIDI events (in samples) to align external instruments with audio.</li>
       <li><strong>Latency Compensation</strong> \u2014 used in <strong>VST mode</strong> to compensate for sound card latency and ensure accurate timing.</li>
       <li><strong>Use Relative Paths</strong> \u2014 stores file paths relative to the project location. Makes it easy to <strong>move or share</strong> projects between computers.</li>
       <li><strong>Auto-Convert Tempo</strong> \u2014 when enabled, all imported loops are automatically converted to the current project tempo.</li>
       <li><strong>Beats MIDI Channel</strong> \u2014 MIDI channel used by the Beat sequencer when sending notes to external instruments and plugins.</li>
-      <li><strong>Clear Cache</strong> \u2014 clears cached DSP-processed audio files. The current cache size is shown next to the button.</li>
-      <li><strong>Clear Media DB</strong> \u2014 clears all data stored in the Media Explorer database. The current database size is displayed next to the button.</li>
+      <li><strong>Clear Temp Data</strong> \u2014 clears all temporary data created by the application, including DSP cache files, Media Explorer database entries, and other generated temporary files.</li>
     </ul>
+    <p><strong>Sync tip:</strong> If possible, use low-latency audio drivers (for example ASIO). When that is not possible, use Sample Latency and MIDI Latency to keep playback in time.</p>
+    <p><strong>Note:</strong> Theme selection is now in the <strong>View</strong> menu (Light Mode / Dark Mode).</p>
   </div>
 </div>`,
 
