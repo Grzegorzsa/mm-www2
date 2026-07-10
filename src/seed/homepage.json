@@ -269,15 +269,6 @@
       "loops": "false",
       "beats": "true",
       "composer": "true"
-    },
-
-    {
-      "id": "69d4f804ea8dac6e8cdd9703",
-      "feature": "License Type",
-      "essentials": "Personal use only",
-      "loops": "Commercial",
-      "beats": "Commercial",
-      "composer": "Commercial"
     }
   ],
 
@@ -308,7 +299,7 @@
       "focalY": 50
     }
   },
-  "updatedAt": "2026-06-21T13:39:06.228Z",
+  "updatedAt": "2026-06-30T14:58:20.953Z",
   "createdAt": "2026-04-07T12:11:17.827Z",
   "globalType": "homepage"
 }
