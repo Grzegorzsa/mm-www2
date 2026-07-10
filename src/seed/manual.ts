@@ -309,66 +309,78 @@ const sections = [
 </div>
 
 <h4>Load Factory Preset</h4>
-<p>Click <strong>Load Factory Preset</strong> in the Beat editor to open the preset browser.</p>
-  <div>
-    <img src="/images/manual/beat_presets.png" alt="beat presets" />
-  </div>
-<ul>
+<p>Click <strong>Load Factory Preset</strong> (11) in the Beat editor to open the preset browser.</p>
+<div>
+  <img src="/images/manual/beat_presets.png" alt="beat presets" />
+</div>
+<ol>
   <li><strong>Search</strong> \u2014 filter presets by name or genre.</li>
   <li><strong>Genre panel</strong> \u2014 pick a style category on the left side.</li>
   <li><strong>Preset panel</strong> \u2014 choose an available preset for the selected genre.</li>
   <li><strong>Info panel</strong> \u2014 review preset details and remap default track instruments.</li>
-  <li><strong>Preview</strong> \u2014 audition the selected preset with your current instrument mappings.</li>
+  <li><strong>Track source panel</strong> \u2014 choose which Sample or MIDI Note each track should use. You can preview assigned sounds, switch to another source in the same instrument type, or change the instrument type for a track.</li>
+  <li><strong>Preview</strong> \u2014 audition the selected preset with your current track sources.</li>
   <li><strong>Use Project Tempo</strong> \u2014 switch preview between the preset tempo and your current project tempo.</li>
-  <li><strong>Cancel</strong> \u2014 close without applying changes.</li>
-  <li><strong>Load</strong> \u2014 apply the selected preset to the current Beat.</li>
-</ul>
+  <li><strong>Solo / Mute, Cancel / Load</strong> \u2014 use Solo and Mute to decide which drum tracks are heard during preview, then either Cancel to close without changes or Load to apply the preset.</li>
+</ol>
 
 <h4 id="step-sequencer">Step Sequencer</h4>
 <p>The Step Sequencer is where you compose the beat. Each Beat can have up to <strong>16 tracks</strong> and a pattern length of up to <strong>8 bars</strong>.</p>
+<div>
+  <img src="/images/manual/beat_step_sequencer.png" alt="step sequencer" />
+</div>
+<ol>
+  <li>
+    <h5>Toolbar</h5>
+    <ul>
+      <li><strong>New Beat</strong> \u2014 clear the current pattern and start fresh.</li>
+      <li><strong>Open / Save</strong> \u2014 load or save a beat pattern from/to disk.</li>
+      <li><strong>Undo / Redo</strong></li>
+      <li><strong>Copy / Cut / Paste / Delete</strong> \u2014 operate on selected notes.</li>
+      <li><strong>Quantize Timing</strong> \u2014 quantize the timing of selected notes.</li>
+      <li><strong>Quantize Velocity</strong> \u2014 set selected note velocities to 100.</li>
+      <li><strong>+ / \u2212</strong> \u2014 add or remove a track.</li>
+      <li><strong>Panic</strong> \u2014 silence all sounds immediately.</li>
+      <li><strong>Play</strong> \u2014 preview the pattern.</li>
+      <li><strong>Volume</strong> \u2014 master volume knob for the beat preview.</li>
+    </ul>
+  </li>
+  <li>
+    <h5>Global Beat Options</h5>
+    <ul>
+      <li><strong>Tempo</strong> \u2014 defaults to project tempo. Adjust here to hear the beat at a different BPM.</li>
+      <li><strong>Swing</strong> \u2014 global swing for the entire pattern.</li>
+      <li><strong>Bars</strong> \u2014 pattern length: 1, 2, 4, or 8 bars.</li>
+    </ul>
+  </li>
+  <li>
+  <h5>Track Options</h5>
+    <p>Select a track to reveal its options panel. Use the <strong>Options</strong>, <strong>Velocity</strong>, and <strong>Time-Shift</strong> tabs:</p>
+    <ul>
+      <li><strong>Steps/bar</strong> \u2014 number of steps per bar for this track: 4, 8, or 16.</li>
+      <li><strong>Gain</strong> \u2014 velocity offset for all notes in the track.</li>
+      <li><strong>Swing</strong> \u2014 per-track swing (stacks with global swing).</li>
+      <li><strong>Time Shift</strong> \u2014 offset all notes in the track: \u221250% to +50%.</li>
+      <li><strong>Velocity Humanization</strong> \u2014 add subtle velocity variation for a more natural feel.</li>
+      <li><strong>Time Humanization</strong> \u2014 add subtle timing variation.</li>
+      <li><strong>Probability</strong> \u2014 chance that each note plays. Great for adding organic variation.</li>
+    </ul>
+  </li>
+  <li>
+    <h5>Tracks</h5>
+    <p>Each track consists of:</p>
+    <ul>
+      <li><strong>Drag handle</strong> \u2014 reorder tracks by dragging up or down.</li>
+      <li><strong>Select checkbox</strong> \u2014 select the track to view its options.</li>
+      <li><strong>Box icon &amp; name</strong> \u2014 shows the Sample or Note assigned to this track. Click the icon to audition it.</li>
+      <li><strong>Left / Right arrows</strong> \u2014 cycle through boxes within the same instrument category.</li>
+      <li><strong>Instrument type selector</strong> \u2014 choose the category (Kick, Snare, Hi-Hat, etc.).</li>
+      <li><strong>Solo / Mute</strong> \u2014 isolate or silence the track during preview.</li>
+      <li><strong>Step grid</strong> \u2014 click an empty step to place a note; click a filled step to remove it. Drag <strong>up/down</strong> to adjust velocity; drag <strong>left/right</strong> to shift timing. Default velocity is <strong>100</strong>.</li>
+    </ul>
+  </li>
+</ol>
 
-<h5>Toolbar</h5>
-<ul>
-  <li><strong>New Beat</strong> \u2014 clear the current pattern and start fresh.</li>
-  <li><strong>Open / Save</strong> \u2014 load or save a beat pattern from/to disk.</li>
-  <li><strong>Undo / Redo</strong></li>
-  <li><strong>Copy / Cut / Paste / Delete</strong> \u2014 operate on selected notes.</li>
-  <li><strong>+ / \u2212</strong> \u2014 add or remove a track.</li>
-  <li><strong>Panic</strong> \u2014 silence all sounds immediately.</li>
-  <li><strong>Play</strong> \u2014 preview the pattern.</li>
-  <li><strong>Volume</strong> \u2014 master volume knob for the beat preview.</li>
-</ul>
-
-<h5>Global Beat Options</h5>
-<ul>
-  <li><strong>Tempo</strong> \u2014 defaults to project tempo. Adjust here to hear the beat at a different BPM.</li>
-  <li><strong>Swing</strong> \u2014 global swing for the entire pattern.</li>
-  <li><strong>Bars</strong> \u2014 pattern length: 1, 2, 4, or 8 bars.</li>
-</ul>
-
-<h5>Track Options</h5>
-<p>Select a track to reveal its options panel. Use the <strong>Options</strong>, <strong>Velocity</strong>, and <strong>Time-Shift</strong> tabs:</p>
-<ul>
-  <li><strong>Steps/bar</strong> \u2014 number of steps per bar for this track: 4, 8, or 16.</li>
-  <li><strong>Gain</strong> \u2014 velocity offset for all notes in the track.</li>
-  <li><strong>Swing</strong> \u2014 per-track swing (stacks with global swing).</li>
-  <li><strong>Time Shift</strong> \u2014 offset all notes in the track: \u221250% to +50%.</li>
-  <li><strong>Velocity Humanization</strong> \u2014 add subtle velocity variation for a more natural feel.</li>
-  <li><strong>Time Humanization</strong> \u2014 add subtle timing variation.</li>
-  <li><strong>Probability</strong> \u2014 chance that each note plays. Great for adding organic variation.</li>
-</ul>
-
-<h5>Tracks</h5>
-<p>Each track consists of:</p>
-<ul>
-  <li><strong>Drag handle</strong> \u2014 reorder tracks by dragging up or down.</li>
-  <li><strong>Select checkbox</strong> \u2014 select the track to view its options.</li>
-  <li><strong>Box icon &amp; name</strong> \u2014 shows the Sample or Note assigned to this track. Click the icon to audition it.</li>
-  <li><strong>Left / Right arrows</strong> \u2014 cycle through boxes within the same instrument category.</li>
-  <li><strong>Instrument type selector</strong> \u2014 choose the category (Kick, Snare, Hi-Hat, etc.).</li>
-  <li><strong>Solo / Mute</strong> \u2014 isolate or silence the track during preview.</li>
-  <li><strong>Step grid</strong> \u2014 click an empty step to place a note; click a filled step to remove it. Drag <strong>up/down</strong> to adjust velocity; drag <strong>left/right</strong> to shift timing. Default velocity is <strong>100</strong>.</li>
-</ul>
 <p>When done, click <strong>Save</strong> to apply changes, or <strong>Cancel</strong> to discard them.</p>`,
 
   // 8 — Page Editor

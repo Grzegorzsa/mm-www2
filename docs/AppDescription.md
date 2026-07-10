@@ -641,3 +641,7 @@ Hovering over a file reveals an **info** icon on the right. Clicking it opens a 
 ### 14.4 Transport Control
 
 When a file is being previewed, a transport bar appears at the bottom of the Files panel containing a **Play/Stop** button, a colour-coded waveform, the filename, and a **Volume** knob. The volume knob controls preview playback level. The bar remains visible even when scrolling through the file list. Clicking on the waveform scrubs the playhead to that position (not available in synchronized loop mode).
+
+## Updates
+
+All pending updates from this section have been processed and synchronized with the manual seed content.

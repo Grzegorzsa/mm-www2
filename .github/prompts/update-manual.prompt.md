@@ -35,6 +35,7 @@ There are **4 clip types** in MX GRID: **Note** (MIDI Note), **Sample**, **Loop*
 ### Change Logic:
 
 - **Seed Update (PRIORITY):** Update the content object in `src/seed/manual.ts`. This is the most important step — data reaches the database after running `pnpm run seed:manual`.
+- **Do Not Touch Fallback JSON:** Never modify `src/seed/manual.json` during manual updates. Use only `src/seed/manual.ts` as the source of truth for this workflow.
 - **Translation:** Convert any Polish notes from `## Updates` into natural English (not word-for-word translation).
 - **Safety:** Edit ONLY manual sections. Do not reset other data.
 - **Cleanup:** Remove processed entries from the `## Updates` section.
