@@ -22,7 +22,7 @@ MX GRID by MXbeats is a music production tool designed to simplify the music cre
 
 ### Key Features
 
-- **Simple media management** — drag entire folders of audio files (WAV, AIFF, MP3, OGG) onto the grid. The application automatically detects whether each file is a single-shot sample or a loop and assigns parameters such as tempo, color, icon, name, and instrument group. You can drag files from any file explorer on your computer, or use the built-in Media Explorer to browse and import directly from your library.
+- **Simple media management** — drag entire folders of audio files (WAV, AIFF, MP3, OGG) and MIDI drum files (MID, MIDI) onto the grid. Audio files are detected as single-shot samples or loops; MIDI drum files are automatically converted to Beats. The application assigns parameters such as tempo, color, icon, name, and instrument group. You can drag files from any file explorer on your computer, or use the built-in Media Explorer to browse and import directly from your library.
 - **One-click tempo conversion** — convert all loops to the current project tempo with a single click.
 - **Two playback modes:**
   1. **Session** — trigger samples and loops in real time using a mouse or a MIDI controller (e.g., Launchpad). Single-shot samples can be triggered at any moment; loops are triggered synchronously (at the beginning of the next musical bar).
@@ -53,7 +53,7 @@ A MIDI Note box maps to a specific MIDI note number. It enables triggering exter
 
 ### 2.4 Beat
 
-A Beat is a percussion loop pattern built from audio Samples or MIDI Notes using the built-in Step Sequencer. Beats behave like loops (triggered synchronously at bar boundaries, belonging to an instrument group) but their content is programmed in the sequencer rather than read from an audio file. Over 1,000 factory presets are included across various genres.
+A Beat is a percussion loop pattern built from audio Samples or MIDI Notes using the built-in Step Sequencer. Beats behave like loops (triggered synchronously at bar boundaries, belonging to an instrument group) but their content is programmed in the sequencer rather than read from an audio file. MIDI drum files can also be imported and automatically converted to Beats. Over 1,000 factory presets are included across various genres.
 
 ---
 
@@ -81,7 +81,7 @@ The application consists of the following main areas:
 4. **Box Editor** — right-side panel for editing individual clip parameters
 5. **Page Editor** — mode for rearranging clips and performing batch operations
 6. **Arranger (Timeline)** — song composition view with a vertical timeline
-7. **Media Explorer** — right-side panel for browsing and importing audio files from your file system
+7. **Media Explorer** — right-side panel for browsing and importing media files from your file system
 
 ---
 
@@ -119,6 +119,7 @@ View
 ├── ─────────────
 ├── Zoom In
 ├── Zoom Out
+├── Zoom 100%
 ├── ─────────────
 ├── Light Mode
 └── Dark Mode
@@ -147,25 +148,26 @@ Help
 - **Project Settings** — project-specific settings dialog with Close and Save buttons:
   - **Controller** — MIDI controller selection (None, Launchpad X).
   - **MIDI In / MIDI Out** — select the MIDI input and output ports for the connected Launchpad controller. These widgets appear below the Controller selector and are visible only when a controller other than None is selected.
-  - **Zoom** — application zoom level.
+  - **Default MIDI Map** — select the MIDI preset used when importing MIDI drum files, so instruments are mapped correctly during Beat conversion.
+  - **Sample Latency** — text field for adding sample rendering delay (in samples) to improve timing alignment when low-latency audio drivers are not available.
+  - **MIDI Latency** — text field for adding MIDI event delay (in samples) to improve synchronization with audio playback.
   - **Latency Compensation** — checkbox, used in VST mode for better clip synchronization and latency reduction.
   - **Use Relative Paths** — stores file paths relative to the project location, allowing the project folder to be moved or shared with others.
   - **Auto-Convert Tempo** — when enabled, all imported loops are automatically converted to the current project tempo.
   - **Beats MIDI Channel** — selects the MIDI channel used by the Beat sequencer when sending notes to external instruments and DAW plugins.
-  - **Clear Cache** — clears cached audio files generated when applying DSP filters. The current cache size is displayed next to the button.
-  - **Clear Media DB** — clears all data stored in the Media Explorer database. The current database size is displayed next to the button.
+  - **Clear Temp Data** — clears all temporary data created by the application, including DSP cache files, Media Explorer database entries, and other generated temporary files.
 
-  > **Note:** The Theme setting (Light/Dark) has been removed from Project Settings and is now accessible exclusively via the View menu.
+  > **Note:** For best synchronization, use the lowest-latency audio drivers available (for example ASIO). If that is not possible, use Sample Latency and MIDI Latency to compensate timing offsets. Latency values are measured in samples.
 
 - **Turn off All Sounds** — immediately silences all playing clips.
 
 ### 5.3 View
 
-- **Media Explorer** — opens the Media Explorer panel for browsing and importing audio files from your file system.
+- **Media Explorer** — opens the Media Explorer panel for browsing and importing media files from your file system.
 - **Box Editor** — opens the right-side panel for editing individual clip settings. Clicking a box on the grid in this mode opens its parameters for editing.
 - **Page Editor** — enables rearranging boxes and performing batch modifications (tempo, color, volume, icon, etc.).
 - **Arranger** — opens the Arranger for composing songs from available clips.
-- **Zoom In / Zoom Out** — adjusts the application size to accommodate different screen resolutions and user preferences.
+- **Zoom In / Zoom Out / Zoom 100%** — adjusts the application size to accommodate different screen resolutions and user preferences, or quickly resets zoom to default.
 - **Light Mode / Dark Mode** — switches the application color theme.
 
 ### 5.4 Help
@@ -189,7 +191,7 @@ Buttons (left to right):
 - **Edit Box** — opens the Box Editor for the selected slot. Icon: square with a pencil in the bottom-right corner.
 - **Edit Page** — opens the Page Editor. Icon: four squares with a pencil in the bottom-right corner.
 - **Show Arranger** — toggles the Arranger panel visibility. The tooltip reads "Switch to arrangement mode". Icon: vertical bars with a pencil in the bottom-right corner. Disabled during playback.
-- **Media Explorer** — opens the Media Explorer panel. Icon: computer monitor with a magnifying glass (third icon from the left).
+- **Media Explorer** — opens the Media Explorer panel for browsing and importing audio and MIDI drum files. Icon: computer monitor with a magnifying glass (third icon from the left).
 - **Transport Control** — starts or stops playback in Session or Arranger mode.
   - The left side has a Play/Stop button: Play is shown when stopped; Stop (highlighted in blue) is shown during playback.
   - During playback, an arc-shaped progress bar is drawn around the Stop button, indicating the current position within the bar. Loop switching occurs at the end of each bar.
@@ -242,7 +244,7 @@ Each box on the grid displays information about its assigned clip:
 
 There are two ways to load clips:
 
-1. **Drag and drop from the file explorer** — drag audio files (WAV, AIF, AIFF, MP3, OGG) or entire folders onto the grid. If multiple files are dragged, they fill consecutive empty slots. The application automatically detects whether each file is a sample or loop and assigns parameters (tempo, instrument type, color, icon, group number, name). This is the fastest way to load clips.
+1. **Drag and drop from the file explorer** — drag audio files (WAV, AIF, AIFF, MP3, OGG), MIDI drum files (MID, MIDI), or entire folders onto the grid. If multiple files are dragged, they fill consecutive empty slots. The application automatically detects whether each file is a sample or loop; MIDI drum files are converted to Beats. Parameters are then assigned automatically (tempo, instrument type, color, icon, group number, name). This is the fastest way to load clips.
 
 2. **Via the Box Editor** — activate Box Edit mode and click an empty slot. A prompt asks which clip type to create: **Note**, **Sample**, **Loop**, or **Beat**. The new clip is initialized as a copy of the last edited clip of the same type (or with default values). Audio files or note definitions can then be loaded via the editor toolbar.
 
@@ -389,6 +391,10 @@ The Arranger provides a timeline-based composition view for arranging clips into
 - **Copy / Paste / Cut / Delete / Undo / Redo** — standard editing buttons.
 - **Song Length Widget** — sets the total song length in musical bars (minimum: 16 bars). Includes a text field for manual input and +/− buttons. If reducing the length would cut off existing content, an "Apply" button appears with a confirmation dialog warning that part of the arrangement will be deleted.
 - **Multi-selection** — use **Shift+Click** to select everything between two clicked cells, or **Ctrl+Click** to add individual cells to the current selection.
+- **DAW Export / Drag Buttons** — three buttons on the right side of the Arranger toolbar support DAW integration:
+  - **Export** — exports selected timeline content to WAV or MIDI for use in the host DAW. Use Solo/Mute to choose which tracks are included.
+  - **Drag WAV** — prepares audio export for drag-and-drop into a DAW track.
+  - **Drag MIDI** — prepares MIDI export for drag-and-drop into a DAW track.
 
 ### 10.2 Timeline Layout
 
@@ -500,7 +506,7 @@ Activate Box Edit mode and click an empty slot, then select **Note** from the cl
 
 A Beat is a programmable percussion loop built using the built-in Step Sequencer. It behaves like a Loop on the grid (synchronized playback, instrument group assignment) but its audio content is generated from a sequenced pattern of Samples and/or MIDI Notes rather than a single audio file.
 
-Over **1,000 factory presets** across various genres are provided. Beats can also use external hardware drum modules or DAW percussion plugins via MIDI Notes.
+Over **400 factory presets** across various genres are provided. Beats can also use external hardware drum modules or DAW percussion plugins via MIDI Notes.
 
 To play back correctly, a Beat needs source boxes assigned to instrument categories (for example Kick, Snare, Hi-Hat). These sources can be audio Sample boxes or MIDI Note boxes. If no matching samples or notes are configured in the project, Beat playback will be incomplete or silent.
 
@@ -542,7 +548,7 @@ The **Load Factory Preset** button opens a dialog for browsing, previewing, and 
 
 ### Step Sequencer
 
-The Step Sequencer is a pattern editor for composing the beat. Maximum **16 tracks**, maximum **4 bars** per pattern.
+The Step Sequencer is a pattern editor for composing the beat. Maximum **16 tracks**, maximum **8 bars** per pattern.
 
 #### Sequencer Toolbar
 
@@ -559,7 +565,7 @@ The Step Sequencer is a pattern editor for composing the beat. Maximum **16 trac
 
 - **Tempo** — defaults to project tempo. Change to preview the beat at a different BPM.
 - **Swing** — global swing amount for the entire pattern.
-- **Bars** — pattern length: 1, 2, or 4 bars.
+- **Bars** — pattern length: 1, 2, 4, or 8 bars.
 
 #### Track Options
 
@@ -599,7 +605,7 @@ Select a track to reveal its options panel. The panel has three tabs: **Options*
 
 ## 14. Media Explorer
 
-The Media Explorer is a built-in tool designed for cataloguing, quickly finding, and previewing audio files on your computer. Open it from the toolbar (computer with magnifying glass icon — third icon from the left) or via **View → Media Explorer**. It appears docked to the right side of the main window, alongside the Box Editor, Page Editor, and Arranger panels.
+The Media Explorer is a built-in tool designed for cataloguing, quickly finding, and previewing media files on your computer. It supports audio files and MIDI drum files. Open it from the toolbar (computer with magnifying glass icon — third icon from the left) or via **View → Media Explorer**. It appears docked to the right side of the main window, alongside the Box Editor, Page Editor, and Arranger panels.
 
 ### 14.1 Toolbar
 
@@ -612,7 +618,7 @@ The Media Explorer is a built-in tool designed for cataloguing, quickly finding,
 
 A collapsible panel displaying the folder tree. Toggle visibility using the chevron icon on the right side of the panel header. The header also displays the name of the currently selected folder, so it remains visible even when the tree is collapsed.
 
-any number of media folders can be added to the library. Adding a folder initiates a scanning process that builds a database of audio files — detecting whether each is a loop or one-shot sample, assigning an icon, color, BPM (for loops), key, instrument category, and generating a waveform thumbnail. This enables fast browsing and smooth importing. Scanning can be stopped at any time via the **Stop Parsing** toolbar button.
+any number of media folders can be added to the library. Adding a folder initiates a scanning process that builds a media database — detecting whether each file is a loop, one-shot sample, or MIDI drum file. Audio files receive metadata such as icon, color, BPM (for loops), key, instrument category, and waveform thumbnail. MIDI drum files are prepared for Beat conversion with instrument mapping. This enables fast browsing and smooth importing. Scanning can be stopped at any time via the **Stop Parsing** toolbar button.
 
 Subfolders can be browsed and selected. A virtual **All Folders** entry at the top of the panel lets you view all files across all added folders simultaneously. The number of detected media files is shown in parentheses next to each folder name in the tree.
 
@@ -622,20 +628,16 @@ When the Media Explorer is opened and a folder is selected, a quick rescan is pe
 
 ### 14.3 Files Panel
 
-A collapsible panel listing the audio files in the selected folder. The panel header shows the total file count and a **Search** text field for filtering by filename or instrument category. An advanced filter button reveals additional options: BPM min/max range, Key, loop checkbox, and one-shot checkbox. When any filter is active, an indicator displays the number of active filters along with a **Clear Filters** button.
+A collapsible panel listing media files in the selected folder. The panel header shows the total file count and a **Search** text field for filtering by filename or instrument category. An advanced filter button reveals additional options: BPM min/max range, Key, loop checkbox, and one-shot checkbox. When any filter is active, an indicator displays the number of active filters along with a **Clear Filters** button.
 
 Each file row displays (left to right): a **Play/Stop** button, an instrument icon, a colour-coded waveform (violet for low frequencies, cyan for high), a loop/one-shot indicator, BPM, key, duration in seconds, and the filename.
 
 Clicking **Play** starts audio preview; the transport bar appears at the bottom of the panel. When the project is playing and a loop is previewed, it is converted to the current project tempo and synchronized — the button flashes until the next bar boundary, then playback starts. Loops previewed without project playback start immediately at their original tempo.
 
-Audio files can be placed on the grid using **drag and drop**. Use **Ctrl+Click** or **Shift+Click** to select multiple files, or **Shift+A** to select all files in the current folder.
+Files can be placed on the grid using **drag and drop**. MIDI drum files are automatically converted to Beats during import. Use **Ctrl+Click** or **Shift+Click** to select multiple files, or **Shift+A** to select all files in the current folder.
 
 Hovering over a file reveals an **info** icon on the right. Clicking it opens a detail window showing the full path, file size, type, BPM, key, and duration.
 
 ### 14.4 Transport Control
 
 When a file is being previewed, a transport bar appears at the bottom of the Files panel containing a **Play/Stop** button, a colour-coded waveform, the filename, and a **Volume** knob. The volume knob controls preview playback level. The bar remains visible even when scrolling through the file list. Clicking on the waveform scrubs the playhead to that position (not available in synchronized loop mode).
-
-## Updates
-
-_All changes from this section have been integrated into the main documentation above._

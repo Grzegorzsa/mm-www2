@@ -68,7 +68,6 @@ const sections = [
   </div>
   <div>
     <p><strong>MX GRID</strong> by MXbeats is a versatile music production tool designed for both live performers and studio musicians. Available as a standalone application and DAW plugin (VST/AU), it provides 32 outputs for flexible routing and 512 slots for four clip types: <strong>Loops</strong>, <strong>Samples</strong>, <strong>MIDI Notes</strong>, and <strong>Beats</strong>.</p>
-    <p>MX GRID supports two playback modes: <strong>Session</strong> for real-time triggering of clips using a mouse or MIDI controller (e.g., Launchpad), and <strong>Arranger</strong> for composing complete songs on a timeline. Seamless integration with grid controllers and effortless media management provide a distinctive experience for music creators.</p>
     <p>Simply drag audio files (WAV, AIFF, MP3, OGG), MIDI drum files (MID, MIDI), or entire folders onto the grid \u2014 the application automatically detects whether each file is a sample, loop, or MIDI drum file for Beat conversion, then assigns parameters like tempo, color, icon, and instrument group. You can drag files from any file explorer on your computer, or use the built-in Media Explorer to browse and import directly from your library.</p>
   </div>
 </div>`,
@@ -156,22 +155,29 @@ const sections = [
   `<h3 id="media-grid">Media Grid</h3>
 <p>The <strong>Media Grid</strong> is the central area of the application \u2014 a virtual controller consisting of 64 square buttons (8\u00D78) spread across 8 pages, providing a total of <strong>512 slots</strong> for Loops, Samples, MIDI Notes, and Beats.</p>
 
-<h4>Samples</h4>
+<h4>Samples &amp; Notes</h4>
 <img src="/images/manual/sample-boxes.png" alt="sample boxes" style="width:200px" />
-<p><strong>Samples</strong> (one-shots) can be triggered at any point. They support variable velocity and can be routed to 32 outputs for VST effects processing. A gray progress bar at the top of the box shows playback progress.</p>
-
-<h4>Loops</h4>
-<img src="/images/manual/loop-boxes.png" alt="loop boxes" style="width:200px" />
-<p><strong>Loops</strong> are synchronized with the song. When triggered, a loop waits for the next bar boundary before starting playback.</p>
+<p><strong>Samples</strong> and <strong>MIDI Notes</strong> are both trigger-at-any-time clip types. They are ideal for live finger drumming, fills, accents, and one-shot hits.</p>
 <ul>
-  <li>A <strong>flashing box</strong> indicates the loop is waiting for the next bar.</li>
-  <li>A <strong>pulsing box</strong> with a progress arc means the loop is playing.</li>
-  <li>Each loop belongs to one of <strong>8 instrument groups</strong>. Only one loop per group can play at a time.</li>
-  <li>The <strong>play mode icon</strong> (top-left) shows whether the loop repeats or plays once.</li>
+  <li><strong>Samples</strong> trigger audio files stored in the Grid.</li>
+  <li><strong>MIDI Notes</strong> trigger sounds in external MIDI instruments and DAW plugins.</li>
+  <li>Both can be used as source material for Beat patterns.</li>
+</ul>
+<p>Samples support variable velocity and can be routed to up to 32 outputs for VST effects processing. A gray progress bar at the top of the box shows sample playback progress.</p>
+
+<h4>Loops &amp; Beats</h4>
+<img src="/images/manual/loop-boxes.png" alt="loop boxes" style="width:200px" />
+<p><strong>Loops</strong> and <strong>Beats</strong> are synchronized loop-based clip types. When triggered, both wait for the next bar boundary before starting playback.</p>
+<p>A Loop is a fixed rendered audio loop (typically a single WAV file). A Beat is a programmable drum loop pattern that can trigger Samples and MIDI Notes. The musical result is similar \u2014 a repeating rhythmic loop \u2014 but Beats provide much deeper edit control.</p>
+<ul>
+  <li>A <strong>flashing box</strong> indicates the clip is waiting for the next bar.</li>
+  <li>A <strong>pulsing box</strong> with a progress arc means a loop-based clip is playing.</li>
+  <li>Each Loop or Beat belongs to one of <strong>8 instrument groups</strong>. Only one loop-based clip per group can play at a time.</li>
+  <li>The <strong>play mode icon</strong> (top-left) shows whether the clip repeats or plays once.</li>
 </ul>
 
 <h4>Stopping Individual Clips</h4>
-<p>During playback of any clip (loop or sample), hovering over the box reveals a <strong>Stop button</strong> in the top-left corner. Clicking it immediately stops playback of that individual clip \u2014 no need to use the Stop Group buttons or the All Sounds Off (panic) button.</p>
+<p>During playback of any clip, hovering over the box reveals a <strong>Stop button</strong> in the top-left corner. Clicking it immediately stops playback of that individual clip \u2014 no need to use the Stop Group buttons or the All Sounds Off (panic) button.</p>
 
 <h4>Loading Clips</h4>
 <p><strong>Drag and drop</strong> audio files (WAV, AIF, AIFF, MP3, OGG), MIDI drum files (MID, MIDI), or entire folders from your file explorer onto the grid. The application automatically detects clip type, converts MIDI drum files to Beats, and assigns tempo, color, icon, instrument group, and name. You can also load clips via the <a href="#edit-box"><strong>Box Editor</strong></a>.</p>`,
@@ -180,7 +186,7 @@ const sections = [
   `<h3 id="stop-group">Stop Group Buttons</h3>
 <p>The top row above the grid contains <strong>8 Stop Group</strong> buttons \u2014 one for each instrument group. MX GRID organizes sounds into instrument groups (e.g., percussion, bass-line).</p>
 <ul>
-  <li>Only one loop from a given group can play at a time.</li>
+  <li>Only one loop-based clip from a given group can play at a time.</li>
   <li>When a group is playing, its Stop button lights up <strong>red</strong>.</li>
   <li>Clicking a Stop button makes it flash (waiting for the bar end), then stops the group.</li>
 </ul>`,
@@ -207,7 +213,6 @@ const sections = [
       <li>Toolbar:
         <ul>
           <li><img src="/images/manual/load-files-icon.png" alt="load files" class="ico" /> <strong>Load file(s)</strong> \u2014 load one or more audio files. Additional files fill consecutive empty slots.</li>
-          <li><img src="/images/manual/load-folder-icon.png" alt="load folder" class="ico" /> <strong>Load folder</strong> \u2014 load all audio files from a folder.</li>
           <li><img src="/images/manual/convert-to-loop-icon.png" alt="convert to loop" class="ico" /> <strong>Convert to Loop</strong> \u2014 converts the sample into a loop.</li>
           <li><img src="/images/manual/open-in-editor-icon.png" alt="open in editor" class="ico" /> <strong>Open in external app</strong> \u2014 edit the file in your system\u2019s default audio editor (e.g., Audacity). <strong>(Pro)</strong></li>
           <li><img src="/images/manual/save-meta-icon.png" alt="save meta" class="ico" /> <strong>Save Meta</strong> \u2014 saves the metadata (name, icon, color...)</li>
@@ -267,7 +272,7 @@ const sections = [
   </div>
   <div>
     <ol>
-      <li>Toolbar: <strong>Save</strong>, <strong>Open</strong>, <strong>Open Folder</strong>, <strong>Delete</strong> \u2014 save or load note definitions from disk.</li>
+      <li>Toolbar: <strong>Save</strong>, <strong>Open</strong>, <strong>Delete</strong> \u2014 save or load note definitions from disk.</li>
       <li><strong>MIDI Note Number</strong> \u2014 select the MIDI note to trigger. Use the <strong>Prev / Next</strong> arrows to step through notes, or click <strong>Play</strong> to audition the selected note.</li>
       <li><strong>Name</strong> \u2014 text label for the clip (max 12 characters).</li>
       <li><strong>Color &amp; Icon</strong> \u2014 visual appearance on the grid.</li>
@@ -280,7 +285,7 @@ const sections = [
 </div>
 
 <h4 id="edit-beat">Edit Beats</h4>
-<p>A <strong>Beat</strong> is a looping percussion pattern built from audio <a href="#edit-samples">Samples</a> or <a href="#edit-note">MIDI Notes</a>. Use imported samples for a classic drum machine feel, or connect MIDI Notes to a hardware drum module or DAW plugin. Over <strong>1,000 factory presets</strong> from various genres are included to get you started.</p>
+<p>A <strong>Beat</strong> is a looping percussion pattern built from audio <a href="#edit-samples">Samples</a> or <a href="#edit-note">MIDI Notes</a>. Use imported samples for a classic drum machine feel, or connect MIDI Notes to a hardware drum module or DAW plugin. Over <strong>400 factory presets</strong> from various genres are included to get you started.</p>
 <p><strong>Important:</strong> Beats need matching source boxes (for example Kick, Snare, Hi-Hat) to play correctly. If your project has no suitable Sample or MIDI Note boxes assigned to those instrument types, the beat may play partially or remain silent.</p>
 <div class="two-col">
   <div>
@@ -288,7 +293,7 @@ const sections = [
   </div>
   <div>
     <ol>
-      <li>Toolbar: <strong>Save</strong>, <strong>Open</strong>, <strong>Open Folder</strong>, <strong>Delete</strong>.</li>
+      <li>Toolbar: <strong>Save</strong>, <strong>Open</strong>, <strong>Delete</strong>.</li>
       <li><strong>Play</strong> \u2014 preview the beat.</li>
       <li><strong>Thumbnail</strong> \u2014 visual overview of the step pattern.</li>
       <li><strong>Name</strong> \u2014 beat name (max 12 characters).</li>
@@ -303,8 +308,11 @@ const sections = [
   </div>
 </div>
 
-<h5>Load Factory Preset</h5>
+<h4>Load Factory Preset</h4>
 <p>Click <strong>Load Factory Preset</strong> in the Beat editor to open the preset browser.</p>
+  <div>
+    <img src="/images/manual/beat_presets.png" alt="beat presets" />
+  </div>
 <ul>
   <li><strong>Search</strong> \u2014 filter presets by name or genre.</li>
   <li><strong>Genre panel</strong> \u2014 pick a style category on the left side.</li>
@@ -421,7 +429,7 @@ const sections = [
 <h4 id="edit-timeline-buttons">2) Edit Buttons</h4>
 <p><img src="/images/manual/drag-buttons-icon.png" alt="drag button" class="ico" /> <strong>Drag and Drop</strong> \u2014 enabled by default. Drag clips from the Media Grid onto the timeline. Dragging a clip back to the grid removes it from the timeline. The target track is highlighted while dragging.</p>
 <p>Additional buttons: <strong>Copy</strong>, <strong>Paste</strong>, <strong>Cut</strong>, <strong>Delete</strong>, <strong>Undo</strong>, and <strong>Redo</strong>.</p>
-<p>On the right side of the toolbar, three DAW integration buttons are available: <strong>Export</strong> (export selected content to WAV or MIDI), <strong>Drag WAV</strong>, and <strong>Drag MIDI</strong> for direct drag-and-drop into DAW tracks. Use <strong>Solo</strong>/<strong>Mute</strong> to choose which tracks are included in export.</p>
+<p><img src="/images/manual/render-timeline.png" alt="render timeline" class="ico" /> <strong>Render Timeline</strong> turns on the export controls for the arranger. It lets you render the whole song or just selected tracks, then use <strong>Drag WAV</strong> and <strong>Drag MIDI</strong> to drop the exported files straight into your DAW.</p>
 <p>Use <strong>Shift+Click</strong> to select all cells between two clicked positions, or <strong>Ctrl+Click</strong> to add individual cells to the current selection.</p>
 
 <h4 id="timeline-duration">3) Song Length</h4>
@@ -438,23 +446,28 @@ const sections = [
   <li>Inactive parts of the song are grayed out.</li>
 </ul>
 
-<h4 id="loop-tracks">6) Loop Tracks</h4>
+<h4 id="loop-tracks">6) Loop & Beat Tracks</h4>
 <ul>
-  <li><strong>8 tracks</strong> reserved for loops (one per instrument group).</li>
+  <li><strong>8 tracks</strong> reserved for loops and beats (one per instrument group).</li>
   <li>Adjust loop start and length by dragging the top or bottom edge of the loop cell.</li>
+  <li><strong>Right-click</strong> a loop for <strong>Vol</strong> and <strong>Pan</strong> controls.</li>
+  <li><strong>Right-click</strong> a beat for <strong>Vel</strong> (master velocity).</li>
 </ul>
 
-<h4 id="sample-tracks">7) Sample Tracks</h4>
+<h4 id="sample-tracks">7) Sample & Note Tracks</h4>
 <ul>
-  <li><strong>4 tracks</strong> reserved for samples.</li>
-  <li>Samples can be freely moved within the sample tracks.</li>
-  <li><strong>Right-click</strong> a sample for additional options:</li>
+  <li><strong>4 tracks</strong> reserved for samples and notes.</li>
+  <li>Samples and notes can be freely moved within the sample tracks.</li>
 </ul>
-<p><img src="/images/manual/timeline-sample-edit.png" alt="sample edit" class="toolbar-widget" /> <strong>Velocity</strong> \u2014 set the sample\u2019s playback volume. <strong>Time Shift</strong> \u2014 set the exact trigger time within the bar.</p>
+<p><strong>Right-click</strong> a sample instance for <strong>Velocity</strong> and <strong>Time Shift</strong>. Use <strong>Master Volume</strong> and <strong>Pan</strong> to adjust the whole sample.</p>
+<ul>
+  <li><strong>Right-click</strong> a sample for <strong>Master Volume</strong> and <strong>Pan</strong>.</li>
+  <li><strong>Right-click</strong> a note for <strong>Velocity</strong> and <strong>Time Shift</strong>.</li>
+</ul>
 
 <h4 id="timeline-grid">8) Timeline Grid</h4>
 <ul>
-  <li>Consists of <strong>13 columns</strong>: 1 TIME column + 8 loop tracks + 4 sample tracks.</li>
+  <li>Consists of <strong>13 columns</strong>: 1 TIME column + 8 loop/beat tracks + 4 sample/note tracks.</li>
   <li>Each cell represents one bar.</li>
   <li>Drag clips from the grid onto the timeline to build your arrangement.</li>
 </ul>`,
