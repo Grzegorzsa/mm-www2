@@ -5,6 +5,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
+    "predev": "node -e \"console.log('\\x1b[43m\\x1b[30m Reminder: run \\\"ngrok http 3000\\\" if you want payment gateway callbacks to work. \\x1b[0m')\"",
     "build": "cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=1536\" next build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev --no-server-fast-refresh",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
