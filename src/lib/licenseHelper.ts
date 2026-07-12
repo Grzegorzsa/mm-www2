@@ -7,7 +7,6 @@ import type { Payload } from 'payload'
 
 type PurchaseWelcomeEmailArgs = {
   email: string
-  generatedPassword?: string | null
   externalOrderId: string
   applicationName: string
   variantName?: string | null
@@ -139,14 +138,12 @@ async function sendPurchaseWelcomeEmail(payload: Payload, args: PurchaseWelcomeE
       applicationName: args.applicationName,
       variantName: args.variantName || '',
       loginEmail: args.email,
-      loginPassword:
-        args.generatedPassword ||
-        'Use your existing MXbeats password (no new password was generated).',
+      loginPassword: 'A password reset link has been sent to your email address.',
       externalOrderId: args.externalOrderId,
       downloadsUrl: PURCHASE_DOWNLOADS_URL,
       userPanelUrl: PURCHASE_USER_PANEL_URL,
       signInUrl: PURCHASE_SIGN_IN_URL,
-      accountSecurityNotice: `Open ${PURCHASE_USER_PANEL_URL} and change your password in My Account as soon as possible.`,
+      accountSecurityNotice: `Open ${PURCHASE_USER_PANEL_URL} and finish setting your password from the reset link sent to your inbox.`,
     }
 
     await payload.sendEmail({

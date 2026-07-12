@@ -12,6 +12,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { juceErrorXml } from '@/lib/juceRSA'
 import { getInstallationByToken, removeInstallation } from '@/lib/installationsHelper'
+import { getClientIp, installationLimiter } from '@/lib/rateLimiter'
 
 // const divider = '----------------------------------------'
 function xmlResponse(xml: string, status = 200) {
@@ -33,6 +34,11 @@ export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ machineId: string }> },
 ) {
+  const clientIp = getClientIp(req)
+  if (!installationLimiter.check(clientIp)) {
+    return errorResponse('Too many requests')
+  }
+
   // console.log(divider)
   const { machineId: mach } = await params
   const token = req.headers.get('token')
@@ -84,6 +90,11 @@ export async function DELETE(
   req: NextRequest,
   { params }: { params: Promise<{ machineId: string }> },
 ) {
+  const clientIp = getClientIp(req)
+  if (!installationLimiter.check(clientIp)) {
+    return errorResponse('Too many requests')
+  }
+
   const { machineId: mach } = await params
   const token = req.headers.get('token')
 

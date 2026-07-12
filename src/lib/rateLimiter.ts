@@ -68,8 +68,14 @@ export const emailDomainCheckLimiter = new RateLimiter(60 * 60 * 1000, 30)
 /** Public checkout creation: max 12 attempts per IP per hour */
 export const checkoutPurchaseLimiter = new RateLimiter(60 * 60 * 1000, 12)
 
+/** Upgrade checkout: max 12 attempts per user/IP per hour */
+export const checkoutUpgradeLimiter = new RateLimiter(60 * 60 * 1000, 12)
+
 /** User redeem endpoint: max 20 attempts per user or IP per hour */
 export const redeemUserLimiter = new RateLimiter(60 * 60 * 1000, 20)
+
+/** User panel reads: max 60 requests per user/IP per hour */
+export const userPanelLimiter = new RateLimiter(60 * 60 * 1000, 60)
 
 // ---------------------------------------------------------------------------
 // Helper: extract client IP from Next.js request headers

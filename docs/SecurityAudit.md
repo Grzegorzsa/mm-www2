@@ -209,7 +209,9 @@ Impact:
 
 Status:
 
-- Partially mitigated by endpoint-specific limiters on `src/app/api/auth/check-email-domain/route.ts`, `src/app/api/checkout/purchase/route.ts`, and `src/app/api/redeem/user/route.ts`.
+- Partially mitigated by endpoint-specific limiters on `src/app/api/auth/check-email-domain/route.ts`, `src/app/api/checkout/purchase/route.ts`, `src/app/api/checkout/upgrade/route.ts`, `src/app/api/redeem/user/route.ts`, `src/app/api/app/installation/[machineId]/route.ts`, `src/app/api/user/licenses/route.ts`, and `src/app/api/user/installations/route.ts`.
+
+- The Lemon Squeezy webhook remains signature-verified and intentionally unthrottled to avoid blocking legitimate gateway retries.
 
 Recommended fix:
 
@@ -217,7 +219,7 @@ Recommended fix:
 - For authenticated endpoints, combine user ID + IP where possible.
 - For webhook endpoint, preserve signature verification and add basic IP/body-size/rate protection where feasible.
 
-### P1-05: Auto-created purchase accounts are verified and receive a generated password by email
+### P1-05: Auto-created purchase accounts sent generated passwords by email
 
 Affected files:
 
@@ -227,17 +229,20 @@ Affected files:
 
 Issue:
 
-When a purchase webhook creates a new account, it sets `_verified: true`, disables verification email, generates a password, and sends that password through email.
+When a purchase webhook created a new account, it used to generate a password and send that password through email.
 
 Impact:
 
 - Email becomes a credential delivery channel.
 - Account verification semantics are weakened.
 
+Status:
+
+- Mitigated by creating the account without exposing a generated password and sending the standard password reset link instead.
+
 Recommended fix:
 
-- Create accounts as unverified or partially provisioned.
-- Send a one-time set-password link instead of a password.
+- Completed: send a one-time set-password link instead of a password.
 - Keep licenses assigned, but require account confirmation before panel access.
 
 ## P2 Findings
@@ -342,9 +347,9 @@ Recommended fix:
 4. Protect or remove the Sentry test route.
 5. Add field-level protection for installation certificates.
 6. Add Media upload MIME and size restrictions.
-7. Add rate limits to preview, checkout, user redeem, installation revalidation/delete, and email-domain check endpoints.
+7. Add rate limits to preview, checkout, user redeem, installation revalidation/delete, email-domain check, and user-panel read endpoints.
 8. Manual HTML sanitization has been implemented; keep the allowlist aligned with the content model.
-9. Change auto-created purchase-account flow to set-password links instead of emailed generated passwords.
+9. Auto-created purchase-account flow now uses set-password links instead of emailed generated passwords.
 10. Update vulnerable production dependencies and move CLI-only tooling out of production dependencies.
 
 ## Validation Performed

@@ -269,7 +269,6 @@ export async function POST(req: Request) {
 
     // 3. Znajdź lub utwórz użytkownika (klienta) w systemie
     let userRecord: any = null
-    let generatedPassword: string | null = null
     if (
       (flowFromCheckout === 'upgrade_replace' || flowFromCheckout === 'crossgrade') &&
       !requestedUserId
@@ -314,9 +313,7 @@ export async function POST(req: Request) {
       if (usersSearch.docs.length > 0) {
         userRecord = usersSearch.docs[0]
       } else {
-        // Jeśli użytkownik kupił produkt, a nie ma konta – tworzymy je automatycznie
-        generatedPassword = crypto.randomBytes(16).toString('hex')
-
+        // If the customer does not have an account yet, create one and email a reset link.
         userRecord = await payload.create({
           collection: 'users',
           disableVerificationEmail: true,
@@ -329,9 +326,14 @@ export async function POST(req: Request) {
           data: {
             email: portalEmail,
             name: customerName,
-            password: generatedPassword,
             _verified: true,
           } as any,
+        })
+
+        await payload.forgotPassword({
+          collection: 'users',
+          data: { email: userRecord.email },
+          overrideAccess: true,
         })
       }
     }
@@ -860,7 +862,6 @@ export async function POST(req: Request) {
 
     await sendPurchaseWelcomeEmail(payload, {
       email: userRecord.email || customerEmail,
-      generatedPassword,
       externalOrderId: String(externalOrderId),
       applicationName,
       variantName: variantName || null,

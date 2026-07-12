@@ -11,6 +11,7 @@ import {
 } from '@/lib/bannedDomains'
 import { resolveDiscountCodeForAmount } from '@/lib/discountCodes'
 import type { CommerceOffer, ProductVariant } from '@/payload-types'
+import { checkoutUpgradeLimiter, getClientIp } from '@/lib/rateLimiter'
 
 type RelationValue = string | number | { id?: string | number } | null | undefined
 
@@ -201,6 +202,12 @@ export async function POST(req: NextRequest) {
   const user = await getSessionUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const clientIp = getClientIp(req)
+  const rateLimitKey = `${user.id}:${clientIp}`
+  if (!checkoutUpgradeLimiter.check(rateLimitKey)) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
   }
 
   if (user.blocked) {
