@@ -1,11 +1,8 @@
-import configPromise from '@payload-config'
-import { getPayload } from 'payload'
-
 export const GET = async (request: Request) => {
-  const payload = await getPayload({
-    config: configPromise,
-  })
+  if (process.env.NODE_ENV === 'production') {
+    return new Response('Not Found', { status: 404 })
+  }
 
-  // Celowe rzucenie wyjątku dla testów Sentry
+  // Intentional exception for Sentry testing in non-production environments.
   throw new Error('Sentry Test Error: Custom API Route Failure')
 }

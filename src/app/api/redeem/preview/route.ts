@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { getValidActivationCode } from '@/lib/activationCodes'
+import { activationPreviewLimiter, getClientIp } from '@/lib/rateLimiter'
 
 type RelationValue = number | string | { id?: number | string; name?: string } | null | undefined
 
@@ -23,6 +24,14 @@ function relationName(value: RelationValue): string | null {
 }
 
 export async function POST(req: NextRequest) {
+  const ip = getClientIp(req)
+  if (!activationPreviewLimiter.check(ip)) {
+    return NextResponse.json(
+      { error: 'Too many preview attempts. Please try again later.' },
+      { status: 429 },
+    )
+  }
+
   let body: unknown
 
   try {
@@ -57,7 +66,6 @@ export async function POST(req: NextRequest) {
     valid: true,
     activationCode: {
       id: validated.code.id,
-      code: validated.code.code,
       productId,
       productVariantId,
       productName: relationName(validated.code.product),

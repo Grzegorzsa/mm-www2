@@ -1,4 +1,5 @@
 import type { Payload } from 'payload'
+import crypto from 'crypto'
 
 type RelationValue = number | string | { id?: number | string } | null | undefined
 
@@ -376,9 +377,7 @@ export async function redeemActivationCodeForUser(
 export function generateActivationCode(): string {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
   const randomChunk = (len: number) =>
-    Array.from({ length: len }, () => alphabet[Math.floor(Math.random() * alphabet.length)]).join(
-      '',
-    )
+    Array.from({ length: len }, () => alphabet[crypto.randomInt(0, alphabet.length)]).join('')
 
   return `MGX-${randomChunk(4)}-${randomChunk(4)}-${randomChunk(4)}-${randomChunk(4)}`
 }

@@ -19,8 +19,8 @@ export const Orders: CollectionConfig = {
     // Użytkownik widzi swoje zamówienia (szukane po polu 'user'), admin widzi wszystkie
     read: isAdminOrOwner('user'),
 
-    // Zezwalamy anonimowemu webhookowi z Lemon Squeezy na tworzenie obiektów Orders
-    create: () => true,
+    // Tworzenie rekordów tylko po stronie zaufanego serwera (webhook / backend route)
+    create: isAdmin,
 
     // Tylko admin może modyfikować lub usuwać zamówienia (choć z założenia powinny być niezmienne)
     update: isAdmin,

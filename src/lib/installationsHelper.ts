@@ -251,15 +251,14 @@ async function getUserByInstallationToken(
 // ---------------------------------------------------------------------------
 
 /**
- * Generate a unique installation token (SHA-1 based).
+ * Generate a unique installation token.
  */
 async function createUniqueToken(payload: Payload): Promise<string> {
   let token = ''
   let unique = false
 
   while (!unique) {
-    const randomStr = Date.now() + '' + Math.random()
-    token = crypto.createHash('sha1').update(randomStr).digest('hex')
+    token = crypto.randomBytes(32).toString('hex')
 
     const { docs } = await payload.find({
       collection: 'installations',

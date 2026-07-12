@@ -82,7 +82,7 @@ export const Users: CollectionConfig = {
     ],
   },
   access: {
-    create: () => true,
+    create: isAdmin,
     read: isAdminOrSelf,
     update: isAdminOrSelf,
     delete: isAdmin,

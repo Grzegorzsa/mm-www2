@@ -68,6 +68,7 @@ export async function POST(req: NextRequest) {
         subject: safeSubject,
         message: safeMessage,
       },
+      overrideAccess: true,
     })
   } catch (err) {
     console.error('Failed to save contact submission:', err)

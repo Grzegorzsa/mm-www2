@@ -9,7 +9,7 @@ export const LicenseTransactions: CollectionConfig = {
   },
   access: {
     read: ({ req: { user } }) => user?.collection === 'admin-users',
-    create: () => true,
+    create: ({ req: { user } }) => user?.collection === 'admin-users',
     update: ({ req: { user } }) => user?.collection === 'admin-users',
     delete: ({ req: { user } }) => user?.collection === 'admin-users',
   },

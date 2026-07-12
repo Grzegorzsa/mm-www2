@@ -49,7 +49,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: TEMP_EMAIL_REJECT_MESSAGE }, { status: 400 })
     }
 
-    const user = await payload.create({ collection: 'users', data: { email, password } })
+    const user = await payload.create({
+      collection: 'users',
+      data: { email, password },
+      overrideAccess: true,
+    })
     return NextResponse.json({ user }, { status: 201 })
   } catch {
     return NextResponse.json({ error: 'Registration failed' }, { status: 400 })
