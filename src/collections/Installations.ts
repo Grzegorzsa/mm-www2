@@ -77,6 +77,9 @@ export const Installations: CollectionConfig = {
       admin: {
         description: 'Base64-encoded XML certificate',
       },
+      access: {
+        read: ({ req: { user } }) => user?.collection === 'admin-users',
+      },
     },
     {
       type: 'row',
