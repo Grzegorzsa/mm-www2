@@ -48,6 +48,11 @@ export default buildConfig({
       ],
     },
   },
+  upload: {
+    limits: {
+      fileSize: 10 * 1024 * 1024,
+    },
+  },
   collections: [
     AdminUsers,
     Users,
