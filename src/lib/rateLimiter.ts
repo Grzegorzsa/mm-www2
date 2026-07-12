@@ -62,6 +62,15 @@ export const installationLimiter = new RateLimiter(15 * 60 * 1000, 20)
 /** Activation-code preview: max 20 attempts per IP per hour */
 export const activationPreviewLimiter = new RateLimiter(60 * 60 * 1000, 20)
 
+/** Email-domain check: max 30 attempts per IP per hour */
+export const emailDomainCheckLimiter = new RateLimiter(60 * 60 * 1000, 30)
+
+/** Public checkout creation: max 12 attempts per IP per hour */
+export const checkoutPurchaseLimiter = new RateLimiter(60 * 60 * 1000, 12)
+
+/** User redeem endpoint: max 20 attempts per user or IP per hour */
+export const redeemUserLimiter = new RateLimiter(60 * 60 * 1000, 20)
+
 // ---------------------------------------------------------------------------
 // Helper: extract client IP from Next.js request headers
 // ---------------------------------------------------------------------------

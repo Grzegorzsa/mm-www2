@@ -3,11 +3,18 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { getSessionUser } from '@/lib/session'
 import { getValidActivationCode, redeemActivationCodeForUser } from '@/lib/activationCodes'
+import { getClientIp, redeemUserLimiter } from '@/lib/rateLimiter'
 
 export async function POST(req: NextRequest) {
   const user = await getSessionUser()
   if (!user) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  const clientIp = getClientIp(req)
+  const rateLimitKey = `${user.id}:${clientIp}`
+  if (!redeemUserLimiter.check(rateLimitKey)) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
   }
 
   let body: unknown

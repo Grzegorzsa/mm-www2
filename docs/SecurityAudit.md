@@ -170,15 +170,19 @@ Affected files:
 
 Issue:
 
-Manual HTML from Payload CMS is rendered directly in the frontend.
+Manual HTML from Payload CMS was rendered directly in the frontend.
 
 Impact:
 
 - If an admin account or CMS data is compromised, attackers can persist XSS into public manual pages.
 
+Status:
+
+- Mitigated by allowlist sanitization in `src/lib/manualHtml.ts`, used by `src/app/(frontend)/manual/ManualPage.tsx` and `src/app/(frontend)/manual/HtmlSection.tsx`.
+
 Recommended fix:
 
-- Sanitize HTML with an allowlist before rendering.
+- Completed: sanitize HTML with an allowlist before rendering.
 - Keep required tags for documentation, images, and videos, but strip scripts, event handlers, inline JavaScript URLs, and unsafe attributes.
 
 ### P1-04: Several public and authenticated endpoints lack rate limiting
@@ -202,6 +206,10 @@ Impact:
 - Brute force against activation codes or installation tokens.
 - Checkout-session spam against Lemon Squeezy.
 - Higher DoS risk on database-backed endpoints.
+
+Status:
+
+- Partially mitigated by endpoint-specific limiters on `src/app/api/auth/check-email-domain/route.ts`, `src/app/api/checkout/purchase/route.ts`, and `src/app/api/redeem/user/route.ts`.
 
 Recommended fix:
 
@@ -335,7 +343,7 @@ Recommended fix:
 5. Add field-level protection for installation certificates.
 6. Add Media upload MIME and size restrictions.
 7. Add rate limits to preview, checkout, user redeem, installation revalidation/delete, and email-domain check endpoints.
-8. Sanitize manual HTML before rendering.
+8. Manual HTML sanitization has been implemented; keep the allowlist aligned with the content model.
 9. Change auto-created purchase-account flow to set-password links instead of emailed generated passwords.
 10. Update vulnerable production dependencies and move CLI-only tooling out of production dependencies.
 

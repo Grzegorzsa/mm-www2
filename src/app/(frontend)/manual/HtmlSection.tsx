@@ -2,10 +2,12 @@
 
 import { useEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
+import { sanitizeManualHtml } from '@/lib/manualHtml'
 
 export default function HtmlSection({ html, className }: { html: string; className?: string }) {
   const ref = useRef<HTMLElement>(null)
   const pathname = usePathname()
+  const sanitizedHtml = sanitizeManualHtml(html)
 
   useEffect(() => {
     if (!ref.current) return
@@ -15,7 +17,9 @@ export default function HtmlSection({ html, className }: { html: string; classNa
       video.load()
       video.play().catch(() => {})
     })
-  }, [html, pathname])
+  }, [sanitizedHtml, pathname])
 
-  return <section ref={ref} dangerouslySetInnerHTML={{ __html: html }} />
+  return (
+    <section ref={ref} className={className} dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
+  )
 }

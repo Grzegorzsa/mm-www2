@@ -7,8 +7,14 @@ import {
   isBannedEmailDomain,
   TEMP_EMAIL_REJECT_MESSAGE,
 } from '@/lib/bannedDomains'
+import { emailDomainCheckLimiter, getClientIp } from '@/lib/rateLimiter'
 
 export async function POST(req: NextRequest) {
+  const clientIp = getClientIp(req)
+  if (!emailDomainCheckLimiter.check(clientIp)) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+  }
+
   let body: unknown
 
   try {

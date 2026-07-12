@@ -10,6 +10,7 @@ import {
   TEMP_EMAIL_REJECT_MESSAGE,
 } from '@/lib/bannedDomains'
 import { resolveDiscountCodeForAmount } from '@/lib/discountCodes'
+import { checkoutPurchaseLimiter, getClientIp } from '@/lib/rateLimiter'
 
 function getAppBaseUrl(req: NextRequest) {
   const raw =
@@ -18,6 +19,11 @@ function getAppBaseUrl(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
+  const clientIp = getClientIp(req)
+  if (!checkoutPurchaseLimiter.check(clientIp)) {
+    return NextResponse.json({ error: 'Too many requests' }, { status: 429 })
+  }
+
   let body: unknown
 
   try {

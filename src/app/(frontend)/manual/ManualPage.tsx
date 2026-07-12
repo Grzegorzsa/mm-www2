@@ -1,6 +1,7 @@
 ﻿import type { Metadata } from 'next'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { sanitizeManualHtml } from '@/lib/manualHtml'
 import fallbackContent from '@/seed/manual.json'
 import HtmlSection from './HtmlSection'
 import './manual.css'
@@ -21,9 +22,14 @@ export default async function ManualPage() {
   }
 
   const manual = {
-    aside: manualData?.aside || fallbackContent.aside,
-    mobileToc: manualData?.mobileToc || fallbackContent.mobileToc,
-    sections: manualData?.sections?.length ? manualData.sections : fallbackContent.sections,
+    aside: sanitizeManualHtml(manualData?.aside || fallbackContent.aside),
+    mobileToc: sanitizeManualHtml(manualData?.mobileToc || fallbackContent.mobileToc),
+    sections: (manualData?.sections?.length ? manualData.sections : fallbackContent.sections).map(
+      (section: any) => ({
+        ...section,
+        html: sanitizeManualHtml(section.html),
+      }),
+    ),
   }
 
   return (
