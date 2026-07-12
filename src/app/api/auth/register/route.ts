@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { isTrustedBrowserOrigin } from '@/lib/browserOrigin'
 import { h } from '@/lib/h'
 import { registerLimiter, getClientIp } from '@/lib/rateLimiter'
 import {
@@ -27,6 +28,10 @@ export async function POST(req: NextRequest) {
 
   if (typeof body !== 'object' || body === null) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
+  }
+
+  if (!isTrustedBrowserOrigin(req)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const { email, password, scs } = body as Record<string, unknown>

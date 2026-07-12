@@ -14,7 +14,10 @@ import { checkoutPurchaseLimiter, getClientIp } from '@/lib/rateLimiter'
 
 function getAppBaseUrl(req: NextRequest) {
   const raw =
-    process.env.NEXT_PUBLIC_APP_URL || process.env.NEXT_PUBLIC_SITE_URL || req.nextUrl.origin
+    process.env.NEXT_PUBLIC_APP_URL ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    process.env.NEXT_PUBLIC_SERVER_URL ||
+    (process.env.NODE_ENV === 'production' ? '' : req.nextUrl.origin)
   return raw.endsWith('/') ? raw.slice(0, -1) : raw
 }
 
@@ -114,6 +117,10 @@ export async function POST(req: NextRequest) {
   }
 
   const appBaseUrl = getAppBaseUrl(req)
+  if (!appBaseUrl) {
+    return NextResponse.json({ error: 'Canonical app URL is not configured' }, { status: 500 })
+  }
+
   const basePriceCents = typeof targetVariant.priceCents === 'number' ? targetVariant.priceCents : 0
   const discountResolution = requestedDiscountCode.trim()
     ? await resolveDiscountCodeForAmount(payload, requestedDiscountCode, basePriceCents)

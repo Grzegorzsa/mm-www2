@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { h } from '@/lib/h'
+import { isTrustedBrowserOrigin } from '@/lib/browserOrigin'
 import { forgotPasswordLimiter, getClientIp } from '@/lib/rateLimiter'
 
 export async function POST(req: NextRequest) {
@@ -20,6 +21,10 @@ export async function POST(req: NextRequest) {
   }
 
   if (typeof body !== 'object' || body === null) {
+    return NextResponse.json({ ok: true })
+  }
+
+  if (!isTrustedBrowserOrigin(req)) {
     return NextResponse.json({ ok: true })
   }
 

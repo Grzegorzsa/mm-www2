@@ -275,7 +275,12 @@ pnpm audit --prod
 Result:
 
 - Audit exited with code 1.
-- Reported summary: 18 high, 50 moderate, 11 low.
+- Reported summary after the latest cleanup: 17 high, 36 moderate, 10 low.
+
+Status:
+
+- Partially mitigated by moving CLI-only `shadcn` and type-only `@types/*` packages out of production dependencies.
+- Production audit still reports unresolved transitive issues, mainly through Payload-related packages.
 
 Notable packages:
 
@@ -287,7 +292,7 @@ Recommended fix:
 
 - Update `nodemailer` to a patched version supported by Payload email adapter.
 - Update Payload packages and refresh the lockfile to pull patched transitive dependencies where available.
-- Move CLI-only tooling such as `shadcn` to devDependencies or remove it from production dependencies if it is not needed at runtime.
+- Completed: move CLI-only tooling such as `shadcn` and type-only `@types/*` packages out of production dependencies.
 
 ### P2-03: Form parity hash is not CSRF protection
 
@@ -301,10 +306,15 @@ Impact:
 
 - It can be reproduced by attackers and should not be treated as a security token.
 
+Status:
+
+- Mitigated for browser form POSTs by adding `Origin` / `Referer` validation alongside the existing `scs` parity check.
+
 Recommended fix:
 
 - Keep it only as a light bot-friction layer.
-- For stronger protection, add real CSRF token flow, Origin/Referer validation for browser POSTs, or Cloudflare Turnstile/hCaptcha on high-abuse forms.
+- Completed: add Origin/Referer validation for browser POSTs.
+- For stronger protection later, consider a real CSRF token flow or Cloudflare Turnstile/hCaptcha on high-abuse forms.
 
 ### P2-04: Checkout URL uses environment/public origin fallback
 
@@ -322,10 +332,14 @@ Impact:
 - Usually fine behind trusted hosting/proxy.
 - If host headers are not controlled by infrastructure, fallback origin can be influenced.
 
+Status:
+
+- Mitigated by requiring a canonical application URL from environment variables in production and keeping `req.nextUrl.origin` only for non-production fallback.
+
 Recommended fix:
 
-- Require a fixed server-side canonical app URL in production.
-- Avoid using request origin as production fallback.
+- Completed: require a fixed server-side canonical app URL in production.
+- Keep request origin only as a non-production fallback.
 
 ## Positive Findings
 

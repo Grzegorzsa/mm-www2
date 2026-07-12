@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 import { getPayload } from 'payload'
 import config from '@/payload.config'
+import { isTrustedBrowserOrigin } from '@/lib/browserOrigin'
 import { h } from '@/lib/h'
 import { contactLimiter, getClientIp } from '@/lib/rateLimiter'
 
@@ -34,6 +35,10 @@ export async function POST(req: NextRequest) {
     !('message' in body)
   ) {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+  }
+
+  if (!isTrustedBrowserOrigin(req)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
   const { email, subject, message, scs } = body as Record<string, unknown>
