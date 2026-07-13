@@ -1,0 +1,47 @@
+{
+  "planHash": "e79426dbc9d2d7c63702e2682326443b1d55dbfd1fc21c47183d37a3cbd365c4",
+  "phase": "baseline",
+  "recordedAtUtc": "2026-07-12T13:55:02.7867804Z",
+  "retryCount": 0,
+  "resetBaseline": true,
+  "result": {
+    "setupSucceeded": true,
+    "setupDurationMs": 1924,
+    "setupFailureOutput": null,
+    "assertions": [
+      {
+        "name": "tsc-no-emit",
+        "kind": "process",
+        "verificationMethod": "exit-code",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "",
+        "durationMs": 5680
+      },
+      {
+        "name": "tests-pass",
+        "kind": "process",
+        "verificationMethod": "test-results",
+        "passed": true,
+        "timedOut": false,
+        "skipped": false,
+        "skippedReason": null,
+        "exitCode": 0,
+        "outputSample": "\r\n\u003E mm-api@1.0.1 test D:\\projekty\\0next\\mm-api\r\n\u003E pnpm run test:int \u0026\u0026 pnpm run test:e2e\r\n\r\n\r\n\u003E mm-api@1.0.1 test:int D:\\projekty\\0next\\mm-api\r\n\u003E cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts\r\n\r\n\r\n\u001B[1m\u001B[46m RUN \u001B[49m\u001B[22m \u001B[36mv4.0.18 \u001B[39m\u001B[90mD:/projekty/0next/mm-api\u001B[39m\r\n\r\n \u001B[32m\u2713\u001B[39m tests/int/activation-codes-upgrade.int.spec.ts \u001B[2m(\u001B[22m\u001B[2m7 tests\u001B[22m\u001B[2m)\u001B[22m\u001B[32m 10\u001B[2mms\u001B[22m\u001B[39m\r\n[\u28F7] Pulling schema from database...\r\n\u001B[2K\u001B[1G[\u28EF] Pulling schema from database...\r\n\u001B[2K\u001B[1G[\u28DF] Pulling schema from database...\r\n\u001B[2K\u001B[1G[\u287F] Pulling schema from database...\r\n\u001B[2K\u001B[1G[\u2713] Pulling schema from database...\r\n \u001B[32m\u2713\u001B[39m tests/int/api.int.spec.ts \u001B[2m(\u001B[22m\u001B[2m1 test\u001B[22m\u001B[2m)\u001B[22m\u001B[33m 1228\u001B[2mms\u001B[22m\u001B[39m\r\n\r\n\u001B[2m Test Files \u001B[22m \u001B[1m\u001B[32m2 passed\u001B[39m\u001B[22m\u001B[90m (2)\u001B[39m\r\n\u001B[2m      Tests \u001B[22m \u001B[1m\u001B[32m8 passed\u001B[39m\u001B[22m\u001B[90m (8)\u001B[39m\r\n\u001B[2m   Start at \u001B[22m 15:54:23\r\n\u001B[2m   Duration \u001B[22m 5.22s\u001B[2m (transform 485ms, setup 82ms, import 2.73s, tests 1.24s, environment 2.15s)\u001B[22m\r\n\r\n\r\n\u003E mm-api@1.0.1 test:e2e D:\\projekty\\0next\\mm-api\r\n\u003E cross-env NODE_OPTIONS=\u0022--no-deprecation --import=tsx/esm\u0022 playwright test --config=playwright.config.ts\r\n\r\n\u001B[1A\u001B[2K\u001B[2m[WebServer] \u001B[22m\u001B[33m\u001B[1m\u26A0\u001B[22m\u001B[39m You are using a non-standard \u0022NODE_ENV\u0022 value in your environment. This creates inconsistencies in the project and is strongly advised against. Read more: https://nextjs.org/docs/messages/non-standard-node-env\r\n\r\n\r\n\u001B[1A\u001B[2K\u001B[2m[WebServer] \u001B[22mPayload: You are using an unsupported Next.js 16 version. You can find the supported Next.js versions here: https://payloadcms.com/docs/getting-started/installation\r\n\r\nRunning 4 tests using 2 workers\r\n\r\n\u001B[1A\u001B[2K[1/4] [chromium] \u203A tests\\e2e\\frontend.e2e.spec.ts:11:3 \u203A Frontend \u203A can go on homepage\r\n\u001B[1A\u001B[2K[2/4] [chromium] \u203A tests\\e2e\\admin.e2e.spec.ts:21:3 \u203A Admin Panel \u203A can navigate to dashboard\r\n\u001B[1A\u001B[2K[3/4] [chromium] \u203A tests\\e2e\\admin.e2e.spec.ts:28:3 \u203A Admin Panel \u203A can navigate to list view\r\n\u001B[1A\u001B[2K[4/4] [chromium] \u203A tests\\e2e\\admin.e2e.spec.ts:35:3 \u203A Admin Panel \u203A can navigate to edit view\r\n\u001B[1A\u001B[2K  4 passed (31.7s)\r\n",
+        "durationMs": 40683,
+        "testResults": {
+          "testFramework": "vitest",
+          "runnerDetectedFrom": "package_json",
+          "testsTotal": 8,
+          "testsPassed": 8,
+          "testsFailed": 0,
+          "testsSkipped": 0,
+          "parseFailed": false
+        }
+      }
+    ]
+  }
+}

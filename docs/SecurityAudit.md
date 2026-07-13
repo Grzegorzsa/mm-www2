@@ -275,24 +275,28 @@ pnpm audit --prod
 Result:
 
 - Audit exited with code 1.
-- Reported summary after the latest cleanup: 17 high, 36 moderate, 10 low.
+- Reported summary after the latest cleanup: 3 high, 21 moderate, 5 low.
 
 Status:
 
 - Partially mitigated by moving CLI-only `shadcn` and type-only `@types/*` packages out of production dependencies.
-- Production audit still reports unresolved transitive issues, mainly through Payload-related packages.
+- Further mitigated by upgrading the Payload package family to `3.86.0` and direct `nodemailer` to `9.0.3`.
+- Further mitigated by upgrading `next` to `16.2.10`, which removed the previously reported high-severity Next.js advisory.
+- Production audit still reports unresolved issues, now led mainly by transitive packages in build/tooling chains such as `fast-uri`, `ws`, and other indirect dependencies.
 
 Notable packages:
 
-- `nodemailer`: high severity advisory; direct dependency and also used through `@payloadcms/email-nodemailer`.
-- `undici`: multiple advisories through `payload`.
-- `hono`, `dompurify`, `js-yaml`, `ws`: mostly transitive, with some paths through tooling such as `shadcn` / MCP SDK.
+- `fast-uri`: remaining high-severity advisories currently appear through the `@sentry/nextjs` -> webpack -> ajv toolchain.
+- `ws`: transitive advisory paths remain, including paths through Payload rich-text dependencies.
+- `brace-expansion` and similar packages still appear through transitive tooling such as Sentry bundler dependencies.
 
 Recommended fix:
 
-- Update `nodemailer` to a patched version supported by Payload email adapter.
-- Update Payload packages and refresh the lockfile to pull patched transitive dependencies where available.
+- Completed: update `nodemailer` to a patched version supported by the current Payload email adapter.
+- Completed: update Payload packages and refresh the lockfile to pull patched transitive dependencies where available.
+- Completed: upgrade `next` to a patched `16.2.x` release.
 - Completed: move CLI-only tooling such as `shadcn` and type-only `@types/*` packages out of production dependencies.
+- Remaining advisories are lower-priority follow-up work unless you plan to expose the affected tooling paths directly.
 
 ### P2-03: Form parity hash is not CSRF protection
 

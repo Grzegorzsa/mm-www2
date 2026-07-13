@@ -146,6 +146,7 @@ export async function POST(req: NextRequest) {
       existingDefinitionResult.docs[0] ??
       (await payload.create({
         collection: 'activation-code-definitions',
+        draft: true,
         data: {
           name: `Definition ${parsedProductId}-${parsedVariantId} v${parsedVersionFrom}-${parsedVersionTo}${Boolean(trial) ? ' TRIAL' : ''}`,
           product: parsedProductId,

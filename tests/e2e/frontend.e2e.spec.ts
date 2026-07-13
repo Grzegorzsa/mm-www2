@@ -11,10 +11,11 @@ test.describe('Frontend', () => {
   test('can go on homepage', async ({ page }) => {
     await page.goto('/')
 
-    await expect(page).toHaveTitle(/Payload Blank Template/)
+    await expect(page).toHaveTitle(/MXbeats — Music Production and Arrangement Software/)
 
-    const heading = page.locator('h1').first()
+    const heading = page.getByText('Unlock your').first()
 
-    await expect(heading).toHaveText('Welcome to your new project.')
+    await expect(heading).toHaveText('Unlock your')
+    await expect(page.getByText('creativity').first()).toBeVisible()
   })
 })
