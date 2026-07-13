@@ -51,7 +51,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { code, email, password, scs } = body as Record<string, unknown>
+  const { code, email, password, marketingConsent, scs } = body as Record<string, unknown>
 
   if (typeof code !== 'string' || !code.trim()) {
     return NextResponse.json({ error: 'Activation code is required' }, { status: 400 })
@@ -59,6 +59,10 @@ export async function POST(req: NextRequest) {
 
   if (typeof email !== 'string' || typeof password !== 'string') {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+  }
+
+  if (marketingConsent !== undefined && typeof marketingConsent !== 'boolean') {
+    return NextResponse.json({ error: 'Invalid marketing consent value' }, { status: 400 })
   }
 
   if (!isValidEmail(email)) {
@@ -114,6 +118,7 @@ export async function POST(req: NextRequest) {
     data: {
       email: email.trim().toLowerCase(),
       password,
+      marketingConsent: marketingConsent === true,
       ...(sellerId && shouldAssignSeller ? { referredBy: sellerId } : {}),
     },
     overrideAccess: true,

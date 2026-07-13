@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { h } from '@/lib/h'
 
@@ -26,6 +27,7 @@ export function RedeemForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
+  const [marketingConsent, setMarketingConsent] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -86,6 +88,7 @@ export function RedeemForm() {
           code: activationCode,
           email,
           password,
+          marketingConsent,
           scs: h(email),
         }),
       })
@@ -106,15 +109,42 @@ export function RedeemForm() {
 
   if (success) {
     return (
-      <div className="bg-green-50 border border-green-200 rounded p-6 text-green-800 text-center">
-        <p className="text-lg font-semibold mb-1">Activation successful</p>
-        <p className="mb-4">Verify your email address and then sign in to access your license.</p>
-        <a
-          href="/sign-in"
-          className="inline-block bg-black text-white px-5 py-2 text-xs tracking-widest uppercase hover:bg-gray-800 transition-colors font-medium rounded"
-        >
-          Sign In
-        </a>
+      <div className="rounded-lg border border-green-200 bg-green-50 p-6 text-green-900">
+        <p className="text-lg font-semibold mb-2">Activation successful</p>
+        <p className="text-sm leading-relaxed text-green-900/90">
+          We sent a verification email to your inbox. Confirm your email address first, then sign in
+          to the user panel to access your license, downloads, and account tools.
+        </p>
+
+        <div className="mt-4 space-y-2 text-sm leading-relaxed text-green-900/90">
+          <p>After verification, you can:</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>Sign in to your user panel</li>
+            <li>Download the software and updates</li>
+            <li>Read the product registration guide in the manual</li>
+          </ul>
+        </div>
+
+        <div className="mt-5 flex flex-wrap gap-3">
+          <Link
+            href="/sign-in"
+            className="inline-block bg-black text-white px-5 py-2 text-xs tracking-widest uppercase hover:bg-gray-800 transition-colors font-medium rounded"
+          >
+            Sign In
+          </Link>
+          <Link
+            href="/downloads"
+            className="inline-block border border-green-300 bg-white px-5 py-2 text-xs tracking-widest uppercase text-green-900 hover:bg-green-100 transition-colors font-medium rounded"
+          >
+            Downloads
+          </Link>
+          <Link
+            href="/manual#product-registration"
+            className="inline-block border border-green-300 bg-white px-5 py-2 text-xs tracking-widest uppercase text-green-900 hover:bg-green-100 transition-colors font-medium rounded"
+          >
+            Manual
+          </Link>
+        </div>
       </div>
     )
   }
@@ -213,6 +243,18 @@ export function RedeemForm() {
                 autoComplete="new-password"
               />
             </div>
+
+            <label className="flex items-center gap-3 cursor-pointer select-none rounded border border-gray-200 bg-gray-50 px-3 py-2">
+              <input
+                type="checkbox"
+                checked={marketingConsent}
+                onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                  setMarketingConsent(e.target.checked)
+                }
+                className="h-4 w-4 rounded border-gray-300 accent-black cursor-pointer"
+              />
+              <span className="text-sm text-gray-700">Inform me about promotions and updates</span>
+            </label>
 
             <button
               type="submit"

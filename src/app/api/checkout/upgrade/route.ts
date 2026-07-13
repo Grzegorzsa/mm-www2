@@ -537,11 +537,11 @@ export async function POST(req: NextRequest) {
 
     const checkoutResult = await checkoutResponse.json().catch(() => null)
 
-    console.info('[checkout/upgrade] Lemon checkout response', {
-      status: checkoutResponse.status,
-      statusText: checkoutResponse.statusText,
-      responseData: JSON.stringify(checkoutResult, null, 2),
-    })
+    // console.info('[checkout/upgrade] Lemon checkout response', {
+    //   status: checkoutResponse.status,
+    //   statusText: checkoutResponse.statusText,
+    //   responseData: JSON.stringify(checkoutResult, null, 2),
+    // })
 
     if (!checkoutResponse.ok) {
       const lemonError =

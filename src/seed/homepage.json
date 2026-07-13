@@ -264,7 +264,25 @@
 
     {
       "id": "6a37e949d8002f92e932298d",
-      "feature": "Add and Edit Beats",
+      "feature": "Edit Beats",
+      "essentials": "false",
+      "loops": "false",
+      "beats": "true",
+      "composer": "true"
+    },
+
+    {
+      "id": "6a54a5b603504321f4e5930a",
+      "feature": "Convert MIDI to Beats",
+      "essentials": "false",
+      "loops": "false",
+      "beats": "true",
+      "composer": "true"
+    },
+
+    {
+      "id": "6a54ad535d956e897de25ecf",
+      "feature": "Factory Beat Presets",
       "essentials": "false",
       "loops": "false",
       "beats": "true",
@@ -299,7 +317,7 @@
       "focalY": 50
     }
   },
-  "updatedAt": "2026-06-30T14:58:20.953Z",
+  "updatedAt": "2026-07-13T09:22:04.998Z",
   "createdAt": "2026-04-07T12:11:17.827Z",
   "globalType": "homepage"
 }

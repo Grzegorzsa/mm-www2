@@ -34,10 +34,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { email, password, scs } = body as Record<string, unknown>
+  const { email, password, marketingConsent, scs } = body as Record<string, unknown>
 
   if (typeof email !== 'string' || typeof password !== 'string') {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
+  }
+
+  if (marketingConsent !== undefined && typeof marketingConsent !== 'boolean') {
+    return NextResponse.json({ error: 'Invalid marketing consent value' }, { status: 400 })
   }
 
   // Parity check
@@ -56,7 +60,11 @@ export async function POST(req: NextRequest) {
 
     const user = await payload.create({
       collection: 'users',
-      data: { email, password },
+      data: {
+        email,
+        password,
+        marketingConsent: marketingConsent === true,
+      },
       overrideAccess: true,
     })
     return NextResponse.json({ user }, { status: 201 })

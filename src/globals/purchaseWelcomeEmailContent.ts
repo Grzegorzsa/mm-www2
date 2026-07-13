@@ -51,12 +51,13 @@ MXbeats Team`,
   <ol style="padding-left: 20px;">
     <li>Install and launch the application.</li>
     <li>In the login screen, enter this email in the user/email field: <strong>{{loginEmail}}</strong></li>
-      <li>Check your inbox for the password reset link we sent to set your password.</li>
+    <li>Enter this password: <strong>{{loginPassword}}</strong></li>
     <li>Complete authorization inside the app.</li>
   </ol>
 
   <p style="background: #f5f9fc; border: 1px solid #d7e7f2; padding: 14px; border-radius: 6px;">
-      Use the email address above to sign in, then finish setting your password using the reset link in your inbox.
+    Use the credentials above to authorize the desktop application. If this account was created during purchase,
+    this is your generated password.
   </p>
 
   <p>

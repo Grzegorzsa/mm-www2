@@ -149,12 +149,14 @@ export async function POST(req: Request) {
     typeof customData?.intended_email === 'string' && customData.intended_email.trim()
       ? customData.intended_email.trim().toLowerCase()
       : undefined
+  const marketingConsentFromCheckout =
+    customData?.marketing_consent === true || customData?.marketing_consent === 'true'
 
   if (eventName !== 'order_created') {
-    console.info('[webhooks/lemon] Ignoring non-order event', {
-      eventName,
-      externalOrderId: event?.data?.id,
-    })
+    // console.info('[webhooks/lemon] Ignoring non-order event', {
+    //   eventName,
+    //   externalOrderId: event?.data?.id,
+    // })
     return NextResponse.json({ success: true, skipped: true, eventName })
   }
 
@@ -172,15 +174,15 @@ export async function POST(req: Request) {
     ? String(orderAttributes.first_order_item.variant_id)
     : undefined
 
-  console.info('[webhooks/lemon] Received order_created', {
-    eventName,
-    externalOrderId,
-    lemonOrderId,
-    lemonVariantId,
-    customerEmail,
-    totalAmountInCents,
-    customData: JSON.stringify(customData),
-  })
+  // console.info('[webhooks/lemon] Received order_created', {
+  //   eventName,
+  //   externalOrderId,
+  //   lemonOrderId,
+  //   lemonVariantId,
+  //   customerEmail,
+  //   totalAmountInCents,
+  //   customData: JSON.stringify(customData),
+  // })
 
   if (!customerEmail) {
     return badRequest('Missing customer email in event data', {
@@ -269,6 +271,7 @@ export async function POST(req: Request) {
 
     // 3. Znajdź lub utwórz użytkownika (klienta) w systemie
     let userRecord: any = null
+    let generatedPassword: string | null = null
     if (
       (flowFromCheckout === 'upgrade_replace' || flowFromCheckout === 'crossgrade') &&
       !requestedUserId
@@ -313,9 +316,12 @@ export async function POST(req: Request) {
       if (usersSearch.docs.length > 0) {
         userRecord = usersSearch.docs[0]
       } else {
-        // If the customer does not have an account yet, create one and email a reset link.
+        // If the customer does not have an account yet, create one and send credentials by email.
+        generatedPassword = crypto.randomBytes(16).toString('hex')
+
         userRecord = await payload.create({
           collection: 'users',
+          overrideAccess: true,
           disableVerificationEmail: true,
           req: {
             ...req,
@@ -326,25 +332,21 @@ export async function POST(req: Request) {
           data: {
             email: portalEmail,
             name: customerName,
+            password: generatedPassword,
+            marketingConsent: marketingConsentFromCheckout,
             _verified: true,
           } as any,
-        })
-
-        await payload.forgotPassword({
-          collection: 'users',
-          data: { email: userRecord.email },
-          overrideAccess: true,
         })
       }
     }
 
-    console.info('[webhooks/lemon] Resolved assignee user', {
-      externalOrderId,
-      requestedUserId,
-      assignedUserId: userRecord?.id,
-      assignedUserEmail: userRecord?.email,
-      payerEmail: customerEmail,
-    })
+    // console.info('[webhooks/lemon] Resolved assignee user', {
+    //   externalOrderId,
+    //   requestedUserId,
+    //   assignedUserId: userRecord?.id,
+    //   assignedUserEmail: userRecord?.email,
+    //   payerEmail: customerEmail,
+    // })
 
     // 4. Resolve rule from commerce-offers (policy-driven), then fallback to legacy direct variant mapping.
     let offerRecord: any = null
@@ -862,6 +864,7 @@ export async function POST(req: Request) {
 
     await sendPurchaseWelcomeEmail(payload, {
       email: userRecord.email || customerEmail,
+      generatedPassword,
       externalOrderId: String(externalOrderId),
       applicationName,
       variantName: variantName || null,

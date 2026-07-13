@@ -13,6 +13,7 @@ export default function SignUpForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
+  const [marketingConsent, setMarketingConsent] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
   const [serverError, setServerError] = useState('')
@@ -53,7 +54,7 @@ export default function SignUpForm() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, scs: h(email) }),
+        body: JSON.stringify({ email, password, marketingConsent, scs: h(email) }),
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
@@ -134,6 +135,16 @@ export default function SignUpForm() {
           <p className="text-red-500 text-xs mt-1">{errors.passwordConfirm}</p>
         )}
       </div>
+
+      <label className="flex items-center gap-3 cursor-pointer select-none rounded border border-gray-200 bg-gray-50 px-3 py-2">
+        <input
+          type="checkbox"
+          checked={marketingConsent}
+          onChange={(e: ChangeEvent<HTMLInputElement>) => setMarketingConsent(e.target.checked)}
+          className="h-4 w-4 rounded border-gray-300 accent-black cursor-pointer"
+        />
+        <span className="text-sm text-gray-700">Inform me about promotions and updates</span>
+      </label>
 
       <button
         type="submit"

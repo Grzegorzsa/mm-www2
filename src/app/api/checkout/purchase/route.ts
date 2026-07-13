@@ -39,10 +39,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
 
-  const { variantId, affiliateCode, discountCode, discount_code, email } = body as Record<
-    string,
-    unknown
-  >
+  const { variantId, affiliateCode, discountCode, discount_code, email, marketingConsent } =
+    body as Record<string, unknown>
   let checkoutEmail = typeof email === 'string' ? email.trim().toLowerCase() : ''
   const targetVariantKey =
     typeof variantId === 'string' || typeof variantId === 'number' ? String(variantId).trim() : ''
@@ -55,6 +53,10 @@ export async function POST(req: NextRequest) {
 
   if (!targetVariantKey) {
     return NextResponse.json({ error: 'variantId is required' }, { status: 400 })
+  }
+
+  if (marketingConsent !== undefined && typeof marketingConsent !== 'boolean') {
+    return NextResponse.json({ error: 'Invalid marketing consent value' }, { status: 400 })
   }
 
   // If no email provided in body, fall back to session user
@@ -146,6 +148,7 @@ export async function POST(req: NextRequest) {
             ...(typeof affiliateCode === 'string' && affiliateCode.trim()
               ? { affiliate_code: affiliateCode.trim() }
               : {}),
+            ...(marketingConsent === true ? { marketing_consent: 'true' } : {}),
             ...(discount
               ? {
                   discount_code_id: String(discount.discountCode.id),

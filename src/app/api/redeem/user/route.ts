@@ -29,9 +29,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
 
-  const { code } = body as Record<string, unknown>
+  const { code, marketingConsent } = body as Record<string, unknown>
   if (typeof code !== 'string' || !code.trim()) {
     return NextResponse.json({ error: 'Activation code is required' }, { status: 400 })
+  }
+
+  if (marketingConsent !== undefined && typeof marketingConsent !== 'boolean') {
+    return NextResponse.json({ error: 'Invalid marketing consent value' }, { status: 400 })
   }
 
   const payload = await getPayload({ config })
@@ -52,6 +56,15 @@ export async function POST(req: NextRequest) {
   )
   if (!redeemResult.success) {
     return NextResponse.json({ error: redeemResult.error ?? 'Redeem failed' }, { status: 400 })
+  }
+
+  if (marketingConsent === true) {
+    await payload.update({
+      collection: 'users',
+      id: user.id,
+      data: { marketingConsent: true },
+      overrideAccess: true,
+    })
   }
 
   return NextResponse.json({ success: true, message: 'Activation code redeemed successfully.' })

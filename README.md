@@ -26,7 +26,18 @@ Tunnel local ports to public URLs and inspect traffic
 ngrok http 3000
 ```
 
-## Deplay - Standalone
+## Server Todo:
+
+Rozwiązać kwestie logów - "cichy zabójca" wolnego miejsca na serwerach
+
+```bash
+# pm2-logrotate - rotacja logów
+pm2 install pm2-logrotate
+```
+
+`logrotate` - Nginx, PostgreSQL - czyści i archiwizuje logi
+
+## Deploy - Standalone
 
 1. Przed wysłaniem zmian na serwer zaktualizować wersję w package.json
 2. Na serwerze wykonać `git pull`

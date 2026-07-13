@@ -2,6 +2,8 @@
 
 Poniżej jest minimalna checklista pod wejście na produkcję.
 
+Zmienne środowiskowe (Lemon Squeezy i Webhooki): W skrypcie predev masz przypomnienie o ngrok. Na produkcji pamiętaj, aby w panelu Lemon Squeezy zmienić adres URL webhooków na swoją domenę produkcyjną i zabezpieczyć endpoint w Payload za pomocą weryfikacji podpisu (X-Signature), jeśli jeszcze tego nie zrobiłeś.
+
 ## Przed live (D-1)
 
 ### 1. Potwierdź stan kodu i testów

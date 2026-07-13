@@ -30,6 +30,7 @@ import { ActivationCodesToolsLink as ActivationCodesToolsLink_47b96e5dd8ba964cd4
 import { LogoutButton as LogoutButton_ff5293d5aebf9648f53db39043327200 } from '@/components/admin/LogoutButton'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 
+/** @type import('payload').ImportMap */
 export const importMap = {
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell": RscEntryLexicalCell_44fe37237e0ebf4470c9990d8cb7b07e,
   "@payloadcms/richtext-lexical/rsc#RscEntryLexicalField": RscEntryLexicalField_44fe37237e0ebf4470c9990d8cb7b07e,

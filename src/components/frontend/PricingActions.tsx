@@ -49,6 +49,7 @@ export function PricingActions({
   const [affiliateCode, setAffiliateCode] = useState<string | null>(null)
   const [showPromoCode, setShowPromoCode] = useState(false)
   const [discountCode, setDiscountCode] = useState('')
+  const [marketingConsent, setMarketingConsent] = useState(false)
   const [isLoadingCheckout, setIsLoadingCheckout] = useState(false)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
   const [email, setEmail] = useState(sessionEmail)
@@ -104,6 +105,7 @@ export function PricingActions({
     setCheckoutError(null)
     setShowPromoCode(false)
     setDiscountCode('')
+    setMarketingConsent(false)
   }
 
   async function handleCheckout() {
@@ -135,6 +137,7 @@ export function PricingActions({
                   affiliateCode,
                   discountCode: discountCode.trim() || undefined,
                   email: email || undefined,
+                  marketingConsent,
                 },
           ),
         },
@@ -295,6 +298,16 @@ export function PricingActions({
                     </div>
                   )}
                 </div>
+
+                <label className="mt-5 flex items-start gap-3 text-sm text-[#30363b]">
+                  <input
+                    type="checkbox"
+                    checked={marketingConsent}
+                    onChange={(event) => setMarketingConsent(event.target.checked)}
+                    className="h-4 w-4 rounded border-gray-400"
+                  />
+                  <span>Inform me about promotions and updates</span>
+                </label>
 
                 <label className="mt-5 flex items-start gap-3 text-sm text-[#30363b]">
                   <input
