@@ -39,6 +39,16 @@ const nextConfig: NextConfig = {
       { pathname: '/*.svg' },
       { pathname: '/*.webp' },
     ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'mxbeats.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.mxbeats.com',
+      },
+    ],
   },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
