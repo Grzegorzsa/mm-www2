@@ -39,6 +39,8 @@ pm2 install pm2-logrotate
 
 ## Deploy - Standalone
 
+- W drugim oknie uruchomić `htop` - pokaże na żywo jak pracuje procesor/memory/swap...
+
 1. Przed wysłaniem zmian na serwer zaktualizować wersję w package.json
 2. Na serwerze wykonać `git pull`
 3. W razie potrzeby podinstalować nowe biblioteki `pnpm install`
