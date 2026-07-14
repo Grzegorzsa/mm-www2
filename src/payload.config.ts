@@ -48,6 +48,8 @@ export default buildConfig({
       ],
     },
   },
+  cors: ['https://mxbeats.com', 'https://www.mxbeats.com'],
+  csrf: ['https://mxbeats.com', 'https://www.mxbeats.com'],
   upload: {
     limits: {
       fileSize: 10 * 1024 * 1024,

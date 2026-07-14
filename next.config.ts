@@ -21,7 +21,7 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   // output: 'standalone',
-  allowedDevOrigins: ['mxbeats.com'],
+  allowedDevOrigins: ['57.129.71.24'],
   async headers() {
     return [
       {
