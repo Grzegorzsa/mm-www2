@@ -2,6 +2,15 @@ import { NextResponse, type NextRequest } from 'next/server'
 
 const WRITE_METHODS = new Set(['POST', 'PUT', 'PATCH', 'DELETE'])
 
+const ANONYMOUS_COLLECTION_AUTH_ACTIONS = new Set([
+  'login',
+  'forgot-password',
+  'reset-password',
+  'first-register',
+  'unlock',
+  'verify',
+])
+
 // Slugs kolekcji Payload wystawianych pod /api/:collection
 const PAYLOAD_COLLECTION_SLUGS = new Set([
   'admin-users',
@@ -47,9 +56,20 @@ export function proxy(req: NextRequest) {
   // Custom application routes (/api/auth/*, /api/checkout/*, /api/webhooks/*, etc.)
   // are unaffected because their first segment is not a collection slug.
   if (WRITE_METHODS.has(method) && pathname.startsWith('/api/')) {
-    const firstSegment = pathname.slice('/api/'.length).split('/')[0]
+    const segments = pathname.slice('/api/'.length).split('/')
+    const firstSegment = segments[0]
+    const secondSegment = segments[1]
 
     if (PAYLOAD_COLLECTION_SLUGS.has(firstSegment)) {
+      // Allow auth actions that are expected to be called before a session cookie exists.
+      if (
+        method === 'POST' &&
+        typeof secondSegment === 'string' &&
+        ANONYMOUS_COLLECTION_AUTH_ACTIONS.has(secondSegment)
+      ) {
+        return NextResponse.next()
+      }
+
       const payloadToken = req.cookies.get('payload-token')?.value
       if (!payloadToken) {
         return new NextResponse('Not Found', { status: 404 })
