@@ -252,3 +252,9 @@ pnpm exec vitest run activation-codes-upgrade.int.spec.ts --config vitest.config
 # Całe testy integracyjne z konfiguracji projektu:
 pnpm run test:int
 ```
+
+## Webhooks
+
+`scarecrow-tidal-cleaver.ngrok-free.dev/api/webhooks/lemon` - webhook for ngrok
+
+`mxbeats.com/api/webhooks/lemon`

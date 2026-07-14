@@ -35,6 +35,51 @@ import Affiliates from './collections/Affiliates'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+const DEFAULT_SERVER_URL = 'https://mxbeats.com'
+
+const normalizeOrigin = (value: string): string => value.replace(/\/$/, '')
+
+const parseOrigin = (value: string): string | null => {
+  try {
+    return normalizeOrigin(new URL(value).origin)
+  } catch {
+    return null
+  }
+}
+
+const splitEnvOrigins = (value: string | undefined): string[] =>
+  (value || '')
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean)
+
+const configuredServerURL = normalizeOrigin(
+  process.env.NEXT_PUBLIC_SERVER_URL ||
+    process.env.NEXT_PUBLIC_APP_URL ||
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    DEFAULT_SERVER_URL,
+)
+
+const allowedOrigins = Array.from(
+  new Set(
+    [
+      configuredServerURL,
+      process.env.NEXT_PUBLIC_APP_URL,
+      process.env.NEXT_PUBLIC_SITE_URL,
+      ...splitEnvOrigins(process.env.TRUSTED_BROWSER_ORIGINS),
+      ...splitEnvOrigins(process.env.NEXT_PUBLIC_TRUSTED_BROWSER_ORIGINS),
+      'https://mxbeats.com',
+      'https://www.mxbeats.com',
+      ...(process.env.NODE_ENV === 'production'
+        ? []
+        : ['http://localhost:3000', 'http://127.0.0.1:3000']),
+    ]
+      .filter(Boolean)
+      .map((item) => parseOrigin(item as string))
+      .filter((item): item is string => Boolean(item)),
+  ),
+)
+
 export default buildConfig({
   admin: {
     user: AdminUsers.slug,
@@ -48,8 +93,9 @@ export default buildConfig({
       ],
     },
   },
-  cors: ['https://mxbeats.com', 'https://www.mxbeats.com'],
-  csrf: ['https://mxbeats.com', 'https://www.mxbeats.com'],
+  serverURL: configuredServerURL,
+  cors: allowedOrigins,
+  csrf: allowedOrigins,
   upload: {
     limits: {
       fileSize: 10 * 1024 * 1024,
