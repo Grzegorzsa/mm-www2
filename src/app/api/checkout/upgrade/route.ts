@@ -510,20 +510,20 @@ export async function POST(req: NextRequest) {
       },
     }
 
-    console.info('[checkout/upgrade] Creating Lemon checkout', {
-      userId: user.id,
-      userEmail: user.email,
-      targetVariantId,
-      targetLemonVariantId,
-      sourceVariantId: resolvedUpgrade.sourceVariantId,
-      sourceLicenseId: resolvedUpgrade.sourceLicenseId,
-      actionType: resolvedUpgrade.actionType,
-      commerceOfferId: resolvedUpgrade.offer.id,
-      customPriceCents: finalPriceCents,
-      discountCode: discount?.normalizedCode ?? null,
-      discountAmountCents: discount?.discountAmountCents ?? 0,
-      enabledVariants: [targetLemonVariantId],
-    })
+    // console.info('[checkout/upgrade] Creating Lemon checkout', {
+    //   userId: user.id,
+    //   userEmail: user.email,
+    //   targetVariantId,
+    //   targetLemonVariantId,
+    //   sourceVariantId: resolvedUpgrade.sourceVariantId,
+    //   sourceLicenseId: resolvedUpgrade.sourceLicenseId,
+    //   actionType: resolvedUpgrade.actionType,
+    //   commerceOfferId: resolvedUpgrade.offer.id,
+    //   customPriceCents: finalPriceCents,
+    //   discountCode: discount?.normalizedCode ?? null,
+    //   discountAmountCents: discount?.discountAmountCents ?? 0,
+    //   enabledVariants: [targetLemonVariantId],
+    // })
 
     const checkoutResponse = await fetch('https://api.lemonsqueezy.com/v1/checkouts', {
       method: 'POST',
