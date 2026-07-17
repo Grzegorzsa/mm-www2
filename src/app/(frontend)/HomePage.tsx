@@ -7,7 +7,7 @@ import fallbackContent from '@/seed/homepage.json'
 import { PricingActions } from '@/components/frontend/PricingActions'
 import type { VariantOffer } from '@/components/frontend/PricingActions'
 import { getSessionUser } from '@/lib/session'
-import { getAvailableOffersForUser } from '@/lib/offersHelper'
+import { getAvailableOffersForUser, getActionLabel } from '@/lib/offersHelper'
 import { expandOwnedVariantIds } from '@/lib/variantOwnership'
 
 function BoolCell({ value }: { value: boolean }) {
@@ -137,23 +137,16 @@ export default async function HomePage() {
       limit: 100,
     })
 
+    // console.log(variants)
+
     const loopsVariant = variants.docs.find((variant: any) => {
       const uid = String(variant?.uid ?? '').toLowerCase()
-      const name = String(variant?.name ?? '').toLowerCase()
-
-      return (
-        (uid.includes('loops') || name.includes('loops')) &&
-        !uid.includes('elements') &&
-        !uid.includes('player') &&
-        !name.includes('elements')
-      )
+      return uid === 'mx-grid-loops'
     })
 
     const beatsVariant = variants.docs.find((variant: any) => {
       const uid = String(variant?.uid ?? '').toLowerCase()
-      const name = String(variant?.name ?? '').toLowerCase()
-
-      return uid.includes('beats') || name.includes('beats')
+      return uid === 'mx-grid-beats'
     })
 
     loopsVariantId = String(loopsVariant?.lemonSqueezyVariantId ?? '')
@@ -193,14 +186,16 @@ export default async function HomePage() {
         const offerView: VariantOffer = {
           targetVariantId: offer.targetVariantId,
           referencePriceCents: offer.referencePriceCents,
-          actionLabel: offer.actionType === 'crossgrade' ? 'Crossgrade' : 'Upgrade',
+          actionLabel: getActionLabel(offer.actionType),
+          actionType: offer.actionType,
         }
 
         if (
           offer.targetVariantId === (loopsVariant.id as number) &&
           (!loopsOffer ||
             (offerView.referencePriceCents ?? Infinity) <
-              (loopsOffer.referencePriceCents ?? Infinity))
+              (loopsOffer.referencePriceCents ?? Infinity)) &&
+          offer.actionType === 'upgrade_replace'
         ) {
           loopsOffer = offerView
         }
@@ -209,7 +204,8 @@ export default async function HomePage() {
           offer.targetVariantId === (beatsVariant.id as number) &&
           (!beatsOffer ||
             (offerView.referencePriceCents ?? Infinity) <
-              (beatsOffer.referencePriceCents ?? Infinity))
+              (beatsOffer.referencePriceCents ?? Infinity)) &&
+          offer.actionType === 'upgrade_replace'
         ) {
           beatsOffer = offerView
         }

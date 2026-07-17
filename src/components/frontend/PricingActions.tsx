@@ -9,6 +9,7 @@ export type VariantOffer = {
   targetVariantId: number
   referencePriceCents?: number
   actionLabel: string
+  actionType: 'upgrade_replace' | 'crossgrade' | 'trial'
 }
 
 type PricingActionsProps = {
@@ -131,6 +132,7 @@ export function PricingActions({
               ? {
                   variantId: selectedOffer?.targetVariantId,
                   discountCode: discountCode.trim() || undefined,
+                  actionType: selectedOffer?.actionType,
                 }
               : {
                   variantId: selectedVariantId,

@@ -38,6 +38,19 @@ type GetOffersResult = {
   debug: OfferDebugEntry[]
 }
 
+export function getActionLabel(actionType: 'upgrade_replace' | 'crossgrade' | 'trial'): string {
+  switch (actionType) {
+    case 'upgrade_replace':
+      return 'Upgrade'
+    case 'crossgrade':
+      return 'Crossgrade'
+    case 'trial':
+      return 'Start Trial'
+    default:
+      return 'Upgrade'
+  }
+}
+
 function getVariantId(value: ProductVariant | number | null | undefined): number | null {
   if (!value) return null
   if (typeof value === 'number') return value

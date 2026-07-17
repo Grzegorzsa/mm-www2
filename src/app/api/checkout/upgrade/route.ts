@@ -22,6 +22,13 @@ type ResolvedUpgrade = {
   sourceVariantId: number
 }
 
+function getOfferActionPriority(actionType: CommerceOffer['actionType']): number {
+  if (actionType === 'upgrade_replace') return 0
+  if (actionType === 'crossgrade') return 1
+  if (actionType === 'trial') return 2
+  return 3
+}
+
 function getAppBaseUrl(req: NextRequest) {
   const raw =
     process.env.NEXT_PUBLIC_APP_URL ||
@@ -322,7 +329,13 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const resolvedUpgrade = resolveUpgradeForUser(offersResult.docs, activeLicensesResult.docs)
+  const offersToResolve = requestedActionType
+    ? offersResult.docs
+    : [...offersResult.docs].sort(
+        (a, b) => getOfferActionPriority(a.actionType) - getOfferActionPriority(b.actionType),
+      )
+
+  const resolvedUpgrade = resolveUpgradeForUser(offersToResolve, activeLicensesResult.docs)
   if (!resolvedUpgrade) {
     return NextResponse.json(
       { error: 'No eligible source license for this offer' },

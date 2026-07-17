@@ -12,9 +12,11 @@
 
 - Przejść na webm z kodekiem av1 i mp4 jako fallback!
 <video autoplay loop muted playsinline>
-  <source src="video.webm" type="video/webm; codecs=av1" />
-  <source src="video.mp4" type="video/mp4" />
-  Twoja przeglądarka nie obsługuje odtwarzacza wideo.
+
+<source src="video.webm" type="video/webm; codecs=av1" />
+<source src="video.mp4" type="video/mp4" />
+Twoja przeglądarka nie obsługuje odtwarzacza wideo.
+
 </video>
 
 - W menu bocznym powinniśmy wiedzieć gdzie się znajdujemy
