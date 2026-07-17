@@ -26,17 +26,6 @@ Tunnel local ports to public URLs and inspect traffic
 ngrok http 3000
 ```
 
-## Server Todo:
-
-Rozwiązać kwestie logów - "cichy zabójca" wolnego miejsca na serwerach
-
-```bash
-# pm2-logrotate - rotacja logów
-pm2 install pm2-logrotate
-```
-
-`logrotate` - Nginx, PostgreSQL - czyści i archiwizuje logi
-
 ## Deploy - Standalone
 
 - W drugim oknie uruchomić `htop` - pokaże na żywo jak pracuje procesor/memory/swap...
@@ -53,6 +42,60 @@ pm2 install pm2-logrotate
 ```bash
 pm2 start server.js --name "mxbeats"
 pm2 logs mxbeats
+pm2 save
+```
+
+## PM2 Logs - rotation
+
+Logi znajdziemy w `~/.pm2/logs/`
+
+```bash
+# Setup rotation
+# Ustawienie maksymalnego rozmiaru jednego pliku na 10 MB:
+pm2 set pm2-logrotate:max_size 10M
+
+# Ustawienie maksymalnej liczby archiwalnych plików na 10
+pm2 set pm2-logrotate:retain 10
+
+# Włączenie kompresji archiwalnych logów
+pm2 set pm2-logrotate:compress true
+
+# Ustawienie rotacji czasowej
+pm2 set pm2-logrotate:rotateInterval '0 0 * * *'
+
+# Podsumowanie wielkości plików
+du -sh ~/.pm2/logs/*
+
+# Czyszczenie logów
+pm2 flush
+```
+
+- `mxbeats-out.log` - standardowe komunikaty Next.js
+- `mxbeats-error.log` - błędy np 500, DB...
+- `mxbeats-app-out.log` i `mxbeats-app-error` - historycznie, nieaktywne logi
+
+## Nginx Logi
+
+```bash
+# Logi Nginx'a
+/var/log/nginx/access.log
+/var/log/nginx/error.log
+
+# Sprawdzenie wielkości logów
+sudo du -sh /var/log/nginx/*
+
+# Czyszczenie logów
+sudo truncate -s 0 /var/log/nginx/access.log
+sudo truncate -s 0 /var/log/nginx/error.log
+
+# Podgląd ostatnich logów
+sudo tail -f /var/log/nginx/access.log
+sudo tail -n 100 -f /var/log/nginx/access.log # 100 ostatnich logów
+
+# Generowanie raportu HTML z GoAccess
+sudo goaccess /var/log/nginx/access.log -o /home/grzegorz/raport.html --log-format=COMBINED
+sudo chown grzegorz:grzegorz /home/grzegorz/raport.html
+
 ```
 
 ## Dodanie SWAP przy rozwalającym się buildzie
@@ -91,154 +134,98 @@ NODE_OPTIONS="--max-old-space-size=1536" pnpm run build
 
 Backup mxbeats.com
 
-```bash
-server {
-    server_name mxbeats.com; # You can adjust server names as needed
+```conf
+# --- POCZĄTEK KONFIGURACJI CLOUDFLARE REAL IP ---
+# Informujemy Nginxa, które IP należą do Cloudflare
+set_real_ip_from 103.21.244.0/22;
+set_real_ip_from 103.22.200.0/22;
+set_real_ip_from 103.31.4.0/22;
+set_real_ip_from 104.16.0.0/13;
+set_real_ip_from 104.24.0.0/14;
+set_real_ip_from 108.162.192.0/18;
+set_real_ip_from 131.0.72.0/22;
+set_real_ip_from 141.101.64.0/18;
+set_real_ip_from 162.158.0.0/15;
+set_real_ip_from 172.64.0.0/13;
+set_real_ip_from 173.245.48.0/20;
+set_real_ip_from 188.114.96.0/20;
+set_real_ip_from 190.93.240.0/20;
+set_real_ip_from 197.234.240.0/22;
+set_real_ip_from 198.41.128.0/17;
 
-    root /home/grzegorz/www/mxbeats.com/build/;
-    index index.html index.htm;
+# IPv6 Cloudflare
+set_real_ip_from 2400:cb00::/32;
+set_real_ip_from 2606:4700::/32;
+set_real_ip_from 2803:f800::/32;
+set_real_ip_from 2405:b500::/32;
+set_real_ip_from 2405:8100::/32;
+set_real_ip_from 2a06:98c0::/29;
+set_real_ip_from 2c0f:f248::/32;
 
-    error_log /home/grzegorz/www/mxbeats.com/nginx-error.log;
-    access_log off; # You can enable access logs if needed
+# Nadpisujemy remote_addr wartością z nagłówka Cloudflare
+real_ip_header CF-Connecting-IP;
+# --- KONIEC KONFIGURACJI CLOUDFLARE REAL IP ---
 
-    # Blokowanie plików .php, .asp, .exe itp.
-    location ~* \.(php|aspx?|jsp|cgi|exe|pl|py)$ {
-        return 444; # "Connection Closed Without Response" - oszczędza transfer
-    }
-
-    # Blokowanie podwójnych slashy (częsty trik botów)
-    merge_slashes on;
-
-    # Access control
-    # allow 89.45.5.237;
-    # allow 109.173.0.0/16; # This represents the range 109.173.*.*
-    # deny all;
-    # allow all;
-
-    location /.well-known/acme-challenge/ {
-        # This is where Certbot will place the challenge files.
-        # This path must be the webroot of your site.
-        root /home/grzegorz/www/mxbeats.com/build;
-    }
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-
-   location ~* \.(?:jpg|jpeg|png|gif|webp|ico)$ {
-        expires 30d;
-        add_header Cache-Control "public, max-age=2592000";
-        add_header Pragma public; # For older browsers
-    }
-
-
-
-    listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/mxbeats.com/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/mxbeats.com/privkey.pem; # managed by Certbot
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-
-}
-
-
+# Przekierowanie HTTP (80) na HTTPS (443)
 server {
     listen 80;
-    listen [::]:80;
-    server_name mxbeats.com;
-
-    # This location block is crucial for Certbot renewals with the webroot authenticator.
-    location /.well-known/acme-challenge/ {
-        # This path must be the webroot of your site.
-        root /home/grzegorz/www/mxbeats.com/build;
-    }
-
-    # All other HTTP traffic is permanently redirected to HTTPS.
-    location / {
-        return 301 https://mxbeats.com$request_uri;
-    }
+    server_name mxbeats.com www.mxbeats.com;
+    return 301 https://$host$request_uri;
 }
-```
 
-```bash
+# Główna konfiguracja HTTPS
 server {
-    server_name mxbeats.com;
+    listen 443 ssl;
+    server_name mxbeats.com www.mxbeats.com;
+    ssl_certificate /etc/nginx/ssl/mxbeats.pem;
+    ssl_certificate_key /etc/nginx/ssl/mxbeats.key;
 
-    # Logi (zmienione na nową ścieżkę)
-    error_log /var/www/mxbeats.com/nginx-error.log;
-    access_log off;
+    # Rekomendowane zabezpieczenia SSL
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers on;
 
-    # Zwiększenie limitu uploadu (ważne dla wgrywania mediów do Payload)
-    client_max_body_size 50M;
+    client_max_body_size 100M;
 
-    # 1. Blokowanie podejrzanych plików
-    location ~* \.(php|aspx?|jsp|cgi|exe|pl|py)$ {
-        return 444;
-    }
-
-    # 2. Obsługa wyzwań Certbota (SSL)
-    location /.well-known/acme-challenge/ {
-        # W Next.js standalone wyzwania najlepiej kierować do folderu public
-        root /var/www/mxbeats.com/public;
-    }
-
-    # 3. Blokada panelu ADMIN (tylko dla Twojego IP)
-    location /admin {
-        allow 98.45.5.237; # <--- WPISZ SWOJE IP
-        deny all;
-
-        proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-
-    # 4. Główne Proxy dla Next.js
     location / {
-        proxy_pass http://localhost:3000;
+        proxy_pass http://127.0.0.1:3000;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
-        proxy_set_header X-Real-IP $remote_addr;
+
+        proxy_set_header X-Real-IP $http_cf_connecting_ip;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
     }
+    # 1. Blokada wizualnego panelu Admina
+    location /admin {
+        allow 89.45.5.237;  # Twój adres IP
+        deny all;           # Blokada dla reszty świata
 
-    # 5. Optymalizacja cache dla obrazków (serwowanych przez Next/Payload)
-    location ~* \.(?:jpg|jpeg|png|gif|webp|ico)$ {
-        proxy_pass http://localhost:3000;
-        expires 30d;
-        add_header Cache-Control "public, max-age=2592000";
+        # Standardowe przekazanie ruchu do Next.js (port 3000) jeśli IP pasuje
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
     }
 
-    # --- Sekcja SSL (ZACHOWANA) ---
-    listen 443 ssl; # managed by Certbot
-    ssl_certificate /etc/letsencrypt/live/mxbeats.com/fullchain.pem; # managed by Certbot
-    ssl_certificate_key /etc/letsencrypt/live/mxbeats.com/privkey.pem; # managed by Certbot
-    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
-    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
-}
+    # 2. Blokada endpointów API dla administratorów
+    location /api/admin-users {
+        allow 89.45.5.237;  # Twój adres IP
+        deny all;           # Blokada dla reszty świata
 
-# --- Przekierowanie HTTP -> HTTPS ---
-server {
-    listen 80;
-    listen [::]:80;
-    server_name mxbeats.com;
-
-    location /.well-known/acme-challenge/ {
-        root /var/www/mxbeats.com/public;
-    }
-
-    location / {
-        return 301 https://mxbeats.com$request_uri;
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
     }
 }
+
 ```
 
 ## Testy integracji
@@ -258,3 +245,24 @@ pnpm run test:int
 `scarecrow-tidal-cleaver.ngrok-free.dev/api/webhooks/lemon` - webhook for ngrok
 
 `mxbeats.com/api/webhooks/lemon`
+
+## ToDo
+
+1. Wyłączenie logowania niektórych zapytań i obrazki
+
+```conf
+location = /favicon.ico {
+    log_not_found off;
+    access_log off;
+}
+
+location = /robots.txt {
+    log_not_found off;
+    access_log off;
+}
+
+location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)$ {
+    expires max;
+    access_log off;
+}
+```
