@@ -14,10 +14,10 @@
         {
           "id": "69e0e2638753728fb4042691",
           "description": "64-bit desktop application and VST3 plugin",
-          "version": "1.2.0",
-          "fileName": "mxsetup_1.2.0.exe",
-          "size": "13.9MB",
-          "url": "https://static.mxbeats.com/installers/1.2.0/mxsetup_1.2.0.exe",
+          "version": "1.2.3",
+          "fileName": "mxsetup_1.2.3.exe",
+          "size": "14.94 MB",
+          "url": "https://static.mxbeats.com/downloads/software/mxgrid/1.2.3/Windows_x64/mxsetup_1.2.3.exe",
           "loggedUser": false
         }
       ]
@@ -31,20 +31,20 @@
         {
           "id": "69e0e2638753728fb4042693",
           "description": "Desktop application",
-          "version": "1.2.0",
+          "version": "1.2.3",
           "fileName": "MX GRID.exe",
-          "size": "20.5MB",
-          "url": "https://static.mxbeats.com/installers/1.2.0/arm64/MX%20GRID.exe",
+          "size": "22.7 MB",
+          "url": "https://static.mxbeats.com/downloads/software/mxgrid/1.2.3/Win_ARM64/MX%20GRID.exe",
           "loggedUser": false
         },
 
         {
           "id": "69e0e2638753728fb4042694",
           "description": "VST3 plugin",
-          "version": "1.2.0",
+          "version": "1.2.3",
           "fileName": "MX GRID.vst3",
-          "size": "19.6MB",
-          "url": "https://static.mxbeats.com/installers/1.2.0/arm64/MX%20GRID.vst3",
+          "size": "22.95 MB",
+          "url": "https://static.mxbeats.com/downloads/software/mxgrid/1.2.3/Win_ARM64/MX%20GRID.vst3",
           "loggedUser": false
         }
       ]
@@ -58,10 +58,10 @@
         {
           "id": "69e0e2638753728fb4042696",
           "description": "Desktop application, AU, and VST3 plugins",
-          "version": "1.2.0",
-          "fileName": "MX GRID_1.2.0.pkg",
-          "size": "53.4MB",
-          "url": "https://static.mxbeats.com/installers/1.2.0/MX%20GRID_1.2.0.pkg",
+          "version": "1.2.3",
+          "fileName": "MX GRID_1.2.3.pkg",
+          "size": "55.46 MB",
+          "url": "https://static.mxbeats.com/downloads/software/mxgrid/1.2.3/MacOS/MX%20GRID_1.2.3.pkg",
           "loggedUser": false
         }
       ]
@@ -76,9 +76,9 @@
           "id": "69e0e2638753728fb4042698",
           "description": "Demo Content",
           "version": "1.0.0",
-          "fileName": "Showcase.zip",
-          "size": "120MB",
-          "url": "https://static.mxbeats.com/presets/Showcase.zip",
+          "fileName": "Demo Content.zip",
+          "size": "49.09 MB",
+          "url": "https://static.mxbeats.com/downloads/demo-content/Demo%20Content.zip",
           "loggedUser": false
         }
       ]
