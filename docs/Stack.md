@@ -1,9 +1,5 @@
 # Todo
 
-- Po użyciu kodu niech adres email będzie od razu potwierdzony. Po prostu robimy tak jak przy zakupach - przetestować co jeśli user już jest założony
-
-- Po użyciu kodu brak instrukcji co robić dalej. Dodatkowo w mailu przychodzi informacja, że MXGrid essentials zostało dodane do konta, ale nie zakupiony produkt. W tym przypadku akurat Essentials nie powinno być w ogóle dodane!
-
 - po okliknięciu na activate trial wpanelu usera nie pokzuje się zadna instrukcja co dalej. Oferta po prostu znika
 
 - [browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior

@@ -18,6 +18,15 @@
 
 `pnpm tsc --noEmit`
 
+## Activation Redeem Notifications (Admin)
+
+- `ACTIVATION_ADMIN_NOTIFICATIONS` controls email notifications sent to admins after successful activation-code redeem.
+  - default (not set): enabled
+  - disable with: `false`, `0`, `off`, `no`
+- Optional explicit recipients:
+  - `ADMIN_NOTIFICATION_EMAILS` (comma-separated list)
+  - if not set, emails from `admin-users` are used
+
 ## NGROK
 
 Tunnel local ports to public URLs and inspect traffic

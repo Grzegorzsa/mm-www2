@@ -78,6 +78,101 @@ function relationToNumber(value: RelationValue): number | null {
   return null
 }
 
+function relationName(value: RelationValue): string | null {
+  if (typeof value === 'object' && value && 'name' in value && typeof value.name === 'string') {
+    return value.name
+  }
+
+  return null
+}
+
+function isActivationAdminNotificationEnabled(): boolean {
+  const raw = process.env.ACTIVATION_ADMIN_NOTIFICATIONS
+  if (!raw) return true
+
+  const normalized = raw.trim().toLowerCase()
+  return !['0', 'false', 'off', 'no'].includes(normalized)
+}
+
+function getActivationAdminRecipients(): string[] {
+  const email = process.env.SMTP_TO?.trim().toLowerCase()
+  return email ? [email] : []
+}
+
+async function sendActivationNotificationToAdmins(args: {
+  payload: Payload
+  activationCode: ActivationCodeRecord
+  actionType: 'new_purchase' | 'upgrade_replace'
+  source: 'public_redeem' | 'panel_redeem'
+  userId: number
+  userEmail: string
+  sourceLicenseId: number | null
+}): Promise<void> {
+  if (!isActivationAdminNotificationEnabled()) return
+
+  const recipients = getActivationAdminRecipients()
+  if (recipients.length === 0) return
+
+  const productName = relationName(args.activationCode.product) ?? 'Unknown product'
+  const variantName = relationName(args.activationCode.productVariant) ?? 'Unknown variant'
+  const sellerId = relationToNumber(args.activationCode.seller)
+  const nowIso = new Date().toISOString()
+
+  const subject = `Activation code redeemed: ${args.activationCode.code}`
+  const text = [
+    'Activation code was redeemed successfully.',
+    '',
+    `Timestamp: ${nowIso}`,
+    `Redeem source: ${args.source}`,
+    `User ID: ${String(args.userId)}`,
+    `User email: ${args.userEmail}`,
+    `Code: ${args.activationCode.code}`,
+    `Action type: ${args.actionType}`,
+    `Trial: ${args.activationCode.trial ? 'yes' : 'no'}`,
+    `Product: ${productName}`,
+    `Variant: ${variantName}`,
+    `Version range: ${String(args.activationCode.versionFrom)}-${String(args.activationCode.versionTo)}`,
+    `Valid days: ${String(args.activationCode.validDays ?? '-')}`,
+    `Seller ID: ${String(sellerId ?? '-')}`,
+    `Assign seller as lifetime: ${args.activationCode.assignSellerAsLifetime ? 'yes' : 'no'}`,
+    `Source license ID: ${String(args.sourceLicenseId ?? '-')}`,
+    `Redeemed by user ID: ${String(args.userId)}`,
+  ].join('\n')
+
+  const html = `
+    <div style="font-family: sans-serif; line-height: 1.6; color: #1f2937;">
+      <h2 style="margin: 0 0 12px;">Activation code redeemed</h2>
+      <p style="margin: 0 0 16px;">Code <strong>${args.activationCode.code}</strong> was redeemed successfully.</p>
+      <table cellpadding="6" cellspacing="0" style="border-collapse: collapse; font-size: 14px;">
+        <tr><td><strong>Timestamp</strong></td><td>${nowIso}</td></tr>
+        <tr><td><strong>Redeem source</strong></td><td>${args.source}</td></tr>
+        <tr><td><strong>User ID</strong></td><td>${String(args.userId)}</td></tr>
+        <tr><td><strong>User email</strong></td><td>${args.userEmail}</td></tr>
+        <tr><td><strong>Action type</strong></td><td>${args.actionType}</td></tr>
+        <tr><td><strong>Trial</strong></td><td>${args.activationCode.trial ? 'yes' : 'no'}</td></tr>
+        <tr><td><strong>Product</strong></td><td>${productName}</td></tr>
+        <tr><td><strong>Variant</strong></td><td>${variantName}</td></tr>
+        <tr><td><strong>Version range</strong></td><td>${String(args.activationCode.versionFrom)}-${String(args.activationCode.versionTo)}</td></tr>
+        <tr><td><strong>Valid days</strong></td><td>${String(args.activationCode.validDays ?? '-')}</td></tr>
+        <tr><td><strong>Seller ID</strong></td><td>${String(sellerId ?? '-')}</td></tr>
+        <tr><td><strong>Assign seller as lifetime</strong></td><td>${args.activationCode.assignSellerAsLifetime ? 'yes' : 'no'}</td></tr>
+        <tr><td><strong>Source license ID</strong></td><td>${String(args.sourceLicenseId ?? '-')}</td></tr>
+      </table>
+    </div>
+  `
+
+  try {
+    await args.payload.sendEmail({
+      to: recipients,
+      subject,
+      text,
+      html,
+    })
+  } catch (error) {
+    console.error('[activation-codes] Failed to send admin activation notification:', error)
+  }
+}
+
 function isExpired(expiresAt: string | null | undefined, now = new Date()): boolean {
   if (!expiresAt) return false
   const expiry = new Date(expiresAt).getTime()
@@ -369,6 +464,36 @@ export async function redeemActivationCodeForUser(
       redeemSource: source,
     },
     overrideAccess: true,
+  })
+
+  let userEmail = `user-${String(userId)}@unknown.local`
+  try {
+    const userDoc = await payload.findByID({
+      collection: 'users',
+      id: userId,
+      depth: 0,
+      overrideAccess: true,
+      select: {
+        email: true,
+      },
+    })
+
+    const resolvedEmail = (userDoc as { email?: string } | undefined)?.email
+    if (typeof resolvedEmail === 'string' && resolvedEmail.trim()) {
+      userEmail = resolvedEmail.trim().toLowerCase()
+    }
+  } catch (error) {
+    console.error('[activation-codes] Failed to resolve user email for notification:', error)
+  }
+
+  await sendActivationNotificationToAdmins({
+    payload,
+    activationCode: latestCode,
+    actionType,
+    source,
+    userId,
+    userEmail,
+    sourceLicenseId,
   })
 
   return { success: true }

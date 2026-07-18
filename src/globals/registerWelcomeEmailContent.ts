@@ -2,7 +2,7 @@ export const registerWelcomeEmailDefaults = {
   subject: 'Welcome to MXbeats!',
   text: `Thank you for signing up!
 
-An MX GRID Essentials license has been added to your account.
+An MX GRID Elements license has been added to your account.
 
 You can log in to your account here: https://mxbeats.com/sign-in
 
@@ -15,7 +15,7 @@ MXbeats Team`,
 
   <p>
     Thank you for signing up! We're excited to let you know that an
-    <strong>MX GRID Essentials</strong> license has been successfully added to your account.
+    <strong>MX GRID Elements</strong> license has been successfully added to your account.
   </p>
 
   <p>You can start using your license right away by logging in below:</p>

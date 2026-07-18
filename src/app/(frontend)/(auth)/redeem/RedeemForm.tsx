@@ -25,9 +25,8 @@ export function RedeemForm() {
   const [isChecking, setIsChecking] = useState(false)
 
   const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [passwordConfirm, setPasswordConfirm] = useState('')
   const [marketingConsent, setMarketingConsent] = useState(false)
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [submitError, setSubmitError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [success, setSuccess] = useState(false)
@@ -35,8 +34,8 @@ export function RedeemForm() {
   const validateRegistration = () => {
     const errors: Record<string, string> = {}
     if (!isValidEmail(email)) errors.email = 'A valid email address is required'
-    if (password.length < 8) errors.password = 'Password must be at least 8 characters'
-    if (password !== passwordConfirm) errors.passwordConfirm = 'Passwords do not match'
+    if (!acceptedTerms)
+      errors.acceptedTerms = 'You must accept Terms and Conditions and Refund Policy'
     return errors
   }
 
@@ -87,8 +86,8 @@ export function RedeemForm() {
         body: JSON.stringify({
           code: activationCode,
           email,
-          password,
           marketingConsent,
+          acceptedTerms,
           scs: h(email),
         }),
       })
@@ -112,12 +111,13 @@ export function RedeemForm() {
       <div className="rounded-lg border border-green-200 bg-green-50 p-6 text-green-900">
         <p className="text-lg font-semibold mb-2">Activation successful</p>
         <p className="text-sm leading-relaxed text-green-900/90">
-          We sent a verification email to your inbox. Confirm your email address first, then sign in
-          to the user panel to access your license, downloads, and account tools.
+          Your account is ready and your license has been added. An activation password has been
+          sent to <strong>{email}</strong>. Use this password to sign in to both your user panel and
+          the desktop application.
         </p>
 
         <div className="mt-4 space-y-2 text-sm leading-relaxed text-green-900/90">
-          <p>After verification, you can:</p>
+          <p>You can now:</p>
           <ul className="list-disc pl-5 space-y-1">
             <li>Sign in to your user panel</li>
             <li>Download the software and updates</li>
@@ -213,37 +213,6 @@ export function RedeemForm() {
               />
             </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password <span className="text-red-500">*</span>
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-                className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black border-gray-300"
-                autoComplete="new-password"
-              />
-            </div>
-
-            <div>
-              <label
-                htmlFor="passwordConfirm"
-                className="block text-sm font-medium text-gray-700 mb-1"
-              >
-                Confirm Password <span className="text-red-500">*</span>
-              </label>
-              <input
-                id="passwordConfirm"
-                type="password"
-                value={passwordConfirm}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setPasswordConfirm(e.target.value)}
-                className="w-full border rounded px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-black border-gray-300"
-                autoComplete="new-password"
-              />
-            </div>
-
             <label className="flex items-center gap-3 cursor-pointer select-none rounded border border-gray-200 bg-gray-50 px-3 py-2">
               <input
                 type="checkbox"
@@ -254,6 +223,26 @@ export function RedeemForm() {
                 className="h-4 w-4 rounded border-gray-300 accent-black cursor-pointer"
               />
               <span className="text-sm text-gray-700">Inform me about promotions and updates</span>
+            </label>
+
+            <label className="flex items-start gap-3 cursor-pointer select-none rounded border border-gray-200 bg-gray-50 px-3 py-2">
+              <input
+                type="checkbox"
+                checked={acceptedTerms}
+                onChange={(e: ChangeEvent<HTMLInputElement>) => setAcceptedTerms(e.target.checked)}
+                className="mt-0.5 h-4 w-4 rounded border-gray-300 accent-black cursor-pointer"
+              />
+              <span className="text-sm text-gray-700 leading-relaxed">
+                I agree to the{' '}
+                <Link href="/terms-and-conditions" className="underline" target="_blank">
+                  Terms and Conditions
+                </Link>{' '}
+                (including EULA) and{' '}
+                <Link href="/refund-policy" className="underline" target="_blank">
+                  Refund Policy
+                </Link>
+                .
+              </span>
             </label>
 
             <button

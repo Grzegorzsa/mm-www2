@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+import crypto from 'crypto'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { isTrustedBrowserOrigin } from '@/lib/browserOrigin'
@@ -10,6 +11,7 @@ import {
   TEMP_EMAIL_REJECT_MESSAGE,
 } from '@/lib/bannedDomains'
 import { getValidActivationCode, redeemActivationCodeForUser } from '@/lib/activationCodes'
+import { sendPurchaseWelcomeEmail } from '@/lib/licenseHelper'
 
 type RelationValue = number | string | { id?: number | string; active?: boolean } | null | undefined
 
@@ -25,6 +27,14 @@ function relationToNumber(value: RelationValue): number | null {
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+}
+
+function relationName(value: unknown): string | null {
+  if (typeof value === 'object' && value && 'name' in value && typeof value.name === 'string') {
+    return value.name
+  }
+
+  return null
 }
 
 export async function POST(req: NextRequest) {
@@ -51,13 +61,13 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { code, email, password, marketingConsent, scs } = body as Record<string, unknown>
+  const { code, email, marketingConsent, acceptedTerms, scs } = body as Record<string, unknown>
 
   if (typeof code !== 'string' || !code.trim()) {
     return NextResponse.json({ error: 'Activation code is required' }, { status: 400 })
   }
 
-  if (typeof email !== 'string' || typeof password !== 'string') {
+  if (typeof email !== 'string') {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
   }
 
@@ -65,12 +75,15 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid marketing consent value' }, { status: 400 })
   }
 
-  if (!isValidEmail(email)) {
-    return NextResponse.json({ error: 'A valid email address is required' }, { status: 400 })
+  if (acceptedTerms !== true) {
+    return NextResponse.json(
+      { error: 'You must accept Terms and Conditions and Refund Policy' },
+      { status: 400 },
+    )
   }
 
-  if (password.length < 8) {
-    return NextResponse.json({ error: 'Password must be at least 8 characters' }, { status: 400 })
+  if (!isValidEmail(email)) {
+    return NextResponse.json({ error: 'A valid email address is required' }, { status: 400 })
   }
 
   if (typeof scs !== 'string' || scs !== h(email)) {
@@ -112,19 +125,25 @@ export async function POST(req: NextRequest) {
 
   const sellerId = relationToNumber(validCode.code.seller)
   const shouldAssignSeller = Boolean(validCode.code.assignSellerAsLifetime)
+  const generatedPassword = crypto.randomBytes(16).toString('hex')
 
   const createdUser = await payload.create({
     collection: 'users',
     data: {
       email: email.trim().toLowerCase(),
-      password,
+      password: generatedPassword,
       marketingConsent: marketingConsent === true,
+      _verified: true,
       ...(sellerId && shouldAssignSeller ? { referredBy: sellerId } : {}),
     },
+    disableVerificationEmail: true,
+    req: {
+      ...req,
+      context: {
+        preventWelcomeLicenses: true,
+      },
+    } as never,
     overrideAccess: true,
-    context: {
-      preventWelcomeLicenses: true,
-    },
   })
 
   const redeemResult = await redeemActivationCodeForUser(
@@ -138,11 +157,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: redeemResult.error ?? 'Redeem failed' }, { status: 400 })
   }
 
+  const productName = relationName(validCode.code.product) ?? 'MX GRID'
+  const variantName = relationName(validCode.code.productVariant)
+
+  await sendPurchaseWelcomeEmail(payload, {
+    email: createdUser.email,
+    generatedPassword,
+    externalOrderId: `ACT-${validCode.code.code}`,
+    applicationName: productName,
+    variantName,
+  })
+
   return NextResponse.json(
     {
       success: true,
-      message:
-        'Activation successful. Please verify your email first, then sign in to access your licenses.',
+      message: 'Activation successful. Sign in to access your licenses.',
     },
     { status: 201 },
   )
