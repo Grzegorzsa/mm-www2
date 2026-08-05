@@ -1,5 +1,6 @@
 import type { License, Product, ProductVariant } from '@/payload-types'
 import Image from 'next/image'
+import { normalizeMediaUrl } from '@/lib/mediaUrl'
 
 type PopulatedLicense = Pick<
   License,
@@ -63,14 +64,15 @@ export function LicenseCard({ license }: { license: PopulatedLicense }) {
   const versionDisplay = formatVersionDisplay(versionFrom, versionTo)
 
   const thumb = product.thumb && typeof product.thumb === 'object' ? product.thumb : null
+  const thumbUrl = thumb?.url ? normalizeMediaUrl(thumb.url) : null
 
   return (
     <div className="bg-white rounded-sm border border-gray-200 overflow-hidden shadow-sm w-full min-w-75 max-w-sm">
-      {thumb?.url && (
+      {thumbUrl && (
         <div className="relative w-full aspect-864/350 bg-gray-100">
           <Image
-            src={thumb.url}
-            alt={thumb.alt ?? product.name}
+            src={thumbUrl}
+            alt={thumb?.alt ?? product.name}
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"

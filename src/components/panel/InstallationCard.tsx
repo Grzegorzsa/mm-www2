@@ -1,5 +1,6 @@
 import type { Installation, Product } from '@/payload-types'
 import Image from 'next/image'
+import { normalizeMediaUrl } from '@/lib/mediaUrl'
 
 type PopulatedInstallation = Pick<
   Installation,
@@ -21,15 +22,16 @@ export function InstallationCard({ installation }: { installation: PopulatedInst
   const { product, machineId, computerName, os, disabled, createdAt } = installation
 
   const thumb = product.thumb && typeof product.thumb === 'object' ? product.thumb : null
+  const thumbUrl = thumb?.url ? normalizeMediaUrl(thumb.url) : null
   const active = !disabled
 
   return (
     <div className="bg-white rounded-sm border border-gray-200 overflow-hidden shadow-sm w-full min-w-xsm max-w-sm">
-      {thumb?.url && (
+      {thumbUrl && (
         <div className="relative w-full aspect-864/350 bg-gray-100">
           <Image
-            src={thumb.url}
-            alt={thumb.alt ?? product.name}
+            src={thumbUrl}
+            alt={thumb?.alt ?? product.name}
             fill
             className="object-cover"
             sizes="(max-width: 768px) 100vw, 50vw"

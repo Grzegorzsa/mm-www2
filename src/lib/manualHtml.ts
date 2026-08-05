@@ -35,6 +35,7 @@ const allowedAttributes = {
   section: ['class', 'id'],
   source: ['src', 'type'],
   span: ['class', 'id'],
+  ul: ['class', 'id'],
   video: [
     'autoplay',
     'class',

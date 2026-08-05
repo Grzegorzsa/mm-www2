@@ -60,29 +60,29 @@ const mobileToc = `<details>
 const sections = [
   // 0 — Introduction
   `<h3 id="intro">Introduction</h3>
-<div class="two-col">
+  <div class="mb-4"> 
+    <p><strong>MX GRID</strong> helps you turn ideas into tracks fast. Build drum patterns, trigger loops, and arrange complete songs in one workflow. Use it as a standalone app on Windows/macOS or load it as a VST3/AU plugin in your DAW.</p>
+    <p>Start by dropping audio files or MIDI drum files onto the grid. MX GRID detects clip type and key metadata automatically, so you can focus on writing music instead of setup.</p>
+  </div>
   <div>
     <video autoplay muted loop playsinline poster="/images/manual/intro.png">
       <source src="/images/manual/intro.mp4" type="video/mp4" />
     </video>
   </div>
   <div>
-    <p><strong>MX GRID</strong> helps you turn ideas into tracks fast. Build drum patterns, trigger loops, and arrange complete songs in one workflow. Use it as a standalone app on Windows/macOS or load it as a VST3/AU plugin in your DAW.</p>
-    <p>Start by dropping audio files or MIDI drum files onto the grid. MX GRID detects clip type and key metadata automatically, so you can focus on writing music instead of setup.</p>
     <h4>Key Features</h4>
     <ul>
       <li><strong>Dual workflow modes</strong>:
-        <ul>
+        <ul class="ml-4 mb-4">
           <li><strong>Session Mode</strong> for live clip triggering, quick layering, and performance.</li>
-          <li><strong>Arranger Mode</strong> with a vertical timeline for building full song structure.</li>
+          <li><strong>Arranger Mode</strong> with a timeline for building full song structure.</li>
         </ul>
       </li>
       <li><strong>Automated content import</strong>: smart detection of tempo, key, and metadata for WAV, AIFF, MP3, OGG, and MID files.</li>
       <li><strong>Flexible drum workflow and routing</strong>: combine audio samples, virtual instrument plugins, and external MIDI hardware, with up to <strong>32 audio outputs</strong> for advanced DAW routing.</li>
       <li><strong>Integrated Media Explorer</strong>: search, filter, and organize large sample libraries, then drag files directly to the grid.</li>
     </ul>
-  </div>
-</div>`,
+  </div>`,
 
   // 1 — Main Panel
   `<h3 id="main-panel">Main Panel</h3>
