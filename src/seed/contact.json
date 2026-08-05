@@ -1,0 +1,58 @@
+{
+  "title": "Contact",
+  "slug": "contact",
+  "content": {
+    "root": {
+      "type": "root",
+      "format": "",
+      "indent": 0,
+      "version": 1,
+      "direction": "ltr",
+      "children": [
+        {
+          "type": "heading",
+          "tag": "h1",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "direction": "ltr",
+          "children": [
+            {
+              "type": "text",
+              "version": 1,
+              "text": "Contact"
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "direction": "ltr",
+          "children": [
+            {
+              "type": "text",
+              "version": 1,
+              "text": "Use the contact form available at mxbeats.com/contact to reach our team."
+            }
+          ]
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "direction": "ltr",
+          "children": [
+            {
+              "type": "text",
+              "version": 1,
+              "text": "For legal and privacy details, see the Terms and Conditions, Privacy Policy, and Cookie Policy pages."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

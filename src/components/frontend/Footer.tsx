@@ -6,6 +6,7 @@ const footerLinks = [
   { href: '/contact', label: 'Contact' },
   { href: '/terms-and-conditions', label: 'Terms & Conditions' },
   { href: '/privacy-policy', label: 'Privacy Policy' },
+  { href: '/cookie-policy', label: 'Cookie Policy' },
 ]
 
 const Footer = () => {
