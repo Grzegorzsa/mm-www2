@@ -5,7 +5,6 @@ import { useState, type ChangeEvent, type FormEvent } from 'react'
 
 export function RedeemForm() {
   const [code, setCode] = useState('')
-  const [marketingConsent, setMarketingConsent] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
@@ -21,7 +20,7 @@ export function RedeemForm() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         credentials: 'include',
-        body: JSON.stringify({ code, marketingConsent }),
+        body: JSON.stringify({ code }),
       })
 
       const data = await res.json().catch(() => ({}))
@@ -88,16 +87,6 @@ export function RedeemForm() {
           autoComplete="off"
         />
       </div>
-
-      <label className="flex items-center gap-3 cursor-pointer select-none rounded border border-gray-200 bg-gray-50 px-3 py-2">
-        <input
-          type="checkbox"
-          checked={marketingConsent}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setMarketingConsent(e.target.checked)}
-          className="h-4 w-4 rounded border-gray-300 accent-black cursor-pointer"
-        />
-        <span className="text-sm text-gray-700">Inform me about promotions and updates</span>
-      </label>
 
       <button
         type="submit"
