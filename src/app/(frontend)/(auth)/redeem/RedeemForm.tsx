@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { h } from '@/lib/h'
+import { ConsentFields } from '@/components/shared/ConsentFields'
 
 type PreviewPayload = {
   valid: boolean
@@ -212,33 +213,17 @@ export function RedeemForm() {
               />
             </div>
 
-            <label className="flex items-center gap-3 cursor-pointer select-none rounded border border-gray-200 bg-gray-50 px-3 py-2">
-              <input
-                type="checkbox"
-                checked={marketingConsent}
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setMarketingConsent(e.target.checked)
-                }
-                className="h-4 w-4 rounded border-gray-300 accent-black cursor-pointer"
+            <div className="rounded border border-gray-200 bg-gray-50 px-3 py-3">
+              <ConsentFields
+                showDelivery={false}
+                acceptedTerms={acceptedTerms}
+                onTermsChange={setAcceptedTerms}
+                showMarketing
+                marketingConsent={marketingConsent}
+                onMarketingChange={setMarketingConsent}
+                showPrivacyNotice
               />
-              <span className="text-sm text-gray-700">Inform me about promotions and updates</span>
-            </label>
-
-            <label className="flex items-start gap-3 cursor-pointer select-none rounded border border-gray-200 bg-gray-50 px-3 py-2">
-              <input
-                type="checkbox"
-                checked={acceptedTerms}
-                onChange={(e: ChangeEvent<HTMLInputElement>) => setAcceptedTerms(e.target.checked)}
-                className="mt-0.5 h-4 w-4 rounded border-gray-300 accent-black cursor-pointer"
-              />
-              <span className="text-sm text-gray-700 leading-relaxed">
-                I agree to the{' '}
-                <Link href="/terms-and-conditions" className="underline" target="_blank">
-                  Terms and Conditions
-                </Link>{' '}
-                (including EULA) .
-              </span>
-            </label>
+            </div>
 
             <button
               type="submit"

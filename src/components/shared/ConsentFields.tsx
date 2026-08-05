@@ -1,42 +1,46 @@
 'use client'
 
 import Link from 'next/link'
+import { LEGAL_CONSENT_TEXT } from '@/lib/legalConsentText'
 
 type ConsentFieldsProps = {
-  acceptedDelivery: boolean
-  onDeliveryChange: (v: boolean) => void
+  acceptedDelivery?: boolean
+  onDeliveryChange?: (v: boolean) => void
+  showDelivery?: boolean
   acceptedTerms: boolean
   onTermsChange: (v: boolean) => void
-  marketingConsent: boolean
-  onMarketingChange: (v: boolean) => void
-  showMarketing: boolean
+  marketingConsent?: boolean
+  onMarketingChange?: (v: boolean) => void
+  showMarketing?: boolean
+  showPrivacyNotice?: boolean
   className?: string
 }
 
 export function ConsentFields({
-  acceptedDelivery,
+  acceptedDelivery = false,
   onDeliveryChange,
+  showDelivery = true,
   acceptedTerms,
   onTermsChange,
-  marketingConsent,
+  marketingConsent = false,
   onMarketingChange,
-  showMarketing,
+  showMarketing = false,
+  showPrivacyNotice = true,
   className = '',
 }: ConsentFieldsProps) {
   return (
     <div className={className}>
-      <label className="flex items-start gap-3 text-sm text-gray-700">
-        <input
-          type="checkbox"
-          checked={acceptedDelivery}
-          onChange={(e) => onDeliveryChange(e.target.checked)}
-          className="mt-1 h-4 w-4 shrink-0 rounded border-gray-400"
-        />
-        <span>
-          I agree to immediate access/delivery of the digital content and acknowledge that upon
-          delivery I lose my right of withdrawal / right to cancel the order.
-        </span>
-      </label>
+      {showDelivery && (
+        <label className="flex items-start gap-3 text-sm text-gray-700">
+          <input
+            type="checkbox"
+            checked={acceptedDelivery}
+            onChange={(e) => onDeliveryChange?.(e.target.checked)}
+            className="mt-1 h-4 w-4 shrink-0 rounded border-gray-400"
+          />
+          <span>{LEGAL_CONSENT_TEXT.deliveryConsent}</span>
+        </label>
+      )}
 
       <label className="mt-3 flex items-start gap-3 text-sm text-gray-700">
         <input
@@ -46,12 +50,11 @@ export function ConsentFields({
           className="mt-1 h-4 w-4 shrink-0 rounded border-gray-400"
         />
         <span>
-          I accept the{' '}
+          {LEGAL_CONSENT_TEXT.termsPrefix}{' '}
           <Link href="/terms-and-conditions" className="underline" target="_blank">
-            Terms and Conditions
+            {LEGAL_CONSENT_TEXT.termsLinkLabel}
           </Link>{' '}
-          of the service operated by the Entrepreneurship Development Foundation &ldquo;Twój
-          StartUp&rdquo; based in Warsaw.
+          {LEGAL_CONSENT_TEXT.termsSuffix}
         </span>
       </label>
 
@@ -60,24 +63,22 @@ export function ConsentFields({
           <input
             type="checkbox"
             checked={marketingConsent}
-            onChange={(e) => onMarketingChange(e.target.checked)}
+            onChange={(e) => onMarketingChange?.(e.target.checked)}
             className="mt-1 h-4 w-4 shrink-0 rounded border-gray-400"
           />
-          <span>Inform me about promotions and updates</span>
+          <span>{LEGAL_CONSENT_TEXT.marketingConsent}</span>
         </label>
       )}
 
-      <p className="mt-4 text-xs text-gray-500 leading-relaxed">
-        The administrator of the personal data entered into the form is the Entrepreneurship
-        Development Foundation &ldquo;Twój StartUp&rdquo; based in Warsaw. Data will be processed to
-        fulfill the order and, if consent is given, for marketing purposes. You may withdraw your
-        consent at any time. Full information regarding data processing and your rights can be found
-        in our{' '}
-        <Link href="/privacy-policy" className="underline hover:text-gray-700">
-          Privacy Policy
-        </Link>
-        .
-      </p>
+      {showPrivacyNotice && (
+        <p className="mt-4 text-xs text-gray-500 leading-relaxed">
+          {LEGAL_CONSENT_TEXT.privacyNotice}{' '}
+          <Link href="/privacy-policy" className="underline hover:text-gray-700">
+            {LEGAL_CONSENT_TEXT.privacyPolicyLabel}
+          </Link>
+          .
+        </p>
+      )}
     </div>
   )
 }

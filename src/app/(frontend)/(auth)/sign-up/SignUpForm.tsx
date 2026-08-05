@@ -2,6 +2,7 @@
 
 import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { h } from '@/lib/h'
+import { ConsentFields } from '@/components/shared/ConsentFields'
 
 const TEMP_EMAIL_REJECT_MESSAGE = 'Temporary email addresses are not allowed'
 
@@ -14,6 +15,7 @@ export default function SignUpForm() {
   const [password, setPassword] = useState('')
   const [passwordConfirm, setPasswordConfirm] = useState('')
   const [marketingConsent, setMarketingConsent] = useState(false)
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isLoading, setIsLoading] = useState(false)
   const [serverError, setServerError] = useState('')
@@ -24,6 +26,7 @@ export default function SignUpForm() {
     if (!isValidEmail(email)) e.email = 'A valid email address is required'
     if (password.length < 8) e.password = 'Password must be at least 8 characters'
     if (password !== passwordConfirm) e.passwordConfirm = 'Passwords do not match'
+    if (!acceptedTerms) e.acceptedTerms = 'You must accept the Terms and Conditions'
     return e
   }
 
@@ -54,7 +57,7 @@ export default function SignUpForm() {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password, marketingConsent, scs: h(email) }),
+        body: JSON.stringify({ email, password, marketingConsent, acceptedTerms, scs: h(email) }),
       })
       const data = await res.json().catch(() => ({}))
       if (!res.ok) {
@@ -136,15 +139,20 @@ export default function SignUpForm() {
         )}
       </div>
 
-      <label className="flex items-center gap-3 cursor-pointer select-none rounded border border-gray-200 bg-gray-50 px-3 py-2">
-        <input
-          type="checkbox"
-          checked={marketingConsent}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setMarketingConsent(e.target.checked)}
-          className="h-4 w-4 rounded border-gray-300 accent-black cursor-pointer"
+      <div className="rounded border border-gray-200 bg-gray-50 px-3 py-3">
+        <ConsentFields
+          showDelivery={false}
+          acceptedTerms={acceptedTerms}
+          onTermsChange={setAcceptedTerms}
+          showMarketing
+          marketingConsent={marketingConsent}
+          onMarketingChange={setMarketingConsent}
+          showPrivacyNotice
         />
-        <span className="text-sm text-gray-700">Inform me about promotions and updates</span>
-      </label>
+        {errors.acceptedTerms && (
+          <p className="text-red-500 text-xs mt-2">{errors.acceptedTerms}</p>
+        )}
+      </div>
 
       <button
         type="submit"

@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const { email, password, marketingConsent, scs } = body as Record<string, unknown>
+  const { email, password, marketingConsent, acceptedTerms, scs } = body as Record<string, unknown>
 
   if (typeof email !== 'string' || typeof password !== 'string') {
     return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
@@ -42,6 +42,10 @@ export async function POST(req: NextRequest) {
 
   if (marketingConsent !== undefined && typeof marketingConsent !== 'boolean') {
     return NextResponse.json({ error: 'Invalid marketing consent value' }, { status: 400 })
+  }
+
+  if (acceptedTerms !== true) {
+    return NextResponse.json({ error: 'Terms and Conditions must be accepted' }, { status: 400 })
   }
 
   // Parity check
