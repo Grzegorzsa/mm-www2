@@ -14,7 +14,7 @@ MX GRID by MXbeats is a music production tool designed to simplify the music cre
 
 ### Platform & Distribution
 
-- Available as a **standalone application** and as a **VST/AU plugin** for Windows and macOS.
+- Available as a **standalone application** and as a **VST3/AU plugin** for Windows and macOS.
 - On Windows, compiled for both **Intel x64** and **ARM64** processors.
   - Intel x64: distributed as an installer package (built with Inno Setup).
   - ARM64: standalone and VST files are available as separate downloads.
@@ -22,11 +22,13 @@ MX GRID by MXbeats is a music production tool designed to simplify the music cre
 
 ### Key Features
 
-- **Simple media management** — drag entire folders of audio files (WAV, AIFF, MP3, OGG) and MIDI drum files (MID, MIDI) onto the grid. Audio files are detected as single-shot samples or loops; MIDI drum files are automatically converted to Beats. The application assigns parameters such as tempo, color, icon, name, and instrument group. You can drag files from any file explorer on your computer, or use the built-in Media Explorer to browse and import directly from your library.
+- **Dual workflow modes**:
+  1. **Session Mode** — for live clip triggering, mixing, and real-time performance.
+  2. **Arranger Mode** — a vertical timeline for structuring complete songs.
+- **Automated content import** — drag audio files (WAV, AIFF, MP3, OGG) and MIDI drum files (MID, MIDI), or entire folders. The application automatically detects clip type and assigns metadata such as tempo, key, color, icon, name, and instrument group.
+- **Versatile drum editor and flexible routing** — supports audio samples, virtual instrument plugins, and external MIDI hardware, with up to **32 discrete audio outputs** for advanced DAW routing.
+- **Integrated Media Explorer** — quickly search, filter, and manage large media libraries, then drag files directly to the grid.
 - **One-click tempo conversion** — convert all loops to the current project tempo with a single click.
-- **Two playback modes:**
-  1. **Session** — trigger samples and loops in real time using a mouse or a MIDI controller (e.g., Launchpad). Single-shot samples can be triggered at any moment; loops are triggered synchronously (at the beginning of the next musical bar).
-  2. **Arranger (Timeline)** — arrange clips on a timeline to compose complete songs. The timeline provides 8 tracks for loops and 4 tracks for samples.
 
 ---
 
@@ -53,7 +55,7 @@ A MIDI Note box maps to a specific MIDI note number. It enables triggering exter
 
 ### 2.4 Beat
 
-A Beat is a percussion loop pattern built from audio Samples or MIDI Notes using the built-in Step Sequencer. Beats behave like loops (triggered synchronously at bar boundaries, belonging to an instrument group) but their content is programmed in the sequencer rather than read from an audio file. MIDI drum files can also be imported and automatically converted to Beats. Over 1,000 factory presets are included across various genres.
+A Beat is a percussion loop pattern built from audio Samples or MIDI Notes using the built-in Step Sequencer. Beats behave like loops (triggered synchronously at bar boundaries, belonging to an instrument group) but their content is programmed in the sequencer rather than read from an audio file. MIDI drum files can also be imported and automatically converted to Beats. Over 400 factory presets are included across various genres.
 
 ---
 

@@ -67,8 +67,19 @@ const sections = [
     </video>
   </div>
   <div>
-    <p><strong>MX GRID</strong> by MXbeats is a versatile music production tool designed for both live performers and studio musicians. Available as a standalone application and DAW plugin (VST/AU), it provides 32 outputs for flexible routing and 512 slots for four clip types: <strong>Loops</strong>, <strong>Samples</strong>, <strong>MIDI Notes</strong>, and <strong>Beats</strong>.</p>
-    <p>Simply drag audio files (WAV, AIFF, MP3, OGG), MIDI drum files (MID, MIDI), or entire folders onto the grid \u2014 the application automatically detects whether each file is a sample, loop, or MIDI drum file for Beat conversion, then assigns parameters like tempo, color, icon, and instrument group. You can drag files from any file explorer on your computer, or use the built-in Media Explorer to browse and import directly from your library.</p>
+    <p><strong>MX GRID</strong> is a music production application designed for quickly building drum patterns, audio loops, and full song arrangements. It runs as a standalone application (Windows/macOS) and as a VST3/AU plugin inside your preferred DAW.</p>
+    <h4>Key Features</h4>
+    <ul>
+      <li><strong>Dual workflow modes</strong>:
+        <ul>
+          <li><strong>Session Mode</strong> for live clip triggering, mixing, and real-time performance.</li>
+          <li><strong>Arranger Mode</strong> with a vertical timeline for structuring complete songs.</li>
+        </ul>
+      </li>
+      <li><strong>Automated content import</strong>: smart detection of tempo, key, and metadata for audio files (WAV, AIFF, MP3, OGG) and MIDI drum files (MID).</li>
+      <li><strong>Flexible drum workflow and routing</strong>: supports audio samples, virtual instrument plugins, and external MIDI hardware, with up to <strong>32 audio outputs</strong> for advanced DAW routing.</li>
+      <li><strong>Integrated Media Explorer</strong>: quickly search, filter, and manage large sample libraries, then drag content directly to the grid.</li>
+    </ul>
   </div>
 </div>`,
 
