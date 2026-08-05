@@ -67,18 +67,19 @@ const sections = [
     </video>
   </div>
   <div>
-    <p><strong>MX GRID</strong> is a music production application designed for quickly building drum patterns, audio loops, and full song arrangements. It runs as a standalone application (Windows/macOS) and as a VST3/AU plugin inside your preferred DAW.</p>
+    <p><strong>MX GRID</strong> helps you turn ideas into tracks fast. Build drum patterns, trigger loops, and arrange complete songs in one workflow. Use it as a standalone app on Windows/macOS or load it as a VST3/AU plugin in your DAW.</p>
+    <p>Start by dropping audio files or MIDI drum files onto the grid. MX GRID detects clip type and key metadata automatically, so you can focus on writing music instead of setup.</p>
     <h4>Key Features</h4>
     <ul>
       <li><strong>Dual workflow modes</strong>:
         <ul>
-          <li><strong>Session Mode</strong> for live clip triggering, mixing, and real-time performance.</li>
-          <li><strong>Arranger Mode</strong> with a vertical timeline for structuring complete songs.</li>
+          <li><strong>Session Mode</strong> for live clip triggering, quick layering, and performance.</li>
+          <li><strong>Arranger Mode</strong> with a vertical timeline for building full song structure.</li>
         </ul>
       </li>
-      <li><strong>Automated content import</strong>: smart detection of tempo, key, and metadata for audio files (WAV, AIFF, MP3, OGG) and MIDI drum files (MID).</li>
-      <li><strong>Flexible drum workflow and routing</strong>: supports audio samples, virtual instrument plugins, and external MIDI hardware, with up to <strong>32 audio outputs</strong> for advanced DAW routing.</li>
-      <li><strong>Integrated Media Explorer</strong>: quickly search, filter, and manage large sample libraries, then drag content directly to the grid.</li>
+      <li><strong>Automated content import</strong>: smart detection of tempo, key, and metadata for WAV, AIFF, MP3, OGG, and MID files.</li>
+      <li><strong>Flexible drum workflow and routing</strong>: combine audio samples, virtual instrument plugins, and external MIDI hardware, with up to <strong>32 audio outputs</strong> for advanced DAW routing.</li>
+      <li><strong>Integrated Media Explorer</strong>: search, filter, and organize large sample libraries, then drag files directly to the grid.</li>
     </ul>
   </div>
 </div>`,
