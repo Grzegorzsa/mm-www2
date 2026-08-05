@@ -96,7 +96,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "E-mail: info@mxbeats.com",
+                  "text": "E-mail: [email]",
                   "type": "text",
                   "version": 1
                 }
@@ -110,7 +110,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "Phone: +48 22 350 62 48",
+                  "text": "Phone: [tel]",
                   "type": "text",
                   "version": 1
                 }
@@ -520,7 +520,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "Right to Withdraw Consent (Art. 7(3) GDPR): You have the right to withdraw your consent at any time without affecting the lawfulness of processing based on consent before its withdrawal. You can withdraw consent by contacting us at: info@mxbeats.com.",
+                  "text": "Right to Withdraw Consent (Art. 7(3) GDPR): You have the right to withdraw your consent at any time without affecting the lawfulness of processing based on consent before its withdrawal. You can withdraw consent by contacting us at: [email].",
                   "type": "text",
                   "version": 1
                 }
@@ -581,7 +581,7 @@
           "version": 1,
           "children": [
             {
-              "text": "If you need additional information regarding personal data protection or wish to exercise your rights, please contact us at: rodo@twojstartup.pl or directly via info@mxbeats.com.",
+              "text": "If you need additional information regarding personal data protection or wish to exercise your rights, please contact us at: [email-rodo] or directly via [email].",
               "type": "text",
               "version": 1
             }

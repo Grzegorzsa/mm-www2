@@ -46,5 +46,11 @@ export default async function DynamicPage({ params }: Props) {
 
   if (!page) notFound()
 
-  return <GenericPage title={page.title} content={page.content} />
+  return (
+    <GenericPage
+      title={page.title}
+      content={page.content}
+      protectContacts={slug === 'privacy-policy'}
+    />
+  )
 }

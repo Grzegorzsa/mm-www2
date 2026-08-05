@@ -133,3 +133,25 @@ html {
     @apply font-sans;
   }
 }
+
+/* Contact obfuscation: visible glyphs are rendered via CSS, not text nodes. */
+.obf-contact-value {
+  display: inline;
+  color: inherit;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New',
+    monospace;
+}
+
+.obf-contact-char {
+  color: inherit;
+  display: inline;
+}
+
+.obf-contact-char::before {
+  content: attr(data-glyph);
+  color: currentColor;
+  position: static;
+}
