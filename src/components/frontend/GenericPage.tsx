@@ -8,6 +8,7 @@ interface GenericPageProps {
   content?: any
   children?: ReactNode
   protectContacts?: boolean
+  contactTriggerKey?: string
 }
 
 export default function GenericPage({
@@ -16,6 +17,7 @@ export default function GenericPage({
   content,
   children,
   protectContacts = false,
+  contactTriggerKey = '',
 }: GenericPageProps) {
   return (
     <div className="bg-white min-h-[calc(100vh-320px)]">
@@ -41,7 +43,11 @@ export default function GenericPage({
             {children}
           </div>
         )}
-        <ProtectedContactReveal enabled={protectContacts} />
+        <ProtectedContactReveal
+          key={contactTriggerKey || title}
+          enabled={protectContacts}
+          triggerKey={contactTriggerKey}
+        />
       </div>
     </div>
   )

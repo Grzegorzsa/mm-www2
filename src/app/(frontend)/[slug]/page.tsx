@@ -51,6 +51,7 @@ export default async function DynamicPage({ params }: Props) {
       title={page.title}
       content={page.content}
       protectContacts={slug === 'privacy-policy' || slug === 'terms-and-conditions'}
+      contactTriggerKey={`${slug}:${String(page?.updatedAt ?? '')}`}
     />
   )
 }

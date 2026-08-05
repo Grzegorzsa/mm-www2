@@ -1,10 +1,12 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
+import { usePathname } from 'next/navigation'
 
 interface ProtectedContactRevealProps {
   enabled?: boolean
   containerSelector?: string
+  triggerKey?: string
 }
 
 const XOR_KEY = 73
@@ -61,6 +63,9 @@ function createObfuscatedValue(doc: Document, token: ContactToken): HTMLElement 
 }
 
 function replaceTokensInTextNode(textNode: Text) {
+  if (!textNode.isConnected) return
+  if (textNode.parentElement?.closest('[data-contact-button]')) return
+
   const tokenPattern = /\[(email|email-rodo|tel)\]/g
   const matches = Array.from(textNode.data.matchAll(tokenPattern))
   if (!matches.length) return
@@ -93,31 +98,104 @@ function replaceTokensInTextNode(textNode: Text) {
   textNode.replaceWith(fragment)
 }
 
-function protectContainer(container: Element) {
-  const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT)
-  const textNodes: Text[] = []
-
-  while (walker.nextNode()) {
-    const node = walker.currentNode
-    if (node instanceof Text) textNodes.push(node)
+function collectTextNodes(node: Node, result: Text[]) {
+  if (node.nodeType === Node.TEXT_NODE) {
+    result.push(node as Text)
+    return
   }
 
+  node.childNodes.forEach((childNode) => collectTextNodes(childNode, result))
+}
+
+function protectContainer(container: Element) {
+  const textNodes: Text[] = []
+  collectTextNodes(container, textNodes)
+
   for (const textNode of textNodes) {
-    if (!textNode.data.includes('[')) continue
+    if (!textNode.data || !textNode.data.includes('[')) continue
     replaceTokensInTextNode(textNode)
   }
 }
 
 export default function ProtectedContactReveal({
   enabled = false,
-  containerSelector = '[data-contact-protect=true]',
+  containerSelector = '[data-contact-protect="true"]',
+  triggerKey = '',
 }: ProtectedContactRevealProps) {
-  useEffect(() => {
+  const pathname = usePathname()
+
+  useLayoutEffect(() => {
     if (!enabled) return
 
-    const containers = Array.from(document.querySelectorAll(containerSelector))
-    for (const container of containers) protectContainer(container)
-  }, [enabled, containerSelector])
+    const protectAll = () => {
+      const containers = Array.from(document.querySelectorAll(containerSelector))
+      for (const container of containers) protectContainer(container)
+    }
+
+    protectAll()
+
+    let frames = 0
+    let rafLoopId = 0
+    const runFrameLoop = () => {
+      protectAll()
+      frames += 1
+      if (frames < 180) {
+        rafLoopId = window.requestAnimationFrame(runFrameLoop)
+      }
+    }
+
+    rafLoopId = window.requestAnimationFrame(runFrameLoop)
+
+    const timeoutId = window.setTimeout(protectAll, 250)
+    const intervalId = window.setInterval(protectAll, 350)
+    const stopIntervalId = window.setTimeout(() => {
+      window.clearInterval(intervalId)
+    }, 5000)
+
+    const observer = new MutationObserver((mutations) => {
+      for (const mutation of mutations) {
+        if (mutation.type !== 'childList') continue
+
+        mutation.addedNodes.forEach((node) => {
+          if (node instanceof Text) {
+            if (node.data.includes('[')) replaceTokensInTextNode(node)
+
+            const parentContainer = node.parentElement?.closest(containerSelector)
+            if (parentContainer) protectContainer(parentContainer)
+            return
+          }
+
+          if (!(node instanceof Element)) return
+
+          if (node.matches(containerSelector)) {
+            protectContainer(node)
+            return
+          }
+
+          const nestedContainers = node.querySelectorAll(containerSelector)
+          nestedContainers.forEach((container) => protectContainer(container))
+
+          const parentContainer = node.closest(containerSelector)
+          if (parentContainer) protectContainer(parentContainer)
+        })
+      }
+
+      protectAll()
+    })
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    })
+
+    return () => {
+      window.cancelAnimationFrame(rafLoopId)
+      window.clearTimeout(timeoutId)
+      window.clearInterval(intervalId)
+      window.clearTimeout(stopIntervalId)
+      observer.disconnect()
+    }
+  }, [enabled, containerSelector, triggerKey, pathname])
 
   return null
 }

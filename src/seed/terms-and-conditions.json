@@ -125,7 +125,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "Conditions for placing orders for digital content (MXGrid software licenses);",
+                  "text": "Conditions for placing orders for digital content and software licenses;",
                   "type": "text",
                   "version": 1
                 }
@@ -306,7 +306,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "Digital Content — MXGrid software (standalone application and VST3/AU plugins) delivered via electronic download/license key without a physical medium.",
+                  "text": "Software / Digital Content — Music software, standalone applications, audio plugins (e.g., VST, AU), sound libraries, or other digital assets offered via the Service and delivered electronically without a physical medium.",
                   "type": "text",
                   "version": 1
                 }
@@ -457,7 +457,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "System requirements for running MXGrid:",
+                  "text": "Specific system requirements (e.g., supported operating systems, host DAW compatibility, or hardware requirements) for individual Software or Digital Content are specified on the respective product pages of the Service prior to purchase.",
                   "type": "text",
                   "version": 1
                 }
@@ -466,60 +466,6 @@
             }
           ],
           "listType": "number",
-          "direction": "ltr"
-        },
-        {
-          "tag": "ul",
-          "type": "list",
-          "start": 1,
-          "format": "",
-          "indent": 0,
-          "version": 1,
-          "children": [
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Windows: Windows 10 or Windows 11 (64-bit);",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "macOS: macOS 10.15 or newer (Intel or Apple Silicon native support);",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Compatible DAW host supporting VST3 or AU formats (for plugin use).",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            }
-          ],
-          "listType": "bullet",
           "direction": "ltr"
         },
         {
@@ -568,7 +514,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "To place an order, the Customer selects the product (MXGrid license), provides necessary billing details, selects the payment method, and confirms the purchase by clicking the order placement button (\"Buy Now\", \"Order with Obligation to Pay\", or equivalent).",
+                  "text": "To place an order, the Customer selects the desired Software or Digital Content, provides necessary billing details, selects the payment method, and confirms the purchase by clicking the order placement button (\"Buy Now\", \"Order with Obligation to Pay\", or equivalent).",
                   "type": "text",
                   "version": 1
                 }
@@ -598,7 +544,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "Delivery: MXGrid digital content (download links and/or license keys) is delivered electronically to the email address provided by the Customer immediately after payment confirmation.",
+                  "text": "Delivery: Purchased Digital Content (download links and/or license keys) is delivered electronically to the email address provided by the Customer immediately after payment confirmation.",
                   "type": "text",
                   "version": 1
                 }
@@ -640,7 +586,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "Grant of License: All software purchased from the Service is subject to our End User License Agreement (EULA). The standard license grants a non-exclusive, non-transferable single-user license to install and use MXGrid on compatible devices.",
+                  "text": "Grant of License: All software purchased from the Service is subject to our End User License Agreement (EULA) or specific product licensing terms. Unless stated otherwise, the standard license grants a non-exclusive, non-transferable single-user license to install and use the Software on compatible devices.",
                   "type": "text",
                   "version": 1
                 }
@@ -681,7 +627,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "Purchases include free updates for all minor versions within the major release branch purchased (e.g., all v1.x.x updates up to v1.99.99).",
+                  "text": "Software purchases include free updates for all minor versions within the major release branch purchased (e.g., all v1.x.x updates up to v1.99.99 for a version 1 license).",
                   "type": "text",
                   "version": 1
                 }
@@ -695,7 +641,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "Major Upgrades (e.g., upgrading from v1.x.x to v2.0.0) are excluded from free updates and may be offered as separate paid upgrades.",
+                  "text": "Major Upgrades (e.g., upgrading from v1.x.x to v2.0.0) are excluded from standard free updates unless explicitly stated otherwise on the product page or offered as a separate upgrade path.",
                   "type": "text",
                   "version": 1
                 }
@@ -722,7 +668,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "License Consolidation: If a Customer purchases multiple licenses for the same product, the features or activations of these licenses may be consolidated into a single master license associated with the user's account or email.",
+                  "text": "License Consolidation: If a Customer purchases multiple licenses for the same Software product, the features, activations, or user allocations of these licenses may be consolidated into a single master license associated with the user's account or email.",
                   "type": "text",
                   "version": 1
                 }
@@ -851,7 +797,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "By requesting immediate delivery/access to MXGrid during checkout, the Customer acknowledges and agrees that they lose the statutory 14-day right of withdrawal once digital content delivery or license generation has commenced.",
+                  "text": "By requesting immediate delivery/access to the Digital Content during checkout, the Customer acknowledges and agrees that they lose the statutory 14-day right of withdrawal once digital content delivery or license generation has commenced.",
                   "type": "text",
                   "version": 1
                 }
@@ -908,7 +854,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "If digital content (MXGrid) fails to conform to the contract or exhibits technical defects, the Customer may submit a complaint by sending an email to [email] or [email-rodo].",
+                  "text": "If Digital Content or Software fails to conform to the contract or exhibits technical defects, the Customer may submit a complaint by sending an email to [email] or [email-rodo].",
                   "type": "text",
                   "version": 1
                 }
@@ -1010,7 +956,7 @@
               "version": 1,
               "children": [
                 {
-                  "text": "The Customer is not permitted to reverse engineer, decompile, redistribute, resell, or grant sublicenses for MXGrid unless explicitly authorized under separate agreements.",
+                  "text": "The Customer is not permitted to reverse engineer, decompile, redistribute, resell, or grant sublicenses for any Software purchased from the Service unless explicitly authorized under separate agreements.",
                   "type": "text",
                   "version": 1
                 }
