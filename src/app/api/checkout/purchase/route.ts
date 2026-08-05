@@ -109,6 +109,21 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: TEMP_EMAIL_REJECT_MESSAGE }, { status: 400 })
   }
 
+  // Only check for existing account when email came from the form (not from an active session)
+  const sessionUser = await getSessionUser().catch(() => null)
+  if (!sessionUser) {
+    const existingUser = await payload.find({
+      collection: 'users',
+      where: { email: { equals: checkoutEmail } },
+      limit: 1,
+      depth: 0,
+      overrideAccess: true,
+    })
+    if (existingUser.totalDocs > 0) {
+      return NextResponse.json({ error: 'email_exists' }, { status: 409 })
+    }
+  }
+
   const domain = getEmailDomain(checkoutEmail)
   if (domain) {
     const isDomainBanned =

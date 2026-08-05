@@ -56,6 +56,7 @@ export function PricingActions({
   const [marketingConsent, setMarketingConsent] = useState(false)
   const [isLoadingCheckout, setIsLoadingCheckout] = useState(false)
   const [checkoutError, setCheckoutError] = useState<string | null>(null)
+  const [emailExists, setEmailExists] = useState(false)
   const [email, setEmail] = useState(sessionEmail)
 
   useEffect(() => {
@@ -108,6 +109,7 @@ export function PricingActions({
     setAcceptedTerms(false)
     setAcceptedDelivery(false)
     setCheckoutError(null)
+    setEmailExists(false)
     setShowPromoCode(false)
     setDiscountCode('')
     setMarketingConsent(false)
@@ -151,6 +153,10 @@ export function PricingActions({
 
       const data = await response.json().catch(() => ({}))
       if (!response.ok) {
+        if (data?.error === 'email_exists') {
+          setEmailExists(true)
+          return
+        }
         throw new Error(data?.error ?? 'Could not initialize checkout')
       }
 
@@ -257,6 +263,16 @@ export function PricingActions({
                 {checkoutError && (
                   <p className="mt-4 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
                     {checkoutError}
+                  </p>
+                )}
+
+                {emailExists && (
+                  <p className="mt-4 rounded-md border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+                    This email is already registered.{' '}
+                    <Link href="/sign-in" className="font-semibold underline hover:text-amber-900">
+                      Sign in to your account
+                    </Link>{' '}
+                    to continue with your purchase.
                   </p>
                 )}
 
