@@ -19,6 +19,7 @@
     "seed:downloads": "cross-env NODE_OPTIONS=--no-deprecation tsx --env-file=.env src/seed/downloads.ts",
     "seed:manual": "cross-env NODE_OPTIONS=--no-deprecation tsx --env-file=.env src/seed/manual.ts",
     "seed:privacy-policy": "cross-env NODE_OPTIONS=--no-deprecation tsx --env-file=.env src/seed/privacyPolicy.ts",
+    "seed:terms-and-conditions": "cross-env NODE_OPTIONS=--no-deprecation tsx --env-file=.env src/seed/termsAndConditions.ts",
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start",
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts",
