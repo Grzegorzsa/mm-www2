@@ -1,8 +1,18 @@
 # ToDo
 
-2. Podczas zakupów klient zawsze powinien zaakceptować zgody. Obecnie w panelu użytkownika po kliknięciu na przycisk Upgrade w ofertach, przechodzimy od razu do płatności na Lemon Squeezy. Na stronie głównej jeśli dokonujemy aktualizacji to monit o potwierdzenie zgód pokazuje się. Powinien pokazywać się również w panelu klienta po kliknięciu na Upgrade.
+Na stronie głównej jak robimy zakupy to pokazuje nam się okno dialogowe PricingActions i checkbox'y, które musimy zaakceptować.
+Musimy dodać jeszcze jedną opcję i zmienić kolejność checkboxów. Checkboxy w kolejności:
 
-3) Zmiany w checkboxach, które klient powinien potwierdzić podczas procesu zakupowego w kolejności, w jakiej powinny się pokazać.
+1. Dodać checkbox: "I agree to immediate access/delivery of the digital content and acknowledge that upon delivery I lose my right of withdrawal / right to cancel the order."
 
-   Musimy zaktualizować checkbox'y tam, gdzie dokokujemy zakupów.
-   Tam, gdzie przy okacji tworzymy konto musi się znaleźć checkbox o zapisie do newslettera (Również możemy pokazać ten checkbox jeśli użytkownik jest zalogowany, ale nie zgodził się na zapis). Jeśli użytkownik jest zalogowany i zgodził się na zapis, checkbox'a z zapisem do newslettera nie pokazujemy.
+2) Zgoda na akceptację regulaminu powinna być amieniona na: "I accept the [Terms and Conditions] of the service operated by the Entrepreneurship Development Foundation "Twój StartUp" based in Warsaw.". [Terms and Conditions] - tu oczywiście obecny link do Terms and Conditions
+
+3) Zgoda marketingowa powinna się pokazywać tylko dla niezalogowanych użytkowników, lub uzytkowników, którzy nie kliknęli wcześniej na zgodę marketingową. Użytkownikom, którzy już wyrazili chęć otrzymywania maili, nie chcemy zachęcać do rezygnacji.
+
+Zgody 1 i 2 są wymagane do zakupu
+
+Pod przyciskiem Go To Checkout powinna się znaleźć informacja RODO:
+
+"The administrator of the personal data entered into the form is the Entrepreneurship Development Foundation "Twój StartUp" based in Warsaw. Data will be processed to fulfill the order and, if consent is given, for marketing purposes. You may withdraw your consent at any time. Full information regarding data processing and your rights can be found in our [Privacy Policy]."
+
+link do polityki prywatności: '/privacy-policy'

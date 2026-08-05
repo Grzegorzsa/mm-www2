@@ -113,6 +113,7 @@ export default async function HomePage() {
   let loopsVariantId = ''
   let beatsVariantId = ''
   let sessionEmail = ''
+  let sessionMarketingConsent = false
   let loopsOwned = false
   let beatsOwned = false
   let loopsOffer: VariantOffer | undefined
@@ -122,6 +123,7 @@ export default async function HomePage() {
   try {
     const sessionUser = await getSessionUser()
     sessionEmail = sessionUser?.email ?? ''
+    sessionMarketingConsent = sessionUser?.marketingConsent ?? false
     sessionUserId = sessionUser?.id
   } catch {
     // not logged in
@@ -355,6 +357,7 @@ export default async function HomePage() {
                 loopsVariantId={loopsVariantId}
                 beatsVariantId={beatsVariantId}
                 sessionEmail={sessionEmail}
+                sessionMarketingConsent={sessionMarketingConsent}
                 loopsOwned={loopsOwned}
                 beatsOwned={beatsOwned}
                 loopsOffer={loopsOffer}

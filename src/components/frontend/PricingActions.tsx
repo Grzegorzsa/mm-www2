@@ -16,6 +16,7 @@ type PricingActionsProps = {
   loopsVariantId?: string
   beatsVariantId?: string
   sessionEmail?: string
+  sessionMarketingConsent?: boolean
   loopsOwned?: boolean
   beatsOwned?: boolean
   loopsOffer?: VariantOffer
@@ -40,6 +41,7 @@ export function PricingActions({
   loopsVariantId = '',
   beatsVariantId = '',
   sessionEmail = '',
+  sessionMarketingConsent = false,
   loopsOwned = false,
   beatsOwned = false,
   loopsOffer,
@@ -47,6 +49,7 @@ export function PricingActions({
 }: PricingActionsProps) {
   const [selectedVariant, setSelectedVariant] = useState<VariantKey | null>(null)
   const [acceptedTerms, setAcceptedTerms] = useState(false)
+  const [acceptedDelivery, setAcceptedDelivery] = useState(false)
   const [affiliateCode, setAffiliateCode] = useState<string | null>(null)
   const [showPromoCode, setShowPromoCode] = useState(false)
   const [discountCode, setDiscountCode] = useState('')
@@ -103,6 +106,7 @@ export function PricingActions({
   function openModal(key: VariantKey) {
     setSelectedVariant(key)
     setAcceptedTerms(false)
+    setAcceptedDelivery(false)
     setCheckoutError(null)
     setShowPromoCode(false)
     setDiscountCode('')
@@ -233,7 +237,7 @@ export function PricingActions({
               role="presentation"
             >
               <div
-                className="w-full max-w-xl rounded-lg bg-white text-[#1f2428] shadow-2xl p-6"
+                className="w-full max-w-xl rounded-lg bg-white text-left text-[#1f2428] shadow-2xl p-6"
                 onClick={(event) => event.stopPropagation()}
                 role="dialog"
                 aria-modal="true"
@@ -241,14 +245,14 @@ export function PricingActions({
               >
                 <h4
                   id="pricing-checkout-title"
-                  className={`text-2xl font-semibold ${modalMeta.accentClass}`}
+                  className={`text-2xl text-center font-semibold ${modalMeta.accentClass}`}
                 >
                   Purchase {modalMeta.title}
                 </h4>
-                <p className="mt-2 text-sm leading-relaxed text-[#3c4349]">
+                {/* <p className="mt-2 text-sm leading-relaxed text-[#3c4349]">
                   Continue to secure checkout. Before purchasing, please confirm that you reviewed
                   the legal terms and tested the software on your system.
-                </p>
+                </p> */}
 
                 {checkoutError && (
                   <p className="mt-4 rounded-md border border-red-300 bg-red-50 px-3 py-2 text-sm text-red-700">
@@ -258,7 +262,7 @@ export function PricingActions({
 
                 <div className="mt-5">
                   <label className="block text-sm font-medium text-[#30363b] mb-2">
-                    Email Address (for portal login)
+                    Email Address
                   </label>
                   {isLoggedIn ? (
                     <p className="text-sm text-[#3c4349] bg-gray-50 border border-gray-200 rounded-md px-3 py-2">
@@ -304,32 +308,44 @@ export function PricingActions({
                 <label className="mt-5 flex items-start gap-3 text-sm text-[#30363b]">
                   <input
                     type="checkbox"
-                    checked={marketingConsent}
-                    onChange={(event) => setMarketingConsent(event.target.checked)}
-                    className="h-4 w-4 rounded border-gray-400"
+                    checked={acceptedDelivery}
+                    onChange={(event) => setAcceptedDelivery(event.target.checked)}
+                    className="mt-1 h-4 w-4 shrink-0 rounded border-gray-400"
                   />
-                  <span>Inform me about promotions and updates</span>
+                  <span>
+                    I agree to immediate access/delivery of the digital content and acknowledge that
+                    upon delivery I lose my right of withdrawal / right to cancel the order.
+                  </span>
                 </label>
 
-                <label className="mt-5 flex items-start gap-3 text-sm text-[#30363b]">
+                <label className="mt-3 flex items-start gap-3 text-sm text-[#30363b]">
                   <input
                     type="checkbox"
                     checked={acceptedTerms}
                     onChange={(event) => setAcceptedTerms(event.target.checked)}
-                    className="mt-1 h-4 w-4 rounded border-gray-400"
+                    className="mt-1 h-4 w-4 shrink-0 rounded border-gray-400"
                   />
                   <span>
-                    I agree to the{' '}
+                    I accept the{' '}
                     <Link href="/terms-and-conditions" className="underline" target="_blank">
                       Terms and Conditions
                     </Link>{' '}
-                    (including EULA) and{' '}
-                    <Link href="/refund-policy" className="underline" target="_blank">
-                      Refund Policy
-                    </Link>
-                    .
+                    of the service operated by the Entrepreneurship Development Foundation
+                    &ldquo;Twój StartUp&rdquo; based in Warsaw.
                   </span>
                 </label>
+
+                {(!isLoggedIn || !sessionMarketingConsent) && (
+                  <label className="mt-3 flex items-start gap-3 text-sm text-[#30363b]">
+                    <input
+                      type="checkbox"
+                      checked={marketingConsent}
+                      onChange={(event) => setMarketingConsent(event.target.checked)}
+                      className="h-4 w-4 rounded border-gray-400"
+                    />
+                    <span>Inform me about promotions and updates</span>
+                  </label>
+                )}
 
                 {!selectedVariantId ? (
                   <p className="mt-4 text-sm text-red-700">
@@ -338,7 +354,7 @@ export function PricingActions({
                   </p>
                 ) : null}
 
-                <div className="mt-6 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3">
+                <div className="mt-6 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-center gap-3">
                   <button
                     type="button"
                     onClick={() => setSelectedVariant(null)}
@@ -350,14 +366,30 @@ export function PricingActions({
                   <button
                     type="button"
                     disabled={
-                      !acceptedTerms || !selectedVariantId || isLoadingCheckout || !isEmailValid
+                      !acceptedTerms ||
+                      !acceptedDelivery ||
+                      !selectedVariantId ||
+                      isLoadingCheckout ||
+                      !isEmailValid
                     }
                     onClick={handleCheckout}
-                    className={`inline-block text-white px-5 py-2 text-sm tracking-wider uppercase transition-colors font-medium rounded text-center ${modalMeta.buttonClass} ${!acceptedTerms || !selectedVariantId || isLoadingCheckout || !isEmailValid ? 'pointer-events-none opacity-50' : ''}`}
+                    className={`inline-block text-white px-5 py-2 text-sm tracking-wider uppercase transition-colors font-medium rounded text-center ${modalMeta.buttonClass} ${!acceptedTerms || !acceptedDelivery || !selectedVariantId || isLoadingCheckout || !isEmailValid ? 'pointer-events-none opacity-50' : ''}`}
                   >
                     {isLoadingCheckout ? 'Preparing...' : 'Go to Checkout'}
                   </button>
                 </div>
+
+                <p className="mt-4 text-xs text-[#6b737c]">
+                  The administrator of the personal data entered into the form is the
+                  Entrepreneurship Development Foundation &ldquo;Twój StartUp&rdquo; based in
+                  Warsaw. Data will be processed to fulfill the order and, if consent is given, for
+                  marketing purposes. You may withdraw your consent at any time. Full information
+                  regarding data processing and your rights can be found in our{' '}
+                  <Link href="/privacy-policy" className="underline hover:text-[#3c4349]">
+                    Privacy Policy
+                  </Link>
+                  .
+                </p>
               </div>
             </div>
           </td>
