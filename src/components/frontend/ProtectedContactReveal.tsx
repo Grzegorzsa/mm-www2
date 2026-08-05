@@ -62,12 +62,30 @@ function createObfuscatedValue(doc: Document, token: ContactToken): HTMLElement 
   return wrapper
 }
 
-function replaceTokensInTextNode(textNode: Text) {
-  if (!textNode.isConnected) return
-  if (textNode.parentElement?.closest('[data-contact-button]')) return
+function createLink(doc: Document, href: string): HTMLAnchorElement {
+  const link = doc.createElement('a')
+  link.href = href
+  link.textContent = href
+  link.className = 'underline decoration-slate-400 underline-offset-2 hover:decoration-slate-600'
+  return link
+}
 
-  const tokenPattern = /\[(email|email-rodo|tel)\]/g
-  const matches = Array.from(textNode.data.matchAll(tokenPattern))
+function revealAllProtectedContacts(doc: Document) {
+  const buttons = Array.from(doc.querySelectorAll<HTMLButtonElement>('[data-contact-button]'))
+
+  for (const button of buttons) {
+    const token = button.getAttribute('data-contact-button') as ContactToken | null
+    if (!token) continue
+    button.replaceWith(createObfuscatedValue(doc, token))
+  }
+}
+
+function transformTextNode(textNode: Text) {
+  if (!textNode.isConnected) return
+  if (textNode.parentElement?.closest('a, [data-contact-button], .obf-contact-value')) return
+
+  const transformPattern = /\[(email|email-rodo|tel)\]|https?:\/\/[^\s<>"']+/g
+  const matches = Array.from(textNode.data.matchAll(transformPattern))
   if (!matches.length) return
 
   const doc = textNode.ownerDocument
@@ -78,18 +96,33 @@ function replaceTokensInTextNode(textNode: Text) {
     const index = match.index ?? -1
     if (index < 0) continue
 
-    const token = match[1] as ContactToken
     const before = textNode.data.slice(cursor, index)
     if (before) fragment.append(doc.createTextNode(before))
 
-    const button = createRevealButton(doc, token)
-    button.addEventListener('click', () => {
-      const obfuscated = createObfuscatedValue(doc, token)
-      button.replaceWith(obfuscated)
-    })
+    if (match[1]) {
+      const token = match[1] as ContactToken
+      const button = createRevealButton(doc, token)
+      button.addEventListener('click', () => {
+        revealAllProtectedContacts(doc)
+      })
+      fragment.append(button)
+      cursor = index + match[0].length
+      continue
+    }
 
-    fragment.append(button)
-    cursor = index + match[0].length
+    const rawUrl = match[0]
+    const trimmedUrl = rawUrl.replace(/[),.;:!?]+$/g, '')
+    const trailingChars = rawUrl.slice(trimmedUrl.length)
+
+    if (trimmedUrl) {
+      fragment.append(createLink(doc, trimmedUrl))
+    }
+
+    if (trailingChars) {
+      fragment.append(doc.createTextNode(trailingChars))
+    }
+
+    cursor = index + rawUrl.length
   }
 
   const tail = textNode.data.slice(cursor)
@@ -112,8 +145,9 @@ function protectContainer(container: Element) {
   collectTextNodes(container, textNodes)
 
   for (const textNode of textNodes) {
-    if (!textNode.data || !textNode.data.includes('[')) continue
-    replaceTokensInTextNode(textNode)
+    if (!textNode.data || (!textNode.data.includes('[') && !textNode.data.includes('http')))
+      continue
+    transformTextNode(textNode)
   }
 }
 
@@ -158,7 +192,7 @@ export default function ProtectedContactReveal({
 
         mutation.addedNodes.forEach((node) => {
           if (node instanceof Text) {
-            if (node.data.includes('[')) replaceTokensInTextNode(node)
+            if (node.data.includes('[') || node.data.includes('http')) transformTextNode(node)
 
             const parentContainer = node.parentElement?.closest(containerSelector)
             if (parentContainer) protectContainer(parentContainer)
