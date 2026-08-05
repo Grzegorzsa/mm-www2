@@ -2,14 +2,12 @@
   "id": 2,
   "title": "Privacy Policy",
   "slug": "privacy-policy",
-
   "content": {
     "root": {
       "type": "root",
       "format": "",
       "indent": 0,
       "version": 1,
-
       "children": [
         {
           "tag": "h1",
@@ -17,7 +15,6 @@
           "format": "",
           "indent": 0,
           "version": 1,
-
           "children": [
             {
               "text": "Privacy Policy",
@@ -27,40 +24,132 @@
           ],
           "direction": "ltr"
         },
-
         {
           "tag": "h3",
           "type": "heading",
           "format": "",
           "indent": 0,
           "version": 1,
-
           "children": [
             {
-              "text": "1. Information Collected",
+              "text": "Data Controller Information",
               "type": "text",
               "version": 1
             }
           ],
           "direction": "ltr"
         },
-
         {
           "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
-
           "children": [
             {
-              "text": "When you interact with our website or use our software, we collect the following information:",
+              "text": "The Data Controller of your personal data is FUNDACJA ROZWOJU PRZEDSIĘBIORCZOŚCI \"TWÓJ STARTUP\" with its registered office in Warsaw (address: ul. Żurawia 6/12, lok. 766, 00-503 Warsaw, Poland).",
               "type": "text",
               "version": 1
             }
           ],
           "direction": "ltr"
         },
-
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "This Privacy Policy applies to services provided by the Foundation through an organized part of the enterprise:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "tag": "ul",
+          "type": "list",
+          "start": 1,
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "text": "Website: https://mxbeats.com",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "text": "E-mail: info@mxbeats.com",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "text": "Phone: +48 22 350 62 48",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "listType": "bullet",
+          "direction": "ltr"
+        },
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Why Do We Process Your Data?",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Your personal data is processed for the following purposes and under the following legal bases:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
         {
           "tag": "ol",
           "type": "list",
@@ -68,7 +157,6 @@
           "format": "",
           "indent": 0,
           "version": 1,
-
           "children": [
             {
               "type": "listitem",
@@ -76,158 +164,69 @@
               "format": "",
               "indent": 0,
               "version": 1,
-
               "children": [
                 {
-                  "text": "Account Data: We collect your email address to provide access to the user panel, validate software licenses, and communicate essential updates or account information.",
+                  "text": "Contract Execution and Service Delivery: To conclude and fulfill a contract for digital content delivery (software purchase and licensing via mxbeats.com) pursuant to Article 6(1)(b) of the GDPR. Your data will be stored for the duration of the contract performance.",
                   "type": "text",
                   "version": 1
                 }
               ],
               "direction": "ltr"
             },
-
             {
               "type": "listitem",
               "value": 2,
               "format": "",
               "indent": 0,
               "version": 1,
-
               "children": [
                 {
-                  "text": "Device and License Data: We collect information regarding your operating system and computer username to manage your active installations and ensure proper license validation.",
+                  "text": "Direct Marketing: For marketing and promotional purposes regarding products and services offered by the Foundation, based on our legitimate interest pursuant to Article 6(1)(f) of the GDPR. Data will be processed until an objection is raised.",
                   "type": "text",
                   "version": 1
                 }
               ],
               "direction": "ltr"
             },
-
             {
               "type": "listitem",
               "value": 3,
               "format": "",
               "indent": 0,
               "version": 1,
-
               "children": [
                 {
-                  "text": "Transaction Data: When you make a purchase, we collect data about the products purchased and the transaction amount.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            }
-          ],
-          "listType": "number",
-          "direction": "ltr"
-        },
-
-        {
-          "type": "paragraph",
-          "format": "",
-          "indent": 0,
-          "version": 1,
-
-          "children": [
-            {
-              "text": "Payment Security: We do not store your credit card or payment method details on our servers. All payments are processed securely by our third-party payment providers.",
-              "type": "text",
-              "version": 1
-            }
-          ],
-          "direction": "ltr"
-        },
-
-        {
-          "tag": "h3",
-          "type": "heading",
-          "format": "",
-          "indent": 0,
-          "version": 1,
-
-          "children": [
-            {
-              "text": "2. Use of Collected Information",
-              "type": "text",
-              "version": 1
-            }
-          ],
-          "direction": "ltr"
-        },
-
-        {
-          "tag": "ol",
-          "type": "list",
-          "start": 1,
-          "format": "",
-          "indent": 0,
-          "version": 1,
-
-          "children": [
-            {
-              "type": "listitem",
-              "value": 1,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-
-              "children": [
-                {
-                  "text": "Service Delivery: To manage user accounts, provide access to personalized features, and validate software activations.",
+                  "text": "Compliance with Legal Obligations: To fulfill legal obligations incumbent upon us, particularly in terms of tax, accounting, and anti-money laundering regulations pursuant to Article 6(1)(c) of the GDPR, including: Accounting Act of 29 September 1994; Tax Ordinance Act of 29 August 1997; Anti-Money Laundering and Counter-Terrorism Financing Act of 1 March 2018.",
                   "type": "text",
                   "version": 1
                 }
               ],
               "direction": "ltr"
             },
-
-            {
-              "type": "listitem",
-              "value": 2,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-
-              "children": [
-                {
-                  "text": "Communication: To send relevant emails, technical notifications, and support responses.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-
-            {
-              "type": "listitem",
-              "value": 3,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-
-              "children": [
-                {
-                  "text": "Analytics: We use basic Google Analytics to measure website traffic and improve our services.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-
             {
               "type": "listitem",
               "value": 4,
               "format": "",
               "indent": 0,
               "version": 1,
-
               "children": [
                 {
-                  "text": "Sales Transactions: To process orders, fulfill purchases, and comply with tax and legal obligations.",
+                  "text": "Establishment, Exercise, or Defense of Claims: Based on our legitimate interest pursuant to Article 6(1)(f) of the GDPR. Data will be processed until the expiration of the limitation period for claims.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+            {
+              "type": "listitem",
+              "value": 5,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "text": "Consent-Based Processing: If you give explicit consent (e.g., subscribing to software updates or promotional newsletters), data will be processed within the scope and purpose specified in the consent pursuant to Article 6(1)(a) of the GDPR until consent is withdrawn.",
                   "type": "text",
                   "version": 1
                 }
@@ -238,127 +237,136 @@
           "listType": "number",
           "direction": "ltr"
         },
-
         {
           "tag": "h3",
           "type": "heading",
           "format": "",
           "indent": 0,
           "version": 1,
-
           "children": [
             {
-              "text": "3. Data Security",
+              "text": "What Data Do We Process?",
               "type": "text",
               "version": 1
             }
           ],
           "direction": "ltr"
         },
-
         {
           "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
-
           "children": [
             {
-              "text": "We take data security seriously. We implement appropriate technical and organizational measures—such as encryption and secure access controls—to protect your data from unauthorized access, loss, or misuse.",
+              "text": "To complete an order, you must provide the personal data requested in the checkout form (e.g., name, billing address, email address). Failure to provide this required data will prevent us from completing your order.",
               "type": "text",
               "version": 1
             }
           ],
           "direction": "ltr"
         },
-
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Additionally, as part of using our software and website services, certain data generated automatically by service operations may be processed.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
         {
           "tag": "h3",
           "type": "heading",
           "format": "",
           "indent": 0,
           "version": 1,
-
           "children": [
             {
-              "text": "4. User Rights",
+              "text": "Who Will Have Access to Your Data?",
               "type": "text",
               "version": 1
             }
           ],
           "direction": "ltr"
         },
-
         {
-          "tag": "ol",
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Your data may be shared with:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "tag": "ul",
           "type": "list",
           "start": 1,
           "format": "",
           "indent": 0,
           "version": 1,
-
           "children": [
             {
               "type": "listitem",
-              "value": 1,
               "format": "",
               "indent": 0,
               "version": 1,
-
               "children": [
                 {
-                  "text": "Access: Request access to the personal data we hold about you.",
+                  "text": "Public Authorities: Where required by law (e.g., in connection with anti-money laundering regulations).",
                   "type": "text",
                   "version": 1
                 }
               ],
               "direction": "ltr"
             },
-
             {
               "type": "listitem",
-              "value": 2,
               "format": "",
               "indent": 0,
               "version": 1,
-
               "children": [
                 {
-                  "text": "Rectification: Correct any inaccuracies in your data.",
+                  "text": "Data Processors: Entities processing personal data on behalf of the Foundation under a data processing agreement (e.g., beneficiaries operating the enterprise, IT services, web hosting providers, and payment processors).",
                   "type": "text",
                   "version": 1
                 }
               ],
               "direction": "ltr"
             },
-
             {
               "type": "listitem",
-              "value": 3,
               "format": "",
               "indent": 0,
               "version": 1,
-
               "children": [
                 {
-                  "text": "Erasure: Request the deletion of your account and associated data.",
+                  "text": "Independent Data Controllers: Third-party controllers such as legal advisors, postal/courier services, or debt collection entities where necessary.",
                   "type": "text",
                   "version": 1
                 }
               ],
               "direction": "ltr"
             },
-
             {
               "type": "listitem",
-              "value": 4,
               "format": "",
               "indent": 0,
               "version": 1,
-
               "children": [
                 {
-                  "text": "Object: Object to or restrict the processing of your data.",
+                  "text": "Entities Outside the EEA: Only when necessary and ensuring an adequate level of protection, primarily through European Commission adequacy decisions or Standard Contractual Clauses (SCCs).",
                   "type": "text",
                   "version": 1
                 }
@@ -366,102 +374,214 @@
               "direction": "ltr"
             }
           ],
-          "listType": "number",
+          "listType": "bullet",
           "direction": "ltr"
         },
-
         {
           "tag": "h3",
           "type": "heading",
           "format": "",
           "indent": 0,
           "version": 1,
-
           "children": [
             {
-              "text": "5. Cookies and Tracking",
+              "text": "Is Your Data Subject to Profiling?",
               "type": "text",
               "version": 1
             }
           ],
           "direction": "ltr"
         },
-
         {
           "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
-
           "children": [
             {
-              "text": "Our website uses cookies to enable core functionality (such as keeping you logged in) and to analyze website traffic. You can adjust your browser settings to manage cookies.",
+              "text": "Your personal data will not be subject to automated decision-making or profiling (e.g., automated analysis of your preferences to predict behavior).",
               "type": "text",
               "version": 1
             }
           ],
           "direction": "ltr"
         },
-
         {
           "tag": "h3",
           "type": "heading",
           "format": "",
           "indent": 0,
           "version": 1,
-
           "children": [
             {
-              "text": "6. Data Retention",
+              "text": "Your Rights",
               "type": "text",
               "version": 1
             }
           ],
           "direction": "ltr"
         },
-
         {
           "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
-
           "children": [
             {
-              "text": "We retain your information for as long as your account is active or as needed to provide you with software updates and support.",
+              "text": "Under the GDPR, you have the following rights:",
               "type": "text",
               "version": 1
             }
           ],
           "direction": "ltr"
         },
-
+        {
+          "tag": "ul",
+          "type": "list",
+          "start": 1,
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "text": "Right of Access (Art. 15 GDPR): Right to obtain confirmation as to whether your personal data is being processed and access to that data.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "text": "Right to Rectification (Art. 16 GDPR): Right to request the correction or updating of inaccurate data.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "text": "Right to Erasure / \"Right to be Forgotten\" (Art. 17 GDPR): Right to request the deletion of your personal data where there are no legal grounds for its continued processing.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "text": "Right to Restriction of Processing (Art. 18 GDPR): Right to request that we restrict processing to storage only under specific statutory conditions.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "text": "Right to Data Portability (Art. 20 GDPR): Right to receive your personal data in a structured, commonly used, machine-readable format (e.g., .csv).",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "text": "Right to Withdraw Consent (Art. 7(3) GDPR): You have the right to withdraw your consent at any time without affecting the lawfulness of processing based on consent before its withdrawal. You can withdraw consent by contacting us at: info@mxbeats.com.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+            {
+              "type": "listitem",
+              "format": "",
+              "indent": 0,
+              "version": 1,
+              "children": [
+                {
+                  "text": "Right to Object (Art. 21 GDPR): Right to object at any time to the processing of your personal data based on legitimate interest.",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            }
+          ],
+          "listType": "bullet",
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "If you believe that the processing of your personal data violates the GDPR, you have the right to lodge a complaint with a supervisory authority (in Poland: the President of the Personal Data Protection Office - UODO).",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
         {
           "tag": "h3",
           "type": "heading",
           "format": "",
           "indent": 0,
           "version": 1,
-
           "children": [
             {
-              "text": "7. Contact Information",
+              "text": "Contact",
               "type": "text",
               "version": 1
             }
           ],
           "direction": "ltr"
         },
-
         {
           "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
-
           "children": [
             {
-              "text": "If you have any questions or concerns about our privacy policy, please contact us at mxbeats.com/contact.",
+              "text": "If you need additional information regarding personal data protection or wish to exercise your rights, please contact us at: rodo@twojstartup.pl or directly via info@mxbeats.com.",
               "type": "text",
               "version": 1
             }
@@ -472,12 +592,9 @@
       "direction": "ltr"
     }
   },
-
   "meta": {
     "title": null,
     "description": "Read the MXbeats Privacy Policy to understand how we collect and use your data.",
     "image": null
-  },
-  "updatedAt": "2026-04-07T14:50:22.607Z",
-  "createdAt": "2026-04-07T14:50:22.607Z"
+  }
 }
