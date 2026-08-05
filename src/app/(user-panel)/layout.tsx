@@ -15,7 +15,7 @@ export default async function PanelLayout({ children }: { children: React.ReactN
   const offers = await getAvailableOffersForUser(payload, user.id)
 
   return (
-    <html lang="en">
+    <html lang="en" data-scroll-behavior="smooth">
       <body className="bg-gray-50 antialiased">
         <PanelShell userEmail={user.email} offersCount={offers.length}>
           {children}

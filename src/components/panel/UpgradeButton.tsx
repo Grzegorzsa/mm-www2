@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 type UpgradeButtonProps = {
   variantId: number
@@ -18,11 +18,11 @@ export function UpgradeButton({
   isTrial = false,
   offerActionType,
 }: UpgradeButtonProps) {
-  const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showPromoCode, setShowPromoCode] = useState(false)
   const [discountCode, setDiscountCode] = useState('')
+  const [trialActivated, setTrialActivated] = useState(false)
 
   async function handleUpgrade() {
     setError(null)
@@ -46,7 +46,7 @@ export function UpgradeButton({
       }
 
       if (data?.trial) {
-        router.refresh()
+        setTrialActivated(true)
         return
       }
 
@@ -62,6 +62,40 @@ export function UpgradeButton({
     } finally {
       setIsLoading(false)
     }
+  }
+
+  if (trialActivated) {
+    return (
+      <div className="mt-4 rounded-lg border border-emerald-200 bg-emerald-50 p-4">
+        <p className="text-sm font-semibold text-emerald-800">Trial activated!</p>
+        <p className="mt-1 text-sm text-emerald-700">
+          Your license has been updated. You can view it in the{' '}
+          <Link
+            href="/user-panel/purchases"
+            className="font-medium underline underline-offset-2 hover:text-emerald-900"
+          >
+            Purchases
+          </Link>{' '}
+          section.
+        </p>
+        <p className="mt-3 text-xs text-emerald-700">
+          To activate the license in the app, go to <strong>Help &rarr; Register Product</strong>{' '}
+          and click <strong>Refresh License</strong>.{' '}
+          <a
+            href="/manual#product-registration"
+            className="font-medium underline underline-offset-2 hover:text-emerald-900"
+          >
+            Learn more
+          </a>
+        </p>
+        <Link
+          href="/user-panel/purchases"
+          className="mt-3 inline-block rounded-md bg-emerald-700 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white hover:bg-emerald-800 transition-colors"
+        >
+          Go to Purchases
+        </Link>
+      </div>
+    )
   }
 
   return (
