@@ -76,10 +76,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (acceptedTerms !== true) {
-    return NextResponse.json(
-      { error: 'You must accept Terms and Conditions and Refund Policy' },
-      { status: 400 },
-    )
+    return NextResponse.json({ error: 'You must accept Terms and Conditions' }, { status: 400 })
   }
 
   if (!isValidEmail(email)) {

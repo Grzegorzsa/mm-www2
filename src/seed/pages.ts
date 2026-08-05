@@ -107,47 +107,6 @@ const privacyContent = {
   },
 }
 
-const refundContent = {
-  root: {
-    type: 'root',
-    children: [
-      heading('Refund Policy', 1),
-      heading('Trial Versions', 3),
-      paragraph(
-        'We offer trial/demo versions of our products to allow customers to experience them before making a purchase. We strongly recommend installing these trial/demo versions to ensure compatibility with your system.',
-      ),
-      heading('Refund Eligibility', 3),
-      paragraph(
-        'We approve refunds for purchases made within the last 30 days under the following circumstances:',
-      ),
-      ol([
-        'Unsolvable Technical Issues: If you encounter an unsolvable technical issue caused by a bug or other product-related problem that renders the product unusable (e.g., frequent crashes), you are eligible for a refund.',
-        'System Requirements Met: Refunds are granted only when all system requirements described on the product page were met at the time of purchase.',
-      ]),
-      heading('Non-Refundable Situations', 3),
-      paragraph('You will NOT be eligible for a refund if:'),
-      ul([
-        'The Software has been successfully activated or registered on a device and no technical fault prevents its use.',
-        'The refund request is made after 30 days from the date of purchase.',
-        "The request is based on a 'change of mind' after successful activation.",
-        'Termination for Cause: Your license has been terminated due to a violation of the EULA.',
-      ]),
-      heading('Third-Party Purchases (Resellers)', 3),
-      paragraph(
-        'If you purchased the Software through an authorized third-party reseller, any refund requests must be processed through that reseller. The Licensor is not responsible for issuing refunds for payments made to third parties.',
-      ),
-      heading('Contact Information', 3),
-      paragraph(
-        'To request a refund, please contact us via our contact form with your order details and a description of the technical issue.',
-      ),
-    ],
-    direction: 'ltr',
-    format: '',
-    indent: 0,
-    version: 1,
-  },
-}
-
 function heading(text: string, level: number) {
   return {
     type: 'heading',
@@ -232,16 +191,6 @@ const pages = [
     meta: {
       description:
         'Read the MXbeats Privacy Policy to understand how we collect and use your data.',
-    },
-  },
-  {
-    title: 'Refund Policy',
-    slug: 'refund-policy',
-    pageType: 'policy',
-    content: refundContent,
-    meta: {
-      description:
-        'Read the MXbeats Refund Policy to understand our refund eligibility and process.',
     },
   },
 ]

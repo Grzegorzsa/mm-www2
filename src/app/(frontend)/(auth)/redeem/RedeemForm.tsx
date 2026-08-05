@@ -34,8 +34,7 @@ export function RedeemForm() {
   const validateRegistration = () => {
     const errors: Record<string, string> = {}
     if (!isValidEmail(email)) errors.email = 'A valid email address is required'
-    if (!acceptedTerms)
-      errors.acceptedTerms = 'You must accept Terms and Conditions and Refund Policy'
+    if (!acceptedTerms) errors.acceptedTerms = 'You must accept Terms and Conditions'
     return errors
   }
 
@@ -237,11 +236,7 @@ export function RedeemForm() {
                 <Link href="/terms-and-conditions" className="underline" target="_blank">
                   Terms and Conditions
                 </Link>{' '}
-                (including EULA) and{' '}
-                <Link href="/refund-policy" className="underline" target="_blank">
-                  Refund Policy
-                </Link>
-                .
+                (including EULA) .
               </span>
             </label>
 

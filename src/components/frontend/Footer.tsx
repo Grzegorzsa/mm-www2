@@ -6,7 +6,6 @@ const footerLinks = [
   { href: '/contact', label: 'Contact' },
   { href: '/terms-and-conditions', label: 'Terms & Conditions' },
   { href: '/privacy-policy', label: 'Privacy Policy' },
-  { href: '/refund-policy', label: 'Refund Policy' },
 ]
 
 const Footer = () => {
@@ -25,9 +24,7 @@ const Footer = () => {
               </Link>
             ))}
           </div>
-          <div className="flex flex-col gap-2">
-            {/* Social media links can be added here */}
-          </div>
+          <div className="flex flex-col gap-2">{/* Social media links can be added here */}</div>
         </div>
         <div className="mt-8 text-center text-sm">
           Copyright &copy; {new Date().getFullYear()} MXbeats.com. All rights reserved.
