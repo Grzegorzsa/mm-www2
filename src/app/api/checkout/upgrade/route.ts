@@ -192,7 +192,10 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 })
   }
 
-  const { variantId, discountCode, discount_code, actionType } = body as Record<string, unknown>
+  const { variantId, discountCode, discount_code, actionType, marketingConsent } = body as Record<
+    string,
+    unknown
+  >
   const targetVariantId = typeof variantId === 'number' ? variantId : Number(variantId)
   const requestedDiscountCode =
     typeof discountCode === 'string'
@@ -483,6 +486,7 @@ export async function POST(req: NextRequest) {
               source_variant_id: String(resolvedUpgrade.sourceVariantId),
               target_variant_id: String(targetVariantId),
               commerce_offer_id: String(resolvedUpgrade.offer.id),
+              ...(marketingConsent === true ? { marketing_consent: 'true' } : {}),
               ...(discount
                 ? {
                     discount_code_id: String(discount.discountCode.id),

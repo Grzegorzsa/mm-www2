@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
+import { ConsentFields } from '@/components/shared/ConsentFields'
 
 type UpgradeButtonProps = {
   variantId: number
@@ -9,6 +10,7 @@ type UpgradeButtonProps = {
   className?: string
   isTrial?: boolean
   offerActionType?: 'upgrade_replace' | 'crossgrade' | 'trial'
+  sessionMarketingConsent?: boolean
 }
 
 export function UpgradeButton({
@@ -17,12 +19,27 @@ export function UpgradeButton({
   className,
   isTrial = false,
   offerActionType,
+  sessionMarketingConsent = false,
 }: UpgradeButtonProps) {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [showPromoCode, setShowPromoCode] = useState(false)
   const [discountCode, setDiscountCode] = useState('')
   const [trialActivated, setTrialActivated] = useState(false)
+
+  // consent modal state (paid upgrades only)
+  const [showConsentModal, setShowConsentModal] = useState(false)
+  const [acceptedDelivery, setAcceptedDelivery] = useState(false)
+  const [acceptedTerms, setAcceptedTerms] = useState(false)
+  const [marketingConsent, setMarketingConsent] = useState(false)
+
+  function openConsentModal() {
+    setAcceptedDelivery(false)
+    setAcceptedTerms(false)
+    setMarketingConsent(false)
+    setError(null)
+    setShowConsentModal(true)
+  }
 
   async function handleUpgrade() {
     setError(null)
@@ -37,6 +54,7 @@ export function UpgradeButton({
           variantId,
           discountCode: discountCode.trim() || undefined,
           actionType: offerActionType,
+          marketingConsent: marketingConsent || undefined,
         }),
       })
 
@@ -98,6 +116,8 @@ export function UpgradeButton({
     )
   }
 
+  const canConfirm = acceptedDelivery && acceptedTerms
+
   return (
     <div className="mt-4">
       {!isTrial && (
@@ -129,17 +149,67 @@ export function UpgradeButton({
         <button
           type="button"
           disabled={isLoading}
-          onClick={handleUpgrade}
+          onClick={isTrial ? handleUpgrade : openConsentModal}
           className={
             className ||
             'inline-block bg-black text-white px-4 py-2 text-xs tracking-widest uppercase hover:bg-gray-800 transition-colors font-medium rounded-lg disabled:opacity-60 disabled:cursor-not-allowed'
           }
         >
-          {isLoading ? 'Activating...' : label}
+          {isLoading ? 'Processing...' : label}
         </button>
       </div>
 
       {error ? <p className="mt-2 text-xs text-red-700">{error}</p> : null}
+
+      {showConsentModal && (
+        <div
+          className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setShowConsentModal(false)}
+          role="presentation"
+        >
+          <div
+            className="w-full max-w-lg rounded-lg bg-white text-left shadow-2xl p-6"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+          >
+            <h4 className="text-lg font-semibold text-gray-900">{label}</h4>
+            <p className="mt-1 text-sm text-gray-500">
+              Before proceeding to checkout, please confirm the following.
+            </p>
+
+            <ConsentFields
+              className="mt-4"
+              acceptedDelivery={acceptedDelivery}
+              onDeliveryChange={setAcceptedDelivery}
+              acceptedTerms={acceptedTerms}
+              onTermsChange={setAcceptedTerms}
+              marketingConsent={marketingConsent}
+              onMarketingChange={setMarketingConsent}
+              showMarketing={!sessionMarketingConsent}
+            />
+
+            <div className="mt-6 flex flex-col-reverse sm:flex-row sm:justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setShowConsentModal(false)}
+                disabled={isLoading}
+                className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                disabled={!canConfirm || isLoading}
+                onClick={handleUpgrade}
+                className="rounded-md bg-black px-4 py-2 text-sm font-medium text-white hover:bg-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isLoading ? 'Redirecting...' : 'Go to Checkout'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

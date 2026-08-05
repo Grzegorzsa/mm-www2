@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { ConsentFields } from '@/components/shared/ConsentFields'
 
 type VariantKey = 'loops' | 'beats'
 
@@ -321,47 +322,16 @@ export function PricingActions({
                   )}
                 </div>
 
-                <label className="mt-5 flex items-start gap-3 text-sm text-[#30363b]">
-                  <input
-                    type="checkbox"
-                    checked={acceptedDelivery}
-                    onChange={(event) => setAcceptedDelivery(event.target.checked)}
-                    className="mt-1 h-4 w-4 shrink-0 rounded border-gray-400"
-                  />
-                  <span>
-                    I agree to immediate access/delivery of the digital content and acknowledge that
-                    upon delivery I lose my right of withdrawal / right to cancel the order.
-                  </span>
-                </label>
-
-                <label className="mt-3 flex items-start gap-3 text-sm text-[#30363b]">
-                  <input
-                    type="checkbox"
-                    checked={acceptedTerms}
-                    onChange={(event) => setAcceptedTerms(event.target.checked)}
-                    className="mt-1 h-4 w-4 shrink-0 rounded border-gray-400"
-                  />
-                  <span>
-                    I accept the{' '}
-                    <Link href="/terms-and-conditions" className="underline" target="_blank">
-                      Terms and Conditions
-                    </Link>{' '}
-                    of the service operated by the Entrepreneurship Development Foundation
-                    &ldquo;Twój StartUp&rdquo; based in Warsaw.
-                  </span>
-                </label>
-
-                {(!isLoggedIn || !sessionMarketingConsent) && (
-                  <label className="mt-3 flex items-start gap-3 text-sm text-[#30363b]">
-                    <input
-                      type="checkbox"
-                      checked={marketingConsent}
-                      onChange={(event) => setMarketingConsent(event.target.checked)}
-                      className="h-4 w-4 rounded border-gray-400"
-                    />
-                    <span>Inform me about promotions and updates</span>
-                  </label>
-                )}
+                <ConsentFields
+                  className="mt-5"
+                  acceptedDelivery={acceptedDelivery}
+                  onDeliveryChange={setAcceptedDelivery}
+                  acceptedTerms={acceptedTerms}
+                  onTermsChange={setAcceptedTerms}
+                  marketingConsent={marketingConsent}
+                  onMarketingChange={setMarketingConsent}
+                  showMarketing={!isLoggedIn || !sessionMarketingConsent}
+                />
 
                 {!selectedVariantId ? (
                   <p className="mt-4 text-sm text-red-700">
@@ -394,18 +364,6 @@ export function PricingActions({
                     {isLoadingCheckout ? 'Preparing...' : 'Go to Checkout'}
                   </button>
                 </div>
-
-                <p className="mt-4 text-xs text-[#6b737c]">
-                  The administrator of the personal data entered into the form is the
-                  Entrepreneurship Development Foundation &ldquo;Twój StartUp&rdquo; based in
-                  Warsaw. Data will be processed to fulfill the order and, if consent is given, for
-                  marketing purposes. You may withdraw your consent at any time. Full information
-                  regarding data processing and your rights can be found in our{' '}
-                  <Link href="/privacy-policy" className="underline hover:text-[#3c4349]">
-                    Privacy Policy
-                  </Link>
-                  .
-                </p>
               </div>
             </div>
           </td>

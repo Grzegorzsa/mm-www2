@@ -22,6 +22,7 @@ export async function Offers() {
     ? await getAvailableOffersForUserWithDebug(payload, user.id)
     : { offers: [], debug: [] }
 
+  const sessionMarketingConsent = user?.marketingConsent ?? false
   const isDev = process.env.NODE_ENV !== 'production'
 
   return (
@@ -74,12 +75,14 @@ export async function Offers() {
                     label={actionLabel}
                     isTrial
                     offerActionType="trial"
+                    sessionMarketingConsent={sessionMarketingConsent}
                   />
                 ) : offer.hasLemonVariantMapping ? (
                   <UpgradeButton
                     variantId={offer.targetVariantId}
                     label={actionLabel}
                     offerActionType={offer.actionType}
+                    sessionMarketingConsent={sessionMarketingConsent}
                   />
                 ) : (
                   <p className="mt-4 text-xs text-amber-700">
