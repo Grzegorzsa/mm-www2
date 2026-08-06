@@ -23,7 +23,7 @@ MX GRID by MXbeats is a music production tool designed to simplify the music cre
 ### Key Features
 
 - **Dual workflow modes**:
-  1. **Session Mode** — for live clip triggering, mixing, and real-time performance.
+  1. **Session Mode** — for live clip triggering, mixing, real-time performance, and limited in-grid editing when editor panels are closed.
   2. **Arranger Mode** — a vertical timeline for structuring complete songs.
 - **Automated content import** — drag audio files (WAV, AIFF, MP3, OGG) and MIDI drum files (MID, MIDI), or entire folders. The application automatically detects clip type and assigns metadata such as tempo, key, color, icon, name, and instrument group.
 - **Versatile drum editor and flexible routing** — supports audio samples, virtual instrument plugins, and external MIDI hardware, with up to **32 discrete audio outputs** for advanced DAW routing.
@@ -246,7 +246,9 @@ Each box on the grid displays information about its assigned clip:
 
 There are two ways to load clips:
 
-1. **Drag and drop from the file explorer** — drag audio files (WAV, AIF, AIFF, MP3, OGG), MIDI drum files (MID, MIDI), or entire folders onto the grid. If multiple files are dragged, they fill consecutive empty slots. The application automatically detects whether each file is a sample or loop; MIDI drum files are converted to Beats. Parameters are then assigned automatically (tempo, instrument type, color, icon, group number, name). This is the fastest way to load clips.
+In Session mode, you can also make limited edits directly on the grid. Right-click boxes to select them, drag the selection to move it, and use keyboard shortcuts to delete boxes or undo changes without opening another editor.
+
+1. **Drag and drop from the file explorer** — drag audio files up to 60 seconds long (WAV, AIF, AIFF, MP3, OGG), MIDI drum files (MID, MIDI), or entire folders onto the grid. If multiple files are dragged, they fill consecutive empty slots. The application automatically detects whether each file is a sample or loop; MIDI drum files are converted to Beats. Parameters are then assigned automatically (tempo, instrument type, color, icon, group number, name). This is the fastest way to load clips.
 
 2. **Via the Box Editor** — activate Box Edit mode and click an empty slot. A prompt asks which clip type to create: **Note**, **Sample**, **Loop**, or **Beat**. The new clip is initialized as a copy of the last edited clip of the same type (or with default values). Audio files or note definitions can then be loaded via the editor toolbar.
 
@@ -608,6 +610,8 @@ Select a track to reveal its options panel. The panel has three tabs: **Options*
 ## 14. Media Explorer
 
 The Media Explorer is a built-in tool designed for cataloguing, quickly finding, and previewing media files on your computer. It supports audio files and MIDI drum files. Open it from the toolbar (computer with magnifying glass icon — third icon from the left) or via **View → Media Explorer**. It appears docked to the right side of the main window, alongside the Box Editor, Page Editor, and Arranger panels.
+
+You can also use Media Explorer as a quick edit target. Right-click boxes to select them, drag the selection to move it, and use keyboard shortcuts like Delete and Undo. If you drag selected boxes back into Media Explorer, MX GRID removes them from the grid.
 
 ### 14.1 Toolbar
 

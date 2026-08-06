@@ -417,7 +417,9 @@ const sections = [
 <p><strong>Undo / Redo</strong></p>
 
 <h4>File</h4>
-<p><strong>Save Meta</strong> \u2014 saves the metadata (name, icon, color, BPM, group number, key, instrument) of all selected clips directly into their audio files.</p>`,
+<p><strong>Save Meta</strong> \u2014 saves the metadata (name, icon, color, BPM, group number, key, instrument) of all selected clips directly into their audio files.</p>
+<p><strong>Quick Tip:</strong> You can also perform basic edits directly in Session View without opening the Page Editor. Right-click boxes to select and move them, and use keyboard shortcuts (like <strong>Delete</strong> or <strong>Backspace</strong>) to remove them.</p>
+`,
 
   // 9 — Timeline Editor
   `<h3 id="edit-timeline">Arranger (Timeline Editor)</h3>
@@ -522,6 +524,7 @@ const sections = [
 <p>Click <strong>Play</strong> to preview a file. When your project is playing, previewing a loop syncs it to the current tempo and the next bar \u2014 the button flashes while it waits to start.</p>
 <p>Drag files onto the grid. MIDI drum files are automatically converted to Beats during import. Use <strong>Ctrl+Click</strong> / <strong>Shift+Click</strong> to select multiple files first. Press <strong>Shift+A</strong> to select all files in the current folder.</p>
 <p>Click the info button on any file to see its full path, size, type, BPM, key, and duration.</p>
+<p><strong>Quick edit tip:</strong> While Media Explorer is open, you can still right-click boxes on the grid to select and move them. Dragging selected boxes back into the Explorer removes them from the grid.</p>
 
 <h4>Transport Bar</h4>
 <p>While a file is previewing, a transport bar appears at the bottom of the panel. It shows the waveform, filename, and a <strong>Volume</strong> knob. Click the waveform to jump to any position. The bar stays visible while you scroll.</p>`,
