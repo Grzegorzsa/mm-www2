@@ -44,7 +44,7 @@ Single-shot samples can be triggered at any time with variable velocity (loudnes
 
 Loops always play at a fixed volume. When triggered, the application waits until the end of the current bar to start playback, ensuring synchronization with other clips.
 
-- Each loop belongs to one of **8 instrument groups**.
+- Each loop belongs to one of **12 instrument groups**.
 - Only **one loop per group** can play at a time. Triggering a new loop in a group automatically stops the previously playing loop in that group (after waiting for the bar boundary).
 - Loops **repeat by default** after finishing playback. This can be disabled so that the loop stops automatically after one cycle.
 - Each instrument group has a dedicated **Stop button** (8 total) to manually stop playback.
@@ -216,7 +216,7 @@ The Media Grid is the central area of the application, located below the toolbar
 
 ### 7.1 Layout
 
-- **Stop Group buttons** (top row, above the grid) — 8 buttons for stopping playback of each instrument group. When a group is playing, its Stop button lights up red and displays the group number with the label "stop". Clicking it causes the button to flash (indicating it is waiting until the end of the current bar), then the group stops and the button goes dark.
+- **Stop Group buttons** (top row, above the grid) — 8 buttons for stopping playback of instrument groups 1–8. When a group is playing, its Stop button lights up red and displays the group number with the label "stop". Clicking it causes the button to flash (indicating it is waiting until the end of the current bar), then the group stops and the button goes dark. There are 12 instrument groups in total, but only groups 1–8 have a dedicated Stop button in Session mode — for this reason, groups 9–12 are recommended mainly for use in the Arranger.
 - **Page buttons** (right column) — 8 buttons for switching between the 8 pages of the project. This extends the total capacity to **8 × 64 = 512 clip slots**. The active page button is light blue; inactive pages are gray. Each button displays its page number.
 - **MXbeats logo** — displayed below the grid.
 
@@ -338,7 +338,7 @@ The Play/Stop button works the same way, except that when a loop is previewed du
 
 #### Additional Loop-Specific Properties
 
-- **Group No** — instrument group number (1–8).
+- **Group No** — instrument group number (1–12).
 - **Duration [bars]** — dropdown selector for the loop length in musical bars.
 - **Original Tempo** — text field showing the original tempo of the audio clip (e.g., 110). An **Auto** button (metronome icon) next to the field uses detection algorithms to determine the tempo automatically. Multiple clicks may yield different results as different algorithms are applied.
 - **Loop** — checkbox. When enabled, the loop repeats after finishing. When disabled, playback stops after one cycle.
@@ -404,11 +404,10 @@ The Arranger provides a timeline-based composition view for arranging clips into
 
 The timeline consists of **13 columns** of rounded-square cells:
 
-| Column                | Purpose                                |
-| --------------------- | -------------------------------------- |
-| **TIME** (1st column) | Bar numbers                            |
-| **Tracks 1–8**        | Loop tracks (one per instrument group) |
-| **Tracks 9–12**       | Sample tracks                          |
+| Column                | Purpose                                                                                |
+| --------------------- | -------------------------------------------------------------------------------------- |
+| **TIME** (1st column) | Bar numbers                                                                            |
+| **Tracks 1–12**       | Universal tracks — any clip type (Loop, Beat, Sample, Note) can be placed on any track |
 
 Below the track numbers are **Solo (S)** and **Mute (M)** buttons for each track, allowing selective listening.
 
@@ -421,17 +420,17 @@ Below the track numbers are **Solo (S)** and **Mute (M)** buttons for each track
 
 **Right-click on a clip** — right-clicking any clip on the timeline opens a quick-edit dialog for modifying its basic properties (e.g., velocity, color, group). This avoids the need to open the full Box Editor for minor adjustments.
 
-### 10.4 Working with Loops on the Timeline
+### 10.4 Working with Loops and Beats on the Timeline
 
-- Loops can only be placed on the 8 loop tracks (columns 2–9).
+- Loops and Beats can be placed on any of the 12 universal tracks (columns 2–13).
 - The start position and length of a loop can be adjusted by dragging the top or bottom edge of the loop cell on the timeline.
 - Dragging a loop back to the Media Grid removes it from the timeline.
 - Use **Shift+Click** to select all cells between two clicked positions, or **Ctrl+Click** to add individual cells to the selection.
 
-### 10.5 Working with Samples on the Timeline
+### 10.5 Working with Samples and Notes on the Timeline
 
-- Samples can only be placed on the 4 sample tracks (columns 10–13).
-- Samples can be freely moved within the sample tracks.
+- Samples and Notes can be placed on any of the 12 universal tracks (columns 2–13).
+- Samples can be freely moved within their track.
 - **Right-click** a sample on the timeline for additional options:
   - **Velocity** — set the sample's playback volume.
   - **Time Shift** — set the exact trigger time within the bar.
@@ -522,7 +521,7 @@ To play back correctly, a Beat needs source boxes assigned to instrument categor
 - **Color** — one of 16 available colors.
 - **Icon** — visual icon displayed on the grid box.
 - **Original Tempo** — the tempo at which this beat sounds best. Does not affect playback speed; used for filtering and display in the Media Explorer.
-- **Group No** — instrument group (1–8). Only one beat/loop per group plays at a time.
+- **Group No** — instrument group (1–12). Only one beat/loop per group plays at a time.
 - **Loop** — when enabled, the beat repeats indefinitely; when disabled, it plays once and stops.
 - **Vel** — global velocity correction for all notes in the beat [%]. This is MIDI velocity, not audio volume — adjust with care.
 - **Open Step Sequencer** — opens the Step Sequencer for composing the beat pattern.
@@ -649,5 +648,3 @@ Hovering over a file reveals an **info** icon on the right. Clicking it opens a 
 When a file is being previewed, a transport bar appears at the bottom of the Files panel containing a **Play/Stop** button, a colour-coded waveform, the filename, and a **Volume** knob. The volume knob controls preview playback level. The bar remains visible even when scrolling through the file list. Clicking on the waveform scrubs the playhead to that position (not available in synchronized loop mode).
 
 ## Updates
-
-All pending updates from this section have been processed and synchronized with the manual seed content.

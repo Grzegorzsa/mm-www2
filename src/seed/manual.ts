@@ -185,9 +185,10 @@ const sections = [
 <ul>
   <li>A <strong>flashing box</strong> indicates the clip is waiting for the next bar.</li>
   <li>A <strong>pulsing box</strong> with a progress arc means a loop-based clip is playing.</li>
-  <li>Each Loop or Beat belongs to one of <strong>8 instrument groups</strong>. Only one loop-based clip per group can play at a time.</li>
+  <li>Each Loop or Beat belongs to one of <strong>12 instrument groups</strong>. Only one loop-based clip per group can play at a time.</li>
   <li>The <strong>play mode icon</strong> (top-left) shows whether the clip repeats or plays once.</li>
 </ul>
+<p><strong>Tip:</strong> In Session Mode, keep your loops and beats within groups 1–8 — only groups 1–8 have a dedicated <a href="#stop-group">Stop Group button</a>. Groups 9–12 are best suited for the Arranger, where the timeline offers a track for every group.</p>
 
 <h4>Stopping Individual Clips</h4>
 <p>During playback of any clip, hovering over the box reveals a <strong>Stop button</strong> in the top-left corner. Clicking it immediately stops playback of that individual clip \u2014 no need to use the Stop Group buttons or the All Sounds Off (panic) button.</p>
@@ -197,11 +198,12 @@ const sections = [
 
   // 5 — Stop Group Buttons
   `<h3 id="stop-group">Stop Group Buttons</h3>
-<p>The top row above the grid contains <strong>8 Stop Group</strong> buttons \u2014 one for each instrument group. MX GRID organizes sounds into instrument groups (e.g., percussion, bass-line).</p>
+<p>The top row above the grid contains <strong>8 Stop Group</strong> buttons \u2014 one for each of the first 8 instrument groups. MX GRID organizes sounds into instrument groups (e.g., percussion, bass-line).</p>
 <ul>
   <li>Only one loop-based clip from a given group can play at a time.</li>
   <li>When a group is playing, its Stop button lights up <strong>red</strong>.</li>
   <li>Clicking a Stop button makes it flash (waiting for the bar end), then stops the group.</li>
+  <li>MX GRID supports up to <strong>12 instrument groups</strong> in total. Groups 9–12 have no dedicated Stop button in Session Mode, so use them mainly on the Arranger timeline.</li>
 </ul>`,
 
   // 6 — Page Buttons
@@ -256,7 +258,7 @@ const sections = [
   </div>
   <div>
     <ol>
-      <li>Group Number: Assign the loop to one of <strong>8 instrument groups</strong>. When another loop from the same group starts, the previous one stops automatically.</li>
+      <li>Group Number: Assign the loop to one of <strong>12 instrument groups</strong>. When another loop from the same group starts, the previous one stops automatically.</li>
       <li>Original Tempo: The original BPM of the audio clip. Click the <strong>Auto</strong> button (metronome icon) to detect it automatically. Multiple clicks may yield different results as various detection algorithms are used.</li>
       <li>Duration: The loop length in <strong>musical bars</strong>.</li>
       <li>Loop Checkbox: <strong>Enabled</strong>: the loop repeats after finishing. <strong>Disabled</strong>: playback stops after one cycle.</li>
@@ -312,7 +314,7 @@ const sections = [
       <li><strong>Name</strong> \u2014 beat name (max 12 characters).</li>
       <li><strong>Color &amp; Icon</strong> \u2014 visual appearance on the grid.</li>
       <li><strong>Original Tempo</strong> \u2014 the tempo at which this beat sounds best. Does not affect playback speed; used for filtering saved beats in the Media Explorer.</li>
-      <li><strong>Group No</strong> \u2014 instrument group (1\u20138).</li>
+      <li><strong>Group No</strong> \u2014 instrument group (1\u201312).</li>
       <li><strong>Loop</strong> \u2014 when enabled, the beat repeats indefinitely; when disabled, it plays once and stops.</li>
       <li><strong>Vel</strong> \u2014 velocity scaling for all notes [%]. Affects MIDI velocity, not sample volume \u2014 use with care.</li>
       <li><strong>Open Step Sequencer</strong> \u2014 open the pattern editor. <a href="#step-sequencer">See below.</a></li>
@@ -440,8 +442,7 @@ const sections = [
       <li><a href="#timeline-duration">Song Length</a></li>
       <li><a href="#timeline-solo-mute">Solo / Mute</a></li>
       <li><a href="#timeline-bar-no">TIME Column</a></li>
-      <li><a href="#loop-tracks">Loop Tracks</a></li>
-      <li><a href="#sample-tracks">Sample Tracks</a></li>
+      <li><a href="#timeline-tracks">Tracks</a></li>
       <li><a href="#timeline-grid">Timeline Grid</a></li>
     </ol>
   </div>
@@ -473,28 +474,20 @@ const sections = [
   <li>Inactive parts of the song are grayed out.</li>
 </ul>
 
-<h4 id="loop-tracks">6) Loop & Beat Tracks</h4>
+<h4 id="timeline-tracks">6) Tracks</h4>
+<p>The Arranger gives you <strong>12 universal tracks</strong>. Any track can hold Loops, Beats, Samples, or MIDI Notes, so you're never short of space for a clip type.</p>
 <ul>
-  <li><strong>8 tracks</strong> reserved for loops and beats (one per instrument group).</li>
-  <li>Adjust loop start and length by dragging the top or bottom edge of the loop cell.</li>
+  <li>Adjust a loop's start and length by dragging the top or bottom edge of its cell.</li>
   <li><strong>Right-click</strong> a loop for <strong>Vol</strong> and <strong>Pan</strong> controls.</li>
   <li><strong>Right-click</strong> a beat for <strong>Vel</strong> (master velocity).</li>
-</ul>
-
-<h4 id="sample-tracks">7) Sample & Note Tracks</h4>
-<ul>
-  <li><strong>4 tracks</strong> reserved for samples and notes.</li>
-  <li>Samples and notes can be freely moved within the sample tracks.</li>
-</ul>
-<p><strong>Right-click</strong> a sample instance for <strong>Velocity</strong> and <strong>Time Shift</strong>. Use <strong>Master Volume</strong> and <strong>Pan</strong> to adjust the whole sample.</p>
-<ul>
+  <li>Samples and notes can be freely moved within their track.</li>
   <li><strong>Right-click</strong> a sample for <strong>Master Volume</strong> and <strong>Pan</strong>.</li>
   <li><strong>Right-click</strong> a note for <strong>Velocity</strong> and <strong>Time Shift</strong>.</li>
 </ul>
 
-<h4 id="timeline-grid">8) Timeline Grid</h4>
+<h4 id="timeline-grid">7) Timeline Grid</h4>
 <ul>
-  <li>Consists of <strong>13 columns</strong>: 1 TIME column + 8 loop/beat tracks + 4 sample/note tracks.</li>
+  <li>Consists of <strong>13 columns</strong>: 1 TIME column + 12 universal tracks.</li>
   <li>Each cell represents one bar.</li>
   <li>Drag clips from the grid onto the timeline to build your arrangement.</li>
 </ul>`,
