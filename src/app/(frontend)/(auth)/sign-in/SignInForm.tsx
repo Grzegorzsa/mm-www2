@@ -3,12 +3,13 @@
 import { useState, type ChangeEvent, type FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 import { h } from '@/lib/h'
+import { getSafePanelReturnTo } from '@/lib/panelRedirect'
 
 function isValidEmail(email: string) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
 }
 
-export default function SignInForm() {
+export default function SignInForm({ returnTo }: { returnTo?: string }) {
   const router = useRouter()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -42,7 +43,7 @@ export default function SignInForm() {
       if (!res.ok) {
         throw new Error(data?.error ?? data?.errors?.[0]?.message ?? 'Sign in failed')
       }
-      router.push('/user-panel/purchases')
+      router.replace(getSafePanelReturnTo(returnTo))
       router.refresh()
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'An error occurred, please try again'

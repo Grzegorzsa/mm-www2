@@ -41,6 +41,15 @@ const PAYLOAD_COLLECTION_SLUGS = new Set([
  * but in production we return 404 to reduce attack surface.
  */
 export function proxy(req: NextRequest) {
+  if (req.nextUrl.pathname.startsWith('/user-panel')) {
+    const requestHeaders = new Headers(req.headers)
+    requestHeaders.set('x-user-panel-return-to', `${req.nextUrl.pathname}${req.nextUrl.search}`)
+
+    return NextResponse.next({
+      request: { headers: requestHeaders },
+    })
+  }
+
   if (process.env.NODE_ENV !== 'production') {
     return NextResponse.next()
   }
@@ -81,5 +90,5 @@ export function proxy(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/api/:path*'],
+  matcher: ['/api/:path*', '/user-panel/:path*'],
 }
