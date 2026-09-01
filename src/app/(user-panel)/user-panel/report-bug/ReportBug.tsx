@@ -1,6 +1,12 @@
 import { ReportBugForm } from './ReportBugForm'
 
-export function ReportBug() {
+export function ReportBug({
+  initialOperatingSystem,
+  initialApplicationVersion,
+}: {
+  initialOperatingSystem: string
+  initialApplicationVersion: string
+}) {
   return (
     <main>
       <div className="mb-6">
@@ -10,7 +16,10 @@ export function ReportBug() {
           included automatically.
         </p>
       </div>
-      <ReportBugForm />
+      <ReportBugForm
+        initialOperatingSystem={initialOperatingSystem}
+        initialApplicationVersion={initialApplicationVersion}
+      />
     </main>
   )
 }

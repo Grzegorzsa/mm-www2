@@ -11,10 +11,16 @@ const ALLOWED_IMAGE_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp'])
 const inputClass =
   'block w-full rounded-lg border border-gray-300 px-3 py-2 text-sm text-gray-900 focus:border-gray-900 focus:outline-none focus:ring-2 focus:ring-gray-900/15'
 
-export function ReportBugForm() {
+export function ReportBugForm({
+  initialOperatingSystem,
+  initialApplicationVersion,
+}: {
+  initialOperatingSystem: string
+  initialApplicationVersion: string
+}) {
   const fileInputRef = useRef<HTMLInputElement>(null)
-  const [operatingSystem, setOperatingSystem] = useState('')
-  const [applicationVersion, setApplicationVersion] = useState('')
+  const [operatingSystem, setOperatingSystem] = useState(initialOperatingSystem)
+  const [applicationVersion, setApplicationVersion] = useState(initialApplicationVersion)
   const [description, setDescription] = useState('')
   const [screenshots, setScreenshots] = useState<File[]>([])
   const [isLoading, setIsLoading] = useState(false)
