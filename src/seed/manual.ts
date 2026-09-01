@@ -137,6 +137,7 @@ const sections = [
   <li><strong>Project Notes</strong> \u2014 add and edit comments for the current project.</li>
   <li><strong>Online Help</strong> \u2014 open the online manual on the product website.</li>
   <li><strong>User Panel</strong> \u2014 open the user panel on the website.</li>
+  <li><strong>Report a Bug</strong> \u2014 open the bug reporting form in the user panel.</li>
   <li><strong>Register Product</strong> \u2014 <a href="#product-registration">registration and license management</a>.</li>
   <li><strong>About</strong> \u2014 display the installed version and current license information.</li>
 </ul>`,
