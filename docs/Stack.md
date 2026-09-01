@@ -1,6 +1,6 @@
 # Todo
 
-- po okliknięciu na activate trial wpanelu usera nie pokzuje się zadna instrukcja co dalej. Oferta po prostu znika
+- Dodać pro tip na temat latencji między nutami i audio
 
 - [browser] Detected `scroll-behavior: smooth` on the `<html>` element. To disable smooth scrolling during route transitions, add `data-scroll-behavior="smooth"` to your <html> element. Learn more: https://nextjs.org/docs/messages/missing-data-scroll-behavior
 

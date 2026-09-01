@@ -187,6 +187,9 @@ export const redeemUserLimiter = new RateLimiter('redeem-user', 60 * 60 * 1000, 
 /** User panel reads: max 60 requests per user/IP per hour */
 export const userPanelLimiter = new RateLimiter('user-panel', 60 * 60 * 1000, 60)
 
+/** Authenticated bug reports: max 5 submissions per user per 24 hours */
+export const bugReportLimiter = new RateLimiter('bug-report', 24 * 60 * 60 * 1000, 5)
+
 // ---------------------------------------------------------------------------
 // Helper: extract client IP from Next.js request headers
 // ---------------------------------------------------------------------------
