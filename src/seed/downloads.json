@@ -7,79 +7,89 @@
 
   "downloads": [
     {
-      "id": "69e0e2638753728fb4042692",
+      "id": "6a5a266088da6784443e307e",
       "title": "Installer for MS Windows 64 bit",
 
       "files": [
         {
-          "id": "69e0e2638753728fb4042691",
+          "id": "6a5a266088da6784443e307d",
           "description": "64-bit desktop application and VST3 plugin",
-          "version": "1.2.3",
-          "fileName": "mxsetup_1.2.3.exe",
+          "version": "1.2.5",
+          "fileName": "mxsetup_1.2.5.exe",
           "size": "14.94 MB",
-          "url": "https://static.mxbeats.com/downloads/software/mxgrid/1.2.3/Windows_x64/mxsetup_1.2.3.exe",
-          "loggedUser": false
-        }
-      ]
-    },
-
-    {
-      "id": "69e0e2638753728fb4042695",
-      "title": "Windows ARM64 - experimental",
-
-      "files": [
-        {
-          "id": "69e0e2638753728fb4042693",
-          "description": "Desktop application",
-          "version": "1.2.3",
-          "fileName": "MX GRID.exe",
-          "size": "22.7 MB",
-          "url": "https://static.mxbeats.com/downloads/software/mxgrid/1.2.3/Win_ARM64/MX%20GRID.exe",
+          "url": "https://static.mxbeats.com/downloads/software/mxgrid/1.2.5/Windows_x64/mxsetup_1.2.5.exe",
           "loggedUser": false
         },
 
         {
-          "id": "69e0e2638753728fb4042694",
-          "description": "VST3 plugin",
-          "version": "1.2.3",
-          "fileName": "MX GRID.vst3",
-          "size": "22.95 MB",
-          "url": "https://static.mxbeats.com/downloads/software/mxgrid/1.2.3/Win_ARM64/MX%20GRID.vst3",
+          "id": "6a985b8cd5ebfa52d738a6ab",
+          "description": "64-bit desktop application and VST3 plugin - zip file",
+          "version": "1.2.5",
+          "fileName": "mxgrid_1.2.5.zip",
+          "size": " 22 MB",
+          "url": "https://static.mxbeats.com/downloads/software/mxgrid/1.2.5/Windows_x64/mxgrid_1.2.5.zip",
           "loggedUser": false
         }
       ]
     },
 
     {
-      "id": "69e0e2638753728fb4042697",
+      "id": "6a5a266088da6784443e3081",
+      "title": "Windows ARM64 - experimental",
+
+      "files": [
+        {
+          "id": "6a5a266088da6784443e307f",
+          "description": "Desktop application",
+          "version": "1.2.5",
+          "fileName": "MX GRID.exe",
+          "size": "22.7 MB",
+          "url": "https://static.mxbeats.com/downloads/software/mxgrid/1.2.5/Win_ARM64/MX%20GRID.exe",
+          "loggedUser": false
+        },
+
+        {
+          "id": "6a5a266088da6784443e3080",
+          "description": "VST3 plugin",
+          "version": "1.2.5",
+          "fileName": "MX GRID.vst3",
+          "size": "23.66 MB",
+          "url": "https://static.mxbeats.com/downloads/software/mxgrid/1.2.5/Win_ARM64/MX%20GRID.vst3",
+          "loggedUser": false
+        }
+      ]
+    },
+
+    {
+      "id": "6a5a266088da6784443e3083",
       "title": "Universal x64 and ARM installer for macOS 10.13 and above",
 
       "files": [
         {
-          "id": "69e0e2638753728fb4042696",
+          "id": "6a5a266088da6784443e3082",
           "description": "Desktop application, AU, and VST3 plugins",
-          "version": "1.2.3",
-          "fileName": "MX GRID_1.2.3.pkg",
-          "size": "55.46 MB",
-          "url": "https://static.mxbeats.com/downloads/software/mxgrid/1.2.3/MacOS/MX%20GRID_1.2.3.pkg",
+          "version": "1.2.5",
+          "fileName": "MX GRID_1.2.5.pkg",
+          "size": "57.22 MB",
+          "url": "https://static.mxbeats.com/downloads/software/mxgrid/1.2.5/MacOS/MX%20GRID_1.2.5.pkg",
           "loggedUser": false
         }
       ]
     },
 
     {
-      "id": "69e0e2638753728fb4042699",
+      "id": "6a5a266088da6784443e3085",
       "title": "Presets",
 
       "files": [
         {
-          "id": "69e0e2638753728fb4042698",
+          "id": "6a5a266088da6784443e3084",
           "description": "Demo Content",
           "version": "1.0.0",
           "fileName": "Demo Content.zip",
-          "size": "49.09 MB",
+          "size": "57.77 MB",
           "url": "https://static.mxbeats.com/downloads/demo-content/Demo%20Content.zip",
-          "loggedUser": false
+          "loggedUser": true
         }
       ]
     }
@@ -88,24 +98,9 @@
   "meta": {
     "title": "Downloads — MXbeats",
     "description": "Download MXbeats music looping software",
-
-    "image": {
-      "id": 1,
-      "alt": "MX Beats Slide",
-      "updatedAt": "2026-04-07T12:25:31.302Z",
-      "createdAt": "2026-04-07T12:11:17.730Z",
-      "url": "/api/media/file/mx_beats_side01.jpg",
-      "thumbnailURL": null,
-      "filename": "mx_beats_side01.jpg",
-      "mimeType": "image/jpeg",
-      "filesize": 216647,
-      "width": 1800,
-      "height": 846,
-      "focalX": 50,
-      "focalY": 50
-    }
+    "image": 1
   },
-  "updatedAt": "2026-04-16T13:21:39.241Z",
+  "updatedAt": "2026-09-02T17:27:42.273Z",
   "createdAt": "2026-04-16T13:20:14.254Z",
   "globalType": "downloads"
 }
