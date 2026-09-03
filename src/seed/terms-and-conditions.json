@@ -1,6 +1,6 @@
-{
+﻿{
   "id": 1,
-  "title": "Terms and Conditions (Terms of Service)",
+  "title": "Terms and Conditions",
   "slug": "terms-and-conditions",
   "content": {
     "root": {
@@ -10,14 +10,14 @@
       "version": 1,
       "children": [
         {
-          "tag": "h1",
+          "tag": "h3",
           "type": "heading",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "text": "Terms and Conditions (Terms of Service)",
+              "text": "TERMS AND CONDITIONS",
               "type": "text",
               "version": 1
             }
@@ -32,7 +32,7 @@
           "version": 1,
           "children": [
             {
-              "text": "§ 1 General Provisions",
+              "text": "§ 1 General provisions",
               "type": "text",
               "version": 1
             }
@@ -40,198 +40,535 @@
           "direction": "ltr"
         },
         {
-          "tag": "ol",
-          "type": "list",
-          "start": 1,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "value": 1,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "The website mxbeats.com (hereinafter: the \"Service\") is operated by: Fundacja Rozwoju Przedsiębiorczości \"Twój StartUp\" with its registered office in Warsaw (registered address: ul. Żurawia 6/12, lok. 766, 00-503 Warsaw, Poland; correspondence address: Atlas Tower, Al. Jerozolimskie 123a, 18th floor, 02-017 Warsaw, Poland), entered into the Register of Entrepreneurs of the National Court Register kept by the District Court for the Capital City of Warsaw in Warsaw, 12th Commercial Division of the National Court Register under KRS number 0000442857, NIP: 5213641211, REGON: 146433467, BDO: 000460502 (hereinafter: \"StartUp\" or \"Licensor\").",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 2,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "The provisions of these Terms and Conditions apply to activities performed on behalf of the Foundation by an organized part of the enterprise mxbeats.com, contact details: email: [email], phone: [tel].",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 3,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "These Terms and Conditions specify in particular:",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "The Website mxbeats.com operating at https://mxbeats.com (hereinafter referred to as: the Website) is provided by: FundacjaRozwojuPrzedsiębiorczości „TwójStartUp” with its registered office in Warsaw ,ul. Żurawia 6/12 lok 766 00-503 Warsaw, correspondence address: Atlas Tower, Al. Jerozolimskie 123a, 18th floor, 00-217 Warsaw, entered the register of entrepreneurs of the National Court Register kept by the District Court for the Capital City of Warsaw in Warsaw, 12th Commercial Division of the National Court Register under KRS number: 0000442857, for which the following tax ID was assigned: 521-364-12-11, and REGON number: 146-433-467, BDO number: 000460502.",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "number",
           "direction": "ltr"
         },
         {
-          "tag": "ul",
-          "type": "list",
-          "start": 1,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Rules for using the Service;",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Conditions for placing orders for digital content and software licenses;",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Order fulfillment rules and delivery methods;",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Payment terms;",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Statutory rights of withdrawal and complaint resolution procedures;",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Specific rights for Consumer buyers.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "The provisions of these Terms and Conditons apply to activities performed for the \"TwójStartUp\" Foundation by an organized part of the enterprise named mxbeats.com operating at the Branch of the Foundation for Enterprise Development \"TwójStartUp\", represented by GrzegorzSarzynski (e-mail address: [email] tel.: [tel]). The person indicated in this paragraph is appointed by Fundacja \"TwójStartUp\" as a contact person for the implementation of the provisions of these T\u0026Cs.",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "bullet",
           "direction": "ltr"
         },
         {
-          "tag": "ol",
-          "type": "list",
-          "start": 4,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "value": 4,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "The Service sells digital content via distance communication channels. Contracts concluded through the Service are distance contracts under the Polish Consumer Rights Act of May 30, 2014.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 5,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Browsing the Service does not require account registration.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "These Terms and Conditions specify in particular:",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "number",
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "conditions of use of the Website;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "terms and conditions for placing orders for Products available on the Website;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "lead times and conditions for order completion;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "conditions and forms of payment;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "the Client\u0027s right to withdraw from the contract;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "rules for submitting and considering complaints;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "specific rights of the Client who is a consumer.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp sells and provides Services through the Website, using  means of remote communication. Contracts concluded by the Client with StartUp via the Website are distance contracts, within the meaning of the Consumer Rights Act of 30 May 2014.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The Client is entitled and obliged to use the Website in accordance with its intended use, the principles of social coexistence and good manners.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Browsing the Website does not require registration, and placing orders for Products by the Client on its own does not require registering an account.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The Terms and Conditions are available free of charge on the Website, in a form that allows them to be downloaded, displayed and saved.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The Client is obliged to read the Terms and Conditions. The use of the Website is only possible after reading and accepting the Terms and Conditions.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "A Client may be a person with full legal capacity.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The following terms used in these Terms and Conditions will have meanings as set forth below:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp - FundacjaRozwojuPrzedsiębiorczości „TwójStartUp” (\"TwójStartUp\" Foundation) with its registered office in Warsaw, ul.Żurawia 6/12 lok 766 00-503 Warsaw, correspondence address: Atlas Tower, AlejeJerozolimskie 123a, 18th floor, 00-217 Warsaw, entered in the Register of Entrepreneurs of the National Court Register kept by the District Court for the Capital City of Warsaw in Warsaw, 12th Commercial Division of the National Court Register under KRS number: 0000442857, for which the following tax ID (NIP) was assigned: 521-364-12-11, REGON: 146-433-467, BDO: 000460502;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Client – a person using the Website,",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Consumer - every natural person who engages in a legal transaction for reasons different than their professional or business activities.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Digital Service – a digital service within the meaning of Article 2(5a) of the Consumer Rights Act of 30 May 2014, provided by StartUp, offered to Client via the Website;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Products – Digital Services;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Website – a website at  https:/mxbeats.com by means of which StartUp provides services electronically to the Client, and enables concluding contracts;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Contract – a contract concluded between StartUp and the Client via the Website;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Account – an individual account of the Client on the Website, enabling the use of the Digital Services and signing contracts, after logging in;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Working days – all days excluding Saturdays, Sundays and public holidays;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "web interface - any type of software, including a website or part thereof and an application, including a mobile application, operated by StartUp or on its behalf, which is used to provide Customers with access to StartUp\u0027s digital  services in order to conclude a transaction concerning these Services;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Terms \u0026 Conditions - these Terms \u0026 Conditions",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "In the event of a justified suspicion that the Client has provided false data, StartUp has the right to terminate the contract by notifying the Client accordingly.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "In the event that the Client provides incorrect or inaccurate data, including in particular an incorrect or inaccurate address, StartUp will not be liable for any failure to deliver or delay in the delivery of the Digital Service, to the fullest extent permitted by law.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The information contained on the Website, including in particular announcements, advertisements and price lists, does not constitute an offer within the meaning of Article 66 of the Act of 23 April 1964 -  Civil Code. The information contained on the Website, however, constitutes an invitation to conclude a contract, described in art. 71 of the Civil Code.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp will provide the Client who is a Consumer, in a clear and visible manner, immediately before placing an order by the Client, certain information, in  particular about:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "the main features of the service, taking into account the subject of the service and the method of communication with the Client,",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "the total price or remuneration for the service, including taxes;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "the right to withdraw from the contract or the absence of such right, and in the case of distance contracts concluded via an online interface – also the existence and location of the withdrawal function referred to in § 7 paragraphs 4-5;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "the duration of the contract or the manner and grounds for terminating the contract - if it is concluded for an indefinite period of time or if it is to be automatically extended;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "minimum duration of the Client\u0027s obligations under the contract.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The Website is serving Clients worldwide, unless the offer in StartUp provides otherwise.",
+              "type": "text",
+              "version": 1
+            }
+          ],
           "direction": "ltr"
         },
         {
@@ -242,7 +579,7 @@
           "version": 1,
           "children": [
             {
-              "text": "§ 2 Definitions",
+              "text": "§ 2 Technical requirements necessary to use the Website",
               "type": "text",
               "version": 1
             }
@@ -250,99 +587,101 @@
           "direction": "ltr"
         },
         {
-          "tag": "ul",
-          "type": "list",
-          "start": 1,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "StartUp / Licensor — Fundacja Rozwoju Przedsiębiorczości \"Twój StartUp\".",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Customer / Licensee — Any natural or legal person acquiring digital content or services via the Service.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Consumer — A natural person entering into a legal transaction not directly related to their business or professional activity (or an eligible sole proprietor under Polish consumer protection law).",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Software / Digital Content — Music software, standalone applications, audio plugins (e.g., VST, AU), sound libraries, or other digital assets offered via the Service and delivered electronically without a physical medium.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Service / Website — The website operating at https://mxbeats.com.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Contract — A distance agreement concluded between StartUp and the Customer via the Service.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "Website browsing requirements:",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "bullet",
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "terminal device with Internet access,",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "a web browser enabling the acceptance of cookies; for example Internet Explorer, Microsoft Edge, Google Chrome, Mozilla Firefox, Opera or Safari in the current version;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "acceptance of necessary cookies",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "To use the functionality of the Website, in particular to register on the Website or place orders for Products, an active e-mail account is necessary.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The Website uses cookies in order to properly perform the Services, as well as to ensure security. Blocking cookies, as well as the use of external applications used to block them, may result in improper operation of the Website, as well as prevent the proper implementation of the Service, for which StartUp will not be responsible.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Specific system requirements (e.g., supported operating systems, host DAW compatibility, or hardware requirements) for individual Software or Digital Content are specified on the respective product pages of the Service prior to purchase.",
+              "type": "text",
+              "version": 1
+            }
+          ],
           "direction": "ltr"
         },
         {
@@ -353,7 +692,7 @@
           "version": 1,
           "children": [
             {
-              "text": "§ 3 Technical Requirements",
+              "text": "§ 3 Contracts for the provision of digital content or a digital service.",
               "type": "text",
               "version": 1
             }
@@ -361,111 +700,157 @@
           "direction": "ltr"
         },
         {
-          "tag": "ol",
-          "type": "list",
-          "start": 1,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "value": 1,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "To browse and purchase products on the Service, the Customer needs:",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "The provisions of this paragraph and the next paragraph of the Terms and Conditions, in accordance with the provisions of Chapter 5b of the Act of 30 May 2014 on consumer rights, apply to Contracts for the provision of digital content or digital Service concluded with:",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "number",
           "direction": "ltr"
         },
         {
-          "tag": "ul",
-          "type": "list",
-          "start": 1,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "An active device with internet access;",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "An updated web browser supporting cookies;",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "An active email address.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "a Consumer, or",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "bullet",
           "direction": "ltr"
         },
         {
-          "tag": "ol",
-          "type": "list",
-          "start": 2,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "value": 2,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Specific system requirements (e.g., supported operating systems, host DAW compatibility, or hardware requirements) for individual Software or Digital Content are specified on the respective product pages of the Service prior to purchase.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "a natural person concluding a contract directly related to their business activity, when it follows from the content of this contract that they do not have a professional nature for this person, resulting in particular from the subject of their business activity, made available on the basis of the provisions on   the Central Register and Information on Business Activity (CEiDG).",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "number",
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp provides information on the Website on how the Client places an order for digital services. To submit an order, the Client specifies the digital services of their interest and then provides data necessary for the conclusion of the contract or service provision, including the method of the digital service provision (if applicable) and the payment method.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "If a button or similar function is used to place an order on the Website, they are marked in an easily legible way with the words \"order with obligation to pay\" or other equivalent unambiguous wording.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Placing and approving the order entails the Client\u0027s obligation to pay for the digital services and any extra charges. The confirmation of the order by StartUp is the moment of concluding the sales contract between StartUp and the Client.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Digital Products (software license keys and download links) are delivered electronically to the email address provided by the Client immediately upon payment confirmation, and no later than within 24 hours.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Where the Customer is a consumer, the statutory right of withdrawal does not apply to a contract for the supply of digital content that is not supplied on a tangible medium, provided that, before the supply of the digital content begins, the Customer has expressly and in advance requested that the supply begin before expiry of the statutory withdrawal period and has expressly acknowledged that, once the performance has been fully completed, the Customer will lose the statutory right of withdrawal. The Customer\u0027s express consent and acknowledgement are obtained separately during the ordering process. StartUp will provide the Customer with confirmation of the conclusion of the contract and of the Customer\u0027s consent and acknowledgement on a durable medium.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Before completing the purchase, the Customer may expressly request that the Digital Product be supplied immediately, before expiry of the statutory 14-day withdrawal period. By selecting the relevant checkbox, the Customer expressly requests such immediate supply and acknowledges that, once StartUp has fully performed its obligation to supply the Digital Product, the Customer will lose the statutory right of withdrawal.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp reserves the right to revoke or deactivate license keys in the event of payment chargebacks, fraudulent transactions, or non-payment.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Software updates policy: Software purchases include free updates for all minor versions within the major release branch purchased (e.g., all v1.x.x updates for a version 1.x license). Major upgrades (e.g., v1.x to v2.x) may be subject to separate upgrade fees.",
+              "type": "text",
+              "version": 1
+            }
+          ],
           "direction": "ltr"
         },
         {
@@ -476,7 +861,7 @@
           "version": 1,
           "children": [
             {
-              "text": "§ 4 Digital Content Delivery & Order Fulfillment",
+              "text": "§ 4 Liability for non-compliance of digital content or digital service with the contract.",
               "type": "text",
               "version": 1
             }
@@ -484,75 +869,213 @@
           "direction": "ltr"
         },
         {
-          "tag": "ol",
-          "type": "list",
-          "start": 1,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "value": 1,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Orders through mxbeats.com can be placed 24 hours a day, 7 days a week.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 2,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "To place an order, the Customer selects the desired Software or Digital Content, provides necessary billing details, selects the payment method, and confirms the purchase by clicking the order placement button (\"Buy Now\", \"Order with Obligation to Pay\", or equivalent).",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 3,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "The contract is concluded upon confirmation of the order and payment processing by StartUp or its authorized payment gateway providers (e.g., Lemon Squeezy).",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 4,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Delivery: Purchased Digital Content (download links and/or license keys) is delivered electronically to the email address provided by the Customer immediately after payment confirmation.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "If StartUp has not provided digital content or digital services, the Client will remind them to provide these services. If StartUp does not deliver the digital content or digital service immediately or within an additional period expressly agreed by the parties, the Client may withdraw from the contract.",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "number",
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp is responsible for non-compliance with the contract of digital content or digital service provided:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "in whole or in parts, which existed at the time of their delivery and became apparent within two years from that time;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "in a continuous manner, which became apparent or occurred in the agreed service provision period.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "If the digital content or digital service is not in conformity with the contract, the Client may request that it be brought into conformity with the contract.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp may refuse to bring the digital content or digital service into conformity if it is impossible or would require excessive costs for StartUp to bring the digital content or digital service into conformity.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "If the digital content or the digital services are not in conformity with the contract, the Client may submit a statement of price reduction or withdrawal from the contract when:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "it is impossible or requires excessive costs to bring the digital content or digital service into conformity with the contract pursuant to Article 43m (2) and (3) of the Consumer Rights Act;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp has failed to bring the digital content or digital service into conformity with  the contract in accordance with Article 43m (4) of the Consumer Rights Act;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "the lack of conformity of the digital content or digital service with the contract persists even though StartUp attempted to bring the digital content or digital service into conformity with the contract;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "the lack of conformity of the goods with the contract is so significant that it justifies a reduction in the price or withdrawal from the contract without prior use of the remedies specified in Article 43m of the Consumer Rights Act;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "it is clear from the StartUp statement or circumstances that it will not bring the goods into conformity within a  reasonable time or without undue inconvenience to the Client.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp will refund the amount due to the Client using the same method of payment used by the Client, unless the Client has expressly agreed to another method of refund that does not entail any costs for the Client.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp\u0027s liability is limited to the value of the Digital Content or Digital Service to be provided. The liability of StartUp for damage caused by non-performance or improper performance of the Digital Service or failure to deliver digital content does not include lost profits.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "A complaint regarding the non-compliance of the Service with the contract will be considered within 14 (say: fourteen) days of its receipt.",
+              "type": "text",
+              "version": 1
+            }
+          ],
           "direction": "ltr"
         },
         {
@@ -563,7 +1086,7 @@
           "version": 1,
           "children": [
             {
-              "text": "§ 5 Software License (EULA) & Update Policy",
+              "text": "§ 5 Product Prices and Delivery Cost",
               "type": "text",
               "version": 1
             }
@@ -571,112 +1094,45 @@
           "direction": "ltr"
         },
         {
-          "tag": "ol",
-          "type": "list",
-          "start": 1,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "value": 1,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Grant of License: All software purchased from the Service is subject to our End User License Agreement (EULA) or specific product licensing terms. Unless stated otherwise, the standard license grants a non-exclusive, non-transferable single-user license to install and use the Software on compatible devices.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 2,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Updates & Versioning:",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "The prices displayed for Products offered on the Website are gross prices, i.e. they include applicable value added tax (VAT / Sales Tax). Prices may be displayed in USD, EUR, PLN or other local currencies supported by the payment processor.",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "number",
           "direction": "ltr"
         },
         {
-          "tag": "ul",
-          "type": "list",
-          "start": 1,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Software purchases include free updates for all minor versions within the major release branch purchased (e.g., all v1.x.x updates up to v1.99.99 for a version 1 license).",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Major Upgrades (e.g., upgrading from v1.x.x to v2.0.0) are excluded from standard free updates unless explicitly stated otherwise on the product page or offered as a separate upgrade path.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "Prices displayed on the Website are final gross prices, though minor discrepancies may occasionally occur during checkout due to tax rounding by the payment gateway.",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "bullet",
           "direction": "ltr"
         },
         {
-          "tag": "ol",
-          "type": "list",
-          "start": 3,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "value": 3,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "License Consolidation: If a Customer purchases multiple licenses for the same Software product, the features, activations, or user allocations of these licenses may be consolidated into a single master license associated with the user's account or email.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "Delivery of Digital Content is performed exclusively via electronic transmission (download links and license keys sent to the e-mail address provided by the Client).",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "number",
           "direction": "ltr"
         },
         {
@@ -687,7 +1143,7 @@
           "version": 1,
           "children": [
             {
-              "text": "§ 6 Prices and Payment Methods",
+              "text": "§ 6 Payment methods",
               "type": "text",
               "version": 1
             }
@@ -695,60 +1151,73 @@
           "direction": "ltr"
         },
         {
-          "tag": "ol",
-          "type": "list",
-          "start": 1,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "value": 1,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Prices displayed on mxbeats.com include applicable local taxes (e.g., VAT).",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 2,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Payments are processed in supported local currencies via authorized payment processors (including Lemon Squeezy / StartUp banking channels).",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 3,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Condition of Sale: Software licenses are valid only upon receipt of full payment.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "On the Website, StartUp or its authorized Merchant of Record (Lemon Squeezy) clearly indicates available payment methods prior to order completion.",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "number",
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Payments are made electronically via integrated payment providers (e.g., credit/debit card, Apple Pay, Google Pay, PayPal, or other electronic payment channels supported at checkout).",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "In order to be able to use one of the electronic payment systems, the Client must accept the terms and conditions of use of the electronic payment system. The list of electronic payment systems available on the Website is available at the time of order completion.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The refund is made in the same way as the payment was made by the Client, unless the Client has expressly agreed to a different method of return, which does not involve any costs for him.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp does not allow Clients to make cash payments.",
+              "type": "text",
+              "version": 1
+            }
+          ],
           "direction": "ltr"
         },
         {
@@ -759,7 +1228,7 @@
           "version": 1,
           "children": [
             {
-              "text": "§ 7 Right of Withdrawal (Right to Cancel)",
+              "text": "§ 7 Right of termination",
               "type": "text",
               "version": 1
             }
@@ -767,45 +1236,227 @@
           "direction": "ltr"
         },
         {
-          "tag": "ol",
-          "type": "list",
-          "start": 1,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "value": 1,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "In accordance with Article 38(1)(13) of the Polish Consumer Rights Act, the right to withdraw from a distance contract within 14 days without giving any reason does not apply to contracts for the supply of digital content not supplied on a tangible medium, if the performance has begun with the Consumer's prior express consent and acknowledgment that they will lose their right of withdrawal.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 2,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "By requesting immediate delivery/access to the Digital Content during checkout, the Customer acknowledges and agrees that they lose the statutory 14-day right of withdrawal once digital content delivery or license generation has commenced.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "The provisions of this paragraph will apply to a Client who is a Consumer, or to a natural person concluding a contract with StartUp directly related to their business activity, when the content of this contract shows that they do not have a professional nature for that person, resulting in particular from the subject of their business activity, made available on the basis of the provisions on the Central Register and Information on Business Activity (CEiDG).",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "number",
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The Client indicated in paragraph 1 has the right to withdraw from the contract without giving a reason and incurring costs, unless the provisions of generally applicable law or the provisions of these Terms and Conditions provide otherwise. The contract from which the Client indicated in paragraph 1 has withdrawn will be considered never concluded.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "To terminate the contract, it is sufficient to submit a statement of termination of the contract and send it to StartUp within 14 (say: fourteen) days.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The notice period will commence:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "for other contracts - from the date of concluding the contract.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "To meet the deadline to withdraw from the contract, it is sufficient:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "to send a written statement to the StartUp address indicated in the Terms and Conditions or the Website, or",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "to send a statement in documentary form to the StartUp e-mail address indicated in the Terms and Conditions or the Website, or",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "completing the declaration of withdrawal from the contract using the withdrawal function referred to in paragraphs 4-5 above and submitting it to StartUp using the confirmation of withdrawal function.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp immediately sends the Client, on a durable medium, a confirmation of receipt of the statement of withdrawal from the contract, submitted electronically.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "If the Client submits a declaration of withdrawal from the contract using the confirmation of withdrawal function referred to in paragraphs 4-5 above, StartUp shall immediately send him a confirmation of receipt of the declaration of withdrawal from the contract, including its content and the date and time of its submission on a durable medium.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp will refund the amount due to the Client using the same method of payment as used by the Client, unless the Client has expressly agreed to another method of refund that does not entail any costs for the Client.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "If the Client has sent a statement of withdrawal before receiving the order confirmation from StartUp, the order is cancelled.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The Client is not entitled to withdraw from the contract in the cases indicated in the Act of 30 May 2014 on consumer rights, in particular in relation to contracts:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "for the supply of digital content not supplied on a tangible medium, for which the consumer is obliged to pay the price, if the entrepreneur began the service with the express and prior consent of the consumer, who was informed before the start of the service that after the performance by the entrepreneur he will lose the right to withdraw from the contract, and he took this into account, and the entrepreneur provided the consumer with the confirmation referred to in Article 15 (1) and (2) or Article 21 (1) of the Consumer Rights Act.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp will also correct the previously provided proofs of purchase (VAT correcting invoice or corrective specification).",
+              "type": "text",
+              "version": 1
+            }
+          ],
           "direction": "ltr"
         },
         {
@@ -816,7 +1467,7 @@
           "version": 1,
           "children": [
             {
-              "text": "§ 8 Non-Conformity and Complaints (Warranty)",
+              "text": "§ 8 Reimbursement of payments made by the Client",
               "type": "text",
               "version": 1
             }
@@ -824,90 +1475,59 @@
           "direction": "ltr"
         },
         {
-          "tag": "ol",
-          "type": "list",
-          "start": 1,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "value": 1,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "StartUp is obligated to deliver digital content that conforms to the Contract.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 2,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "If Digital Content or Software fails to conform to the contract or exhibits technical defects, the Customer may submit a complaint by sending an email to [email] or [email-rodo].",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 3,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Complaints should include the order number, details of the Customer, and a description of the issue.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 4,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "StartUp will address and resolve complaints within 14 days of receipt, notifying the Customer on a durable medium (email).",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 5,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "StartUp's liability for non-conformity or damages is limited to the purchase price of the product and excludes lost profits to the extent permitted by applicable law (except in cases involving Consumers).",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "StartUp will make a refund, within 14 (say: fourteen) calendar days, using the same payment methods that were used by the Client for payment, unless the Client has expressly agreed to another method of refund, which does not involve any costs for him, in the case of:",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "number",
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "termination of the contract in whole or in part (in which case the relevant part of the price is refundable) in the case of an order paid in advance before its implementation;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "accept the complaint and the inability to repair the damaged Goods or replace them with a new one or provide a Digital Service/Service in accordance with the contract;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "recognition of the right to request a reduction in the price of the Product.",
+              "type": "text",
+              "version": 1
+            }
+          ],
           "direction": "ltr"
         },
         {
@@ -918,7 +1538,7 @@
           "version": 1,
           "children": [
             {
-              "text": "§ 9 Intellectual Property",
+              "text": "§ 9 Newsletter",
               "type": "text",
               "version": 1
             }
@@ -926,45 +1546,31 @@
           "direction": "ltr"
         },
         {
-          "tag": "ol",
-          "type": "list",
-          "start": 1,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "value": 1,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "All software, code, UI design, trademarks, logos, and website content on mxbeats.com are protected by intellectual property laws and copyright.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 2,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "The Customer is not permitted to reverse engineer, decompile, redistribute, resell, or grant sublicenses for any Software purchased from the Service unless explicitly authorized under separate agreements.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "The Client may consent to receive commercial information, including commercial information sent by electronic means, by selecting the appropriate option in the registration form or on the website. In the case of such consent, the Client will receive the Shop\u0027s newsletter (Newsletter) to the e-mail address provided by the Client.",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "number",
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The Client may unsubscribe from the Newsletter at any time by submitting a StartUpunsubscribe .",
+              "type": "text",
+              "version": 1
+            }
+          ],
           "direction": "ltr"
         },
         {
@@ -975,7 +1581,7 @@
           "version": 1,
           "children": [
             {
-              "text": "§ 10 Final Provisions",
+              "text": "§ 10 StartUp contact details",
               "type": "text",
               "version": 1
             }
@@ -983,69 +1589,921 @@
           "direction": "ltr"
         },
         {
-          "tag": "ol",
-          "type": "list",
-          "start": 1,
+          "type": "paragraph",
           "format": "",
           "indent": 0,
           "version": 1,
           "children": [
             {
-              "type": "listitem",
-              "value": 1,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Contracts concluded via the Service are governed by the laws of Poland.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 2,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "In matters not regulated herein, applicable provisions of Polish law shall apply, including the Polish Civil Code, the Act on Consumer Rights, and the Act on the Provision of Electronic Services.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-            {
-              "type": "listitem",
-              "value": 3,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-              "children": [
-                {
-                  "text": "Any disputes arising between StartUp and a non-Consumer Customer shall be settled by the court having jurisdiction over StartUp's registered office. Consumer disputes may be resolved via out-of-court mechanisms, including the EU ODR platform: https://webgate.ec.europa.eu/odr.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
+              "text": "The Client may contact StartUp in one of the following ways:",
+              "type": "text",
+              "version": 1
             }
           ],
-          "listType": "number",
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "by phone, at: [tel]",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "by e-mail, to the following e-mail address: [email]",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "§ 11 Final provisions",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp informs that the use of services provided electronically is associated with threats resulting from the generally available nature of the Internet, including, in particular the possibility of obtaining or modifying the Client\u0027s transmitted data by unauthorized third parties. In order to minimize the above threat, the Client should apply appropriate security measures, including, in particular the use of antivirus programs, have current versions of web browsers and operating systems and do not use open access points.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "To the fullest extent permitted by law, StartUp is not responsible for the blocking by mail server administrators of sending messages to the e-mail address indicated by the Client and for the deletion and blocking of e-mail messages by software installed on the computer used by the Client.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp is not responsible for the devices and infrastructure used by the Client, including the malfunction of public ICT networks, causing, for example, the lack of or interference in access to the Website. StartUp informs that all trademarks (logos, logos, brand names, etc.), graphic materials or photos posted on the Website are subject to legal protection and are used by StartUp for information purposes only.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "To the fullest extent permitted by law, StartUp will not be liable for disruptions, including interruptions, in the functioning of the Website caused by force majeure, unauthorized actions of third parties or incompatibility of the Website with the Client\u0027s technical infrastructure.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp reserves the right to temporarily suspend the operation of the Website, in  particular in order to carry out maintenance, development or modernization works.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "All names of Products offered on the Website are used for identification purposes and may be protected or reserved under the provisions of the Industrial Property Law.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp points out that the Website contains content protected by intellectual property law, in particular works protected by copyright (content posted on the Website, graphic layout, graphics, photos, etc.). Clients and visitors to the Website undertake to comply with the intellectual property rights (including proprietary copyrights and industrial property rights such as rights arising from the registration of trademarks) of StartUp and third parties. The Client or a visitor to the Website is solely responsible for non-compliance with the provisions of this section.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The Client may not post illegal content, content inconsistent with applicable law, immoral or infringing the welfare of third parties on the Website, and may not publish links to pornographic, obscene or insulting the dignity of other people.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The Client is obliged to refrain from any activity that could affect the proper functioning of the Website, in particular from any interference in the operation of the Website or its technical elements.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "StartUp undertakes to inform the registered Website Clients about any change in the Terms and Conditions by sending an e-mail to the e-mail address provided during registration, and the Client will be able to delete the Account at any time after receiving such information. Amendments to the Terms and Conditions will not affect contracts concluded before the date of entry into force of the amendments.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "In matters not covered by the Terms and Conditions, the applicable provisions of Polish law will apply, in particular the provisions of:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "of the Civil Code of 23 April 1964 ;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "of the Consumer Rights Act of 30 May ;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The Electronic Services Act of 18 July 2002;",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Disputes related to the contracts concluded on the basis of the Terms and Conditions will be settled by the court competent for StartUp. This provision does not apply to contracts concluded with the  Consumer.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The use of a specific method of out-of-court dispute settlement is only possible with the mutual consent of the Foundation and the Beneficiary. Detailed procedures for out-of-court dispute settlement between the Foundation and the Beneficiary are available on the website of the Office of Competition and Consumer Protection: www.uokik.gov.pl, on the websites of the Provincial Inspectorates of Trade Inspection as well as at district (municipal) consumer ombudsman.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The Terms and Conditions come into force on : 01.09.2026",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Out-of-court dispute resolution statement",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "In accordance with Regulation (EU) No 524/2013 of the European Parliament and of the Council of 21 May 2013 on online dispute resolution for consumer disputes and amending Regulation (EC) No 2006/2004 and Directive 2009/22/EC (Regulation on ODR in consumer disputes), FundacjaRozwojuPrzedsiębiorczości \"Twój Startup\" with its registered office in Warsaw hereby provides an electronic link to the ODR (online dispute resolution) online platform: https://webgate.ec.europa.eu/odr. The ODR platform enables out-of-court settlement of disputes between entrepreneurs and consumers. Settlement of disputes by this method is voluntary.",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "SAMPLE CONTRACT TERMINATION LETTER",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "(complete and submit this form only if you wish to terminate the contract)",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "………………………………………………",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "(Name of the person submitting the letter)",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "………………………………………………",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "………………………………………………",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "(address of the person submitting the letter)",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Fundacja Rozwoju Przedsiębiorczości",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "“Twój StartUp”",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Atlas Tower, Al. Jerozolimskie 123a, 18th floor,",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "02-017 Warsaw",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Mailing address:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "[email]",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "TERMINATION",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "I, the undersigned, hereby withdraw from the following contract:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Contract day",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Contract / order number……………………………………………………………….",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Subject of the contract",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "……………………………",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Client\u0027s Signature",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Date:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "tag": "h3",
+          "type": "heading",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "SAMPLE LETTER OF COMPLAINT",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "(this form should only be completed and returned if you wish to submit a complaint)",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "………………………………………………",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "(Name of the person submitting the letter)",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "………………………………………………",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "………………………………………………",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "(address of the person submitting the letter)",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Fundacja Rozwoju Przedsiębiorczości",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "“Twój StartUp”",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Atlas Tower, Al. Jerozolimskie 123a, 18th floor,",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "02-017 Warsaw",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Service address:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "https://mxbeats.com",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "COMPLAINT",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "I, the undersigned, hereby submit a complaint regarding the contract/order  of...............................……………. no. …………………………………………. , the subject of which was",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "The reason for the complaint:",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "(please describe the reason for the complaint)",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "In view of the above, I request …………………………………………",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "……………………………",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Client\u0027s Signature",
+              "type": "text",
+              "version": 1
+            }
+          ],
+          "direction": "ltr"
+        },
+        {
+          "type": "paragraph",
+          "format": "",
+          "indent": 0,
+          "version": 1,
+          "children": [
+            {
+              "text": "Date:",
+              "type": "text",
+              "version": 1
+            }
+          ],
           "direction": "ltr"
         }
       ],
       "direction": "ltr"
     }
-  },
-  "meta": {
-    "title": null,
-    "description": "Read the Terms and Conditions for using MXbeats software and website.",
-    "image": null
   }
 }
