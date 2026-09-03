@@ -155,3 +155,31 @@ html {
   color: currentColor;
   position: static;
 }
+
+/* --- Podpunkty prawne a), b), c) dla Lexical / Tailwind Typography --- */
+
+/* 1. Dla zagnieżdżonych list <ol> wewnątrz <ol> */
+ol ol,
+.prose ol ol,
+ol.list-number ol.list-number {
+  list-style: none !important;
+  counter-reset: legal-alpha;
+  padding-left: 0.5rem !important;
+}
+
+ol ol > li,
+.prose ol ol > li,
+ol.list-number ol.list-number > li {
+  counter-increment: legal-alpha;
+  position: relative;
+  list-style-type: none !important;
+}
+
+/* Wstawiamy literę z nawiasem a), b), c) i ukrywamy domyślne cyfry */
+ol ol > li::before,
+.prose ol ol > li::before,
+ol.list-number ol.list-number > li::before {
+  content: counter(legal-alpha, lower-alpha) ') ' !important;
+  position: static !important;
+  margin-right: 0.5rem;
+}
