@@ -37,6 +37,11 @@
 - All code-level strings, comments, UI text, and CMS data (seeds) must be in **English**.
 - Even if prompted in Polish, always provide English outputs for the codebase.
 
+## Crawler Protection
+
+- Do not place public contact details directly in crawled CMS content, including legal-page seeds.
+- Use `[email]`, `[email-rodo]`, and `[tel]` placeholders; `ProtectedContactReveal` resolves them client-side.
+
 ## Architecture
 
 - Maintain clear separation between Payload collections and Next.js frontend components.
