@@ -183,3 +183,31 @@ ol.list-number ol.list-number > li::before {
   position: static !important;
   margin-right: 0.5rem;
 }
+
+/* --- Naprawa numeracji Lexical nestedListItem --- */
+
+/* Przywracamy numerację dla nadrzędnego li (np. 14.) */
+ol > li.nestedListItem,
+.prose ol > li.nestedListItem {
+  list-style-type: decimal !important;
+}
+
+/* Upewniamy się, że zagnieżdżona lista wewnątrz nestedListItem ma format a), b), c) */
+ol > li.nestedListItem > ol,
+.prose ol > li.nestedListItem > ol {
+  list-style: none !important;
+  counter-reset: legal-alpha;
+  padding-inline-start: 24px !important;
+}
+
+ol > li.nestedListItem > ol > li,
+.prose ol > li.nestedListItem > ol > li {
+  counter-increment: legal-alpha;
+  list-style-type: none !important;
+}
+
+ol > li.nestedListItem > ol > li::before,
+.prose ol > li.nestedListItem > ol > li::before {
+  content: counter(legal-alpha, lower-alpha) ') ' !important;
+  margin-right: 0.5rem;
+}
