@@ -115,7 +115,7 @@
                       "type": "listitem",
                       "value": 1,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -132,7 +132,7 @@
                       "type": "listitem",
                       "value": 2,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -149,7 +149,7 @@
                       "type": "listitem",
                       "value": 3,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -166,7 +166,7 @@
                       "type": "listitem",
                       "value": 4,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -183,7 +183,7 @@
                       "type": "listitem",
                       "value": 5,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -200,7 +200,7 @@
                       "type": "listitem",
                       "value": 6,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -217,7 +217,7 @@
                       "type": "listitem",
                       "value": 7,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -246,7 +246,7 @@
 
               "children": [
                 {
-                  "text": "StartUp sells and provides Services through the Website, using  means of remote communication. Contracts concluded by the Client with StartUp via the Website are distance contracts, within the meaning of the Consumer Rights Act of 30 May 2014.",
+                  "text": "StartUp sells and provides Services through the Website, using means of remote communication. Contracts concluded by the Client with StartUp via the Website are distance contracts, within the meaning of the Consumer Rights Act of 30 May 2014.",
                   "type": "text",
                   "version": 1
                 }
@@ -366,7 +366,7 @@
                       "type": "listitem",
                       "value": 1,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -383,7 +383,7 @@
                       "type": "listitem",
                       "value": 2,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -400,7 +400,7 @@
                       "type": "listitem",
                       "value": 3,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -417,7 +417,7 @@
                       "type": "listitem",
                       "value": 4,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -434,7 +434,7 @@
                       "type": "listitem",
                       "value": 5,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -451,12 +451,12 @@
                       "type": "listitem",
                       "value": 6,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
                         {
-                          "text": "Website – a website at https:/mxbeats.com by means of which StartUp provides services electronically to the Client, and enables concluding contracts;",
+                          "text": "Website – a website at https://mxbeats.com by means of which StartUp provides services electronically to the Client, and enables concluding contracts;",
                           "type": "text",
                           "version": 1
                         }
@@ -468,7 +468,7 @@
                       "type": "listitem",
                       "value": 7,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -485,7 +485,7 @@
                       "type": "listitem",
                       "value": 8,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -502,7 +502,7 @@
                       "type": "listitem",
                       "value": 9,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -519,7 +519,7 @@
                       "type": "listitem",
                       "value": 10,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -536,7 +536,7 @@
                       "type": "listitem",
                       "value": 11,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -616,7 +616,7 @@
 
               "children": [
                 {
-                  "text": "StartUp will provide the Client who is a Consumer, in a clear and visible manner, immediately before placing an order by the Client, certain information, in  particular about:",
+                  "text": "StartUp will provide the Client who is a Consumer, in a clear and visible manner, immediately before placing an order by the Client, certain information, in particular about:",
                   "type": "text",
                   "version": 1
                 },
@@ -634,7 +634,7 @@
                       "type": "listitem",
                       "value": 1,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -651,7 +651,7 @@
                       "type": "listitem",
                       "value": 2,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -668,7 +668,7 @@
                       "type": "listitem",
                       "value": 3,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -685,7 +685,7 @@
                       "type": "listitem",
                       "value": 4,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -702,7 +702,7 @@
                       "type": "listitem",
                       "value": 5,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -796,7 +796,7 @@
                       "type": "listitem",
                       "value": 1,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -813,7 +813,7 @@
                       "type": "listitem",
                       "value": 2,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -830,7 +830,7 @@
                       "type": "listitem",
                       "value": 3,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -958,7 +958,7 @@
                       "type": "listitem",
                       "value": 1,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -975,12 +975,12 @@
                       "type": "listitem",
                       "value": 2,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
                         {
-                          "text": "a natural person concluding a contract directly related to their business activity, when it follows from the content of this contract that they do not have a professional nature for this person, resulting in particular from the subject of their business activity, made available on the basis of the provisions on  the Central Register and Information on Business Activity (CEiDG).",
+                          "text": "a natural person concluding a contract directly related to their business activity, when it follows from the content of this contract that they do not have a professional nature for this person, resulting in particular from the subject of their business activity, made available on the basis of the provisions on the Central Register and Information on Business Activity (CEiDG).",
                           "type": "text",
                           "version": 1
                         }
@@ -1217,7 +1217,7 @@
                       "type": "listitem",
                       "value": 1,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -1234,7 +1234,7 @@
                       "type": "listitem",
                       "value": 2,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -1315,7 +1315,7 @@
                       "type": "listitem",
                       "value": 1,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -1332,12 +1332,12 @@
                       "type": "listitem",
                       "value": 2,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
                         {
-                          "text": "StartUp has failed to bring the digital content or digital service into conformity with  the contract in accordance with Article 43m (4) of the Consumer Rights Act;",
+                          "text": "StartUp has failed to bring the digital content or digital service into conformity with the contract in accordance with Article 43m (4) of the Consumer Rights Act;",
                           "type": "text",
                           "version": 1
                         }
@@ -1349,7 +1349,7 @@
                       "type": "listitem",
                       "value": 3,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -1366,7 +1366,7 @@
                       "type": "listitem",
                       "value": 4,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -1383,12 +1383,12 @@
                       "type": "listitem",
                       "value": 5,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
                         {
-                          "text": "it is clear from the StartUp statement or circumstances that it will not bring the goods into conformity within a  reasonable time or without undue inconvenience to the Client.",
+                          "text": "it is clear from the StartUp statement or circumstances that it will not bring the goods into conformity within a reasonable time or without undue inconvenience to the Client.",
                           "type": "text",
                           "version": 1
                         }
@@ -1740,39 +1740,22 @@
 
               "children": [
                 {
-                  "text": "The notice period will commence:",
+                  "text": "T",
                   "type": "text",
                   "version": 1
                 },
 
                 {
-                  "tag": "ol",
-                  "type": "list",
-                  "start": 1,
-                  "format": "",
-                  "indent": 1,
-                  "version": 1,
+                  "mode": "normal",
+                  "text": "he notice period will commence on ",
+                  "type": "text",
+                  "version": 1
+                },
 
-                  "children": [
-                    {
-                      "type": "listitem",
-                      "value": 1,
-                      "format": "",
-                      "indent": 0,
-                      "version": 1,
-
-                      "children": [
-                        {
-                          "text": "for other contracts - from the date of concluding the contract.",
-                          "type": "text",
-                          "version": 1
-                        }
-                      ],
-                      "direction": "ltr"
-                    }
-                  ],
-                  "listType": "number",
-                  "direction": "ltr"
+                {
+                  "text": "the date of contract's conclusion.",
+                  "type": "text",
+                  "version": 1
                 }
               ],
               "direction": "ltr"
@@ -1953,7 +1936,7 @@
                       "type": "listitem",
                       "value": 1,
                       "format": "",
-                      "indent": 0,
+                      "indent": 1,
                       "version": 1,
 
                       "children": [
@@ -2534,7 +2517,7 @@
 
               "children": [
                 {
-                  "text": "Disputes related to the contracts concluded on the basis of the Terms and Conditions will be settled by the court competent for StartUp. This provision does not apply to contracts concluded with the  Consumer.",
+                  "text": "Disputes related to the contracts concluded on the basis of the Terms and Conditions will be settled by the court competent for StartUp. This provision does not apply to contracts concluded with the Consumer.",
                   "type": "text",
                   "version": 1
                 }
@@ -3199,7 +3182,7 @@
 
           "children": [
             {
-              "text": "I, the undersigned, hereby submit a complaint regarding the contract/order  of...............................……………. no. …………………………………………. , the subject of which was",
+              "text": "I, the undersigned, hereby submit a complaint regarding the contract/order of...............................……………. no. …………………………………………. , the subject of which was",
               "type": "text",
               "version": 1
             }
@@ -3312,6 +3295,6 @@
     "description": "Read the Terms and Conditions for using MXbeats software and website.",
     "image": null
   },
-  "updatedAt": "2026-09-03T12:59:28.106Z",
+  "updatedAt": "2026-09-03T16:16:08.815Z",
   "createdAt": "2026-04-07T14:50:22.590Z"
 }
