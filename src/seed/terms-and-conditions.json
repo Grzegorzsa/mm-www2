@@ -63,7 +63,7 @@
 
               "children": [
                 {
-                  "text": "The Website mxbeats.com operating at https://mxbeats.com (hereinafter referred to as: the Website) is provided by: Fundacja Rozwoju Przedsiębiorczości „Twój StartUp” with its registered office in Warsaw ,ul. Żurawia 6/12 lok 766 00-503 Warsaw, correspondence address: Atlas Tower, Al. Jerozolimskie 123a, 18th floor, 02-217 Warsaw, entered the register of entrepreneurs of the National Court Register kept by the District Court for the Capital City of Warsaw in Warsaw, 12th Commercial Division of the National Court Register under KRS number: 0000442857, for which the following tax ID was assigned: 521-364-12-11, and REGON number: 146-433-467, BDO number: 000460502.",
+                  "text": "The Website mxbeats.com operating at https://mxbeats.com (hereinafter referred to as: the Website) is provided by: Fundacja Rozwoju Przedsiębiorczości „Twój StartUp” with its registered office in Warsaw ,ul. Żurawia 6/12 lok 766 00-503 Warsaw, correspondence address: Atlas Tower, Al. Jerozolimskie 123a, 18th floor, 02-017 Warsaw, entered the register of entrepreneurs of the National Court Register kept by the District Court for the Capital City of Warsaw in Warsaw, 12th Commercial Division of the National Court Register under KRS number: 0000442857, for which the following tax ID was assigned: 521-364-12-11, and REGON number: 146-433-467, BDO number: 000460502.",
                   "type": "text",
                   "version": 1
                 }
@@ -371,7 +371,7 @@
 
                       "children": [
                         {
-                          "text": "StartUp - Fundacja Rozwoju Przedsiębiorczości „Twój StartUp” (\"Twój StartUp\" Foundation) with its registered office in Warsaw, ul.Żurawia 6/12 lok 766 00-503 Warsaw, correspondence address: Atlas Tower, Aleje Jerozolimskie 123a, 18th floor, 02-217 Warsaw, entered in the Register of Entrepreneurs of the National Court Register kept by the District Court for the Capital City of Warsaw in Warsaw, 12th Commercial Division of the National Court Register under KRS number: 0000442857, for which the following tax ID (NIP) was assigned: 521-364-12-11, REGON: 146-433-467, BDO: 000460502;",
+                          "text": "StartUp - Fundacja Rozwoju Przedsiębiorczości „Twój StartUp” (\"Twój StartUp\" Foundation) with its registered office in Warsaw, ul.Żurawia 6/12 lok 766 00-503 Warsaw, correspondence address: Atlas Tower, Al. Jerozolimskie 123a, 18th floor, 02-017 Warsaw, entered in the Register of Entrepreneurs of the National Court Register kept by the District Court for the Capital City of Warsaw in Warsaw, 12th Commercial Division of the National Court Register under KRS number: 0000442857, for which the following tax ID (NIP) was assigned: 521-364-12-11, REGON: 146-433-467, BDO: 000460502;",
                           "type": "text",
                           "version": 1
                         }
@@ -673,7 +673,7 @@
 
                       "children": [
                         {
-                          "text": "the right to withdraw from the contract or the absence of such right, and in the case of distance contracts concluded via an online interface – also the existence and location of the withdrawal function referred to in § 7 paragraphs 4-5;",
+                          "text": "the right to withdraw from the contract or the absence of such right, and in the case of distance contracts concluded via an online interface – also the existence and location of the withdrawal function available on the Website;",
                           "type": "text",
                           "version": 1
                         }
@@ -731,7 +731,7 @@
 
               "children": [
                 {
-                  "text": "The Website is serving Clients worldwide, unless the offer in StartUp provides otherwise.",
+                  "text": "The Website serves Clients worldwide, unless the offer in StartUp provides otherwise.",
                   "type": "text",
                   "version": 1
                 }
@@ -1135,7 +1135,7 @@
 
               "children": [
                 {
-                  "text": "Software updates policy: Software purchases include free updates for all minor versions within the major release branch purchased (e.g., all v1.x.x updates for a version 1 license). Major upgrades (e.g., 1.x to 2.x) may be subject to separate upgrade fees.",
+                  "text": "Software updates policy: Software purchases include free updates for all minor versions within the major release branch purchased (e.g., all 1.x.x updates for a version 1 license). Major upgrades (e.g., 1.x to 2.x) may be subject to separate upgrade fees.",
                   "type": "text",
                   "version": 1
                 }
@@ -1827,7 +1827,7 @@
 
                       "children": [
                         {
-                          "text": "completing the declaration of withdrawal from the contract using the withdrawal function referred to in paragraphs 4-5 above and submitting it to StartUp using the confirmation of withdrawal function.",
+                          "text": "completing the declaration of withdrawal from the contract using the withdrawal function available on the Website and submitting it to StartUp using the confirmation of withdrawal function.",
                           "type": "text",
                           "version": 1
                         }
@@ -1868,7 +1868,7 @@
 
               "children": [
                 {
-                  "text": "If the Client submits a declaration of withdrawal from the contract using the confirmation of withdrawal function referred to in paragraphs 4-5 above, StartUp shall immediately send him a confirmation of receipt of the declaration of withdrawal from the contract, including its content and the date and time of its submission on a durable medium.",
+                  "text": "If the Client submits a declaration of withdrawal from the contract using the confirmation of withdrawal function available on the Website, StartUp shall immediately send him a confirmation of receipt of the declaration of withdrawal from the contract, including its content and the date and time of its submission on a durable medium.",
                   "type": "text",
                   "version": 1
                 }
@@ -2127,7 +2127,7 @@
 
               "children": [
                 {
-                  "text": "The Client may unsubscribe from the Newsletter at any time by submitting a StartUpunsubscribe .",
+                  "text": "The Client may unsubscribe from the Newsletter at any time by submitting an unsubscribe request to StartUp.",
                   "type": "text",
                   "version": 1
                 }
@@ -2288,7 +2288,7 @@
 
               "children": [
                 {
-                  "text": "StartUp is not responsible for the devices and infrastructure used by the Client, including the malfunction of public ICT networks, causing, for example, the lack of or interference in access to the Website. StartUp informs that all trademarks (logos, logos, brand names, etc.), graphic materials or photos posted on the Website are subject to legal protection and are used by StartUp for information purposes only.",
+                  "text": "StartUp is not responsible for the devices and infrastructure used by the Client, including the malfunction of public ICT networks, causing, for example, the lack of or interference in access to the Website. StartUp informs that all trademarks (logos, brand names, etc.), graphic materials or photos posted on the Website are subject to legal protection and are used by StartUp for information purposes only.",
                   "type": "text",
                   "version": 1
                 }
