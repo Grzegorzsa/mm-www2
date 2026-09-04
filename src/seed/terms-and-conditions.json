@@ -63,7 +63,7 @@
 
               "children": [
                 {
-                  "text": "The Website mxbeats.com operating at https://mxbeats.com (hereinafter referred to as: the Website) is provided by: Fundacja Rozwoju Przedsiębiorczości „Twój StartUp” with its registered office in Warsaw ,ul. Żurawia 6/12 lok 766 00-503 Warsaw, correspondence address: Atlas Tower, Al. Jerozolimskie 123a, 18th floor, 00-217 Warsaw, entered the register of entrepreneurs of the National Court Register kept by the District Court for the Capital City of Warsaw in Warsaw, 12th Commercial Division of the National Court Register under KRS number: 0000442857, for which the following tax ID was assigned: 521-364-12-11, and REGON number: 146-433-467, BDO number: 000460502.",
+                  "text": "The Website mxbeats.com operating at https://mxbeats.com (hereinafter referred to as: the Website) is provided by: Fundacja Rozwoju Przedsiębiorczości „Twój StartUp” with its registered office in Warsaw ,ul. Żurawia 6/12 lok 766 00-503 Warsaw, correspondence address: Atlas Tower, Al. Jerozolimskie 123a, 18th floor, 02-217 Warsaw, entered the register of entrepreneurs of the National Court Register kept by the District Court for the Capital City of Warsaw in Warsaw, 12th Commercial Division of the National Court Register under KRS number: 0000442857, for which the following tax ID was assigned: 521-364-12-11, and REGON number: 146-433-467, BDO number: 000460502.",
                   "type": "text",
                   "version": 1
                 }
@@ -371,7 +371,7 @@
 
                       "children": [
                         {
-                          "text": "StartUp - Fundacja Rozwoju Przedsiębiorczości „Twój StartUp” (\"Twój StartUp\" Foundation) with its registered office in Warsaw, ul.Żurawia 6/12 lok 766 00-503 Warsaw, correspondence address: Atlas Tower, Aleje Jerozolimskie 123a, 18th floor, 00-217 Warsaw, entered in the Register of Entrepreneurs of the National Court Register kept by the District Court for the Capital City of Warsaw in Warsaw, 12th Commercial Division of the National Court Register under KRS number: 0000442857, for which the following tax ID (NIP) was assigned: 521-364-12-11, REGON: 146-433-467, BDO: 000460502;",
+                          "text": "StartUp - Fundacja Rozwoju Przedsiębiorczości „Twój StartUp” (\"Twój StartUp\" Foundation) with its registered office in Warsaw, ul.Żurawia 6/12 lok 766 00-503 Warsaw, correspondence address: Atlas Tower, Aleje Jerozolimskie 123a, 18th floor, 02-217 Warsaw, entered in the Register of Entrepreneurs of the National Court Register kept by the District Court for the Capital City of Warsaw in Warsaw, 12th Commercial Division of the National Court Register under KRS number: 0000442857, for which the following tax ID (NIP) was assigned: 521-364-12-11, REGON: 146-433-467, BDO: 000460502;",
                           "type": "text",
                           "version": 1
                         }
@@ -1773,6 +1773,70 @@
                   "text": "To meet the deadline to withdraw from the contract, it is sufficient:",
                   "type": "text",
                   "version": 1
+                },
+
+                {
+                  "tag": "ol",
+                  "type": "list",
+                  "start": 1,
+                  "format": "",
+                  "indent": 1,
+                  "version": 1,
+
+                  "children": [
+                    {
+                      "type": "listitem",
+                      "value": 1,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "text": "to send a written statement to the StartUp address indicated in the Terms and Conditions or the Website, or",
+                          "type": "text",
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    },
+
+                    {
+                      "type": "listitem",
+                      "value": 2,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "text": "to send a statement in documentary form to the StartUp e-mail address indicated in the Terms and Conditions or the Website, or",
+                          "type": "text",
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    },
+
+                    {
+                      "type": "listitem",
+                      "value": 3,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "text": "completing the declaration of withdrawal from the contract using the withdrawal function referred to in paragraphs 4-5 above and submitting it to StartUp using the confirmation of withdrawal function.",
+                          "type": "text",
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    }
+                  ],
+                  "listType": "number",
+                  "direction": "ltr"
                 }
               ],
               "direction": "ltr"
@@ -1787,7 +1851,7 @@
 
               "children": [
                 {
-                  "text": "to send a written statement to the StartUp address indicated in the Terms and Conditions or the Website, or",
+                  "text": "StartUp immediately sends the Client, on a durable medium, a confirmation of receipt of the statement of withdrawal from the contract, submitted electronically.",
                   "type": "text",
                   "version": 1
                 }
@@ -1804,7 +1868,7 @@
 
               "children": [
                 {
-                  "text": "to send a statement in documentary form to the StartUp e-mail address indicated in the Terms and Conditions or the Website, or",
+                  "text": "If the Client submits a declaration of withdrawal from the contract using the confirmation of withdrawal function referred to in paragraphs 4-5 above, StartUp shall immediately send him a confirmation of receipt of the declaration of withdrawal from the contract, including its content and the date and time of its submission on a durable medium.",
                   "type": "text",
                   "version": 1
                 }
@@ -1821,7 +1885,7 @@
 
               "children": [
                 {
-                  "text": "completing the declaration of withdrawal from the contract using the withdrawal function referred to in paragraphs 4-5 above and submitting it to StartUp using the confirmation of withdrawal function.",
+                  "text": "StartUp will refund the amount due to the Client using the same method of payment as used by the Client, unless the Client has expressly agreed to another method of refund that does not entail any costs for the Client.",
                   "type": "text",
                   "version": 1
                 }
@@ -1838,69 +1902,6 @@
 
               "children": [
                 {
-                  "text": "StartUp immediately sends the Client, on a durable medium, a confirmation of receipt of the statement of withdrawal from the contract, submitted electronically.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            }
-          ],
-          "listType": "number",
-          "direction": "ltr"
-        },
-
-        {
-          "type": "paragraph",
-          "format": "",
-          "indent": 0,
-          "version": 1,
-
-          "children": [
-            {
-              "text": "If the Client submits a declaration of withdrawal from the contract using the confirmation of withdrawal function referred to in paragraphs 4-5 above, StartUp shall immediately send him a confirmation of receipt of the declaration of withdrawal from the contract, including its content and the date and time of its submission on a durable medium.",
-              "type": "text",
-              "version": 1
-            }
-          ],
-          "direction": "ltr"
-        },
-
-        {
-          "tag": "ol",
-          "type": "list",
-          "start": 1,
-          "format": "",
-          "indent": 0,
-          "version": 1,
-
-          "children": [
-            {
-              "type": "listitem",
-              "value": 1,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-
-              "children": [
-                {
-                  "text": "StartUp will refund the amount due to the Client using the same method of payment as used by the Client, unless the Client has expressly agreed to another method of refund that does not entail any costs for the Client.",
-                  "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
-
-            {
-              "type": "listitem",
-              "value": 2,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-
-              "children": [
-                {
                   "text": "If the Client has sent a statement of withdrawal before receiving the order confirmation from StartUp, the order is cancelled.",
                   "type": "text",
                   "version": 1
@@ -1911,7 +1912,7 @@
 
             {
               "type": "listitem",
-              "value": 3,
+              "value": 10,
               "format": "",
               "indent": 0,
               "version": 1,
@@ -1958,7 +1959,7 @@
 
             {
               "type": "listitem",
-              "value": 4,
+              "value": 11,
               "format": "",
               "indent": 0,
               "version": 1,
@@ -3295,6 +3296,6 @@
     "description": "Read the Terms and Conditions for using MXbeats software and website.",
     "image": null
   },
-  "updatedAt": "2026-09-03T16:16:08.815Z",
+  "updatedAt": "2026-09-04T06:01:25.467Z",
   "createdAt": "2026-04-07T14:50:22.590Z"
 }
