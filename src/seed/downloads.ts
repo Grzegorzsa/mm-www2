@@ -25,7 +25,7 @@ async function seed() {
       meta: {
         title: downloadsData.meta.title,
         description: downloadsData.meta.description,
-        image: downloadsData.meta.image?.id ?? null,
+        image: downloadsData.meta.image ?? null,
       },
     },
   })
