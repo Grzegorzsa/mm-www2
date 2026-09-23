@@ -20,6 +20,9 @@ Dodatkowe opcje:
 # skrypt
 -i "C:\Users\grzegorz\Documents\ShareX\Screenshots\2026-04\source.mp4" -c:v libx264 -preset slower -crf 26 -tune stillimage  -pix_fmt yuv420p -movflags +faststart -an -y "C:\Users\grzegorz\Documents\ShareX\Screenshots\output.mp4"
 
+# ostatni skrypt
+-i "C:\Users\grzegorz\Documents\ShareX\Screenshots\2026-04\www05.mp4" -c:v libx264 -tune stillimage -preset slower -crf 28 -pix_fmt yuv420p -movflags +faststart -an -y "C:\Users\grzegorz\Documents\mxgrid_intro-output.mp4"
+
 # Crop
 -vf "crop=w:h:x:y"
 # w: Szerokość końcowa (zazwyczaj taka sama jak oryginał).
