@@ -1280,25 +1280,14 @@
                   "type": "text",
                   "detail": 0,
                   "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
+                },
 
-            {
-              "type": "listitem",
-              "value": 8,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-
-              "children": [
                 {
                   "tag": "ol",
                   "type": "list",
                   "start": 1,
                   "format": "",
-                  "indent": 0,
+                  "indent": 1,
                   "version": 1,
 
                   "children": [
@@ -1432,7 +1421,7 @@
                   "direction": null
                 }
               ],
-              "direction": null
+              "direction": "ltr"
             },
 
             {
@@ -1909,25 +1898,14 @@
                   "detail": 0,
                   "format": 0,
                   "version": 1
-                }
-              ],
-              "direction": "ltr"
-            },
+                },
 
-            {
-              "type": "listitem",
-              "value": 16,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-
-              "children": [
                 {
                   "tag": "ol",
                   "type": "list",
                   "start": 1,
                   "format": "",
-                  "indent": 0,
+                  "indent": 1,
                   "version": 1,
 
                   "children": [
@@ -1977,7 +1955,7 @@
                   "direction": null
                 }
               ],
-              "direction": null
+              "direction": "ltr"
             }
           ],
           "listType": "number",
