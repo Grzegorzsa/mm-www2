@@ -422,8 +422,35 @@
 
                       "children": [
                         {
-                          "text": "Digital Service – a digital service within the meaning of Article 2(5a) of the Consumer Rights Act of 30 May 2014, provided by StartUp, offered to Client via the Website;",
+                          "text": "Digital ",
                           "type": "text",
+                          "version": 1
+                        },
+
+                        {
+                          "mode": "normal",
+                          "text": "Content",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+
+                        {
+                          "mode": "normal",
+                          "text": "– ",
+                          "type": "text",
+                          "version": 1
+                        },
+
+                        {
+                          "mode": "normal",
+                          "text": "data produced and supplied in digital form, including software, digital files, licence keys, activation codes and other digital content made available by StartUp to the Client under a Contract;",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
                           "version": 1
                         }
                       ],
@@ -439,8 +466,12 @@
 
                       "children": [
                         {
-                          "text": "Products – Digital Services;",
+                          "mode": "normal",
+                          "text": "Digital Service – a digital service within the meaning of Article 2(5a) of the Consumer Rights Act of 30 May 2014, provided by StartUp, offered to Client via the Website;",
                           "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
                           "version": 1
                         }
                       ],
@@ -456,8 +487,12 @@
 
                       "children": [
                         {
-                          "text": "Website – a website at https://mxbeats.com by means of which StartUp provides services electronically to the Client, and enables concluding contracts;",
+                          "mode": "normal",
+                          "text": "Software – the desktop computer software made available by StartUp in digital form, including its demo version and full version, as applicable, the use of which is subject to the applicable licence terms;",
                           "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
                           "version": 1
                         }
                       ],
@@ -473,8 +508,12 @@
 
                       "children": [
                         {
-                          "text": "Contract – a contract concluded between StartUp and the Client via the Website;",
+                          "mode": "normal",
+                          "text": "Licence Key – a unique digital code provided to the Client electronically, enabling the activation of the full version or specified functionalities of the Software in accordance with the applicable licence terms;",
                           "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
                           "version": 1
                         }
                       ],
@@ -490,8 +529,12 @@
 
                       "children": [
                         {
-                          "text": "Account – an individual account of the Client on the Website, enabling the use of the Digital Services and signing contracts, after logging in;",
+                          "mode": "normal",
+                          "text": "Products – the Digital Content, including Software and Licence Keys, offered by StartUp through the Website;",
                           "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
                           "version": 1
                         }
                       ],
@@ -507,8 +550,47 @@
 
                       "children": [
                         {
-                          "text": "Working days – all days excluding Saturdays, Sundays and public holidays;",
+                          "mode": "normal",
+                          "text": "Website – a website at ",
                           "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        },
+
+                        {
+                          "type": "autolink",
+
+                          "fields": {
+                            "url": "https://mxbeats.com",
+                            "linkType": "custom"
+                          },
+                          "format": "",
+                          "indent": 0,
+                          "version": 2,
+
+                          "children": [
+                            {
+                              "mode": "normal",
+                              "text": "https://mxbeats.com",
+                              "type": "text",
+                              "style": "",
+                              "detail": 0,
+                              "format": 0,
+                              "version": 1
+                            }
+                          ],
+                          "direction": null
+                        },
+
+                        {
+                          "mode": "normal",
+                          "text": " by means of which StartUp provides services electronically to the Client, offers Products and enables concluding contracts;",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
                           "version": 1
                         }
                       ],
@@ -524,8 +606,12 @@
 
                       "children": [
                         {
-                          "text": "web interface - any type of software, including a website or part thereof and an application, including a mobile application, operated by StartUp or on its behalf, which is used to provide Customers with access to StartUp's digital services in order to conclude a transaction concerning these Services;",
+                          "mode": "normal",
+                          "text": "Contract – a contract concluded between StartUp and the Client via the Website concerning the purchase or provision of Products, including the grant of a licence to use the Software, as applicable;",
                           "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
                           "version": 1
                         }
                       ],
@@ -541,8 +627,75 @@
 
                       "children": [
                         {
+                          "mode": "normal",
+                          "text": "Account – an individual account of the Client on the Website, enabling the use of functionalities of the Website and manage their Contracts, Orders or Licences, after logging in;",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    },
+
+                    {
+                      "type": "listitem",
+                      "value": 12,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Working days – all days excluding Saturdays, Sundays and public holidays;",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    },
+
+                    {
+                      "type": "listitem",
+                      "value": 13,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "Web interface - any type of software, including a website or part thereof and an application, including a mobile application, operated by StartUp or on its behalf, which is used to provide Customers with access to the Website or Products and to conclude a transaction concerning these Products;",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    },
+
+                    {
+                      "type": "listitem",
+                      "value": 14,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "mode": "normal",
                           "text": "Terms & Conditions - these Terms & Conditions",
                           "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
                           "version": 1
                         }
                       ],
@@ -582,7 +735,24 @@
 
               "children": [
                 {
-                  "text": "In the event that the Client provides incorrect or inaccurate data, including in particular an incorrect or inaccurate address, StartUp will not be liable for any failure to deliver or delay in the delivery of the Digital Service, to the fullest extent permitted by law.",
+                  "text": "In the event that the Client provides incorrect or inaccurate data, including in particular an incorrect or inaccurate address, StartUp will not be liable for any failure to deliver or delay in the delivery of the Digital ",
+                  "type": "text",
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "Content",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": ", to the fullest extent permitted by law.",
                   "type": "text",
                   "version": 1
                 }
@@ -1004,8 +1174,12 @@
 
               "children": [
                 {
-                  "text": "StartUp provides information on the Website on how the Client places an order for digital services. To submit an order, the Client specifies the digital services of their interest and then provides data necessary for the conclusion of the contract or service provision, including the method of the digital service provision (if applicable) and the payment method.",
+                  "mode": "normal",
+                  "text": "StartUp provides information on the Website on how the Client places an order for digital content. To submit an order, the Client specifies the digital services of their interest and then provides data necessary for the conclusion of the contract or service provision, including the method of the digital content provision (if applicable) and the payment method.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -1038,8 +1212,12 @@
 
               "children": [
                 {
-                  "text": "Placing and approving the order entails the Client's obligation to pay for the digital services and any extra charges. The confirmation of the order by StartUp is the moment of concluding the sales contract between StartUp and the Client.",
+                  "mode": "normal",
+                  "text": "Placing and approving the order entails the Client's obligation to pay for the digital content and any extra charges. The confirmation of the order by StartUp is the moment of concluding the sales contract between StartUp and the Client.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -1055,8 +1233,12 @@
 
               "children": [
                 {
-                  "text": "Digital Products (software license keys and download links) are delivered electronically to the email address provided by the Client immediately upon payment confirmation, and no later than within 24 hours.",
+                  "mode": "normal",
+                  "text": "StartUp will provide the Client with Product immediately after the conclusion of the contract, unless the parties have agreed otherwise, in particular a different date has been indicated on the Website for a given Digital Service. The provision does not apply if the contract provides for the delivery of digital content on a tangible medium. In the event that the Client does not consent to the performance of the service before the deadline for withdrawal from the contract, the delivery of the service takes place after the expiry of this deadline.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -1072,54 +1254,12 @@
 
               "children": [
                 {
-                  "text": "Where the Customer is a consumer, the statutory right of withdrawal does not apply to a contract for the supply of digital content that is not supplied on a tangible medium, provided that, before the supply of the digital content begins, the Customer has expressly and in advance requested that the supply begin before expiry of the statutory withdrawal period and has expressly acknowledged that, once the performance has been fully completed, the Customer will lose the statutory right of withdrawal. The Customer's express consent and acknowledgement are obtained separately during the ordering process. StartUp will provide the Customer with confirmation of the conclusion of the contract and of the Customer's consent and acknowledgement on a durable medium.",
+                  "mode": "normal",
+                  "text": "StartUp may, for important reasons, implement a change in the digital content or digital service that is not necessary to maintain its compliance with the contract. Important reasons include, in particular, the important interest of the Client or StartUp. StartUp informs the Client in a clear and understandable way about the change made. Major changes may be subject to separate upgrade fees. If the change significantly and negatively affects the Client's access to or use of the digital content or digital service, StartUp is obliged to inform the Client in advance on a durable medium about the properties and date of the change and the right to terminate the contract without notice. The Client may terminate the contract without notice within 30 days from the date of the change.",
                   "type": "text",
-                  "version": 1
-                }
-              ],
-              "direction": "ltr"
-            }
-          ],
-          "listType": "number",
-          "direction": "ltr"
-        },
-
-        {
-          "type": "paragraph",
-          "format": "",
-          "indent": 0,
-          "version": 1,
-
-          "children": [
-            {
-              "text": "Before completing the purchase, the Customer may expressly request that the Digital Product be supplied immediately, before expiry of the statutory 14-day withdrawal period. By selecting the relevant checkbox, the Customer expressly requests such immediate supply and acknowledges that, once StartUp has fully performed its obligation to supply the Digital Product, the Customer will lose the statutory right of withdrawal.",
-              "type": "text",
-              "version": 1
-            }
-          ],
-          "direction": "ltr"
-        },
-
-        {
-          "tag": "ol",
-          "type": "list",
-          "start": 1,
-          "format": "",
-          "indent": 0,
-          "version": 1,
-
-          "children": [
-            {
-              "type": "listitem",
-              "value": 1,
-              "format": "",
-              "indent": 0,
-              "version": 1,
-
-              "children": [
-                {
-                  "text": "StartUp reserves the right to revoke or deactivate license keys in the event of payment chargebacks, fraudulent transactions, or non-payment.",
-                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -1128,15 +1268,188 @@
 
             {
               "type": "listitem",
-              "value": 2,
+              "value": 7,
               "format": "",
               "indent": 0,
               "version": 1,
 
               "children": [
                 {
-                  "text": "Software updates policy: Software purchases include free updates for all minor versions within the major release branch purchased (e.g., all 1.x.x updates for a version 1 license). Major upgrades (e.g., 1.x to 2.x) may be subject to separate upgrade fees.",
+                  "mode": "normal",
+                  "text": "StartUp may terminate the contract for the provision of digital services, in writing or in documentary form, with a 1-month notice period with effect at the end of the calendar month, for important reasons. The Parties recognize important reasons to be in particular:",
                   "type": "text",
+                  "detail": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "value": 8,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "tag": "ol",
+                  "type": "list",
+                  "start": 1,
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+
+                  "children": [
+                    {
+                      "type": "listitem",
+                      "value": 1,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "cessation or decision of StartUp to cease functioning of the organized part of the StartUp enterprise, indicated in § 1;",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    },
+
+                    {
+                      "type": "listitem",
+                      "value": 2,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "a significant change or decision of StartUp on a significant change in the subject of activity of the organized part of the StartUp enterprise, specified in   § 1;",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    },
+
+                    {
+                      "type": "listitem",
+                      "value": 3,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "significant reorganization in the StartUp company;",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    },
+
+                    {
+                      "type": "listitem",
+                      "value": 4,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": " occurrence of malfunctions or significant difficulties (in particular technical ones) in the functioning of the Website, not attributable to StartUp;",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    },
+
+                    {
+                      "type": "listitem",
+                      "value": 5,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "delay of the Client in payment of remuneration to StartUp;",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    },
+
+                    {
+                      "type": "listitem",
+                      "value": 6,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "material breach of the contract or the Terms and Conditions by the Client.",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    }
+                  ],
+                  "listType": "number",
+                  "direction": null
+                }
+              ],
+              "direction": null
+            },
+
+            {
+              "type": "listitem",
+              "value": 8,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "To the extent not covered by this paragraph, the provisions of Chapter 5b of the Consumer Rights Act will apply.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -1144,7 +1457,7 @@
             }
           ],
           "listType": "number",
-          "direction": "ltr"
+          "direction": null
         },
 
         {
@@ -1412,6 +1725,90 @@
 
               "children": [
                 {
+                  "mode": "normal",
+                  "text": "The reduced price must be in such proportion to the contract price as the value of the non-conforming digital content or digital service remains to the value of the non-conforming digital content or digital service. If the contract stipulates that the digital content or digital service is supplied in parts or continuously, the time during which the digital content or digital service was not in conformity with the contract will be taken into account when the price is reduced.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": null
+            },
+
+            {
+              "type": "listitem",
+              "value": 7,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "The Client cannot withdraw from the contract if the digital content or digital service is provided in exchange for payment of the price and the lack of conformity of the digital content or digital service with the contract is irrelevant.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": null
+            },
+
+            {
+              "type": "listitem",
+              "value": 8,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": " In the event of the Client's withdrawal from the contract, StartUp may request the return of the tangible medium on which it delivered the digital content within 14 days from the date of receipt of the Client's statement of withdrawal from the contract. The Client will return the medium immediately.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": null
+            },
+
+            {
+              "type": "listitem",
+              "value": 9,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "In the event of withdrawal from the contract by the Client, StartUp is obliged to return the price only in the part corresponding to the content or digital service inconsistent with the contract and digital content or digital service, the obligation to provide which has been eliminated as a result of withdrawal from the contract. ",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": null
+            },
+
+            {
+              "type": "listitem",
+              "value": 10,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
                   "text": "StartUp will refund the amount due to the Client using the same method of payment used by the Client, unless the Client has expressly agreed to another method of refund that does not entail any costs for the Client.",
                   "type": "text",
                   "version": 1
@@ -1422,7 +1819,7 @@
 
             {
               "type": "listitem",
-              "value": 7,
+              "value": 11,
               "format": "",
               "indent": 0,
               "version": 1,
@@ -1439,7 +1836,7 @@
 
             {
               "type": "listitem",
-              "value": 8,
+              "value": 12,
               "format": "",
               "indent": 0,
               "version": 1,
@@ -1452,6 +1849,135 @@
                 }
               ],
               "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "value": 13,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "In the event that StartUp does not respond to the complaint within the deadline, it is assumed that the complaint has been accepted.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "value": 14,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "StartUp informs the Client about the outcome of the complaint on paper or other durable medium.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "value": 15,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "StartUp's liability for non-compliance with the digital content or Digital Service contract, as well as non-performance/improper performance of the contract concluded with the  Client, is excluded in the case of contracts concluded with a Client who is not:",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "value": 16,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "tag": "ol",
+                  "type": "list",
+                  "start": 1,
+                  "format": "",
+                  "indent": 0,
+                  "version": 1,
+
+                  "children": [
+                    {
+                      "type": "listitem",
+                      "value": 1,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "a Consumer;",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    },
+
+                    {
+                      "type": "listitem",
+                      "value": 2,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "mode": "normal",
+                          "text": "a natural person concluding a contract directly related to their business activity, when it follows from the content of this contract that they do not have a professional nature for this person, resulting in particular from the subject of their business activity, made available on the basis of the provisions on the Central Register and Information on Business Activity (CEiDG). ",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    }
+                  ],
+                  "listType": "number",
+                  "direction": null
+                }
+              ],
+              "direction": null
             }
           ],
           "listType": "number",
@@ -2046,7 +2572,24 @@
 
               "children": [
                 {
-                  "text": "accept the complaint and the inability to repair the damaged Goods or replace them with a new one or provide a Digital Service/Service in accordance with the contract;",
+                  "text": "accept the complaint and the inability to repair the damaged Goods or replace them with a new one or provide a Digital ",
+                  "type": "text",
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "Order",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                },
+
+                {
+                  "mode": "normal",
+                  "text": "/Service in accordance with the contract;",
                   "type": "text",
                   "version": 1
                 }
@@ -3296,6 +3839,6 @@
     "description": "Read the Terms and Conditions for using MXbeats software and website.",
     "image": null
   },
-  "updatedAt": "2026-09-04T06:01:25.467Z",
+  "updatedAt": "2026-09-23T17:55:11.049Z",
   "createdAt": "2026-04-07T14:50:22.590Z"
 }
