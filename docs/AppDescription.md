@@ -142,6 +142,7 @@ Help
 - **Save** — saves the project under its current name.
 - **Save As** — saves the project under a new name.
 - **Render Audio** — generates a stereo audio file from the arrangement created in the Timeline. **(Pro)**
+- **Export Project** — copies all media files used by the project to a selected folder for publication or archiving. By default, exported files are renamed using the names assigned to their boxes. The export dialog can preserve original filenames and include samples with DSP applied.
 - **Exit** — closes the application.
 
 ### 5.2 Edit
@@ -382,6 +383,7 @@ The Page Editor panel contains four sections:
 #### 4. File
 
 - **Save Meta** — saves the metadata (name, icon, color, BPM, group number, key, instrument) of all selected clips directly into their audio files.
+- **Export** — exports the files for selected boxes to a chosen folder.
 
 ---
 
@@ -539,6 +541,7 @@ The **Load Factory Preset** button opens a dialog for browsing, previewing, and 
   - You can also choose a Sample or MIDI Note source using selectors or arrow controls.
 - **Preview** — plays the selected preset with the currently selected instrument sources.
 - **Use Project Tempo** — toggles preview between the preset's recommended tempo and the current project tempo.
+- **Speed** — applies a playback speed multiplier to the preset when loading it: 0.5x, 1x, or 2x.
 - **Cancel** — closes the dialog without applying changes.
 - **Load** — loads the selected preset into the current Beat.
 
@@ -646,5 +649,3 @@ Hovering over a file reveals an **info** icon on the right. Clicking it opens a 
 ### 14.4 Transport Control
 
 When a file is being previewed, a transport bar appears at the bottom of the Files panel containing a **Play/Stop** button, a colour-coded waveform, the filename, and a **Volume** knob. The volume knob controls preview playback level. The bar remains visible even when scrolling through the file list. Clicking on the waveform scrubs the playhead to that position (not available in synchronized loop mode).
-
-## Updates

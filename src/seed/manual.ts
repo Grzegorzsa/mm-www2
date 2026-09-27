@@ -111,6 +111,7 @@ const sections = [
   <li><strong>Open Project</strong> \u2014 load a project file.</li>
   <li><strong>Save / Save As</strong> \u2014 save the current project.</li>
   <li><strong>Render Audio</strong> \u2014 generate a stereo audio file from the Timeline arrangement. <strong>(Pro)</strong></li>
+  <li><strong>Export Project</strong> \u2014 package the project for sharing or archiving by copying its media files to a folder you choose. Files use their box names by default. In the export dialog, you can keep the original filenames and include samples with DSP applied.</li>
   <li><strong>Exit</strong> \u2014 close the application.</li>
 </ul>
 
@@ -336,6 +337,7 @@ const sections = [
   <li><strong>Track source panel</strong> \u2014 choose which Sample or MIDI Note each track should use. You can preview assigned sounds, switch to another source in the same instrument type, or change the instrument type for a track.</li>
   <li><strong>Preview</strong> \u2014 audition the selected preset with your current track sources.</li>
   <li><strong>Use Project Tempo</strong> \u2014 switch preview between the preset tempo and your current project tempo.</li>
+  <li><strong>Speed</strong> \u2014 choose <strong>0.5x</strong>, <strong>1x</strong>, or <strong>2x</strong> to set the preset beat's playback speed when you load it.</li>
   <li><strong>Solo / Mute, Cancel / Load</strong> \u2014 use Solo and Mute to decide which drum tracks are heard during preview, then either Cancel to close without changes or Load to apply the preset.</li>
 </ol>
 
@@ -421,6 +423,7 @@ const sections = [
 
 <h4>File</h4>
 <p><strong>Save Meta</strong> \u2014 saves the metadata (name, icon, color, BPM, group number, key, instrument) of all selected clips directly into their audio files.</p>
+<p><strong>Export</strong> \u2014 export the files for your selected boxes to a folder. Select the boxes you want to include, choose <strong>Export</strong>, then pick a destination.</p>
 <p><strong>Quick Tip:</strong> You can also perform basic edits directly in Session View without opening the Page Editor. Right-click boxes to select and move them, and use keyboard shortcuts (like <strong>Delete</strong> or <strong>Backspace</strong>) to remove them.</p>
 `,
 
