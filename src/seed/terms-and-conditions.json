@@ -246,8 +246,12 @@
 
               "children": [
                 {
-                  "text": "StartUp sells and provides Services through the Website, using means of remote communication. Contracts concluded by the Client with StartUp via the Website are distance contracts, within the meaning of the Consumer Rights Act of 30 May 2014.",
+                  "mode": "normal",
+                  "text": "Products are offered through the Website by StartUp as the Supplier and/or licensor. Transactions for the purchase of Products are processed by Lemon Squeezy, acting as the authorized Merchant of Record and reseller. The Client purchases the Product from Lemon Squeezy, while the Product may be provided and/or licensed to the Client by StartUp in accordance with the applicable licence terms.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -257,6 +261,27 @@
             {
               "type": "listitem",
               "value": 5,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "For purchases made through the Website, Lemon Squeezy acts as the Merchant of Record and authorized reseller of the Products. Accordingly, Lemon Squeezy is responsible for transaction-related matters, including payment processing, applicable sales taxes, refunds and chargebacks. StartUp remains responsible for the provision and/or licensing of the Products and for matters relating to the Products themselves, including their technical functionality and applicable licence terms, to the extent required by applicable law.",
+                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
+                  "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "value": 6,
               "format": "",
               "indent": 0,
               "version": 1,
@@ -273,7 +298,7 @@
 
             {
               "type": "listitem",
-              "value": 6,
+              "value": 7,
               "format": "",
               "indent": 0,
               "version": 1,
@@ -290,7 +315,7 @@
 
             {
               "type": "listitem",
-              "value": 7,
+              "value": 8,
               "format": "",
               "indent": 0,
               "version": 1,
@@ -307,15 +332,19 @@
 
             {
               "type": "listitem",
-              "value": 8,
+              "value": 9,
               "format": "",
               "indent": 0,
               "version": 1,
 
               "children": [
                 {
-                  "text": "The Client is obliged to read the Terms and Conditions. The use of the Website is only possible after reading and accepting the Terms and Conditions.",
+                  "mode": "normal",
+                  "text": "The Client is obliged to read the Terms and Conditions. The use of functionalities of the Website and the placing of orders may be subject to acceptance of these Terms and Conditions.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -324,7 +353,7 @@
 
             {
               "type": "listitem",
-              "value": 9,
+              "value": 10,
               "format": "",
               "indent": 0,
               "version": 1,
@@ -341,7 +370,7 @@
 
             {
               "type": "listitem",
-              "value": 10,
+              "value": 11,
               "format": "",
               "indent": 0,
               "version": 1,
@@ -607,7 +636,7 @@
                       "children": [
                         {
                           "mode": "normal",
-                          "text": "Contract – a contract concluded between StartUp and the Client via the Website concerning the purchase or provision of Products, including the grant of a licence to use the Software, as applicable;",
+                          "text": "Contract – a contract concerning the purchase of a Product concluded through the Website, under which Lemon Squeezy acts as the Merchant of Record and authorized reseller, and which may be accompanied by a separate licence agreement between the Client and StartUp governing the Client’s use of the Software;",
                           "type": "text",
                           "style": "",
                           "detail": 0,
@@ -691,6 +720,27 @@
                       "children": [
                         {
                           "mode": "normal",
+                          "text": "Merchant of Record (MoR) – Lemon Squeezy, which acts as the merchant of record and authorized reseller in relation to purchases of Products made through the Website. The applicable Lemon Squeezy terms are available at the checkout;",
+                          "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
+                          "version": 1
+                        }
+                      ],
+                      "direction": "ltr"
+                    },
+
+                    {
+                      "type": "listitem",
+                      "value": 15,
+                      "format": "",
+                      "indent": 1,
+                      "version": 1,
+
+                      "children": [
+                        {
+                          "mode": "normal",
                           "text": "Terms & Conditions - these Terms & Conditions",
                           "type": "text",
                           "style": "",
@@ -711,15 +761,19 @@
 
             {
               "type": "listitem",
-              "value": 11,
+              "value": 12,
               "format": "",
               "indent": 0,
               "version": 1,
 
               "children": [
                 {
-                  "text": "In the event of a justified suspicion that the Client has provided false data, StartUp has the right to terminate the contract by notifying the Client accordingly.",
+                  "mode": "normal",
+                  "text": "In the event of a justified suspicion that the Client has provided false data, the applicable contracting party may take measures permitted by applicable law and the applicable terms of transaction.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -728,7 +782,7 @@
 
             {
               "type": "listitem",
-              "value": 12,
+              "value": 13,
               "format": "",
               "indent": 0,
               "version": 1,
@@ -762,15 +816,19 @@
 
             {
               "type": "listitem",
-              "value": 13,
+              "value": 14,
               "format": "",
               "indent": 0,
               "version": 1,
 
               "children": [
                 {
-                  "text": "The information contained on the Website, including in particular announcements, advertisements and price lists, does not constitute an offer within the meaning of Article 66 of the Act of 23 April 1964 - Civil Code. The information contained on the Website, however, constitutes an invitation to conclude a contract, described in art. 71 of the Civil Code.",
+                  "mode": "normal",
+                  "text": "The information contained on the Website, including in particular announcements, advertisements and price lists, does not constitute an offer within the meaning of Article 66 of the Act of 23 April 1964 - Civil Code. The information contained on the Website, however, constitutes an invitation to conclude a contract, described in art. 71 of the Civil Code, which may be concluded through Lemon Squeezy acting as the Merchant of Record.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -779,7 +837,7 @@
 
             {
               "type": "listitem",
-              "value": 14,
+              "value": 15,
               "format": "",
               "indent": 0,
               "version": 1,
@@ -894,7 +952,7 @@
 
             {
               "type": "listitem",
-              "value": 15,
+              "value": 16,
               "format": "",
               "indent": 0,
               "version": 1,
@@ -1046,8 +1104,12 @@
 
               "children": [
                 {
-                  "text": "The Website uses cookies in order to properly perform the Services, as well as to ensure security. Blocking cookies, as well as the use of external applications used to block them, may result in improper operation of the Website, as well as prevent the proper implementation of the Service, for which StartUp will not be responsible.",
+                  "mode": "normal",
+                  "text": "The Website uses cookies in order to properly perform the Services, as well as to ensure security. Blocking necessary cookies may affect certain functionalities of the Website, as well as prevent the proper implementation of the Service, for which StartUp will not be responsible.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -1213,7 +1275,7 @@
               "children": [
                 {
                   "mode": "normal",
-                  "text": "Placing and approving the order entails the Client's obligation to pay for the digital content and any extra charges. The confirmation of the order by StartUp is the moment of concluding the sales contract between StartUp and the Client.",
+                  "text": "Placing and approving the order entails the Client's obligation to pay for the digital content and any extra charges. The order is subject to acceptance in accordance with the applicable checkout process. For purchases processed through Lemon Squeezy, the purchase contract is concluded in accordance with the applicable Lemon Squeezy checkout and buyer terms, with Lemon Squeezy acting as the Merchant of Record. Any licence governing the use of Software may be concluded between the Client and StartUp in accordance with the applicable licence terms.",
                   "type": "text",
                   "style": "",
                   "detail": 0,
@@ -1234,7 +1296,7 @@
               "children": [
                 {
                   "mode": "normal",
-                  "text": "StartUp will provide the Client with Product immediately after the conclusion of the contract, unless the parties have agreed otherwise, in particular a different date has been indicated on the Website for a given Digital Service. The provision does not apply if the contract provides for the delivery of digital content on a tangible medium. In the event that the Client does not consent to the performance of the service before the deadline for withdrawal from the contract, the delivery of the service takes place after the expiry of this deadline.",
+                  "text": "The Product will made available to the Client immediately after the conclusion of the applicable contract, unless otherwise indicated on the Website or at checkout. The provision does not apply if the contract provides for the delivery of digital content on a tangible medium. In the event that the Client does not consent to the performance of the service before the deadline for withdrawal from the contract, the delivery of the service takes place after the expiry of this deadline.",
                   "type": "text",
                   "style": "",
                   "detail": 0,
@@ -1255,7 +1317,7 @@
               "children": [
                 {
                   "mode": "normal",
-                  "text": "StartUp may, for important reasons, implement a change in the digital content or digital service that is not necessary to maintain its compliance with the contract. Important reasons include, in particular, the important interest of the Client or StartUp. StartUp informs the Client in a clear and understandable way about the change made. Major changes may be subject to separate upgrade fees. If the change significantly and negatively affects the Client's access to or use of the digital content or digital service, StartUp is obliged to inform the Client in advance on a durable medium about the properties and date of the change and the right to terminate the contract without notice. The Client may terminate the contract without notice within 30 days from the date of the change.",
+                  "text": "StartUp informs that the consent referred to in the previous paragraph results in the loss of the Client's right to withdraw from the contract. StartUp may, for important reasons and to the extent permitted by applicable law, implement a change in the digital content or digital service that is not necessary to maintain its compliance with the contract. Important reasons include, in particular, the important interest of the Client or StartUp. StartUp informs the Client in a clear and understandable way about the change made. Major changes may be subject to separate upgrade fees. If the change significantly and negatively affects the Client's access to or use of the digital content or digital service, StartUp is obliged to inform the Client in advance on a durable medium about the properties and date of the change and the right to terminate the contract without notice. The Client may terminate the contract without notice within 30 days from the date of the change.",
                   "type": "text",
                   "style": "",
                   "detail": 0,
@@ -1279,6 +1341,11 @@
                   "text": "StartUp may terminate the contract for the provision of digital services, in writing or in documentary form, with a 1-month notice period with effect at the end of the calendar month, for important reasons. The Parties recognize important reasons to be in particular:",
                   "type": "text",
                   "detail": 0,
+                  "version": 1
+                },
+
+                {
+                  "type": "linebreak",
                   "version": 1
                 },
 
@@ -1322,7 +1389,7 @@
                       "children": [
                         {
                           "mode": "normal",
-                          "text": "a significant change or decision of StartUp on a significant change in the subject of activity of the organized part of the StartUp enterprise, specified in   § 1;",
+                          "text": "a significant change or decision of StartUp on a significant change in the subject of activity of the organized part of the StartUp enterprise, specified in § 1;",
                           "type": "text",
                           "style": "",
                           "detail": 0,
@@ -1419,6 +1486,13 @@
                   ],
                   "listType": "number",
                   "direction": null
+                },
+                {
+                  "mode": "normal",
+                  "text": "This provision applies only to contracts for the continuous provision of digital services or other contracts of indefinite duration.",
+                  "type": "text",
+                  "detail": 0,
+                  "version": 1
                 }
               ],
               "direction": "ltr"
@@ -1673,8 +1747,12 @@
 
                       "children": [
                         {
-                          "text": "the lack of conformity of the goods with the contract is so significant that it justifies a reduction in the price or withdrawal from the contract without prior use of the remedies specified in Article 43m of the Consumer Rights Act;",
+                          "mode": "normal",
+                          "text": "the lack of conformity of the digital content or digital service with the contract is so significant that it justifies a reduction in the price or withdrawal from the contract without prior use of the remedies specified in Article 43m of the Consumer Rights Act;",
                           "type": "text",
+                          "style": "",
+                          "detail": 0,
+                          "format": 0,
                           "version": 1
                         }
                       ],
@@ -1815,8 +1893,12 @@
 
               "children": [
                 {
-                  "text": "StartUp's liability is limited to the value of the Digital Content or Digital Service to be provided. The liability of StartUp for damage caused by non-performance or improper performance of the Digital Service or failure to deliver digital content does not include lost profits.",
+                  "mode": "normal",
+                  "text": "To the extent permitted by applicable law, StartUp's liability is limited towards Clients who are not Consumers or persons referred to in §3(1)(b) may be limited to the value of the Digital Content or Digital Service to be provided. The liability of StartUp for damage caused by non-performance or improper performance of the Digital Service or failure to deliver digital content does not include lost profits.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -1832,8 +1914,12 @@
 
               "children": [
                 {
-                  "text": "A complaint regarding the non-compliance of the Service with the contract will be considered within 14 (say: fourteen) days of its receipt.",
+                  "mode": "normal",
+                  "text": "A complaint regarding the Product or its conformity with the contract may be submitted to StartUp using the contact detail indicated in §10. A complaint regarding the non-compliance of the Service with the contract will be considered within 14 (say: fourteen) days of its receipt. Complaints concerning payment, refunds or other transaction-related matters may be submitted to Lemon Squeezy using the contact details provided at checkout.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -1892,7 +1978,7 @@
               "children": [
                 {
                   "mode": "normal",
-                  "text": "StartUp's liability for non-compliance with the digital content or Digital Service contract, as well as non-performance/improper performance of the contract concluded with the  Client, is excluded in the case of contracts concluded with a Client who is not:",
+                  "text": "StartUp's liability for non-compliance with the digital content or Digital Service contract, as well as non-performance/improper performance of the contract concluded with the Client, is excluded in the case of contracts concluded with a Client who is not:",
                   "type": "text",
                   "style": "",
                   "detail": 0,
@@ -1997,8 +2083,12 @@
 
               "children": [
                 {
-                  "text": "The prices displayed for Products offered on the Website are gross prices, i.e. they include applicable value added tax (VAT / Sales Tax). Prices may be displayed in USD, EUR, PLN or other local currencies supported by the payment processor.",
+                  "mode": "normal",
+                  "text": "The prices displayed for Products offered on the Website are gross prices, i.e. they include applicable value added tax (VAT / Sales Tax), where applicable. Prices may be displayed in USD, EUR, PLN or other local currencies supported by the payment processor. The final price, including applicable taxes, is displayed at checkout by Lemon Squeezy.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -2014,8 +2104,12 @@
 
               "children": [
                 {
-                  "text": "Prices displayed on the Website are final gross prices, though minor discrepancies may occasionally occur during checkout due to tax rounding by the payment gateway.",
+                  "mode": "normal",
+                  "text": "The final price payable by the Client, including applicable taxes, is the price displayed at checkout before the order is placed.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -2078,8 +2172,12 @@
 
               "children": [
                 {
-                  "text": "On the Website, StartUp or its authorized Merchant of Record (Lemon Squeezy) clearly indicates available payment methods prior to order completion.",
+                  "mode": "normal",
+                  "text": "Lemon Squeezy, acting as the Merchant of Record, indicates the available payment methods prior to order completion.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -2095,8 +2193,12 @@
 
               "children": [
                 {
-                  "text": "Payments are made electronically via integrated payment providers (e.g., credit/debit card, Apple Pay, Google Pay, PayPal, or other electronic payment channels supported at checkout).",
+                  "mode": "normal",
+                  "text": "Payments are processed by Lemon Squeezy and/or its payment service providers.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -2129,8 +2231,12 @@
 
               "children": [
                 {
-                  "text": "The refund is made in the same way as the payment was made by the Client, unless the Client has expressly agreed to a different method of return, which does not involve any costs for him.",
+                  "mode": "normal",
+                  "text": "Refunds relating to purchases processed through Lemon Squeezy are handled by Lemon Squeezy in accordance with applicable law and the refund terms applicable to the transaction.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -2227,8 +2333,12 @@
 
               "children": [
                 {
-                  "text": "To terminate the contract, it is sufficient to submit a statement of termination of the contract and send it to StartUp within 14 (say: fourteen) days.",
+                  "mode": "normal",
+                  "text": "To withdraw from a purchase contract, the Client may submit a statement of withdrawal to Lemon Squeezy using the contact details or withdrawal functionality provided at checkout or in the applicable Lemon Squeezy buyer terms. A statement of withdrawal sent to StartUp may also be forwarded to Lemon Squeezy for processing.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -2244,21 +2354,12 @@
 
               "children": [
                 {
-                  "text": "T",
-                  "type": "text",
-                  "version": 1
-                },
-
-                {
                   "mode": "normal",
-                  "text": "he notice period will commence on ",
+                  "text": "The withdrawal period begins on the date of contract's conclusion, subject to applicable law.",
                   "type": "text",
-                  "version": 1
-                },
-
-                {
-                  "text": "the date of contract's conclusion.",
-                  "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -2389,8 +2490,12 @@
 
               "children": [
                 {
-                  "text": "StartUp will refund the amount due to the Client using the same method of payment as used by the Client, unless the Client has expressly agreed to another method of refund that does not entail any costs for the Client.",
+                  "mode": "normal",
+                  "text": "Lemon Squeezy will refund the amount due to the Client using the same payment method as used by the Client, unless the Client has expressly agreed to another method of refund that does not entail any costs for the Client.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -2507,12 +2612,24 @@
 
           "children": [
             {
-              "text": "StartUp will make a refund, within 14 (say: fourteen) calendar days, using the same payment methods that were used by the Client for payment, unless the Client has expressly agreed to another method of refund, which does not involve any costs for him, in the case of:",
+              "mode": "normal",
+              "text": "Lemon Squeezy will make refunds relating to purchases processed through Lemon Squeezy using the same payment method that was used by the Client for payment, unless applicable law or the Client’s express consent provides, in the case of",
+              "type": "text",
+              "style": "",
+              "detail": 0,
+              "format": 0,
+              "version": 1
+            },
+
+            {
+              "text": ":",
               "type": "text",
               "version": 1
             }
           ],
-          "direction": "ltr"
+          "direction": "ltr",
+          "textStyle": "",
+          "textFormat": 0
         },
 
         {
@@ -2550,25 +2667,12 @@
 
               "children": [
                 {
-                  "text": "accept the complaint and the inability to repair the damaged Goods or replace them with a new one or provide a Digital ",
-                  "type": "text",
-                  "version": 1
-                },
-
-                {
                   "mode": "normal",
-                  "text": "Order",
+                  "text": "in case the complaint is accepted and the inability to bring the Digital Content or Digital Service into conformity with the contract or provide a Digital Order/Service in accordance with the contract;",
                   "type": "text",
                   "style": "",
                   "detail": 0,
                   "format": 0,
-                  "version": 1
-                },
-
-                {
-                  "mode": "normal",
-                  "text": "/Service in accordance with the contract;",
-                  "type": "text",
                   "version": 1
                 }
               ],
@@ -2631,8 +2735,12 @@
 
               "children": [
                 {
-                  "text": "The Client may consent to receive commercial information, including commercial information sent by electronic means, by selecting the appropriate option in the registration form or on the website. In the case of such consent, the Client will receive the Shop's newsletter (Newsletter) to the e-mail address provided by the Client.",
+                  "mode": "normal",
+                  "text": "The Client may consent to receive commercial information, including commercial information sent by electronic means, by selecting the appropriate option in the registration form or on the website. In the case of such consent, the Client will receive the mxbeats.com’s newsletter (Newsletter) to the e-mail address provided by the Client.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -2731,6 +2839,48 @@
                   "text": "by e-mail, to the following e-mail address: [email]",
                   "type": "text",
                   "version": 1
+                }
+              ],
+              "direction": "ltr"
+            },
+
+            {
+              "type": "listitem",
+              "value": 3,
+              "format": "",
+              "indent": 0,
+              "version": 1,
+
+              "children": [
+                {
+                  "mode": "normal",
+                  "text": "Merchant of Record: Lemon Squeezy, acting as the Merchant of Record for purchases made through the Website. The legal entity and contact details applicable to the transaction are indicated at checkout and/or on the invoice issued in connection with the purchase. Lemon Squeezy help center: ",
+                  "type": "text",
+                  "detail": 0,
+                  "version": 1
+                },
+
+                {
+                  "type": "autolink",
+
+                  "fields": {
+                    "url": "https://www.lemonsqueezy.com/help",
+                    "linkType": "custom"
+                  },
+                  "format": "",
+                  "indent": 0,
+                  "version": 2,
+
+                  "children": [
+                    {
+                      "mode": "normal",
+                      "text": "https://www.lemonsqueezy.com/help",
+                      "type": "text",
+                      "detail": 0,
+                      "version": 1
+                    }
+                  ],
+                  "direction": null
                 }
               ],
               "direction": "ltr"
@@ -2928,8 +3078,12 @@
 
               "children": [
                 {
-                  "text": "StartUp undertakes to inform the registered Website Clients about any change in the Terms and Conditions by sending an e-mail to the e-mail address provided during registration, and the Client will be able to delete the Account at any time after receiving such information. Amendments to the Terms and Conditions will not affect contracts concluded before the date of entry into force of the amendments.",
+                  "mode": "normal",
+                  "text": "StartUp undertakes to inform the registered Website Clients about any change in the Terms and Conditions by sending an e-mail to the e-mail address provided during registration, and the Client will be able to delete the Account at any time after receiving such information. Amendments to the Terms and Conditions will not affect contracts concluded before the date of entry into force of the amendments. Changes to the terms governing purchases processed by Lemon Squeezy shall be made in accordance with the applicable Lemon Squeezy terms and applicable law.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -3039,8 +3193,12 @@
 
               "children": [
                 {
-                  "text": "Disputes related to the contracts concluded on the basis of the Terms and Conditions will be settled by the court competent for StartUp. This provision does not apply to contracts concluded with the Consumer.",
+                  "mode": "normal",
+                  "text": "Disputes arising from contracts with Clients who are not Consumers or otherwise protected under mandatory applicable law shall be subject to the jurisdiction determined in accordance with applicable law. Nothing in these Terms limits any mandatory jurisdiction or other rights available to Consumers.",
                   "type": "text",
+                  "style": "",
+                  "detail": 0,
+                  "format": 0,
                   "version": 1
                 }
               ],
@@ -3817,6 +3975,6 @@
     "description": "Read the Terms and Conditions for using MXbeats software and website.",
     "image": null
   },
-  "updatedAt": "2026-09-23T17:55:11.049Z",
+  "updatedAt": "2026-10-14T12:36:51.356Z",
   "createdAt": "2026-04-07T14:50:22.590Z"
 }
