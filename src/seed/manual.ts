@@ -410,22 +410,35 @@ const sections = [
 
 <h4 id="edit-program">Edit Program Boxes</h4>
 <p>A <strong>Program</strong> box launches an entire musical scene with a single press. It can start several boxes at once, stop selected groups, and even fire a delayed follow-up action.</p>
-<img src="/images/manual/edit-program-panel.png" alt="program box editor panel" />
-<ul>
-  <li><strong>Trigger Box IDs</strong> \u2014 the IDs of the boxes to start, separated by commas.</li>
-  <li><strong>Stop Groups</strong> \u2014 the group numbers to stop, or <strong>all</strong> to stop every group.</li>
-  <li><strong>Row</strong> \u2014 fills in both fields automatically so the Program box launches every box in a chosen row.</li>
-  <li><strong>Delayed Action</strong> \u2014 enable to schedule a follow-up: set <strong>After Bars</strong> (how many bars to wait) and <strong>Box ID</strong> (which box to trigger next). Point it at another Program box to chain whole sequences of events.</li>
-</ul>
+<div class="two-col">
+  <div>
+    <img src="/images/manual/edit-program-panel.png" alt="program box editor panel" />
+  </div>
+  <div>
+    <ul>
+      <li><strong>Trigger Box IDs</strong> \u2014 the IDs of the boxes to start, separated by commas.</li>
+      <li><strong>Stop Groups</strong> \u2014 the group numbers to stop, or <strong>all</strong> to stop every group.</li>
+      <li><strong>Row</strong> \u2014 fills in both fields automatically so the Program box launches every box in a chosen row.</li>
+      <li><strong>Delayed Action</strong> \u2014 enable to schedule a follow-up: set <strong>After Bars</strong> (how many bars to wait) and <strong>Box ID</strong> (which box to trigger next). Point it at another Program box to chain whole sequences of events.</li>
+    </ul>
+  </div>
+</div>
 
 <h4 id="edit-stop">Edit Stop Boxes</h4>
 <p>A <strong>Stop</strong> box gives you stop control anywhere on the grid. The dedicated <a href="#stop-group">Stop Group buttons</a> above the grid cover groups 1\u20138 only \u2014 a Stop box can stop any of the <strong>12 groups</strong>, all groups at once, or the entire session.</p>
-<img src="/images/manual/edit-stop-panel.png" alt="stop box editor panel" />
-<ul>
-  <li><strong>Group</strong> \u2014 pick the instrument group (1\u201312) to stop.</li>
-  <li><strong>All</strong> \u2014 stop every group at once.</li>
-  <li><strong>Instant</strong> \u2014 stop the whole project immediately, without waiting for the bar boundary.</li>
-</ul>`,
+<div class="two-col">
+  <div>
+    <img src="/images/manual/edit-stop-panel.png" alt="stop box editor panel" />
+  </div>
+  <div>
+    <ul>
+      <li><strong>Group</strong> \u2014 pick the instrument group (1\u201312) to stop.</li>
+      <li><strong>All</strong> \u2014 stop every group at once.</li>
+      <li><strong>Instant</strong> \u2014 stop the whole project immediately, without waiting for the bar boundary.</li>
+    </ul>
+  </div>
+</div>
+`,
 
   // 8 — Page Editor
   `<h3 id="edit-page">Page Editor</h3>
