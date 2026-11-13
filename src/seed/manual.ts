@@ -23,6 +23,8 @@ const aside = `<h2>Manual</h2>
       <li><a href="#edit-note">Edit Notes</a></li>
       <li><a href="#edit-beat">Edit Beats</a></li>
       <li><a href="#step-sequencer">Step Sequencer</a></li>
+      <li><a href="#edit-program">Edit Program Boxes</a></li>
+      <li><a href="#edit-stop">Edit Stop Boxes</a></li>
     </ul>
   </li>
   <li><a href="#edit-page">Page Editor</a></li>
@@ -49,6 +51,8 @@ const mobileToc = `<details>
     <li class="sub"><a href="#edit-note">Edit Notes</a></li>
     <li class="sub"><a href="#edit-beat">Edit Beats</a></li>
     <li class="sub"><a href="#step-sequencer">Step Sequencer</a></li>
+    <li class="sub"><a href="#edit-program">Edit Program Boxes</a></li>
+    <li class="sub"><a href="#edit-stop">Edit Stop Boxes</a></li>
     <li><a href="#edit-page">Page Editor</a></li>
     <li><a href="#edit-timeline">Arranger</a></li>
     <li><a href="#media-explorer">Media Explorer</a></li>
@@ -63,6 +67,7 @@ const sections = [
   <div class="mb-4"> 
     <p><strong>MX GRID</strong> helps you turn ideas into tracks fast. Build drum patterns, trigger loops, and arrange complete songs in one workflow. Use it as a standalone app on Windows/macOS or load it as a VST3/AU plugin in your DAW.</p>
     <p>Start by dropping audio files or MIDI drum files onto the grid. MX GRID detects clip type and key metadata automatically, so you can focus on writing music instead of setup.</p>
+    <p><strong>New to MX GRID?</strong> Watch the full <a href="https://www.youtube.com/playlist?list=PLIjkMp6XqJSs" target="_blank" rel="noopener">video course on YouTube</a> \u2014 quick, step-by-step guides to help you master every tool and section.</p>
   </div>
   <div>
     <video autoplay muted loop playsinline poster="/images/manual/intro.png">
@@ -111,7 +116,7 @@ const sections = [
   <li><strong>Open Project</strong> \u2014 load a project file.</li>
   <li><strong>Save / Save As</strong> \u2014 save the current project.</li>
   <li><strong>Render Audio</strong> \u2014 generate a stereo audio file from the Timeline arrangement. <strong>(Pro)</strong></li>
-  <li><strong>Export Project</strong> \u2014 package the project for sharing or archiving by copying its media files to a folder you choose. Files use their box names by default. In the export dialog, you can keep the original filenames and include samples with DSP applied.</li>
+  <li><strong>Export Project</strong> \u2014 package the project for archiving or distribution. MX GRID copies every media file used by the project into one folder, neatly organized into subfolders by media type. In the export dialog you can choose <strong>Apply DSP</strong> (bake in DSP effects such as tempo changes), <strong>Apply Master Volume</strong> (adjust sample levels using the project\u2019s Master Volume), and <strong>Keep original filenames</strong> (skip automatic renaming to box names).</li>
   <li><strong>Exit</strong> \u2014 close the application.</li>
 </ul>
 
@@ -191,6 +196,9 @@ const sections = [
 </ul>
 <p><strong>Tip:</strong> In Session Mode, keep your loops and beats within groups 1–8 — only groups 1–8 have a dedicated <a href="#stop-group">Stop Group button</a>. Groups 9–12 are best suited for the Arranger, where the timeline offers a track for every group.</p>
 
+<h4>Program &amp; Stop Boxes</h4>
+<p><strong>Program</strong> and <strong>Stop</strong> boxes don\u2019t play sound themselves \u2014 they control other boxes. A Program box launches a whole musical scene in one press, while a Stop box stops any group, all groups, or the entire session. Create and configure them in the <a href="#edit-box">Box Editor</a>.</p>
+
 <h4>Stopping Individual Clips</h4>
 <p>During playback of any clip, hovering over the box reveals a <strong>Stop button</strong> in the top-left corner. Clicking it immediately stops playback of that individual clip \u2014 no need to use the Stop Group buttons or the All Sounds Off (panic) button.</p>
 
@@ -204,8 +212,8 @@ const sections = [
   <li>Only one loop-based clip from a given group can play at a time.</li>
   <li>When a group is playing, its Stop button lights up <strong>red</strong>.</li>
   <li>Clicking a Stop button makes it flash (waiting for the bar end), then stops the group.</li>
-  <li>MX GRID supports up to <strong>12 instrument groups</strong> in total. Groups 9–12 have no dedicated Stop button in Session Mode, so use them mainly on the Arranger timeline.</li>
-</ul>`,
+</ul>
+<p><strong>Tip:</strong> Need to stop groups 9–12, all groups at once, or the whole session instantly? Place a <a href="#edit-stop">Stop box</a> anywhere on the grid.</p>`,
 
   // 6 — Page Buttons
   `<h3 id="page-buttons">Page Buttons</h3>
@@ -213,7 +221,7 @@ const sections = [
 
   // 7 — Box Editor
   `<h3 id="edit-box">Box Editor</h3>
-<p><img src="/images/manual/edit-box-icon.png" alt="edit box" class="ico" /> The <strong>Box Editor</strong> opens a right-side panel for editing individual clip parameters. Activate it from the <a href="#toolbar"><strong>toolbar</strong></a> or the menu (View \u2192 Box Editor), then click any box on the grid to edit it. Clicking an empty slot lets you create a new <strong>Note</strong>, <strong>Sample</strong>, <strong>Loop</strong>, or <strong>Beat</strong>.</p>
+<p><img src="/images/manual/edit-box-icon.png" alt="edit box" class="ico" /> The <strong>Box Editor</strong> opens a right-side panel for editing individual clip parameters. Activate it from the <a href="#toolbar"><strong>toolbar</strong></a> or the menu (View \u2192 Box Editor), then click any box on the grid to edit it. Clicking an empty slot lets you create a new <strong>Note</strong>, <strong>Sample</strong>, <strong>Loop</strong>, <strong>Beat</strong>, <strong>Program</strong>, or <strong>Stop</strong> box.</p>
 <p><strong>Tip:</strong> In Box Edit, Page Edit, or Arranger mode, hold <strong>Alt</strong> and click any box to trigger that clip \u2014 no need to switch modes first.</p>
 <video autoplay muted loop playsinline poster="/images/manual/box-edit.png">
   <source src="/images/manual/box-edit.mp4" type="video/mp4" />
@@ -398,7 +406,26 @@ const sections = [
   </li>
 </ol>
 
-<p>When done, click <strong>Save</strong> to apply changes, or <strong>Cancel</strong> to discard them.</p>`,
+<p>When done, click <strong>Save</strong> to apply changes, or <strong>Cancel</strong> to discard them.</p>
+
+<h4 id="edit-program">Edit Program Boxes</h4>
+<p>A <strong>Program</strong> box launches an entire musical scene with a single press. It can start several boxes at once, stop selected groups, and even fire a delayed follow-up action.</p>
+<img src="/images/manual/edit-program-panel.png" alt="program box editor panel" />
+<ul>
+  <li><strong>Trigger Box IDs</strong> \u2014 the IDs of the boxes to start, separated by commas.</li>
+  <li><strong>Stop Groups</strong> \u2014 the group numbers to stop, or <strong>all</strong> to stop every group.</li>
+  <li><strong>Row</strong> \u2014 fills in both fields automatically so the Program box launches every box in a chosen row.</li>
+  <li><strong>Delayed Action</strong> \u2014 enable to schedule a follow-up: set <strong>After Bars</strong> (how many bars to wait) and <strong>Box ID</strong> (which box to trigger next). Point it at another Program box to chain whole sequences of events.</li>
+</ul>
+
+<h4 id="edit-stop">Edit Stop Boxes</h4>
+<p>A <strong>Stop</strong> box gives you stop control anywhere on the grid. The dedicated <a href="#stop-group">Stop Group buttons</a> above the grid cover groups 1\u20138 only \u2014 a Stop box can stop any of the <strong>12 groups</strong>, all groups at once, or the entire session.</p>
+<img src="/images/manual/edit-stop-panel.png" alt="stop box editor panel" />
+<ul>
+  <li><strong>Group</strong> \u2014 pick the instrument group (1\u201312) to stop.</li>
+  <li><strong>All</strong> \u2014 stop every group at once.</li>
+  <li><strong>Instant</strong> \u2014 stop the whole project immediately, without waiting for the bar boundary.</li>
+</ul>`,
 
   // 8 — Page Editor
   `<h3 id="edit-page">Page Editor</h3>
@@ -423,7 +450,7 @@ const sections = [
 
 <h4>File</h4>
 <p><strong>Save Meta</strong> \u2014 saves the metadata (name, icon, color, BPM, group number, key, instrument) of all selected clips directly into their audio files.</p>
-<p><strong>Export</strong> \u2014 export the files for your selected boxes to a folder. Select the boxes you want to include, choose <strong>Export</strong>, then pick a destination.</p>
+<p><strong>Export</strong> \u2014 export just the selected boxes to a folder, with the same options as <strong>Export Project</strong> (Apply DSP, Apply Master Volume, Keep original filenames). Perfect for building reusable presets \u2014 for example a drum kit you want to carry across projects.</p>
 <p><strong>Quick Tip:</strong> You can also perform basic edits directly in Session View without opening the Page Editor. Right-click boxes to select and move them, and use keyboard shortcuts (like <strong>Delete</strong> or <strong>Backspace</strong>) to remove them.</p>
 `,
 

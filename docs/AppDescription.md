@@ -6,6 +6,8 @@ This document provides a comprehensive textual description of the MX GRID applic
 
 **Product website:** `https://mxbeats.com/`
 
+**Video course (YouTube playlist):** `https://www.youtube.com/playlist?list=PLIjkMp6XqJSs` — a full step-by-step course. The manual links to it at the beginning of the introduction.
+
 ---
 
 ## 1. About MX GRID
@@ -56,6 +58,13 @@ A MIDI Note box maps to a specific MIDI note number. It enables triggering exter
 ### 2.4 Beat
 
 A Beat is a percussion loop pattern built from audio Samples or MIDI Notes using the built-in Step Sequencer. Beats behave like loops (triggered synchronously at bar boundaries, belonging to an instrument group) but their content is programmed in the sequencer rather than read from an audio file. MIDI drum files can also be imported and automatically converted to Beats. Over 400 factory presets are included across various genres.
+
+### 2.5 Control Boxes (Program & Stop)
+
+In addition to the four clip types, two control box types can be placed on the grid. They do not play media themselves — they control other boxes:
+
+- **Program Box** — defines a complete musical scene: triggers multiple boxes at once, stops selected instrument groups, and can schedule a delayed action (triggering another box after a set number of bars), enabling chained event sequences. See section 14.
+- **Stop Box** — stops a selected instrument group (1–12), all groups at once, or the entire session. See section 15.
 
 ---
 
@@ -142,7 +151,7 @@ Help
 - **Save** — saves the project under its current name.
 - **Save As** — saves the project under a new name.
 - **Render Audio** — generates a stereo audio file from the arrangement created in the Timeline. **(Pro)**
-- **Export Project** — copies all media files used by the project to a selected folder for publication or archiving. By default, exported files are renamed using the names assigned to their boxes. The export dialog can preserve original filenames and include samples with DSP applied.
+- **Export Project** — located below Render Audio. Prepares the project for archiving or distribution by copying all media files used by the project into a single selected folder, organized into subfolders by media type. By default, exported files are renamed using the names assigned to their boxes. Export options: **Apply DSP** (bakes DSP effects, e.g., tempo change, into the exported samples), **Apply Master Volume** (adjusts individual sample levels taking the project's global Master Volume into account), **Keep original filenames** (disables automatic renaming to box names).
 - **Exit** — closes the application.
 
 ### 5.2 Edit
@@ -251,7 +260,7 @@ In Session mode, you can also make limited edits directly on the grid. Right-cli
 
 1. **Drag and drop from the file explorer** — drag audio files up to 60 seconds long (WAV, AIF, AIFF, MP3, OGG), MIDI drum files (MID, MIDI), or entire folders onto the grid. If multiple files are dragged, they fill consecutive empty slots. The application automatically detects whether each file is a sample or loop; MIDI drum files are converted to Beats. Parameters are then assigned automatically (tempo, instrument type, color, icon, group number, name). This is the fastest way to load clips.
 
-2. **Via the Box Editor** — activate Box Edit mode and click an empty slot. A prompt asks which clip type to create: **Note**, **Sample**, **Loop**, or **Beat**. The new clip is initialized as a copy of the last edited clip of the same type (or with default values). Audio files or note definitions can then be loaded via the editor toolbar.
+2. **Via the Box Editor** — activate Box Edit mode and click an empty slot. A prompt asks which box type to create: **Note**, **Sample**, **Loop**, **Beat**, **Program**, or **Stop**. The new clip is initialized as a copy of the last edited clip of the same type (or with default values). Audio files or note definitions can then be loaded via the editor toolbar.
 
 **Alt+Click shortcut** — in Box Edit, Page Edit, and Arranger modes, holding **Alt** while clicking a box triggers the clip immediately without switching modes.
 
@@ -261,7 +270,7 @@ In Session mode, you can also make limited edits directly on the grid. Right-cli
 
 The Box Editor is the right-side panel for editing individual clip parameters. It is activated from the main menu (View → Box Editor) or the toolbar (Edit Box button).
 
-**Workflow:** activate Box Edit mode, then click a box on the grid to edit it. Clicking an empty slot prompts you to choose a clip type: **Note**, **Sample**, **Loop**, or **Beat**. If no slot is selected, the panel displays "Nothing Selected".
+**Workflow:** activate Box Edit mode, then click a box on the grid to edit it. Clicking an empty slot prompts you to choose a box type: **Note**, **Sample**, **Loop**, **Beat**, **Program**, or **Stop**. If no slot is selected, the panel displays "Nothing Selected".
 
 Most editing options are shared between samples and loops. Differences are noted in each subsection below.
 
@@ -383,7 +392,7 @@ The Page Editor panel contains four sections:
 #### 4. File
 
 - **Save Meta** — saves the metadata (name, icon, color, BPM, group number, key, instrument) of all selected clips directly into their audio files.
-- **Export** — exports the files for selected boxes to a chosen folder.
+- **Export** — exports the files for selected boxes to a chosen folder. Works like Export Project and offers the same export options (Apply DSP, Apply Master Volume, Keep original filenames), but covers only the selected boxes. Useful for creating reusable presets (e.g., drum kits) shared across projects.
 
 ---
 
@@ -609,20 +618,55 @@ Select a track to reveal its options panel. The panel has three tabs: **Options*
 
 ---
 
-## 14. Media Explorer
+## 14. Program Box
+
+A Program box defines a complete musical scene. When triggered, it can start multiple boxes at once, stop selected instrument groups, and schedule a delayed follow-up action.
+
+### Creating a Program Box
+
+Activate Box Edit mode and click an empty slot, then select **Program** from the box-type prompt.
+
+### Program Box Editor Properties
+
+- **Trigger Box IDs** — comma-separated list of box IDs to trigger when the Program box is pressed.
+- **Stop Groups** — group numbers to stop, or `all` to stop all groups.
+- **Row** — button that automatically fills both fields so the Program box launches every box in a selected row.
+- **Delayed Action** — checkbox. When enabled, two additional widgets appear:
+  - **After Bars** — number of bars after which the delayed action fires.
+  - **Box ID** — the ID of the box to trigger. Pointing it at another Program box enables chained sequences of events.
+
+---
+
+## 15. Stop Box
+
+A Stop box stops a selected instrument group, all groups at once, or the entire session. The dedicated Stop buttons above the grid cover groups 1–8 only; a Stop box can stop any of the 12 groups.
+
+### Creating a Stop Box
+
+Activate Box Edit mode and click an empty slot, then select **Stop** from the box-type prompt.
+
+### Stop Box Editor Properties
+
+- **Group** — instrument group to stop (1–12).
+- **All** — stops all groups at once.
+- **Instant** — immediately stops the entire project, without waiting for the bar boundary.
+
+---
+
+## 16. Media Explorer
 
 The Media Explorer is a built-in tool designed for cataloguing, quickly finding, and previewing media files on your computer. It supports audio files and MIDI drum files. Open it from the toolbar (computer with magnifying glass icon — third icon from the left) or via **View → Media Explorer**. It appears docked to the right side of the main window, alongside the Box Editor, Page Editor, and Arranger panels.
 
 You can also use Media Explorer as a quick edit target. Right-click boxes to select them, drag the selection to move it, and use keyboard shortcuts like Delete and Undo. If you drag selected boxes back into Media Explorer, MX GRID removes them from the grid.
 
-### 14.1 Toolbar
+### 16.1 Toolbar
 
 - **Add Media Folder** — add a folder to your media library.
 - **Remove Selected Folder** — remove the currently selected folder from the library.
 - **Stop Parsing** — stop the ongoing file-analysis process for the selected folder.
 - **Auto Preview One-Shot on Hover** — when enabled, moving the cursor over a file's icon automatically plays a preview of that one-shot sample without requiring a click. This option applies to one-shots only; loop preview on hover is intentionally disabled due to the conversion and synchronization overhead during playback.
 
-### 14.2 Folders Panel
+### 16.2 Folders Panel
 
 A collapsible panel displaying the folder tree. Toggle visibility using the chevron icon on the right side of the panel header. The header also displays the name of the currently selected folder, so it remains visible even when the tree is collapsed.
 
@@ -634,7 +678,7 @@ An entire folder can be imported into the project by dragging it onto the grid. 
 
 When the Media Explorer is opened and a folder is selected, a quick rescan is performed to detect any files that have changed since the last session.
 
-### 14.3 Files Panel
+### 16.3 Files Panel
 
 A collapsible panel listing media files in the selected folder. The panel header shows the total file count and a **Search** text field for filtering by filename or instrument category. An advanced filter button reveals additional options: BPM min/max range, Key, loop checkbox, and one-shot checkbox. When any filter is active, an indicator displays the number of active filters along with a **Clear Filters** button.
 
@@ -646,6 +690,10 @@ Files can be placed on the grid using **drag and drop**. MIDI drum files are aut
 
 Hovering over a file reveals an **info** icon on the right. Clicking it opens a detail window showing the full path, file size, type, BPM, key, and duration.
 
-### 14.4 Transport Control
+### 16.4 Transport Control
 
 When a file is being previewed, a transport bar appears at the bottom of the Files panel containing a **Play/Stop** button, a colour-coded waveform, the filename, and a **Volume** knob. The volume knob controls preview playback level. The bar remains visible even when scrolling through the file list. Clicking on the waveform scrubs the playhead to that position (not available in synchronized loop mode).
+
+## Updates
+
+_No pending updates._
