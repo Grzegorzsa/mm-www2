@@ -2,8 +2,6 @@
 
 ## Uzupełnić nowe funkcjonalności w manualu
 
-1. Stop Box
-
 ## Prywatny downloads + własne statystyki:
 
 Całkowicie prywatny bucket R2 + Pre-signed URLs (Standard branżowy)
