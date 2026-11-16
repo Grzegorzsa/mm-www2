@@ -300,6 +300,7 @@ A waveform (oscillogram) thumbnail of the audio file. During playback, a playhea
 - **Outputs** — audio output routing (available in DAW plugin mode). Supports up to 16 stereo pairs (32 channels total), labeled "1/2", "3/4", "5/6", etc.
 - **Choke Samples** — comma-separated list of Box IDs whose playback should be stopped when this sample is triggered (e.g., closed hi-hat stopping an open hi-hat).
 - **Enable Velocity** — checkbox. When enabled, sample volume varies based on MIDI velocity (strike force). Requires a velocity-sensitive MIDI controller (e.g., Launchpad X supports this; Launchpad Mini does not).
+- **Cutoff filter** — checkbox next to Enable Velocity. When enabled, sample playback uses a low-pass filter whose cutoff depends on each note's velocity. Lower-velocity notes use a lower cutoff. Combined with Enable Velocity, softer hits are both quieter and darker, producing more natural-sounding drums.
 - **Stop on Note Off** — checkbox (off by default). When enabled, the sample stops immediately when the mouse button or MIDI pad is released. When disabled, the sample plays to completion.
 - **Instrument Type** — dropdown for selecting the instrument category (e.g., Snare, Guitar, Bass).
 - **Key** — dropdown for selecting the musical key or scale of the clip (e.g., C#, Dm).

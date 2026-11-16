@@ -253,6 +253,7 @@ const sections = [
       <li>Instrument Type: Choose the instrument category (e.g., Snare, Guitar, Bass). Helps identify and filter clips in the Media Explorer.</li>
       <li>Choke Samples: Comma-separated <strong>Box IDs</strong> that will be silenced when this sample triggers (e.g., closed hi-hat stopping an open hi-hat).</li>
       <li>Enable Velocity: When enabled, volume varies based on MIDI strike force. Requires a velocity-sensitive controller.</li>
+      <li>Cutoff Filter: Applies a velocity-sensitive low-pass filter to the sample. Lower-velocity notes trigger a lower cutoff frequency, giving softer hits a warmer, more muted tone. Enable this together with Enable Velocity so softer hits become both quieter and darker, mimicking acoustic instruments.</li>
       <li>Stop on Note Off: When enabled, the sample stops immediately on mouse/pad release. When disabled (default), the sample plays to completion.</li>
       <li>Key: Choose the musical key or scale of the clip (e.g., C#, Dm). Useful for organizing clips by pitch.</li>
     </ol>
