@@ -90,6 +90,15 @@
           "size": "107.06 MB",
           "url": "https://static.mxbeats.com/downloads/demo-content/Demo%20Content.zip",
           "loggedUser": true
+        },
+        {
+          "id": "6a5a266088da6784443e3086",
+          "description": "Loops Demo",
+          "version": "1.0.0",
+          "fileName": "Loops Demo.zip",
+          "size": "63.75 MB",
+          "url": "https://static.mxbeats.com/downloads/demo-content/Loops%20Demo.zip",
+          "loggedUser": true
         }
       ]
     }
