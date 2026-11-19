@@ -12,7 +12,7 @@
 
 ## Czyszczena Cache
 
-`rm -rf .next`
+`rm -rf .next` - tylko dev. Na produkcji usunie cały build. Najbezpieczniej na produkcji wykonać cały build.
 
 ## Sprawdzanie błędów TypeScript
 
